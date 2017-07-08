@@ -1,21 +1,23 @@
-import { NgModule, ErrorHandler } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
+import {ErrorHandler, NgModule} from "@angular/core";
+import {BrowserModule} from "@angular/platform-browser";
+import {IonicApp, IonicErrorHandler, IonicModule} from "ionic-angular";
+import {MyApp} from "./app.component";
 
-import { StoriesPage } from '../pages/stories/stories';
-import { AddStoryPage } from '../pages/addstory/addstory';
-import { TabsPage } from '../pages/tabs/tabs';
+import {StoriesPage} from "../pages/stories/stories";
+import {AddStoryPage} from "../pages/addstory/addstory";
+import {TabsPage} from "../pages/tabs/tabs";
 
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { StanizerService } from '../services/stanizer.service';
+import {StatusBar} from "@ionic-native/status-bar";
+import {SplashScreen} from "@ionic-native/splash-screen";
+import {StanizerService} from "../services/stanizer.service";
+import {StoryDetailsPage} from "../pages/storydetails/storydetails";
 
 @NgModule({
   declarations: [
     MyApp,
     StoriesPage,
     AddStoryPage,
+    StoryDetailsPage,
     TabsPage
   ],
   imports: [
@@ -27,6 +29,7 @@ import { StanizerService } from '../services/stanizer.service';
     MyApp,
     StoriesPage,
     AddStoryPage,
+    StoryDetailsPage,
     TabsPage
   ],
   providers: [
@@ -36,4 +39,5 @@ import { StanizerService } from '../services/stanizer.service';
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
-export class AppModule {}
+export class AppModule {
+}

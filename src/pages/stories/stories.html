@@ -18,7 +18,7 @@
           </ion-note>
         </ion-list-header>
         <ion-row wrap>
-          <ion-col width-25 col-sm-2 col-md-3 *ngFor="let item of album.data,let j=index">
+          <ion-col width-25 col-sm-2 col-md-3 *ngFor="let item of album.data,let j=index" (click)="showDetails(album,j)">
             <img id="{{item.id}}" src="{{item.src}}">
             <div class="card-title">Story</div>
             <div class="card-subtitle">{{j}}</div>

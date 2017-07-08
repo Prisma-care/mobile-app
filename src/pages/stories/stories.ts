@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { StanizerService } from '../../services/stanizer.service';
-import { AddStoryPage } from '../addstory/addstory';
+import {StoryDetailsPage} from "../storydetails/storydetails";
 
 /**
  * More info on the slides management : https://ionicframework.com/docs/api/components/slides/Slides/
@@ -49,8 +49,11 @@ export class StoriesPage {
       this.stanizedYoutubeUrl = this.stanizerService.sanitize(this.youtubeUrl);
   }
 
-  goToOtherPage(){
-    this.navCtrl.push(AddStoryPage);
-  }
 
+  showDetails(dataAlbum:Array<any>,dataIndex:number) {
+    this.navCtrl.push(StoryDetailsPage, {
+      album: dataAlbum,
+      index: dataIndex
+    })
+  }
 }

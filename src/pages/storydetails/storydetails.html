@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{ album.name || '?' }}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding *ngIf="album && index">
+  <ion-card>
+    <img id="{{album.data[index].id}}" src="{{album.data[index].src}}">
+    <ion-card-content>
+      <ion-card-title>
+        Story {{index}}
+      </ion-card-title>
+      <p>
+        Long time ago ...
+      </p>
+      <ion-row>
+        <ion-col>
+          <button ion-button icon-left clear small (onClick)="addLike()">
+            <ion-icon name="thumbs-up"></ion-icon>
+            <div>{{likes}} Likes</div>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-left clear small>
+            <ion-icon name="text"></ion-icon>
+            <div>4 Comments</div>
+          </button>
+        </ion-col>
+        <ion-col center text-center>
+          <ion-note>
+            11h ago
+          </ion-note>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+
+</ion-content>
