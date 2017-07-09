@@ -6,13 +6,12 @@ page-stories {
 
   .card-title {
     position: absolute;
-    top: 31%;
-    font-size: 1em;
-    font-weight: bold;
+    bottom: 1em;
+    padding-left: .5em;
+    font-size: .9em;
     width: 100%;
     color: #fff;
-    text-align: center;
-    text-shadow: 1px 1px 3px rgba(0,0,0,.9), 1px 1px 0 rgba(0,0,0,.6);
+    text-shadow: 1px 1px 3px rgba(0,0,0,.6), 1px 1px 0 rgba(0,0,0,.6);
   }
 
   .list-header {
@@ -27,8 +26,16 @@ page-stories {
 
   ion-col.col {
     padding-left: 0;
-    &:last-child { padding-right: 0; }
   }
+
+  .col img::after {
+      position: relative;
+      background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0, #fff 100%);
+      margin-top: -150px;
+      height: 150px;
+      width: 100%;
+      content: '';
+    }
 
   ion-item.item.item-block {
     padding-left: 0;
