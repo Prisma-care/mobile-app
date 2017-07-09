@@ -42,9 +42,6 @@ page-stories {
     .item-inner { padding-right: 0; margin-right: 0; }
     .input-wrapper {  }
   }
-
-  ion-label.label {
-    margin: 0;
-  }
+  ion-list-header .label { padding-left: 1.25em; }
 
 }

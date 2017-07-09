@@ -8,7 +8,7 @@
 
 <ion-content padding *ngIf="album && index">
 
-  <ion-item no-padding>
+  <ion-item>
     <ion-avatar item-start>
       <img src="https://pbs.twimg.com/profile_images/848076805902827520/-j52_Wze_bigger.jpg">
     </ion-avatar>
@@ -18,22 +18,24 @@
 
   <img id="{{album.data[index].id}}" src="{{album.data[index].src}}" style="width:100%; max-width:100%">
 
-  <h2>Story {{index}} de titel</h2>
-  <p>Long time ago ...</p>
-  <div class="row">
-    <div class="col">
-      <button ion-button icon-left outline block>
-        <ion-icon name="happy"></ion-icon> Vind dit leuk
-      </button>
-    </div>
-    <div class="col">
-      <button ion-button icon-left outline block>
-        <ion-icon name="text"></ion-icon> Reageer
-      </button>
+  <div margin>
+    <h2>Story {{index}} de titel</h2>
+    <p>Long time ago ...</p>
+    <div class="row">
+      <div class="col">
+        <button ion-button icon-left outline block>
+          <ion-icon name="happy"></ion-icon> Vind dit leuk
+        </button>
+      </div>
+      <div class="col">
+        <button ion-button icon-left outline block>
+          <ion-icon name="text"></ion-icon> Reageer
+        </button>
+      </div>
     </div>
   </div>
 
-  <ion-item no-padding>
+  <ion-item>
     <ion-avatar item-start>
       <img src="https://pbs.twimg.com/profile_images/848076805902827520/-j52_Wze_bigger.jpg">
     </ion-avatar>
@@ -41,7 +43,7 @@
     <small>5 dagen geleden</small>
   </ion-item>
 
-  <ion-item no-padding>
+  <ion-item>
     <ion-avatar item-start>
       <img src="https://pbs.twimg.com/profile_images/848076805902827520/-j52_Wze_bigger.jpg">
     </ion-avatar>
