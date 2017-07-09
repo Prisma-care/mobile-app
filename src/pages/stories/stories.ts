@@ -39,9 +39,9 @@ export class StoriesPage {
   ];
 
   public albums:Array<any> = [
-    {name:"KinderTijd",data:this.album1Data},
-    {name:"Favoriten",data:this.album2Data},
-    {name:"Voer jow gesejutend",data:this.album3Data},
+    {name:"Kindertijd",data:this.album1Data},
+    {name:"Familie & vrienden",data:this.album2Data},
+    {name:"Voor jou geselecteerd",data:this.album3Data},
     {name:"Relevant vandaag",data:this.album4Data},
     ];
 

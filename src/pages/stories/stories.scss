@@ -6,20 +6,38 @@ page-stories {
 
   .card-title {
     position: absolute;
-    top: 36%;
-    font-size: 2.0em;
-    width: 100%;
+    top: 31%;
+    font-size: 1em;
     font-weight: bold;
+    width: 100%;
     color: #fff;
     text-align: center;
+    text-shadow: 1px 1px 3px rgba(0,0,0,.9), 1px 1px 0 rgba(0,0,0,.6);
   }
 
-  .card-subtitle {
-    font-size: 1.0em;
-    position: absolute;
-    top: 52%;
-    width: 100%;
-    color: #fff;
-    text-align: center;
+  .list-header {
+    padding-left: 0;
+    font-weight: bold;
+    margin-bottom: 0;
   }
+
+  .list-md .item-block .item-inner {
+    border-bottom: none;
+  }
+
+  ion-col.col {
+    padding-left: 0;
+    &:last-child { padding-right: 0; }
+  }
+
+  ion-item.item.item-block {
+    padding-left: 0;
+    .item-inner { padding-right: 0; margin-right: 0; }
+    .input-wrapper {  }
+  }
+
+  ion-label.label {
+    margin: 0;
+  }
+
 }
