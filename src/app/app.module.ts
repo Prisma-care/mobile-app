@@ -5,7 +5,6 @@ import {MyApp} from "./app.component";
 
 import {StoriesPage} from "../pages/stories/stories";
 import {BrowsePage} from "../pages/browse/browse";
-import {AddStoryPage} from "../pages/addstory/addstory";
 import {PatientProfilePage} from "../pages/patientprofile/patientprofile";
 import {TabsPage} from "../pages/tabs/tabs";
 
@@ -20,7 +19,6 @@ import {PrismaService} from "../services/back-end/prisma-api.service";
     MyApp,
     StoriesPage,
     BrowsePage,
-    AddStoryPage,
     PatientProfilePage,
     StoryDetailsPage,
     TabsPage
@@ -34,7 +32,6 @@ import {PrismaService} from "../services/back-end/prisma-api.service";
     MyApp,
     StoriesPage,
     BrowsePage,
-    AddStoryPage,
     PatientProfilePage,
     StoryDetailsPage,
     TabsPage
