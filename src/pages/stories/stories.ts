@@ -53,7 +53,7 @@ export class StoriesPage {
   showDetails(dataAlbum:Array<any>,dataIndex:number) {
     this.navCtrl.push(StoryDetailsPage, {
       album: dataAlbum,
-      index: dataIndex
+      index: dataIndex ? dataIndex : 0
     })
   }
 }

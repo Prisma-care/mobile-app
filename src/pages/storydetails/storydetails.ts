@@ -21,6 +21,8 @@ export class StoryDetailsPage {
   }
 
   addLike(){
+    console.log("addigng likes");
     this.likes = this.hasLiked ? this.likes+1 : this.likes -1;
+    this.hasLiked = ! this.hasLiked;
   }
 }

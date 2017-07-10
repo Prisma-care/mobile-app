@@ -11,6 +11,7 @@ import {StatusBar} from "@ionic-native/status-bar";
 import {SplashScreen} from "@ionic-native/splash-screen";
 import {StanizerService} from "../services/stanizer.service";
 import {StoryDetailsPage} from "../pages/storydetails/storydetails";
+import {PrismaService} from "../services/back-end/prisma-api.service";
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import {StoryDetailsPage} from "../pages/storydetails/storydetails";
     StatusBar,
     SplashScreen,
     StanizerService,
+    PrismaService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
