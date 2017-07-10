@@ -14,3 +14,23 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+
+@font-face {
+	font-family: Varela;
+	src: url('../assets/fonts/varela.woff2') format('woff2');
+}
+
+// todo: remove Roboto. It's already added by default
+@font-face {
+	font-family: Roboto;
+	src: url('../assets/fonts/roboto.woff2') format('woff2');
+}
+
+* {
+	font-family: Roboto;
+}
+ 
+h1, h2, .toolbar-title, .label, .tab-button-text {
+	font-family: Varela;
+}
