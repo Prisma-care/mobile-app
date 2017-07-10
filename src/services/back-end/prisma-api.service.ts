@@ -1,7 +1,8 @@
 import {Injectable, OnInit} from "@angular/core";
+import {Http } from "@angular/http";
+import {Observable} from "rxjs/Observable";
+import 'rxjs/add/observable/of';
 import {API_URL, env} from "../../app/environment";
-import {Http, RequestOptions} from "@angular/http";
-import {NavController} from "ionic-angular";
 /**
  * Created by Jean on 10-07-17.
  *
@@ -37,4 +38,8 @@ export class PrismaService implements OnInit {
     this._head.delete('Authorization');
   }
 
+  public handleError(error: Response | any) {
+    console.log("Error ! " + JSON.stringify(error));
+    return Observable.of(error) as Observable<any>;
+  }
 }

@@ -55,8 +55,11 @@ export class StoriesPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getUser("12345")
-      .subscribe(user => this.user = user);
+    this.userService.getUser("12345").toPromise().then(user => {
+
+        this.user = user
+        console.log("Final user : " + JSON.stringify(this.user));
+      });
   }
 
 
