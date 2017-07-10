@@ -7,5 +7,25 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-list>
 
+    <ion-item *ngFor="let album of albums,let i=index">
+      <ion-list>
+        <ion-list-header>
+          {{album.name}}
+          <ion-note style="float:right">
+            <button ion-button small icon-left clear>
+              <ion-icon name="add"></ion-icon> Toevoegen
+            </button>
+          </ion-note>
+        </ion-list-header>
+        <ion-row wrap>
+          <ion-col width-25 col-sm-2 col-md-3 *ngFor="let item of album.data,let j=index" (click)="showDetails(album,j)">
+            <img id="{{item.id}}" src="{{item.src}}">
+            <div class="card-title">Story</div>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </ion-item>
+  </ion-list>
 </ion-content>
