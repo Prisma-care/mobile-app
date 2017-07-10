@@ -6,37 +6,48 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding *ngIf="album.data">
-  <ion-card>
-    <img id="{{album.data[index].id}}" src="{{album.data[index].src}}">
-    <ion-card-content>
-      <ion-card-title>
-        Story {{index}}
-      </ion-card-title>
-      <p>
-        Long time ago ...
-      </p>
-      <ion-row>
-        <ion-col>
-          <button outlet ion-button icon-left clear small (onClick)="addLike()">
-            <ion-icon name="thumbs-up"></ion-icon>
-            <div>{{likes}} Likes</div>
-          </button>
-        </ion-col>
-        <ion-col>
-          <button ion-button icon-left clear small>
-            <ion-icon name="text"></ion-icon>
-            <div>4 Comments</div>
-          </button>
-        </ion-col>
-        <ion-col center text-center>
-          <ion-note>
-            11h ago
-          </ion-note>
-        </ion-col>
-      </ion-row>
-    </ion-card-content>
-  </ion-card>
+<ion-content padding *ngIf="album && index">
+  <ion-item>
+    <ion-avatar item-start>
+      <img src="https://pbs.twimg.com/profile_images/848076805902827520/-j52_Wze_bigger.jpg">
+    </ion-avatar>
+    <h3>Dries</h3>
+    <p>5 dagen geleden</p>
+  </ion-item>
 
+  <img id="{{album.data[index].id}}" src="{{album.data[index].src}}" style="width:100%; max-width:100%">
+
+  <div margin>
+    <h2>Story {{index}} de titel</h2>
+    <p>Long time ago ...</p>
+    <div class="row">
+      <div class="col">
+        <button ion-button icon-left outline block>
+          <ion-icon name="happy"></ion-icon> Vind dit leuk
+        </button>
+      </div>
+      <div class="col">
+        <button ion-button icon-left outline block>
+          <ion-icon name="text"></ion-icon> Reageer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ion-item>
+    <ion-avatar item-start>
+      <img src="https://pbs.twimg.com/profile_images/848076805902827520/-j52_Wze_bigger.jpg">
+    </ion-avatar>
+    <p><strong>Frank</strong> Lorem ipsum dolor sit amet consectetuer</p>
+    <small>5 dagen geleden</small>
+  </ion-item>
+
+  <ion-item>
+    <ion-avatar item-start>
+      <img src="https://pbs.twimg.com/profile_images/848076805902827520/-j52_Wze_bigger.jpg">
+    </ion-avatar>
+    <p><strong>Nina</strong> Adipisicing elit los nonnumy</p>
+    <small>5 dagen geleden</small>
+  </ion-item>
 
 </ion-content>

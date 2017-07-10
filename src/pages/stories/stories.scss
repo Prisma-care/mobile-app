@@ -6,20 +6,42 @@ page-stories {
 
   .card-title {
     position: absolute;
-    top: 36%;
-    font-size: 2.0em;
+    bottom: 1em;
+    padding-left: .5em;
+    font-size: .9em;
     width: 100%;
-    font-weight: bold;
     color: #fff;
-    text-align: center;
+    text-shadow: 1px 1px 3px rgba(0,0,0,.6), 1px 1px 0 rgba(0,0,0,.6);
   }
 
-  .card-subtitle {
-    font-size: 1.0em;
-    position: absolute;
-    top: 52%;
-    width: 100%;
-    color: #fff;
-    text-align: center;
+  .list-header {
+    padding-left: 0;
+    font-weight: bold;
+    margin-bottom: 0;
   }
+
+  .list-md .item-block .item-inner {
+    border-bottom: none;
+  }
+
+  ion-col.col {
+    padding-left: 0;
+  }
+
+  .col img::after {
+      position: relative;
+      background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0, #fff 100%);
+      margin-top: -150px;
+      height: 150px;
+      width: 100%;
+      content: '';
+    }
+
+  ion-item.item.item-block {
+    padding-left: 0;
+    .item-inner { padding-right: 0; margin-right: 0; }
+    .input-wrapper {  }
+  }
+  ion-list-header .label { padding-left: 1.25em; }
+
 }
