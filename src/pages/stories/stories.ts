@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { StanizerService } from '../../services/stanizer.service';
 import {StoryDetailsPage} from "../storydetails/storydetails";
+import {UserService} from "../../services/back-end/user.service";
+import {User} from "../../dto/user";
 
 /**
  * More info on the slides management : https://ionicframework.com/docs/api/components/slides/Slides/
@@ -10,7 +12,7 @@ import {StoryDetailsPage} from "../storydetails/storydetails";
   selector: 'page-stories',
   templateUrl: 'stories.html'
 })
-export class StoriesPage {
+export class StoriesPage implements OnInit {
 
   public youtubeUrl:string = "www.youtube.com/embed/ERD4CbBDNI0?rel=0&amp;showinfo=0";
   public stanizedYoutubeUrl:any;
@@ -45,8 +47,16 @@ export class StoriesPage {
     {name:"Relevant vandaag",data:this.album4Data},
     ];
 
-  constructor(public navCtrl: NavController,private stanizerService: StanizerService) {
+  user: User;
+
+  constructor(public navCtrl: NavController, private stanizerService: StanizerService,
+              private userService: UserService) {
       this.stanizedYoutubeUrl = this.stanizerService.sanitize(this.youtubeUrl);
+  }
+
+  ngOnInit(): void {
+    this.userService.getUser("12345")
+      .subscribe(user => this.user = user);
   }
 
 

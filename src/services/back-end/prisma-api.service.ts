@@ -12,8 +12,10 @@ import {NavController} from "ionic-angular";
 export class PrismaService implements OnInit {
   protected _urlToApi: string = API_URL;
   protected _head: Headers = new Headers({'Content-Type': 'application/json; charset=UTF-8'});
+  _http: Http;
 
-  constructor(protected _http: Http, public navCtrl: NavController) {
+  constructor(_httpSer: Http) {
+    this._http = _httpSer;
     // this._head.set('Accept', 'application/json,application/pdf,application/plain; charset=UTF-8');
     // Domain you wish to allow
     this._head.set('Access-Control-Allow-Origin', API_URL);
