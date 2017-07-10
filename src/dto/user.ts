@@ -10,11 +10,14 @@ export class User extends AbstractUser {
   constructor(json?) {
     super(json);
     if (json) {
-      this.email = json.mail;
+      this.email = json.email;
       this.password = json.password;
+      this.relations = [];
       json.relations.forEach(relation => {
         relation.id = relation.id ? relation.id : this.id;
-        this.relations.push(new Relation(relation))}
+          console.log("1");
+        this.relations.push(new Relation(relation));
+          }
         );
     }
   }
