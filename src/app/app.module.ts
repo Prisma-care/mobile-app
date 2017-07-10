@@ -4,7 +4,9 @@ import {IonicApp, IonicErrorHandler, IonicModule} from "ionic-angular";
 import {MyApp} from "./app.component";
 
 import {StoriesPage} from "../pages/stories/stories";
+import {BrowsePage} from "../pages/browse/browse";
 import {AddStoryPage} from "../pages/addstory/addstory";
+import {PatientProfilePage} from "../pages/patientprofile/patientprofile";
 import {TabsPage} from "../pages/tabs/tabs";
 
 import {StatusBar} from "@ionic-native/status-bar";
@@ -17,7 +19,9 @@ import {PrismaService} from "../services/back-end/prisma-api.service";
   declarations: [
     MyApp,
     StoriesPage,
+    BrowsePage,
     AddStoryPage,
+    PatientProfilePage,
     StoryDetailsPage,
     TabsPage
   ],
@@ -29,7 +33,9 @@ import {PrismaService} from "../services/back-end/prisma-api.service";
   entryComponents: [
     MyApp,
     StoriesPage,
+    BrowsePage,
     AddStoryPage,
+    PatientProfilePage,
     StoryDetailsPage,
     TabsPage
   ],
