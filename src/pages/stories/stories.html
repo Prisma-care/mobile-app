@@ -14,7 +14,7 @@
         <ion-list-header>
           {{album.title}}
           <ion-note style="float:right">
-            <button ion-button small icon-left clear>
+            <button (click)="showNewStory()" ion-button small icon-left clear>
               <ion-icon name="add"></ion-icon> Toevoegen
             </button>
           </ion-note>

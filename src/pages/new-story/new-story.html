@@ -1,13 +1,21 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>new-story</ion-title>
+    <ion-title>Nieuw verhaal</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
 
-  <img *ngIf="dataUrl" src="{{dataUrl}}">
+  <ion-list>
+    <ion-item>
+      <img class="new-story-thumb" *ngIf="dataUrl" src="{{dataUrl}}">
+      <ion-input type="text" placeholder="Titel"></ion-input>
+      <ion-input type="text" placeholder="Beschrijving"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <button ion-button color="primary">Opslaan</button>
+
 </ion-content>

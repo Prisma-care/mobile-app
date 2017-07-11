@@ -4,6 +4,7 @@ import { StanizerService } from '../../services/stanizer.service';
 import {StoryDetailsPage} from "../storydetails/storydetails";
 import {UserService} from "../../services/back-end/user.service";
 import {StoryService} from "../../services/back-end/story.service";
+import {NewStoryPage} from "../new-story/new-story";
 import {User} from "../../dto/user";
 import {UserStory} from "../../dto/user-story";
 import { Album  } from "../../dto/album";
@@ -90,8 +91,12 @@ export class StoriesPage implements OnInit {
 
   showDetails(album: Album, index: number) {
     this.navCtrl.push(StoryDetailsPage, {
-      album: album,
-      index: index ? index : 0
+      "album": album,
+      "index": index ? index : 0
     })
+  }
+
+  showNewStory() {
+    this.navCtrl.push(NewStoryPage, {dataUrl: ""});
   }
 }
