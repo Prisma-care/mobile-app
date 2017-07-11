@@ -134,17 +134,7 @@
     "description": "Bla bla bla bla",
     "dateAdded": "Mon Mar 12 2017 00:00:00 GMT+0100 (CET)",
     "dateHappened": "Mon Mar 12 1945 00:00:00 GMT+0100 (CET)",
-    "likes": [
-      {
-        1: "1"
-      },
-      {
-        2: "2:"
-      },
-      {
-        3: "3"
-      }
-    ],
+    "likes": [],
     "comments": [
       {
         "id": "1",

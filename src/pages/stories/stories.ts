@@ -75,6 +75,9 @@ export class StoriesPage implements OnInit {
     this.storyService.getAlbums().toPromise().then(albums => {
       this.albums = albums as Album[];
     });
+
+    this.storyService.getUserStories().toPromise().then(stories =>
+    console.log(JSON.stringify(stories)));
   }
 
   getThumb(url: string): string {
@@ -85,10 +88,10 @@ export class StoriesPage implements OnInit {
     return album.stories.slice(0,4);
   }
 
-  showDetails(dataAlbum:Array<any>,dataIndex:number) {
+  showDetails(album: Album, index: number) {
     this.navCtrl.push(StoryDetailsPage, {
-      album: dataAlbum,
-      index: dataIndex ? dataIndex : 0
+      album: album,
+      index: index ? index : 0
     })
   }
 }

@@ -12,8 +12,16 @@ import {Album} from "../../dto/album";
 @Injectable()
 export class StoryService extends PrismaService {
 
+  getUserStory(id: string): Observable<UserStory> {
+    return this.getUserStories()
+      .map(stories => {
+        let s = stories.find(story => story.id == id);
+        console.log(" s is " + JSON.stringify(s) + " type is " + typeof(s));
+        return s ? new UserStory(s) : new UserStory();
+      });
+  }
 
-  getUserStories(userId: string): Observable<UserStory[]> {
+  getUserStories(): Observable<UserStory[]> {
     return this._http.get("/mock-api/stories.json").map(res => {
         let userStories:UserStory[] = [];
         res.json().forEach(story =>
