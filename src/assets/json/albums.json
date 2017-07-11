@@ -1,0 +1,120 @@
+[
+  {
+    "id": "1",
+    "title": "Kindertijd",
+    "description": "Verhalen uit mijn kindertijd.",
+    "stories": [
+      {
+        "id": "1",
+        "title": "Stadhuis",
+        "description": "Het stadhuis van Halle",
+        "type": "2",
+        "source": "cHTUaigQQ2iFLSLC34OP_stadhuishalle.jpg"
+      },
+      {
+        "id": "2",
+        "title": "Pannenkoeken op zondag",
+        "description": "Een geliefkoosd moment van Frederik in het weekend.",
+        "type": "2",
+        "source": "pancakes.jpg"
+      },
+      {
+        "id": "3",
+        "title": "Sabena Security",
+        "description": "De werplaats van Marie-Josée vroeger.",
+        "type": "2",
+        "source": "LVZpafa9RpCyPNPLYuSn_sabena-security.jpg"
+      },
+      {
+        "id": "4",
+        "title": "Familiefoto",
+        "description": "Familiefoto in de tuin.",
+        "type": "2",
+        "source": "CBd1zASpTOmZptix3fng_family1.jpg"
+      },
+      {
+        "id": "5",
+        "title": "Baby",
+        "type": "2",
+        "source": "TVRkzCgS7iNdKgM7PSwg_baby.jpg"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "title": "Familie",
+    "description": "Verhalen uit mijn kindertijd.",
+    "stories": [
+      {
+        "id": "1",
+        "title": "Mijn school",
+        "type": "2",
+        "source": "cHTUaigQQ2iFLSLC34OP_stadhuishalle.jpg"
+      },
+      {
+        "id": "2",
+        "title": "Familiefoto",
+        "type": "2",
+        "source": "family2.jpg"
+      },
+      {
+        "id": "3",
+        "title": "Verjaardag",
+        "type": "2",
+        "source": "verjaardag2.jpg"
+      },
+      {
+        "id": "4",
+        "title": "Familiemomentje",
+        "type": "2",
+        "source": "CBd1zASpTOmZptix3fng_family1.jpg"
+      },
+      {
+        "id": "5",
+        "title": "Baby",
+        "type": "2",
+        "source": "TVRkzCgS7iNdKgM7PSwg_baby.jpg"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "title": "Vrije tijd",
+    "description": "Verhalen uit mijn kindertijd.",
+    "stories": [
+      {
+        "id": "1",
+        "title": "Moskou",
+        "description": "Op het rode plein tijdens een reis door Rusland.",
+        "type": "2",
+        "source": "moskow.jpg"
+      },
+      {
+        "id": "2",
+        "title": "Split",
+        "description": "In Kroatië.",
+        "type": "2",
+        "source": "split-croatia.jpg"
+      },
+      {
+        "id": "3",
+        "title": "The Three Tenors",
+        "description": "De favoriete muziekgroep van Marie.",
+        "type": "2",
+        "source": "threetenors.jpeg"
+      },
+      {
+        "id": "4",
+        "title": "Familiemomentje",
+        "type": "2",
+        "source": "CBd1zASpTOmZptix3fng_family1.jpg"
+      },
+      {
+        "id": "5",
+        "title": "Baby",
+        "type": "2",
+        "source": "TVRkzCgS7iNdKgM7PSwg_baby.jpg"
+      }
+    ]
+  }
+]

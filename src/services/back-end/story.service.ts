@@ -22,7 +22,7 @@ export class StoryService extends PrismaService {
   }
 
   getUserStories(): Observable<UserStory[]> {
-    return this._http.get("/mock-api/stories.json").map(res => {
+    return this._http.get("assets/json/stories.json").map(res => {
         let userStories:UserStory[] = [];
         res.json().forEach(story =>
       {
@@ -34,7 +34,7 @@ export class StoryService extends PrismaService {
   }
 
   getAlbums(): Observable<Album[]> {
-    return this._http.get("/mock-api/albums.json").map(res => {
+    return this._http.get("assets/json/albums.json").map(res => {
         return res.json() ? res.json() as Album[] : new Array<Album>();
       })
       .catch(error => this.handleError(error));
