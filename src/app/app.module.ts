@@ -18,6 +18,7 @@ import {HttpModule} from "@angular/http";
 import {StoryService} from "../services/back-end/story.service";
 import {TutorialPage} from "../pages/tutorial/tutorial";
 import { Camera } from '@ionic-native/camera';
+import {NewStoryPage} from "../pages/new-story/new-story";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { Camera } from '@ionic-native/camera';
     BrowsePage,
     PatientProfilePage,
     StoryDetailsPage,
+    NewStoryPage,
     TabsPage
   ],
   imports: [
@@ -42,6 +44,7 @@ import { Camera } from '@ionic-native/camera';
     BrowsePage,
     PatientProfilePage,
     StoryDetailsPage,
+    NewStoryPage,
     TabsPage
   ],
   providers: [
