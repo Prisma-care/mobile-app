@@ -1,7 +1,7 @@
 export class LifeEvent {
   id: string;
   userId: string;
-  withUserId: string;
+  withUser: string;
   name: string;
   date: Date;
   storyId: string;
