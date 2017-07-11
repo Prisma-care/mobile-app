@@ -16,10 +16,12 @@ import {PrismaService} from "../services/back-end/prisma-api.service";
 import {UserService} from "../services/back-end/user.service";
 import {HttpModule} from "@angular/http";
 import {StoryService} from "../services/back-end/story.service";
+import {TutorialPage} from "../pages/tutorial/tutorial";
 
 @NgModule({
   declarations: [
     MyApp,
+    TutorialPage,
     StoriesPage,
     BrowsePage,
     PatientProfilePage,
@@ -34,6 +36,7 @@ import {StoryService} from "../services/back-end/story.service";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    TutorialPage,
     StoriesPage,
     BrowsePage,
     PatientProfilePage,
