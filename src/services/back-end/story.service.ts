@@ -7,6 +7,7 @@ import 'rxjs/Rx';
 import {Subscription} from 'rxjs/Subscription';
 import { Injectable } from "@angular/core";
 import {UserStory} from "../../dto/user-story";
+import {Album} from "../../dto/album";
 
 @Injectable()
 export class StoryService extends PrismaService {
@@ -14,13 +15,19 @@ export class StoryService extends PrismaService {
 
   getUserStories(userId: string): Observable<UserStory[]> {
     return this._http.get("/mock-api/stories.json").map(res => {
-      console.log("look here  2" + JSON.stringify(res.json()));
         let userStories:UserStory[] = [];
         res.json().forEach(story =>
       {
         userStories.push(new UserStory(story));
       })
         return userStories;
+      })
+      .catch(error => this.handleError(error));
+  }
+
+  getAlbums(): Observable<Album[]> {
+    return this._http.get("/mock-api/albums.json").map(res => {
+        return res.json() ? res.json() as Album[] : new Array<Album>();
       })
       .catch(error => this.handleError(error));
   }

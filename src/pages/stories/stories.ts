@@ -3,7 +3,13 @@ import { NavController } from 'ionic-angular';
 import { StanizerService } from '../../services/stanizer.service';
 import {StoryDetailsPage} from "../storydetails/storydetails";
 import {UserService} from "../../services/back-end/user.service";
+import {StoryService} from "../../services/back-end/story.service";
 import {User} from "../../dto/user";
+import {UserStory} from "../../dto/user-story";
+import { Album  } from "../../dto/album";
+
+
+/* TEMPORARY IMPORT */
 
 /**
  * More info on the slides management : https://ionicframework.com/docs/api/components/slides/Slides/
@@ -16,6 +22,8 @@ export class StoriesPage implements OnInit {
 
   public youtubeUrl:string = "www.youtube.com/embed/ERD4CbBDNI0?rel=0&amp;showinfo=0";
   public stanizedYoutubeUrl:any;
+
+
 
 
   public album1Data:Array<any> = [
@@ -40,17 +48,20 @@ export class StoriesPage implements OnInit {
       {id:"marieJosE-slide213",src:"assets/img/t/C6IS45JTlWcTrL5bnsaw_split-croatia.jpg"},
   ];
 
-  public albums:Array<any> = [
+  /* public albums:Array<any> = [
     {name:"Kindertijd",data:this.album1Data},
     {name:"Familie & vrienden",data:this.album2Data},
     {name:"Voor jou geselecteerd",data:this.album3Data},
     {name:"Relevant vandaag",data:this.album4Data},
     ];
+    */
 
   user: User;
 
+  albums: Album[];
+
   constructor(public navCtrl: NavController, private stanizerService: StanizerService,
-              private userService: UserService) {
+              private userService: UserService, private storyService: StoryService) {
       this.stanizedYoutubeUrl = this.stanizerService.sanitize(this.youtubeUrl);
   }
 
@@ -60,8 +71,19 @@ export class StoriesPage implements OnInit {
         this.user = user
         console.log("Final user : " + JSON.stringify(this.user));
       });
+
+    this.storyService.getAlbums().toPromise().then(albums => {
+      this.albums = albums as Album[];
+    });
   }
 
+  getThumb(url: string): string {
+    return "assets/img/t/" + url;
+  }
+
+  getStories(album: Album) : UserStory[] {
+    return album.stories.slice(0,4);
+  }
 
   showDetails(dataAlbum:Array<any>,dataIndex:number) {
     this.navCtrl.push(StoryDetailsPage, {
