@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "title": "Kindertijd",
+    "description": "Verhalen uit mijn kindertijd.",
+    "stories": [
+      {
+        "id": "1",
+        "title": "Mijn school",
+        "type": "2",
+        "source": "cHTUaigQQ2iFLSLC34OP_stadhuishalle.jpg"
+      },
+      {
+        "id": "2",
+        "title": "Pannenkoeken op zondag",
+        "type": "2",
+        "source": "testsource"
+      },
+      {
+        "id": "3",
+        "title": "Sabena Airforce",
+        "type": "2",
+        "source": "LVZpafa9RpCyPNPLYuSn_sabena-security.jpg"
+      },
+      {
+        "id": "4",
+        "title": "Familiemomentje",
+        "type": "2",
+        "source": "CBd1zASpTOmZptix3fng_family1.jpg"
+      },
+      {
+        "id": "5",
+        "title": "Baby",
+        "type": "2",
+        "source": "TVRkzCgS7iNdKgM7PSwg_baby.jpg"
+      }
+    ]
+]

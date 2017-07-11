@@ -12,6 +12,9 @@ import {SplashScreen} from "@ionic-native/splash-screen";
 import {StanizerService} from "../services/stanizer.service";
 import {StoryDetailsPage} from "../pages/storydetails/storydetails";
 import {PrismaService} from "../services/back-end/prisma-api.service";
+import {UserService} from "../services/back-end/user.service";
+import {HttpModule} from "@angular/http";
+import {StoryService} from "../services/back-end/story.service";
 
 @NgModule({
   declarations: [
@@ -23,7 +26,8 @@ import {PrismaService} from "../services/back-end/prisma-api.service";
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -38,6 +42,8 @@ import {PrismaService} from "../services/back-end/prisma-api.service";
     SplashScreen,
     StanizerService,
     PrismaService,
+    StoryService,
+    UserService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
