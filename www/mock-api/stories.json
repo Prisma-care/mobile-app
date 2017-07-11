@@ -8,7 +8,26 @@
     "dateAdded": "Mon Mar 12 2017 00:00:00 GMT+0100 (CET)",
     "dateHappened": "Mon Mar 12 1945 00:00:00 GMT+0100 (CET)",
     "likes": [],
-    "comments": [],
+    "comments": [
+      {
+        "id": "1",
+        "storyId": "1",
+        "userId": "2",
+        "comment": "Looks good"
+      },
+      {
+        "id": "2",
+        "storyId": "1",
+        "userId": "2",
+        "comment": "Looks not bad"
+      },
+      {
+        "id": "3",
+        "storyId": "1",
+        "userId": "1",
+        "comment": "How reminicent"
+      }
+    ],
     "categories": [],
     "albumId": "1",
     "originId": ""
@@ -22,7 +41,26 @@
     "dateAdded": "Mon Mar 12 2017 00:00:00 GMT+0100 (CET)",
     "dateHappened": "Mon Mar 12 1945 00:00:00 GMT+0100 (CET)",
     "likes": [],
-    "comments": [],
+    "comments": [
+      {
+        "id": "1",
+        "storyId": "2",
+        "userId": "2",
+        "comment": "Looks good"
+      },
+      {
+        "id": "2",
+        "storyId": "2",
+        "userId": "2",
+        "comment": "Looks not bad"
+      },
+      {
+        "id": "3",
+        "storyId": "2",
+        "userId": "1",
+        "comment": "How reminicent"
+      }
+    ],
     "categories": [],
     "albumId": "1",
     "originId": ""
@@ -36,7 +74,26 @@
     "dateAdded": "Mon Mar 12 2017 00:00:00 GMT+0100 (CET)",
     "dateHappened": "Mon Mar 12 1945 00:00:00 GMT+0100 (CET)",
     "likes": [],
-    "comments": [],
+    "comments": [
+      {
+        "id": "1",
+        "storyId": "3",
+        "userId": "2",
+        "comment": "Looks good"
+      },
+      {
+        "id": "2",
+        "storyId": "3",
+        "userId": "2",
+        "comment": "Looks not bad"
+      },
+      {
+        "id": "3",
+        "storyId": "3",
+        "userId": "1",
+        "comment": "How reminicent"
+      }
+    ],
     "categories": [],
     "albumId": "1",
     "originId": ""
@@ -77,8 +134,37 @@
     "description": "Bla bla bla bla",
     "dateAdded": "Mon Mar 12 2017 00:00:00 GMT+0100 (CET)",
     "dateHappened": "Mon Mar 12 1945 00:00:00 GMT+0100 (CET)",
-    "likes": [],
-    "comments": [],
+    "likes": [
+      {
+        1: "1"
+      },
+      {
+        2: "2:"
+      },
+      {
+        3: "3"
+      }
+    ],
+    "comments": [
+      {
+        "id": "1",
+        "storyId": "1",
+        "userId": "2",
+        "comment": "Looks good"
+      },
+      {
+        "id": "2",
+        "storyId": "1",
+        "userId": "2",
+        "comment": "Looks not bad"
+      },
+      {
+        "id": "3",
+        "storyId": "1",
+        "userId": "1",
+        "comment": "How reminicent"
+      }
+    ],
     "categories": [],
     "albumId": "2",
     "originId": ""
@@ -92,7 +178,20 @@
     "dateAdded": "Mon Mar 12 2017 00:00:00 GMT+0100 (CET)",
     "dateHappened": "Mon Mar 12 1945 00:00:00 GMT+0100 (CET)",
     "likes": [],
-    "comments": [],
+    "comments": [
+      {
+        "id": "2",
+        "storyId": "7",
+        "userId": "2",
+        "comment": "Looks not bad"
+      },
+      {
+        "id": "3",
+        "storyId": "7",
+        "userId": "1",
+        "comment": "How reminicent"
+      }
+    ],
     "categories": [],
     "albumId": "3",
     "originId": ""
@@ -106,7 +205,14 @@
     "dateAdded": "Mon Mar 12 2017 00:00:00 GMT+0100 (CET)",
     "dateHappened": "Mon Mar 12 1945 00:00:00 GMT+0100 (CET)",
     "likes": [],
-    "comments": [],
+    "comments": [
+      {
+        "id": "1",
+        "storyId": "8",
+        "userId": "2",
+        "comment": "Looks good"
+      }
+    ],
     "categories": [],
     "albumId": "3",
     "originId": ""
@@ -120,7 +226,20 @@
     "dateAdded": "Mon Mar 12 2017 00:00:00 GMT+0100 (CET)",
     "dateHappened": "Mon Mar 12 1945 00:00:00 GMT+0100 (CET)",
     "likes": [],
-    "comments": [],
+    "comments": [
+      {
+        "id": "1",
+        "storyId": "9",
+        "userId": "2",
+        "comment": "Looks good"
+      },
+      {
+        "id": "2",
+        "storyId": "9",
+        "userId": "2",
+        "comment": "Looks not bad"
+      }
+    ],
     "categories": [],
     "albumId": "4",
     "originId": ""
@@ -134,7 +253,26 @@
     "dateAdded": "Mon Mar 12 2017 00:00:00 GMT+0100 (CET)",
     "dateHappened": "Mon Mar 12 1945 00:00:00 GMT+0100 (CET)",
     "likes": [],
-    "comments": [],
+    "comments": [
+      {
+        "id": "1",
+        "storyId": "10",
+        "userId": "2",
+        "comment": "Looks good"
+      },
+      {
+        "id": "2",
+        "storyId": "10",
+        "userId": "2",
+        "comment": "Looks not bad"
+      },
+      {
+        "id": "3",
+        "storyId": "10",
+        "userId": "1",
+        "comment": "How reminicent"
+      }
+    ],
     "categories": [],
     "albumId": "4",
     "originId": ""

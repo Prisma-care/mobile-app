@@ -14,6 +14,7 @@ import {StoryDetailsPage} from "../pages/storydetails/storydetails";
 import {PrismaService} from "../services/back-end/prisma-api.service";
 import {UserService} from "../services/back-end/user.service";
 import {HttpModule} from "@angular/http";
+import {StoryService} from "../services/back-end/story.service";
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import {HttpModule} from "@angular/http";
     SplashScreen,
     StanizerService,
     PrismaService,
+    StoryService,
     UserService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
