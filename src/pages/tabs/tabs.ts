@@ -1,9 +1,12 @@
 import {Component} from "@angular/core";
-import {ActionSheetController} from "ionic-angular";
+import {ActionSheetController, NavController} from "ionic-angular";
 
 import {StoriesPage} from "../stories/stories";
 import {BrowsePage} from "../browse/browse";
 import {PatientProfilePage} from "../patientprofile/patientprofile";
+
+import { Camera } from '@ionic-native/camera';
+import {NewStoryPage} from "../new-story/new-story";
 
 @Component({
   templateUrl: 'tabs.html'
@@ -15,7 +18,9 @@ export class TabsPage {
 
   tab4Root = PatientProfilePage;
 
-  constructor(public actionsheetCtrl: ActionSheetController) {
+   base64Image: string;
+
+  constructor(public actionsheetCtrl: ActionSheetController,private camera: Camera,public navCtrl: NavController,) {
   }
 
   openMenu() {
@@ -28,7 +33,22 @@ export class TabsPage {
           role: 'destructive ',
           icon: 'camera',
           handler: () => {
-            console.log('addPhoto clicked');
+
+              this.camera.getPicture({
+                destinationType: this.camera
+                  .DestinationType.DATA_URL,
+                targetWidth: 1000,
+                targetHeight: 1000
+              }).then((imageData) => {
+                // imageData is a base64 encoded string
+                this.base64Image = "data:image/jpeg;base64," + imageData;
+                this.navCtrl.push(NewStoryPage,{
+                    dateUrl:this.base64Image
+                })
+              }, (err) => {
+                console.log(err);
+              });
+
           }
         },
         {

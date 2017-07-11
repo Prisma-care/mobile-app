@@ -1,12 +1,12 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      {{ album.name || '?' }}
+      {{ album.title || '?' }}
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding *ngIf="album && index">
+<ion-content padding *ngIf="album && index && album.stories[index]">
 
   <ion-item>
     <ion-avatar item-start>
@@ -16,11 +16,11 @@
     <p>5 dagen geleden</p>
   </ion-item>
 
-  <img id="{{album.data[index].id}}" src="{{album.data[index].src}}" style="width:100%; max-width:100%">
+  <img id="{{album.stories[index].id}}" src="{{getThumb(album.stories[index].source)}}" style="width:100%; max-width:100%">
 
   <div margin>
-    <h2>Story {{index}} de titel</h2>
-    <p>Long time ago ...</p>
+    <h2>{{album.stories[index].title}}</h2>
+    <p *ngIf="album.stories[index].description">{{album.stories[index].description}}</p>
     <div class="row">
       <div class="col">
         <button ion-button icon-left outline block>
