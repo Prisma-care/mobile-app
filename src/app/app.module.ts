@@ -4,7 +4,8 @@ import {IonicApp, IonicErrorHandler, IonicModule} from "ionic-angular";
 import {MyApp} from "./app.component";
 
 import {StoriesPage} from "../pages/stories/stories";
-import {AddStoryPage} from "../pages/addstory/addstory";
+import {BrowsePage} from "../pages/browse/browse";
+import {PatientProfilePage} from "../pages/patientprofile/patientprofile";
 import {TabsPage} from "../pages/tabs/tabs";
 
 import {StatusBar} from "@ionic-native/status-bar";
@@ -20,7 +21,8 @@ import {StoryService} from "../services/back-end/story.service";
   declarations: [
     MyApp,
     StoriesPage,
-    AddStoryPage,
+    BrowsePage,
+    PatientProfilePage,
     StoryDetailsPage,
     TabsPage
   ],
@@ -33,7 +35,8 @@ import {StoryService} from "../services/back-end/story.service";
   entryComponents: [
     MyApp,
     StoriesPage,
-    AddStoryPage,
+    BrowsePage,
+    PatientProfilePage,
     StoryDetailsPage,
     TabsPage
   ],
