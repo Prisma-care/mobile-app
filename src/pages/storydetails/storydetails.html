@@ -20,7 +20,7 @@
 
   <div margin>
     <h2>{{album.stories[index].title}}</h2>
-    <p>{{album.stories[index].description}}</p>
+    <p *ngIf="album.stories[index].description">{{album.stories[index].description}}</p>
     <div class="row">
       <div class="col">
         <button ion-button icon-left outline block>
