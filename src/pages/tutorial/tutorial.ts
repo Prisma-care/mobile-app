@@ -11,12 +11,19 @@ export class TutorialPage {
 
   @ViewChild(Slides) slider: Slides;
 
-
-
   slides: Array<any> = [
-    {id: "slide1", text: "", src: "assets/img/t/cHTUaigQQ2iFLSLC34OP_stadhuishalle.jpg"},
-    {id: "slide29", text: "", src: "assets/img/t/peROWMdTyapL2RcptjpQ_hallerbos.jpg"},
-    {id: "slide28", text: "", src: "assets/img/t/LVZpafa9RpCyPNPLYuSn_sabena-security.jpg"},
+    {
+      id: "slide1",
+      title: "Hoe was het vroeger?",
+      text: "Herinner samen leuke verhalen over hoe we vroeger leefden.",
+      src: "assets/img/tutorial/view-together.jpg"
+    },
+    {
+      id: "slide29",
+      title: "Wat zijn persoonlijke herinneringen?",
+      text: "Bewaar verhalen van jouw familie en spreek er samen over.",
+      src: "assets/img/tutorial/scan-photo.jpg"
+    }
   ]
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
@@ -27,7 +34,9 @@ export class TutorialPage {
     this.navCtrl.push(TabsPage);
   }
 
-  nextSlide(){
-    //this.slider.slideTo(this.slider._activeIndex+1 > ? this.slider.)
+  goToSlide(index:number) {
+    if(index == this.slides.length)
+      index = 0;
+    this.slider.slideTo(index);
   }
 }

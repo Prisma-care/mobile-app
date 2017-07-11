@@ -5,23 +5,29 @@
 </ion-header>
 
 <ion-content padding>
-
-  <ion-fab left top>
-    <button ion-fab color="vibrant"><ion-icon name="arrow-dropright"></ion-icon></button>
-  </ion-fab>
-
-    <ion-slides pager loop="true" paginationType="progress">
+    <ion-slides pager loop="false" paginationType="progress">
 
       <ion-slide *ngFor="let slide of slides,let i=index">
-        <img src="{{slide.src}}"/>
-      </ion-slide>
-      <!-- Last slide -->
-      <ion-slide>
-        <h2>
-          <button ion-button (click)="goToTheApp()"> Go To The App</button>
-        </h2>
-      </ion-slide>
 
+        <ion-card>
+          <img src="{{slide.src}}"/>
+          <ion-card-content>
+            <ion-card-title>
+              {{slide.title}}
+            </ion-card-title>
+            <p style="text-align: left;">
+              {{slide.text}}
+            </p>
+            <ion-item *ngIf="i < slides.length-1">
+              <button ion-button color="primary" (click)="goToSlide(i+1)">Volgende -></button>
+            </ion-item>
+            <!-- on the last slide -->
+            <ion-item *ngIf="i == slides.length-1">
+              <button ion-button color="vibrant" (click)="goToTheApp()"> Go To The App</button>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
     </ion-slides>
 
 

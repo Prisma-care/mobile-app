@@ -17,6 +17,7 @@ import {UserService} from "../services/back-end/user.service";
 import {HttpModule} from "@angular/http";
 import {StoryService} from "../services/back-end/story.service";
 import {TutorialPage} from "../pages/tutorial/tutorial";
+import { Camera } from '@ionic-native/camera';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {TutorialPage} from "../pages/tutorial/tutorial";
     PrismaService,
     StoryService,
     UserService,
+    Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
