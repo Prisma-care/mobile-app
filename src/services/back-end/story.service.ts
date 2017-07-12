@@ -1,11 +1,9 @@
-import { PrismaService } from "./prisma-api.service";
-import { Observable } from "rxjs/Observable";
-import { User } from "../../dto/user";
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/Rx';
-import {Subscription} from 'rxjs/Subscription';
-import { Injectable } from "@angular/core";
+import {PrismaService} from "./prisma-api.service";
+import {Observable} from "rxjs/Observable";
+import "rxjs/add/operator/catch";
+import "rxjs/add/operator/map";
+import "rxjs/Rx";
+import {Injectable} from "@angular/core";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 
@@ -16,27 +14,26 @@ export class StoryService extends PrismaService {
     return this.getUserStories()
       .map(stories => {
         let s = stories.find(story => story.id == id);
-        console.log(" s is " + JSON.stringify(s) + " type is " + typeof(s));
         return s ? new UserStory(s) : new UserStory();
       });
   }
 
   getUserStories(): Observable<UserStory[]> {
     return this._http.get("assets/json/stories.json").map(res => {
-        let userStories:UserStory[] = [];
-        res.json().forEach(story =>
-      {
-        userStories.push(new UserStory(story));
-      })
-        return userStories;
-      })
+      let userStories: UserStory[] = [];
+      res.json().forEach(story => userStories.push(new UserStory(story)));
+      return userStories;
+    })
       .catch(error => this.handleError(error));
   }
 
   getAlbums(): Observable<Album[]> {
     return this._http.get("assets/json/albums.json").map(res => {
-        return res.json() ? res.json() as Album[] : new Array<Album>();
-      })
+      /*let albums: Album[] = [];
+       res.json().forEach(album => albums.push(new Album(album)));
+       return albums;*/
+      return res.json() ? res.json() as Album[] : new Array<Album>();
+    })
       .catch(error => this.handleError(error));
   }
 }
