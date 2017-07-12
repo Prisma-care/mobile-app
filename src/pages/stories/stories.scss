@@ -25,7 +25,18 @@ page-stories {
   }
 
   ion-col.col {
-    padding-left: 0;
+    display: block;
+    //padding-left: 0;
+    height: 7em;
+    width: 5em;
+    overflow: hidden;
+    max-width: none;
+  }
+
+  .col img {
+    zoom: 2;
+    height: 100%;
+    max-width: none;
   }
 
   .col img::after {
@@ -43,5 +54,9 @@ page-stories {
     .input-wrapper {  }
   }
   ion-list-header .label { padding-left: 1.25em; }
+
+  ion-list.list {
+    margin-bottom: 0;
+  }
 
 }

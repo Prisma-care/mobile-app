@@ -12,7 +12,7 @@
     <ion-item *ngFor="let album of albums,let i=index">
       <ion-list>
         <ion-list-header>
-          {{album.title}}
+          <span>{{album.title.trim()}}</span>
           <ion-note style="float:right">
             <button (click)="showNewStory()" ion-button small icon-left clear>
               <ion-icon name="add"></ion-icon> Toevoegen
@@ -20,7 +20,7 @@
           </ion-note>
         </ion-list-header>
         <ion-row wrap>
-          <ion-col width-25 col-sm-2 col-md-3 *ngFor="let item of getStories(album),let j=index" (click)="showDetails(album,j)">
+          <ion-col class="story-item" width-25 col-sm-3 col-md-4 *ngFor="let item of getStories(album),let j=index" (click)="showDetails(album,j)">
             <img id="{{item.id}}" src="{{getThumb(item.source)}}">
             <div class="card-title">{{item.title}}</div>
           </ion-col>
