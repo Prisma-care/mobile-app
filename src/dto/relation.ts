@@ -8,7 +8,6 @@ export class Relation {
   constructor(json?) {
     if (json) {
       this.type = json.type;
-      this.id = json.id;
       this.patientId = json.patientId;
       this.userId = json.userId;
     }
