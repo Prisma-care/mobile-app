@@ -15,7 +15,7 @@ export class TutorialPage {
     {
       id: "slide1",
       title: "Hoe was het vroeger?",
-      text: "Herinner samen leuke verhalen over hoe we vroeger leefden.",
+      text: "Kijk samen terug naar leuke verhalen over hoe we vroeger leefden.",
       src: "assets/img/tutorial/view-together.jpg"
     },
     {

@@ -25,6 +25,10 @@ export class StoryDetailsPage implements OnInit {
     this.album = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
     this.likes = this.index * 3;
+
+    if (navParams.get("slide")) {
+    }
+
   }
 
   ngOnInit(): void {
@@ -35,6 +39,24 @@ export class StoryDetailsPage implements OnInit {
 
   getThumb(url: string): string {
     return "assets/img/t/" + url;
+  }
+
+  isValidIndex(index: number): boolean {
+    return index >= 0 && index < this.album.stories.length;
+  }
+
+  next(): void {
+    this.navCtrl.push(StoryDetailsPage, {
+      "album": this.album,
+      "index": (this.index + 1) % this.album.stories.length,
+    });
+  }
+
+  previous(): void {
+    this.navCtrl.push(StoryDetailsPage, {
+      "album": this.album,
+      "index": this.index === 0 ? this.album.stories.length - 1 : this.index - 1,
+    });
   }
 
   addLike(){
