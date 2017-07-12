@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import {Component, OnInit} from "@angular/core";
+import {NavController, NavParams} from "ionic-angular";
 import {StoryService} from "../../services/back-end/story.service";
-import {User} from "../../dto/user";
 import {UserStory} from "../../dto/user-story";
-import { Album  } from "../../dto/album";
+import {Album} from "../../dto/album";
+import {StoriesPage} from "../stories/stories";
 
 @Component({
   selector: 'page-storydetails',
@@ -16,18 +16,15 @@ export class StoryDetailsPage implements OnInit {
 
 
   //Just for testing
-  public likes:number=12;
-  public hasLiked=false;
+  public likes: number = 12;
+  public hasLiked = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private storyService: StoryService
-  )  {
+              private storyService: StoryService) {
     this.album = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
     this.likes = this.index * 3;
 
-    if (navParams.get("slide")) {
-    }
 
   }
 
@@ -35,6 +32,9 @@ export class StoryDetailsPage implements OnInit {
     this.storyService.getUserStory(this.album.stories[this.index].id)
       .toPromise()
       .then(story => this.story = story as UserStory);
+    if (this.navParams.get("slide")) {
+      //this.navCtrl.remove(this.navCtrl.length()-2);
+    }
   }
 
   getThumb(url: string): string {
@@ -45,23 +45,26 @@ export class StoryDetailsPage implements OnInit {
     return index >= 0 && index < this.album.stories.length;
   }
 
+  swipeEvent(e) {
+    //swipes left
+    if (e.direction == 4)
+      this.previous();
+    //swipes rigth
+    if (e.direction == 2)
+      this.next();
+  }
+
   next(): void {
-    this.navCtrl.push(StoryDetailsPage, {
-      "album": this.album,
-      "index": (this.index + 1) % this.album.stories.length,
-    });
+    this.index = (this.index + 1) % this.album.stories.length;
   }
 
   previous(): void {
-    this.navCtrl.push(StoryDetailsPage, {
-      "album": this.album,
-      "index": this.index === 0 ? this.album.stories.length - 1 : this.index - 1,
-    });
+    this.index =  this.index === 0 ? this.album.stories.length - 1 : this.index - 1;
   }
 
-  addLike(){
+  addLike() {
     console.log("addigng likes");
-    this.likes = this.hasLiked ? this.likes+1 : this.likes -1;
-    this.hasLiked = ! this.hasLiked;
+    this.likes = this.hasLiked ? this.likes + 1 : this.likes - 1;
+    this.hasLiked = !this.hasLiked;
   }
 }
