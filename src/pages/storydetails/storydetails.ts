@@ -37,6 +37,10 @@ export class StoryDetailsPage implements OnInit {
     return "assets/img/t/" + url;
   }
 
+  isValidIndex(index: number): boolean {
+    return index >= 0 && index < this.album.stories.length;
+  }
+
   addLike(){
     console.log("addigng likes");
     this.likes = this.hasLiked ? this.likes+1 : this.likes -1;

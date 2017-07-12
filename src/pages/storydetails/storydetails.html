@@ -6,7 +6,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding *ngIf="album && index && album.stories[index]">
+<ion-content padding *ngIf="album && isValidIndex(index) && album.stories[index]">
 
   <ion-item>
     <ion-avatar item-start>
