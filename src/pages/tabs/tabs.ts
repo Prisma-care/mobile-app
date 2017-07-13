@@ -7,6 +7,7 @@ import {PatientProfilePage} from "../patientprofile/patientprofile";
 
 import { Camera } from '@ionic-native/camera';
 import {NewStoryPage} from "../new-story/new-story";
+import {FileChooser} from "@ionic-native/file-chooser";
 
 @Component({
   templateUrl: 'tabs.html'
@@ -20,7 +21,7 @@ export class TabsPage {
 
    base64Image: string;
 
-  constructor(public actionsheetCtrl: ActionSheetController,private camera: Camera,public navCtrl: NavController,) {
+  constructor(public actionsheetCtrl: ActionSheetController,private camera: Camera,public navCtrl: NavController,private fileChooser: FileChooser) {
   }
 
   openMenu() {
@@ -43,7 +44,7 @@ export class TabsPage {
                 // imageData is a base64 encoded string
                 this.base64Image = "data:image/jpeg;base64," + imageData;
                 this.navCtrl.push(NewStoryPage,{
-                    dateUrl:this.base64Image
+                    "dateUrl":this.base64Image,
                 })
               }, (err) => {
                 console.log(err);
@@ -56,6 +57,9 @@ export class TabsPage {
           role: 'destructive ',
           icon: 'image',
           handler: () => {
+            this.fileChooser.open()
+              .then(uri => console.log(uri))
+              .catch(e => console.log(e));
             console.log('addPhoto  with album clicked');
           }
         },

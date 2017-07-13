@@ -3,6 +3,7 @@ import {Http } from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/observable/of';
 import {API_URL, env} from "../../app/environment";
+import { Storage } from '@ionic/storage';
 /**
  * Created by Jean on 10-07-17.
  *
@@ -14,9 +15,10 @@ export class PrismaService implements OnInit {
   protected _urlToApi: string = API_URL;
   protected _head: Headers = new Headers({'Content-Type': 'application/json; charset=UTF-8'});
   _http: Http;
-
-  constructor(_httpSer: Http) {
+  storage:Storage;
+  constructor(_httpSer: Http,storageSer: Storage) {
     this._http = _httpSer;
+    this.storage = storageSer;
     // this._head.set('Accept', 'application/json,application/pdf,application/plain; charset=UTF-8');
     // Domain you wish to allow
     this._head.set('Access-Control-Allow-Origin', API_URL);

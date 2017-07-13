@@ -14,15 +14,21 @@ export class TutorialPage {
   slides: Array<any> = [
     {
       id: "slide1",
-      title: "Hoe was het vroeger?",
-      text: "Kijk samen terug naar leuke verhalen over hoe we vroeger leefden.",
-      src: "assets/img/tutorial/view-together.jpg"
+      title: "Herbeleef herinneringen",
+      text: "Bekijk samen leuke momentenuit het verleden.",
+      src: "assets/img/tutorial/intro-1.jpg"
     },
     {
       id: "slide29",
-      title: "Wat zijn persoonlijke herinneringen?",
-      text: "Bewaar verhalen van jouw familie en spreek er samen over.",
-      src: "assets/img/tutorial/scan-photo.jpg"
+      title: "Familie geschiedenis",
+      text: "Verzamel het verhaal van jouw familie om er samen op terug te blikken.",
+      src: "assets/img/tutorial/intro-2.jpg"
+    },
+    {
+      id: "slide3",
+      title: "Gebeurtenissen",
+      text: "Kijk terug naar historische momenten en naar hoe het leven vroeger was.",
+      src: "assets/img/tutorial/intro-3.jpg"
     }
   ]
 
