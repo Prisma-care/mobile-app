@@ -27,6 +27,11 @@ export class BrowsePage extends StoriesPage implements OnInit {
     console.log("dummy");
   }
 
+  // override for other path
+  getThumb(url: string): string {
+    return "assets/img/heritage" + url;
+  }
+
   ngOnInit(): void {
     this.storyService.getThemes().toPromise().then(albums => {
       this.albums = albums as Album[];
