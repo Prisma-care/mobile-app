@@ -36,4 +36,15 @@ export class StoryService extends PrismaService {
     })
       .catch(error => this.handleError(error));
   }
+
+  /** Get historical themes (just albums for now) */
+  getThemes(): Observable<Album[]> {
+    return this._http.get("assets/json/themes.json").map(res => {
+      /*let albums: Album[] = [];
+       res.json().forEach(album => albums.push(new Album(album)));
+       return albums;*/
+      return res.json() ? res.json() as Album[] : new Array<Album>();
+    })
+      .catch(error => this.handleError(error));
+  }
 }
