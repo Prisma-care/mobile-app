@@ -34,12 +34,18 @@ page-stories {
     margin: 0.25em 0 0.25em 0.25em;
   }
 
-  .story-item .slide-zoom {
+  ion-col.col {
     display: block;
     //padding-left: 0;
     height: 7em;
     width: 5em;
     overflow: hidden;
+    max-width: none;
+  }
+
+  .col img {
+    zoom: 2;
+    height: 100%;
     max-width: none;
   }
 

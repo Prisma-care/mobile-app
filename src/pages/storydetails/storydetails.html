@@ -7,6 +7,7 @@
 </ion-header>
 
 <ion-content padding *ngIf="album && isValidIndex(index) && album.stories[index]">
+<<<<<<< HEAD
   <ion-card (swipe)="swipeEvent($event)">
     <ion-item>
       <ion-avatar item-start>
@@ -18,6 +19,16 @@
 
     <img id="{{album.stories[index].id}}" src="{{getThumb(album.stories[index].source)}}"
          style="width:100%; max-width:100%">
+=======
+
+  <ion-item>
+    <ion-avatar item-start>
+      <img src="assets/img/t/frederik.jpg"/>
+    </ion-avatar>
+    <h3>Frederik</h3>
+    <p>5 dagen geleden</p>
+  </ion-item>
+>>>>>>> develop
 
     <div margin>
       <h2>{{album.stories[index].title}}</h2>
@@ -38,25 +49,29 @@
       </div>
     </div>
 
-    <ion-fab left middle>
-      <button ion-fab color="light" (click)="previous()">
-        <ion-icon name="arrow-back"></ion-icon>
-      </button>
-    </ion-fab>
+  <ion-fab left middle>
+    <button ion-fab color="light" (click)="next()"><ion-icon name="arrow-back"></ion-icon></button>
+  </ion-fab>
 
-    <ion-fab right middle>
-      <button ion-fab color="light" (click)="next()">
-        <ion-icon name="arrow-forward"></ion-icon>
-      </button>
-    </ion-fab>
+  <ion-fab right middle>
+    <button ion-fab color="light" (click)="previous()"><ion-icon name="arrow-forward"></ion-icon></button>
+  </ion-fab>
 
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="assets/img/t/frederik.jpg">
-      </ion-avatar>
-      <p><strong>Frederik</strong> Wat een mooie foto :)</p>
-      <small>5 dagen geleden</small>
-    </ion-item>
+  <ion-item>
+    <ion-avatar item-start>
+      <img src="assets/img/t/frederik.jpg">
+    </ion-avatar>
+    <p><strong>Frederik</strong> Wat een mooie foto :)</p>
+    <small>5 dagen geleden</small>
+  </ion-item>
+
+  <ion-item>
+    <ion-avatar item-start>
+      <img src="assets/img/t/anne.jpg">
+    </ion-avatar>
+    <p><strong>Anne</strong> Fijn dat ik dit nog eens kan zien!</p>
+    <small>5 dagen geleden</small>
+  </ion-item>
 
     <ion-item>
       <ion-avatar item-start>

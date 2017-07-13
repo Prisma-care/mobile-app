@@ -24,8 +24,6 @@ export class StoryDetailsPage implements OnInit {
     this.album = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
     this.likes = this.index * 3;
-
-
   }
 
   ngOnInit(): void {
