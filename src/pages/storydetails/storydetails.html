@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content padding *ngIf="album && isValidIndex(index) && album.stories[index]">
-<<<<<<< HEAD
+
   <ion-card (swipe)="swipeEvent($event)">
     <ion-item>
       <ion-avatar item-start>
@@ -19,16 +19,6 @@
 
     <img id="{{album.stories[index].id}}" src="{{getThumb(album.stories[index].source)}}"
          style="width:100%; max-width:100%">
-=======
-
-  <ion-item>
-    <ion-avatar item-start>
-      <img src="assets/img/t/frederik.jpg"/>
-    </ion-avatar>
-    <h3>Frederik</h3>
-    <p>5 dagen geleden</p>
-  </ion-item>
->>>>>>> develop
 
     <div margin>
       <h2>{{album.stories[index].title}}</h2>
