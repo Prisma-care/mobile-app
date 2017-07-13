@@ -1,9 +1,7 @@
 <ion-content padding>
+
     <ion-slides pager loop="false">
-
       <ion-slide *ngFor="let slide of slides,let i=index">
-
-        <ion-card>
           <img src="{{slide.src}}"/>
           <ion-card-content>
             <ion-card-title>
@@ -12,17 +10,12 @@
             <p style="text-align: left;">
               {{slide.text}}
             </p>
-            <ion-item *ngIf="i < slides.length-1">
-              <button ion-button color="primary" (click)="goToSlide(i+1)">Volgende -></button>
-            </ion-item>
             <!-- on the last slide -->
-            <ion-item *ngIf="i == slides.length-1">
-              <button ion-button color="vibrant" (click)="goToTheApp()"> Go To The App</button>
-            </ion-item>
           </ion-card-content>
-        </ion-card>
       </ion-slide>
     </ion-slides>
-
+    <ion-item>
+      <button ion-button color="vibrant" (click)="goToTheApp()" class="btn">Begin  <i ></i></button>
+    </ion-item>
 
 </ion-content>

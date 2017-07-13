@@ -21,7 +21,11 @@ export class NewStoryPage {
 
   constructor(public navCtrl: NavController,private camera: Camera, public navParams: NavParams,private storyService: StoryService) {
     this.dataUrl = navParams.get("dateUrl") as string;
+    if(!this.dataUrl)
+      this.dataUrl ="assets/img/t/anne.jpg";
     this.selectedAlbum = navParams.get("album") as Album;
+    if(!this.selectedAlbum)
+      this.selectedAlbum = new Album();
     this.storyService.getAlbums().toPromise().then(albums => {
       this.albums = albums as Album[];
     });
