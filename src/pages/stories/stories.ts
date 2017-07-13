@@ -38,15 +38,16 @@ export class StoriesPage implements OnInit {
 
   ngOnInit(): void {
     /* TESTS: to remove
-    this.userService.getUser("12345").toPromise().then(user => {
+     this.userService.getUser("12345").toPromise().then(user => {
 
-      this.user = user;
-    });
+     this.user = user;
+     });
 
-    this.storyService.getUserStories().toPromise().then(stories =>
-    console.log(JSON.stringify(stories)));
-    */
-
+     this.storyService.getUserStories().toPromise().then(stories =>
+     console.log(JSON.stringify(stories)));
+     */
+  }
+  ionViewWillEnter():void{
     this.storyService.getAlbums().toPromise().then(albums => {
       this.albums = albums as Album[];
     });
@@ -60,7 +61,7 @@ export class StoriesPage implements OnInit {
   }
 
   getStories(album: Album): UserStory[] {
-    return album.stories.slice(0, 4);
+    return album.stories;
   }
 
   showDetails(album: Album, index: number) {

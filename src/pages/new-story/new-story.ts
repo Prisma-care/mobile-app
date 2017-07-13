@@ -40,6 +40,7 @@ export class NewStoryPage {
     newStory.title = this.title;
     this.storyService.addStory(this.selectedAlbum,newStory).toPromise().then(res => {
       this.navCtrl.push(StoriesPage);
+      console.log("Really done");
     });
   }
 }
