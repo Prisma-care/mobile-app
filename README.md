@@ -1,16 +1,16 @@
 # Project Prisma App
 
-This is a repository for an Ionic app for [Project Prisma](http://www.frederikvincx.com/project-prisma-helping-people-with-dementia). The Ionic app is meant for Android and iOS devices.
+This is a repository for an Ionic app for [Project Prisma](http://www.frederikvincx.com/project-prisma-helping-people-with-dementia). The Ionic app works on both Android and iOS devices.
 
-The app communicates with a RESTful [backend](https://github.com/oSoc17/prisma-backend) API.
+The app communicates with a [RESTful API](https://github.com/oSoc17/prisma-backend).
 
 ## About
 
-Project Prisma part of [open Summer of Code 2017](https://osoc17.slack.com/messages). A student team coached by Frederik Vincx is working on it now:
-- Michiel Leyman (@MichielLeyman) - backend & project management
-- Simon Westerlinck (@siimonco) - backend
-- Jean-Pacifique Mboynincungu (@oxnoctisxo) - frontend & system analysis
-- Thor Galle (@th0rgall) - frontend & user testing
+Project Prisma is part of [open Summer of Code 2017](http://2017.summerofcode.be/). A student team coached by Frederik Vincx is working on it now:
+- Michiel Leyman [(@MichielLeyman)](https://github.com/MichielLeyman) - backend & project management
+- Simon Westerlinck [(@siimonco)](https://github.com/siimonco) - backend
+- Jean-Pacifique Mboynincungu [(@oxnoctisxo)](https://github.com/oxnoctisxo) - frontend & system analysis
+- Thor Galle ([@th0rgall)](https://github.com/th0rgall) - frontend & user testing
 
 ## Installation
 
@@ -18,14 +18,17 @@ Run `npm install` on your command line. Of course, you'll need to have [npm](htt
 
 ## Running the app
 
-Local web server:
+Install Ionic:  
+```bash
+npm install -g ionic
+```
 
+Local web server:  
 ```bash
 ionic serve
 ```
 
-Publish to Android:
-
+Publish to Android:  
 ```bash
 ionic cordova platform add android
 ionic cordova run android
