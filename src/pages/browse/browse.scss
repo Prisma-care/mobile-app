@@ -1,8 +1,27 @@
 page-browse {
 
-  ion-content {
-    background-image: url("/assets/img/history.png");
+  ion-col {
+    position: relative;
+    margin: 0.2em;
+  }
+
+  .col {
+    padding: 0.2em;
+  }
+
+  ion-col .album-thumb {
+    height: 8em;
+    width: 100%;
+    background-color: #eee;
     background-size: cover;
   }
 
+
+  ion-col .hist-title {
+    position: absolute;
+    margin-left: 3px;
+    bottom: 0;
+    text-align: center;
+    color: #fff;
+  }
 }

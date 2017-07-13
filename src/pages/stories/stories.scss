@@ -24,7 +24,17 @@ page-stories {
     border-bottom: none;
   }
 
-  ion-col.col {
+  .add-story-button {
+    transform: translateY(-10px);
+  }
+
+  .story-item {
+    background-size: cover;
+    padding: 0.1em;
+    margin: 0.25em 0 0.25em 0.25em;
+  }
+
+  .story-item .slide-zoom {
     display: block;
     //padding-left: 0;
     height: 7em;
@@ -33,18 +43,16 @@ page-stories {
     max-width: none;
   }
 
-  .col img {
-    zoom: 2;
+  .story-item img {
     height: 100%;
-    max-width: none;
   }
 
-  .col img::after {
+  .story-item img::after {
       position: relative;
       background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0, #fff 100%);
       margin-top: -150px;
       height: 150px;
-      width: 100%;
+      height: 100%;
       content: '';
     }
 

@@ -5,5 +5,16 @@
     </ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content>
+
+<ion-content padding>
+  <ion-searchbar (ionInput)="dummy()"></ion-searchbar>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-4 *ngFor="let album of albums,let i=index">
+        <div class="album-thumb" [ngStyle]="{'background-image': 'url(' + getThumb(album.stories[0].source) + ')'}">
+          <h3 class="hist-title">{{album.title ? album.title : '?'}}</h3>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

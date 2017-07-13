@@ -52,7 +52,6 @@ export class StoryService extends PrismaService {
       .catch(error => this.handleError(error));
   }
 
-
   addStory(selectedAlbum: Album, newStory: UserStory): Observable<boolean> {
     return new Observable((value) => {
       this.storage.get(env.temp.albums).then((val) => {
@@ -71,12 +70,22 @@ export class StoryService extends PrismaService {
           currentAlbums.push(selectedAlbum);
         }
         this.storage.set(env.temp.albums, JSON.stringify(currentAlbums)).then(
-          val => console.log("Done : "+ val)
+          val => console.log("Done : " + val)
         );
         ;
         return true;
       })
     })
+  }
 
+  /** Get historical themes (just albums for now) */
+  getThemes(): Observable<Album[]> {
+    return this._http.get("assets/json/themes.json").map(res => {
+      /*let albums: Album[] = [];
+       res.json().forEach(album => albums.push(new Album(album)));
+       return albums;*/
+      return res.json() ? res.json() as Album[] : new Array<Album>();
+    })
+      .catch(error => this.handleError(error));
   }
 }

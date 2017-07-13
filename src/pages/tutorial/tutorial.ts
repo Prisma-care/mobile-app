@@ -15,7 +15,7 @@ export class TutorialPage {
     {
       id: "slide1",
       title: "Herbeleef herinneringen",
-      text: "Bekijk samen leuke momentenuit het verleden.",
+      text: "Bekijk samen leuke momenten uit het verleden.",
       src: "assets/img/tutorial/intro-1.jpg"
     },
     {

@@ -19,12 +19,15 @@
             </button>
           </ion-note>
         </ion-list-header>
-        <ion-row wrap>
-          <ion-col class="story-item" width-25 col-sm-3 col-md-4 *ngFor="let item of getStories(album),let j=index" (click)="showDetails(album,j)">
-            <img id="{{item.id}}" src="{{getThumb(item.source)}}">
-            <div class="card-title">{{item.title}}</div>
-          </ion-col>
-        </ion-row>
+        <ion-slides slidesPerView=3 zoom=true >
+          <ion-slide class="story-item"
+            *ngFor="let item of getStories(album),let j=index"
+            (click)="showDetails(album,j)"
+            [ngStyle]="{'background-image': 'url(' + getThumb(item.source) + ')'}">
+            <!--<img id="{{item.id}}" src="{{getThumb(item.source)}}">-->
+            <!-- <div class="card-title">{{item.title}}</div>-->
+          </ion-slide>
+        </ion-slides>
       </ion-list>
     </ion-item>
   </ion-list>
