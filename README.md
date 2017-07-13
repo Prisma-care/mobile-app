@@ -6,7 +6,7 @@ The app communicates with a [RESTful API](https://github.com/oSoc17/prisma-backe
 
 ## About
 
-Project Prisma is part of [open Summer of Code 2017](http://2017.summerofcode.be/). A student team coached by Frederik Vincx is working on it now:
+Project Prisma is part of [open Summer of Code 2017](http://2017.summerofcode.be/). A student team coached by Frederik Vincx [(@fritsbits)](https://github.com/fritsbits) is working on it now:
 - Michiel Leyman [(@MichielLeyman)](https://github.com/MichielLeyman) - backend & project management
 - Simon Westerlinck [(@siimonco)](https://github.com/siimonco) - backend
 - Jean-Pacifique Mboynincungu [(@oxnoctisxo)](https://github.com/oxnoctisxo) - frontend & system analysis
