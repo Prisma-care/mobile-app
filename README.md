@@ -18,14 +18,17 @@ Run `npm install` on your command line. Of course, you'll need to have [npm](htt
 
 ## Running the app
 
-Local web server:
+Install Ionic:  
+```bash
+npm install -g ionic
+```
 
+Local web server:  
 ```bash
 ionic serve
 ```
 
-Publish to Android:
-
+Publish to Android:  
 ```bash
 ionic cordova platform add android
 ionic cordova run android
