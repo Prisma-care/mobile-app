@@ -7,7 +7,6 @@ import { UserStory } from "./user-story";
 export class Patient extends AbstractUser {
   careHome: string;
   workPlaces: WorkPlace[] = [];
-  lifeEvents: UserStory[] = [];
   relations: Relation[] = [];
   interests: Category[] = [];
 
@@ -18,8 +17,6 @@ export class Patient extends AbstractUser {
     this.careHome = json.carehome;
     if (json.workPlaces)
       json.workPlaces.forEach(workPlace => this.workPlaces.push(new WorkPlace(workPlace)));
-    if (json.lifeEvents)
-      json.lifeEvents.forEach(lifeEvent => this.lifeEvents.push(new UserStory(lifeEvent)));
     if (json.connections)
       json.connections.forEach(connection => this.relations.push(new Relation(connection)));
     if (json.interests)

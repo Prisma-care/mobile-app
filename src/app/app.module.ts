@@ -1,6 +1,7 @@
 import {ErrorHandler, NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {IonicApp, IonicErrorHandler, IonicModule} from "ionic-angular";
+import { IonicStorageModule } from '@ionic/storage';
 import {MyApp} from "./app.component";
 
 import {StoriesPage} from "../pages/stories/stories";
@@ -19,6 +20,8 @@ import {StoryService} from "../services/back-end/story.service";
 import {TutorialPage} from "../pages/tutorial/tutorial";
 import { Camera } from '@ionic-native/camera';
 import {NewStoryPage} from "../pages/new-story/new-story";
+import {FileChooser} from "@ionic-native/file-chooser";
+
 
 @NgModule({
   declarations: [
@@ -34,6 +37,7 @@ import {NewStoryPage} from "../pages/new-story/new-story";
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(),
     HttpModule
   ],
   bootstrap: [IonicApp],
@@ -55,6 +59,7 @@ import {NewStoryPage} from "../pages/new-story/new-story";
     StoryService,
     UserService,
     Camera,
+    FileChooser,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

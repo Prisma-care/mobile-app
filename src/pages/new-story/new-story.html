@@ -7,15 +7,26 @@
 </ion-header>
 
 <ion-content padding>
-
-  <ion-list>
-    <ion-item>
+  <ion-card>
       <img class="new-story-thumb" *ngIf="dataUrl" src="{{dataUrl}}">
-      <ion-input type="text" placeholder="Titel"></ion-input>
-      <ion-input type="text" placeholder="Beschrijving"></ion-input>
-    </ion-item>
-  </ion-list>
+      <ion-card-content>
+        <ion-card-title>
+          <ion-label>Album</ion-label>
+          <ion-select [(ngModel)]="selectedAlbum">
+            <ion-option *ngFor="let album of albums,let i=index" [value]="album" [selected]="album.id === selectedAlbum.id">{{album.title}}</ion-option>
+          </ion-select>
+        </ion-card-title>
+        <ion-item>
+          <ion-label>Title</ion-label>
+          <ion-input type="text"[(ngModel)]="title"></ion-input>
+        </ion-item>
 
-  <button ion-button color="primary">Opslaan</button>
+        <ion-item>
+          <ion-textarea placeholder="Beschrijving" [(ngModel)]="description" clearInput></ion-textarea>
+        </ion-item>
+      </ion-card-content>
+    <button ion-button color="primary" (click)="commit()">Opslaan</button>
+  </ion-card>
+
 
 </ion-content>

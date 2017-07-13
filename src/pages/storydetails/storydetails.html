@@ -8,32 +8,36 @@
 
 <ion-content padding *ngIf="album && isValidIndex(index) && album.stories[index]">
 
-  <ion-item>
-    <ion-avatar item-start>
-      <img src="assets/img/t/frederik.jpg"/>
-    </ion-avatar>
-    <h3>Frederik</h3>
-    <p>5 dagen geleden</p>
-  </ion-item>
+  <ion-card (swipe)="swipeEvent($event)">
+    <ion-item>
+      <ion-avatar item-start>
+        <img src="assets/img/t/frederik.jpg"/>
+      </ion-avatar>
+      <h3>Frederik</h3>
+      <p>5 dagen geleden</p>
+    </ion-item>
 
-  <img id="{{album.stories[index].id}}" src="{{getThumb(album.stories[index].source)}}" style="width:100%; max-width:100%">
+    <img id="{{album.stories[index].id}}" src="{{getThumb(album.stories[index].source)}}"
+         style="width:100%; max-width:100%">
 
-  <div margin>
-    <h2>{{album.stories[index].title}}</h2>
-    <p *ngIf="album.stories[index].description">{{album.stories[index].description}}</p>
-    <div class="row">
-      <div class="col">
-        <button ion-button icon-left outline block>
-          <ion-icon name="happy"></ion-icon> Vind dit leuk
-        </button>
-      </div>
-      <div class="col">
-        <button ion-button icon-left outline block>
-          <ion-icon name="text"></ion-icon> Reageer
-        </button>
+    <div margin>
+      <h2>{{album.stories[index].title}}</h2>
+      <p *ngIf="album.stories[index].description">{{album.stories[index].description}}</p>
+      <div class="row">
+        <div class="col">
+          <button ion-button icon-left outline block>
+            <ion-icon name="happy"></ion-icon>
+            Vind dit leuk
+          </button>
+        </div>
+        <div class="col">
+          <button ion-button icon-left outline block>
+            <ion-icon name="text"></ion-icon>
+            Reageer
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
   <ion-fab left middle>
     <button ion-fab color="light" (click)="next()"><ion-icon name="arrow-back"></ion-icon></button>
@@ -59,4 +63,12 @@
     <small>5 dagen geleden</small>
   </ion-item>
 
+    <ion-item>
+      <ion-avatar item-start>
+        <img src="assets/img/t/anne.jpg">
+      </ion-avatar>
+      <p><strong>Anne</strong> Fijn dat ik dit nog eens kan zien!</p>
+      <small>5 dagen geleden</small>
+    </ion-item>
+  </ion-card>
 </ion-content>

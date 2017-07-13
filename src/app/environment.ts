@@ -13,5 +13,8 @@ export const env = {
   },
   api: {
     getUsers: 'users'
+  },
+  temp: {
+    albums:"albums"
   }
 };
