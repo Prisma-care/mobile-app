@@ -42,7 +42,6 @@ export class StoryService extends PrismaService {
         albums = res.json() ? res.json() as Album[] : [];
         localStorage.setItem(env.temp.albums, JSON.stringify(res.json() as Album[]));
       }
-      console.log("Albums " + hasAlbums + " : " + JSON.stringify(albums));
       return albums;
     })
       .catch(error => this.handleError(error));
@@ -60,6 +59,9 @@ export class StoryService extends PrismaService {
     });
     if (isANewAlbum) {
       newStory.id = "1";
+      selectedAlbum = new Album();
+      selectedAlbum.title = "Random";
+      selectedAlbum.id ="RandomId";
       selectedAlbum.stories.push(newStory);
       currentAlbums.push(selectedAlbum);
     }

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Verhalen van <div *ngIf="user"> {{user.firstName}}</div>
+      Onze Verhalen <!-- Verhalen van <div *ngIf="user"> {{user.firstName}}</div> -->
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -12,7 +12,7 @@
     <ion-item *ngFor="let album of albums,let i=index">
       <ion-list>
         <ion-list-header>
-          <span>{{album.title.trim()}}</span>
+          <span *ngIf="album.title">{{album.title.trim()}}</span>
           <ion-note style="float:right">
             <button class="add-story-button" (click)="showNewStory()" ion-button small icon-left clear>
               <ion-icon name="add"></ion-icon> Toevoegen

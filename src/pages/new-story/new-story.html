@@ -17,15 +17,10 @@
           </ion-select>
         </ion-card-title>
         <ion-item>
-          <ion-label>Title</ion-label>
-          <ion-input type="text"[(ngModel)]="title"></ion-input>
-        </ion-item>
-
-        <ion-item>
           <ion-textarea placeholder="Beschrijving" [(ngModel)]="description" clearInput></ion-textarea>
         </ion-item>
       </ion-card-content>
-    <button ion-button color="primary" (click)="commit()">Opslaan</button>
+    <button ion-button full medium icon-right color="primary" (click)="commit()">Opslaan <ion-icon name="download"></ion-icon></button>
   </ion-card>
 
 

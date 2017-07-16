@@ -35,12 +35,11 @@ export class NewStoryPage {
     newStory.albumId = this.selectedAlbum.id;
     newStory.dateAdded = new Date();
     newStory.description = this.description;
-    newStory.source = this.dataUrl;
+    newStory.source = this.dataUrl.indexOf("assets/img/t/anne.jpg") > -1 ? "anne.jpg" :this.dataUrl;
     newStory.type = StoryType.IMAGE;
     newStory.title = this.title;
     this.storyService.addStory(this.selectedAlbum,newStory).toPromise().then(res => {
       this.navCtrl.push(StoriesPage);
-      console.log("Really done");
     });
   }
 }

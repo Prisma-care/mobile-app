@@ -21,13 +21,14 @@
          style="width:100%; max-width:100%">
 
     <div margin>
-      <h2>{{album.stories[index].title}}</h2>
+      <!-- No more title
+      <h2>{{album.stories[index].title}}</h2>  -->
       <p *ngIf="album.stories[index].description">{{album.stories[index].description}}</p>
       <div class="row">
         <div class="col">
           <button ion-button icon-left outline block>
             <ion-icon name="star"></ion-icon>
-            Vind dit leuk
+            Favoriet
           </button>
         </div>
         <!--<div class="col">

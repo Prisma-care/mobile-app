@@ -57,6 +57,8 @@ export class StoriesPage implements OnInit {
   }
 
   getThumb(url: string): string {
+    if(url.startsWith("data:image/jpeg;base64"))
+      return url;
     return "assets/img/t/" + url;
   }
 

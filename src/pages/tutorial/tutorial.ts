@@ -1,6 +1,7 @@
 import {Component, ViewChild} from "@angular/core";
 import {NavController, NavParams, Slides} from "ionic-angular";
 import {TabsPage} from "../tabs/tabs";
+import {StoriesPage} from "../stories/stories";
 
 
 @Component({
@@ -11,6 +12,8 @@ export class TutorialPage {
 
   @ViewChild(Slides) slider: Slides;
 
+
+  homeRoot = StoriesPage;
   slides: Array<any> = [
     {
       id: "slide1",
@@ -37,7 +40,7 @@ export class TutorialPage {
 
 
   goToTheApp() {
-    this.navCtrl.push(TabsPage);
+   this.navCtrl.push(TabsPage);
   }
 
   goToSlide(index:number) {
