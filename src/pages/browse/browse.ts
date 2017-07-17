@@ -32,6 +32,12 @@ export class BrowsePage extends StoriesPage implements OnInit {
     return "assets/img/heritage" + url;
   }
 
+  // override because we do not want StoriePages' ionViewWillEnter() to execute
+  // this would override the history albums with the story albums
+  ionViewWillEnter():void {
+    // emtpy!
+  }
+
   ngOnInit(): void {
     this.storyService.getThemes().toPromise().then(albums => {
       this.albums = albums as Album[];
