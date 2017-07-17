@@ -21,6 +21,7 @@ import {TutorialPage} from "../pages/tutorial/tutorial";
 import { Camera } from '@ionic-native/camera';
 import {NewStoryPage} from "../pages/new-story/new-story";
 import {FileChooser} from "@ionic-native/file-chooser";
+import {UtilService} from "../services/util-service";
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import {FileChooser} from "@ionic-native/file-chooser";
   providers: [
     StatusBar,
     SplashScreen,
+    UtilService,
     StanizerService,
     PrismaService,
     StoryService,

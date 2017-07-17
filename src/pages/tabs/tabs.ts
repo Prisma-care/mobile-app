@@ -8,6 +8,7 @@ import {PatientProfilePage} from "../patientprofile/patientprofile";
 import { Camera } from '@ionic-native/camera';
 import {NewStoryPage} from "../new-story/new-story";
 import {FileChooser} from "@ionic-native/file-chooser";
+import {UtilService} from "../../services/util-service";
 
 @Component({
   templateUrl: 'tabs.html'
@@ -18,10 +19,7 @@ export class TabsPage {
   tab2Root = BrowsePage;
 
   tab4Root = PatientProfilePage;
-
-   base64Image: string;
-
-  constructor(public actionsheetCtrl: ActionSheetController,private camera: Camera,public navCtrl: NavController,private fileChooser: FileChooser) {
+  constructor(public actionsheetCtrl: ActionSheetController,private utilService:UtilService,public navCtrl: NavController) {
   }
 
   openMenu() {
@@ -34,22 +32,10 @@ export class TabsPage {
           role: 'destructive ',
           icon: 'camera',
           handler: () => {
-
-              this.camera.getPicture({
-                destinationType: this.camera
-                  .DestinationType.DATA_URL,
-                targetWidth: 1000,
-                targetHeight: 1000
-              }).then((imageData) => {
-                // imageData is a base64 encoded string
-                this.base64Image = "data:image/jpeg;base64," + imageData;
-                this.navCtrl.push(NewStoryPage,{
-                    "dateUrl":this.base64Image,
-                })
-              }, (err) => {
-                console.log(err);
-              });
-
+              let base64Image:string = this.utilService.takeAPicture();
+              this.navCtrl.push(NewStoryPage,{
+                "dateUrl": base64Image
+              })
           }
         },
         {
