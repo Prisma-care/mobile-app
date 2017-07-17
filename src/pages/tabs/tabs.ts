@@ -43,9 +43,6 @@ export class TabsPage {
           role: 'destructive ',
           icon: 'image',
           handler: () => {
-            this.fileChooser.open()
-              .then(uri => console.log(uri))
-              .catch(e => console.log(e));
             console.log('addPhoto  with album clicked');
           }
         },

@@ -30,7 +30,7 @@ export class UtilService{
   chooseAFile():string{
     let dataUrl:string = "";
     this.fileChooser.open()
-      .then(uri => dataUrl = ur)
+      .then(uri => dataUrl = uri)
       .catch(e => console.log("Error for chosing a file : " + e));
     return dataUrl;
   }
