@@ -1,11 +1,11 @@
 page-tutorial {
-
-  .btn {
-    width: 100%;
-    text-shadow: 1px 1px 3px #666666;
-    color: #ffffff;
-    font-size: 30px;
-    background: #FF284C;
-    text-decoration: none;
+  .description {
+    height: 13.59%;
+    width: 83.61%;
+    color: #ABAEB4;
+    font-family: Varela;
+    font-size: map-get($sizes,medium);
+    line-height: 29px;
+    text-align: center;
   }
 }
