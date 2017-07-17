@@ -1,4 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { QUESTIONS } from "./questions.json";
+import { QuestionPage } from "../question/question";
+import { NavController } from "ionic-angular";
 
 @Component({
   selector: 'page-questions',
@@ -7,23 +10,19 @@ import { Component, OnInit } from "@angular/core";
 
 export class QuestionsPage implements OnInit {
 
-  categoryTitles: string[] = [
-    "Voorouders",
-    "Kindertijd en jeugd",
-    "Opleiding en werk",
-    "De liefde",
-    "Gezin",
-    "Vrije tijd en hobby's",
-    "Vriendschap",
-    "Vakanties en reizen"
-  ];
-
   categories : any[];
+
+  constructor(private navCtrl: NavController) { }
 
   ngOnInit(): void {
     var _id = 1;
-    this.categories = this.categoryTitles
-      .map((s) => { return {"id": _id++, "title": s}; } );
+    this.categories = QUESTIONS;
+  }
+
+  showQuestion(category: any) {
+    this.navCtrl.push(QuestionPage, {
+      "category": category
+    });
   }
 
 }

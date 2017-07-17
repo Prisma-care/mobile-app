@@ -9,7 +9,7 @@
 <ion-content padding>
   <h2 id="categories-title">Kies een categorie</h2>
   <ion-list *ngIf="categories">
-    <ion-item *ngFor="let category of categories">
+    <ion-item *ngFor="let category of categories" (click)="showQuestion(category)">
         <span>{{category.title}}</span>
     </ion-item>
   </ion-list>
