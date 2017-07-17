@@ -22,6 +22,7 @@ import { Camera } from '@ionic-native/camera';
 import {NewStoryPage} from "../pages/new-story/new-story";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {UtilService} from "../services/util-service";
+import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-selection";
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import {UtilService} from "../services/util-service";
     PatientProfilePage,
     StoryDetailsPage,
     NewStoryPage,
+    NewStorySelectionPage,
     TabsPage
   ],
   imports: [
@@ -50,6 +52,7 @@ import {UtilService} from "../services/util-service";
     PatientProfilePage,
     StoryDetailsPage,
     NewStoryPage,
+    NewStorySelectionPage,
     TabsPage
   ],
   providers: [
