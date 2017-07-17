@@ -5,15 +5,12 @@
 // roboto, and noto sans fonts
 $font-path: "../assets/fonts";
 
-
 // The app direction is used to include
 // rtl styles in your app. For more info, please see:
 // http://ionicframework.com/docs/theming/rtl-support/
 $app-direction: ltr;
 
-
 @import "ionic.globals";
-
 
 // Shared Variables
 // --------------------------------------------------
@@ -24,7 +21,6 @@ $app-direction: ltr;
 
 $content-padding: 0;
 
-
 // Named Color Variables
 // --------------------------------------------------
 // Named colors makes it easy to reuse colors on various components.
@@ -34,34 +30,31 @@ $content-padding: 0;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #488aff,
-  secondary:  #32db64,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
-  dark:       #222
+  // primary:    #488aff,
+  primary: #ff4444,
+  secondary: #33b5e5,
+  danger: #ffbb33,
+  light: #ebf1f2,
+  dark: #1f5760,
+  general: #FF284C
 );
 
+$sizes: (
+  text: 15px,
+  icons: 30px
+);
 
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
-
-
-
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-
-
-
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
-
-
-
 
 // App Theme
 // --------------------------------------------------
@@ -72,7 +65,6 @@ $colors: (
 
 @import "ionic.theme.default";
 
-
 // Ionicons
 // --------------------------------------------------
 // The premium icon font for Ionic. For more info, please see:
@@ -80,9 +72,41 @@ $colors: (
 
 @import "ionic.ionicons";
 
-
 // Fonts
 // --------------------------------------------------
 
 @import "roboto";
 @import "noto-sans";
+
+//Custom schemas
+$tabs-md-tab-font-size: 15px;
+$tabs-ios-tab-font-size: $tabs-md-tab-font-size;
+
+$tabs-md-tab-icon-size: 30px;
+$tabs-ios-tab-icon-size: $tabs-md-tab-icon-size;
+
+$tabs-ios-tab-text-color: color($colors, light);
+$tabs-md-tab-text-color: $tabs-ios-tab-text-color;
+
+$tabs-md-tab-icon-color: color($colors, light);
+$tabs-md-tab-icon-color-active: color($colors, secondary);
+// Use the primary color as the background for the toolbar-md-background
+$toolbar-md-background: color($colors, general);
+
+// Use the default background for the tabbar since it inherits from toolbar
+$tabs-md-background: color($colors, general);
+
+// Change the color of the tabs text
+$tab-button-md-active-color: $tabs-md-tab-icon-color-active;
+$tab-button-md-inactive-color: $tab-button-md-active-color;
+
+// Change the color of the tabs text
+$tabs-md-tab-color-active:                $tab-button-md-active-color;
+$tabs-md-tab-color:                       $tab-button-md-inactive-color;
+
+// Change the color of the tabs text
+
+// Change the color of the segment button text
+//$toolbar-md-active-color:                 #fff;
+//$toolbar-md-inactive-color:               #fff;
+//$segment-button-md-text-color-activated:  #fff;

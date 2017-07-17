@@ -21,21 +21,22 @@
          style="width:100%; max-width:100%">
 
     <div margin>
-      <h2>{{album.stories[index].title}}</h2>
+      <!-- No more title
+      <h2>{{album.stories[index].title}}</h2>  -->
       <p *ngIf="album.stories[index].description">{{album.stories[index].description}}</p>
       <div class="row">
         <div class="col">
           <button ion-button icon-left outline block>
-            <ion-icon name="happy"></ion-icon>
-            Vind dit leuk
+            <ion-icon name="star"></ion-icon>
+            Favoriet
           </button>
         </div>
-        <div class="col">
+        <!--<div class="col">
           <button ion-button icon-left outline block>
             <ion-icon name="text"></ion-icon>
             Reageer
           </button>
-        </div>
+        </div>-->
       </div>
     </div>
 
@@ -46,7 +47,7 @@
   <ion-fab right middle>
     <button ion-fab color="light" (click)="previous()"><ion-icon name="arrow-forward"></ion-icon></button>
   </ion-fab>
-
+    <!--
   <ion-item>
     <ion-avatar item-start>
       <img src="assets/img/t/frederik.jpg">
@@ -69,6 +70,7 @@
       </ion-avatar>
       <p><strong>Anne</strong> Fijn dat ik dit nog eens kan zien!</p>
       <small>5 dagen geleden</small>
-    </ion-item>
+    </ion-item>  -->
   </ion-card>
+
 </ion-content>

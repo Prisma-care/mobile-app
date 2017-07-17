@@ -1,162 +1,170 @@
 [
   {
-    "id": "1",
-    "title": "Roeselare",
-    "description": "Waar ik vroeger werkte.",
+    "id": 1,
     "stories": [
       {
-        "id": "1",
-        "title": "Sabena Security",
-        "description": "De werplaats van Marie-Josée vroeger.",
-        "type": "2",
-        "source": "werk/sabena-security.jpg"
-      },
-      {
-        "id": "2",
-        "title": "Poster",
-        "description": "Deze poster hing op in het bureau.",
-        "type": "2",
-        "source": "werk/sabenaposter.jpg"
-      },
-      {
-        "id": "4",
-        "title": "Bureau",
-        "description": "Waar Marie haar werk deed.",
-        "type": "2",
-        "source": "werk/office.jpg"
+        "id": 1,
+        "source": "/feesten/Rodenbachsfeesten.jpg",
+        "title": "Rodenbachsfeesten",
+        "type": "2"
       }
-    ]
+    ],
+    "title": "feesten"
   },
   {
-    "id": "1",
-    "title": "70's",
-    "description": "Verhalen uit mijn kindertijd.",
+    "id": 2,
     "stories": [
       {
-        "id": "1",
-        "title": "Baby",
-        "description": "Frederik toen hij nog heel klein was.",
-        "type": "2",
-        "source": "kindertijd/baby.jpg"
+        "id": 2,
+        "source": "/50s/1.jpg",
+        "title": "1",
+        "type": "2"
       },
       {
-        "id": "2",
-        "title": "Pannenkoeken op zondag",
-        "description": "Een geliefkoosd moment van Frederik in het weekend.",
-        "type": "2",
-        "source": "kindertijd/pancakes.jpg"
-      },
-      {
-        "id": "3",
-        "title": "Buitenspelen",
-        "description": "Anne en Frank in de tuin.",
-        "type": "2",
-        "source": "kindertijd/hek.jpg"
-      },
-      {
-        "id": "4",
-        "title": "De 1ste klas",
-        "description": "Onze oude klas van het eerste leerjaar in Steenokkerzeel.",
-        "type": "2",
-        "source": "kindertijd/klas-klein.jpg"
+        "id": 3,
+        "source": "/50s/2.jpg",
+        "title": "2",
+        "type": "2"
       }
-    ]
+    ],
+    "title": "50s"
   },
   {
-    "id": "2",
-    "title": "Feesten",
-    "description": "Verhalen uit mijn kindertijd.",
+    "id": 3,
     "stories": [
       {
-        "id": "1",
-        "title": "Familiefoto in de tuin",
-        "description": "In Halle",
-        "type": "2",
-        "source": "familie/family1.jpg"
+        "id": 4,
+        "source": "/40s/1.jpg",
+        "title": "1",
+        "type": "2"
       },
       {
-        "id": "2",
-        "title": "Familiefoto",
-        "type": "2",
-        "source": "familie/duo.jpg"
+        "id": 5,
+        "source": "/40s/3.jpg",
+        "title": "3",
+        "type": "2"
       },
       {
-        "id": "3",
-        "title": "Verjaardag",
-        "description": "De verjaardag van Roland",
-        "type": "2",
-        "source": "familie/verjaardag2.jpg"
-      },
-      {
-        "id": "4",
-        "title": "Iedereen",
-        "description": "Recente familiefoto met iedereen erop.",
-        "type": "2",
-        "source": "familie/family2.jpg"
+        "id": 6,
+        "source": "/40s/2.jpg",
+        "title": "2",
+        "type": "2"
       }
-    ]
+    ],
+    "title": "40s"
   },
   {
-    "id": "2",
-    "title": "Plaatsen",
-    "description": "Waar ik zoal geweest ben.",
+    "id": 4,
     "stories": [
       {
-        "id": "1",
-        "title": "Moskou",
-        "description": "Op het rode plein tijdens een reis door Rusland.",
-        "type": "2",
-        "source": "plaatsen/moskow.jpg"
+        "id": 7,
+        "source": "/gebouwen/1.jpg",
+        "title": "1",
+        "type": "2"
       },
       {
-        "id": "2",
-        "title": "Split",
-        "description": "In Kroatië.",
-        "type": "2",
-        "source": "plaatsen/split-croatia.jpg"
+        "id": 8,
+        "source": "/gebouwen/3.jpg",
+        "title": "3",
+        "type": "2"
       },
       {
-        "id": "4",
-        "title": "Hallerbos",
-        "description": "Hier gingen we regelmatig wandelen.",
-        "type": "2",
-        "source": "plaatsen/hallerbos.jpg"
-      },
-      {
-        "id": "5",
-        "title": "Stadhuis Halle",
-        "description": "Hier zijn Marie-Josée en Roland getrouwd.",
-        "type": "2",
-        "source": "plaatsen/stadhuishalle.jpg"
+        "id": 9,
+        "source": "/gebouwen/2.jpg",
+        "title": "2",
+        "type": "2"
       }
-    ]
+    ],
+    "title": "gebouwen"
   },
   {
-    "id": "2",
-    "title": "Kunst",
-    "description": "",
+    "id": 5,
     "stories": [
       {
-        "id": "1",
-        "title": "Art Nouveau",
-        "description": "Marie vind Art Nouveau heel mooi.",
-        "type": "2",
-        "source": "kunst/artnouveau.jpg"
+        "id": 10,
+        "source": "/sport/2.jpg",
+        "title": "2",
+        "type": "2"
       },
       {
-        "id": "3",
-        "title": "The Three Tenors",
-        "description": "De favoriete muziekgroep van Marie.",
-        "type": "2",
-        "source": "kunst/threetenors.jpg"
-      },
-      {
-        "id": "4",
-        "title": "Tasselhuis",
-        "description": "Het tasselhuis zijn we eens gaan bekijken.",
-        "type": "2",
-        "source": "kunst/tasselplay.jpg"
+        "id": 11,
+        "source": "/sport/SportstadiumIngelmunster.jpg",
+        "title": "SportstadiumIngelmunster",
+        "type": "2"
       }
-    ]
+    ],
+    "title": "sport"
+  },
+  {
+    "id": 6,
+    "stories": [
+      {
+        "id": 12,
+        "source": "/koning/1.jpg",
+        "title": "1",
+        "type": "2"
+      },
+      {
+        "id": 13,
+        "source": "/koning/3.jpg",
+        "title": "3",
+        "type": "2"
+      },
+      {
+        "id": 14,
+        "source": "/koning/2.jpg",
+        "title": "2",
+        "type": "2"
+      }
+    ],
+    "title": "koning"
+  },
+  {
+    "id": 7,
+    "stories": [
+      {
+        "id": 15,
+        "source": "/60s/1.jpg",
+        "title": "1",
+        "type": "2"
+      },
+      {
+        "id": 16,
+        "source": "/60s/4.jpg",
+        "title": "4",
+        "type": "2"
+      },
+      {
+        "id": 17,
+        "source": "/60s/3.jpg",
+        "title": "3",
+        "type": "2"
+      },
+      {
+        "id": 18,
+        "source": "/60s/2.jpg",
+        "title": "2",
+        "type": "2"
+      }
+    ],
+    "title": "60s"
+  },
+  {
+    "id": 8,
+    "stories": [
+      {
+        "id": 19,
+        "source": "/personen/1.jpg",
+        "title": "1",
+        "type": "2"
+      },
+      {
+        "id": 20,
+        "source": "/personen/2.jpg",
+        "title": "2",
+        "type": "2"
+      }
+    ],
+    "title": "personen"
   }
 ]

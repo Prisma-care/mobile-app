@@ -35,47 +35,39 @@ export class StoryService extends PrismaService {
        return albums;*/
       let albums: Album[];
       let hasAlbums: boolean = false;
-      this.storage.get(env.temp.albums).then((val) => {
-        albums = JSON.parse(val) as Album[];
-        if(albums)
-          hasAlbums = true;
-      });
+      albums = JSON.parse(localStorage.getItem(env.temp.albums)) as Album[];
+      if(albums)
+        hasAlbums = true;
       if (!hasAlbums) {
         albums = res.json() ? res.json() as Album[] : [];
-        this.storage.set(env.temp.albums, JSON.stringify(res.json() as Album[])).then(
-          val => albums = val ? val as Album[] : []
-        )
+        localStorage.setItem(env.temp.albums, JSON.stringify(res.json() as Album[]));
       }
-      console.log("Albums " + hasAlbums + " : " + JSON.stringify(albums));
       return albums;
     })
       .catch(error => this.handleError(error));
   }
 
-  addStory(selectedAlbum: Album, newStory: UserStory): Observable<boolean> {
-    return new Observable((value) => {
-      this.storage.get(env.temp.albums).then((val) => {
-        let currentAlbums: Album[] = JSON.parse(val) as Album[] || [];
-        let isANewAlbum: boolean = true;
-        currentAlbums.forEach(album => {
-          if (album.id === selectedAlbum.id) {
-            isANewAlbum = false;
-            newStory.id = album.stories[album.stories.length - 1].id + 1;
-            album.stories.push(newStory);
-          }
-        });
-        if (isANewAlbum) {
-          newStory.id = "1";
-          selectedAlbum.stories.push(newStory);
-          currentAlbums.push(selectedAlbum);
-        }
-        this.storage.set(env.temp.albums, JSON.stringify(currentAlbums)).then(
-          val => console.log("Done : " + val)
-        );
-        ;
-        return true;
-      })
-    })
+  addStory(selectedAlbum: Album, newStory: UserStory): Observable<any> {
+    let currentAlbums: Album[] = JSON.parse(localStorage.getItem(env.temp.albums)) as Album[] || [];
+    let isANewAlbum: boolean = true;
+    currentAlbums.forEach(album => {
+      if (album.id === selectedAlbum.id) {
+        isANewAlbum = false;
+        newStory.id = album.stories[album.stories.length - 1].id + 1;
+        album.stories.push(newStory);
+      }
+    });
+    if (isANewAlbum) {
+      newStory.id = "1";
+      selectedAlbum = new Album();
+      selectedAlbum.title = "Random";
+      selectedAlbum.id ="RandomId";
+      selectedAlbum.stories.push(newStory);
+      currentAlbums.push(selectedAlbum);
+    }
+    localStorage.setItem(env.temp.albums, JSON.stringify(currentAlbums as Album[]));
+    return Observable.of(true);
+
   }
 
   /** Get historical themes (just albums for now) */

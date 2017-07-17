@@ -8,6 +8,8 @@ export class UserStory extends AbstractStory {
 
   constructor(json?) {
     super(json);
+    if(!json)
+      return;
     this.albumId = json.albumId;
     this.originId = json.originId;
     this.date = new Date(json.date);
