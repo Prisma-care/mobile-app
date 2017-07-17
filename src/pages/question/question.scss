@@ -4,7 +4,7 @@ page-question {
     position: relative;
     width: 100%;
     padding: 1.5em;
-    background-color: map-get($colors, 'primary');
+    background-color: map-get($colors, 'general');
 
     h2 {
       display: inline-block;
