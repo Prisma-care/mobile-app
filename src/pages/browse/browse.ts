@@ -32,9 +32,14 @@ export class BrowsePage extends StoriesPage implements OnInit {
     return "assets/img/heritage" + url;
   }
 
+  ionViewWillEnter():void{
+  }
+
   ngOnInit(): void {
     this.storyService.getThemes().toPromise().then(albums => {
       this.albums = albums as Album[];
+      localStorage.clear();
+      console.log(JSON.stringify(this.albums));
     });
   }
 
