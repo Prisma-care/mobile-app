@@ -4,6 +4,7 @@ import {ActionSheetController, NavController} from "ionic-angular";
 import {StoriesPage} from "../stories/stories";
 import {BrowsePage} from "../browse/browse";
 import {PatientProfilePage} from "../patientprofile/patientprofile";
+import { QuestionsPage } from "../questions/questions";
 
 import { Camera } from '@ionic-native/camera';
 import {NewStoryPage} from "../new-story/new-story";
@@ -17,7 +18,7 @@ export class TabsPage {
 
   tab1Root = StoriesPage;
   tab2Root = BrowsePage;
-
+  tab3Root = QuestionsPage;
   tab4Root = PatientProfilePage;
   constructor(public actionsheetCtrl: ActionSheetController,private utilService:UtilService,public navCtrl: NavController) {
   }

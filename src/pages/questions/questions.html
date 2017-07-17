@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Vragen
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h2 id="categories-title">Kies een categorie</h2>
+  <ion-list *ngIf="categories">
+    <ion-item *ngFor="let category of categories">
+        <span>{{category.title}}</span>
+    </ion-item>
+  </ion-list>
+</ion-content>
