@@ -12,18 +12,22 @@
     <ion-item *ngFor="let album of albums,let i=index">
       <ion-list>
         <ion-list-header>
-          <span *ngIf="album.title">{{album.title.trim()}}</span>
+          <h2 *ngIf="album.title">{{album.title.trim()}}</h2>
+          <!--
           <ion-note style="float:right">
             <button class="add-story-button" (click)="showNewStory()" ion-button small icon-left clear>
               <ion-icon name="add"></ion-icon> Toevoegen
             </button>
-          </ion-note>
+          </ion-note>-->
+
         </ion-list-header>
         <ion-slides slidesPerView=3 zoom=true >
-          <ion-slide class="story-item"
-            *ngFor="let item of getStories(album),let j=index"
-            (click)="showDetails(album,j)"
-            [ngStyle]="{'background-image': 'url(' + getThumb(item.source) + ')'}">
+          <ion-slide class="story-item" *ngFor="let item of getStories(album),let j=index"
+            >
+            <div
+              (click)="showDetails(album,j)"
+              [ngStyle]="{'background-image': 'url(' + getThumb(item.source) + ')'}">
+            </div>
             <!--<img id="{{item.id}}" src="{{getThumb(item.source)}}">-->
             <!-- <div class="card-title">{{item.title}}</div>-->
           </ion-slide>

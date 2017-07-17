@@ -41,6 +41,8 @@ export class BrowsePage extends StoriesPage implements OnInit {
   ngOnInit(): void {
     this.storyService.getThemes().toPromise().then(albums => {
       this.albums = albums as Album[];
+      localStorage.clear();
+      console.log(JSON.stringify(this.albums));
     });
   }
 

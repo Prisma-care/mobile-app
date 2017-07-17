@@ -10,6 +10,7 @@ import { Camera } from '@ionic-native/camera';
 import {NewStoryPage} from "../new-story/new-story";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {UtilService} from "../../services/util-service";
+import {NewStorySelectionPage} from "../new-story-selection/new-story-selection";
 
 @Component({
   templateUrl: 'tabs.html'
@@ -17,8 +18,9 @@ import {UtilService} from "../../services/util-service";
 export class TabsPage {
 
   tab1Root = StoriesPage;
-  tab2Root = BrowsePage;
+  tab2Root = NewStorySelectionPage;
   tab3Root = QuestionsPage;
+
   tab4Root = PatientProfilePage;
   constructor(public actionsheetCtrl: ActionSheetController,private utilService:UtilService,public navCtrl: NavController) {
   }

@@ -1,27 +1,42 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>Nieuw verhaal</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 <ion-content padding>
-  <ion-card>
-      <img class="new-story-thumb" *ngIf="dataUrl" src="{{dataUrl}}">
-      <ion-card-content>
-        <ion-card-title>
-          <ion-label>Album</ion-label>
-          <ion-select [(ngModel)]="selectedAlbum">
-            <ion-option *ngFor="let album of albums,let i=index" [value]="album" [selected]="album.id === selectedAlbum.id">{{album.title}}</ion-option>
-          </ion-select>
-        </ion-card-title>
-        <ion-item>
-          <ion-textarea placeholder="Beschrijving" [(ngModel)]="description" clearInput></ion-textarea>
-        </ion-item>
-      </ion-card-content>
-    <button ion-button full medium icon-right color="primary" (click)="commit()">Opslaan <ion-icon name="download"></ion-icon></button>
+  <ion-card *ngIf="step === 0">
+    <img class="new-story-thumb" *ngIf="dataUrl" src="{{dataUrl}}">
+    <ion-card-content>
+      <ion-item>
+        <ion-textarea placeholder="{{placeHolder}}" [(ngModel)]="description" rows="7" clearInput></ion-textarea>
+      </ion-item>
+    </ion-card-content>
+    <button ion-button full medium icon-right color="general" (click)="goToStep2()">Opslaan</button>
   </ion-card>
 
+  <ion-card *ngIf="step === 1">
+    <ion-card-title>
+      <ion-label>Weet je wanneer het was?</ion-label>
+    </ion-card-title>
+    <ion-card-content>
+      <button ion-button icon-right color="primary" (click)="goToStep2()">Opslaan
+        <ion-icon name="arrow-down"></ion-icon>
+      </button>
+    </ion-card-content>
+  </ion-card>
 
+  <ion-card *ngIf="step === 2">
+    <ion-card-title>
+      <ion-label>Album</ion-label>
+      <ion-select [(ngModel)]="selectedAlbum">
+        <ion-option *ngFor="let album of albums,let i=index" [value]="album" [selected]="album.id === selectedAlbum.id">
+          {{album.title}}
+        </ion-option>
+      </ion-select>
+    </ion-card-title>
+    <button ion-button full medium icon-right color="general" (click)="goToStep2()">Opslaan
+      <ion-icon name="download"></ion-icon>
+    </button>
+  </ion-card>
 </ion-content>

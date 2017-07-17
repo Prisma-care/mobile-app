@@ -1,20 +1,18 @@
-<ion-content padding>
-    <ion-card>
-    <ion-slides pager loop="false">
+<ion-content>
+    <ion-slides pager loop="false" style="height: 93%">
       <ion-slide *ngFor="let slide of slides,let i=index">
-          <img src="{{slide.src}}"/>
-          <ion-card-content>
-            <ion-card-title>
-              {{slide.title}}
-            </ion-card-title>
-            <p style="text-align: left;">
-              {{slide.text}}
-            </p>
-          </ion-card-content>
+        <ion-card-content>
+          <ion-card-title>
+            {{slide.title}}
+          </ion-card-title>
+          <p class="description">
+            {{slide.text}}
+          </p>
+        </ion-card-content>
+        <img src="{{slide.src}}"/>
       </ion-slide>
     </ion-slides>
-    <ion-item style="text-align: center">
-      <button ion-button full medium icon-right color="vibrant" (click)="goToTheApp()">Begin <ion-icon name="arrow-forward"></ion-icon></button>
-    </ion-item>
-    </ion-card>
+    <button style="text-align: center; height: 6%" ion-button full medium icon-right color="general" (click)="goToTheApp()">Begin
+      <ion-icon name="arrow-forward"></ion-icon>
+    </button>
 </ion-content>

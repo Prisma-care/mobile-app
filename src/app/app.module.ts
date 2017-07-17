@@ -24,6 +24,7 @@ import {FileChooser} from "@ionic-native/file-chooser";
 import {UtilService} from "../services/util-service";
 import { QuestionsPage } from "../pages/questions/questions";
 import { QuestionPage } from "../pages/question/question";
+import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-selection";
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { QuestionPage } from "../pages/question/question";
     QuestionsPage,
     QuestionPage,
     NewStoryPage,
+    NewStorySelectionPage,
     TabsPage
   ],
   imports: [
@@ -56,6 +58,7 @@ import { QuestionPage } from "../pages/question/question";
     NewStoryPage,
     QuestionsPage,
     QuestionPage,
+    NewStorySelectionPage,
     TabsPage
   ],
   providers: [

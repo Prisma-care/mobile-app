@@ -1,4 +1,4 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {NavController, NavParams, Slides} from "ionic-angular";
 import {TabsPage} from "../tabs/tabs";
 import {StoriesPage} from "../stories/stories";
@@ -8,7 +8,7 @@ import {StoriesPage} from "../stories/stories";
   selector: 'page-tutorial',
   templateUrl: 'tutorial.html',
 })
-export class TutorialPage {
+export class TutorialPage{
 
   @ViewChild(Slides) slider: Slides;
 
@@ -17,35 +17,28 @@ export class TutorialPage {
   slides: Array<any> = [
     {
       id: "slide1",
-      title: "Herbeleef herinneringen",
-      text: "Bekijk samen leuke momenten uit het verleden.",
+      title: "Start een leuke babbel",
+      text: "Leer je geliefden beter kennen via vragen over hun kleurrijke verleden.",
       src: "assets/img/tutorial/intro-1.jpg"
     },
     {
       id: "slide29",
-      title: "Familie geschiedenis",
-      text: "Verzamel het verhaal van jouw familie om er samen op terug te blikken.",
+      title: "Familiegeschiedenis",
+      text: "Leg de verhalen vast in een digitaal fotoalbum dat je samen kan bekijken.",
       src: "assets/img/tutorial/intro-2.jpg"
     },
     {
       id: "slide3",
       title: "Gebeurtenissen",
-      text: "Kijk terug naar historische momenten en naar hoe het leven vroeger was.",
+      text: "Laat je inspireren door foto’s uit de oude tijd in de app.",
       src: "assets/img/tutorial/intro-3.jpg"
     }
   ]
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
-
-
   goToTheApp() {
    this.navCtrl.push(TabsPage);
   }
 
-  goToSlide(index:number) {
-    if(index == this.slides.length)
-      index = 0;
-    this.slider.slideTo(index);
-  }
 }
