@@ -5,38 +5,50 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-card *ngIf="step === 0">
+  <ion-item-group *ngIf="step === 0">
     <img class="new-story-thumb" *ngIf="dataUrl" src="{{dataUrl}}">
     <ion-card-content>
       <ion-item>
         <ion-textarea placeholder="{{placeHolder}}" [(ngModel)]="description" rows="7" clearInput></ion-textarea>
       </ion-item>
     </ion-card-content>
-    <button ion-button full medium icon-right color="general" (click)="goToStep2()">Opslaan</button>
-  </ion-card>
+    <ion-footer no-shadow>
+      <button ion-button full medium icon-right color="general" (click)="goToStep2()">Opslaan</button>
+    </ion-footer>
+  </ion-item-group>
 
-  <ion-card *ngIf="step === 1">
-    <ion-card-title>
-      <ion-label>Weet je wanneer het was?</ion-label>
-    </ion-card-title>
+  <ion-item-group *ngIf="step === 1">
+    <p class="question">Weet je wanneer het was?</p>
     <ion-card-content>
-      <button ion-button icon-right color="primary" (click)="goToStep2()">Opslaan
-        <ion-icon name="arrow-down"></ion-icon>
-      </button>
+      <ion-item>
+        <ion-input type="number">
+          <button ion-button icon-right color="primary" (click)="goToStep2()">Opslaan
+            <ion-icon name="arrow-down"></ion-icon>
+          </button>
+        </ion-input>
+      </ion-item>
     </ion-card-content>
-  </ion-card>
+    <small><a>Overslagen</a></small>
+    <ion-footer no-shadow>
+      <button ion-button full medium icon-right color="general" (click)="goToStep3()">Opslaan</button>
+    </ion-footer>
+  </ion-item-group>
 
-  <ion-card *ngIf="step === 2">
+  <ion-item-group *ngIf="step === 2">
     <ion-card-title>
-      <ion-label>Album</ion-label>
+      <ion-label>Bij welke periode hoort het verhaal?</ion-label>
+    </ion-card-title>
+    <ion-card-header>
       <ion-select [(ngModel)]="selectedAlbum">
         <ion-option *ngFor="let album of albums,let i=index" [value]="album" [selected]="album.id === selectedAlbum.id">
           {{album.title}}
         </ion-option>
       </ion-select>
-    </ion-card-title>
+    </ion-card-header>
+    <ion-footer no-shadow>
     <button ion-button full medium icon-right color="general" (click)="goToStep2()">Opslaan
       <ion-icon name="download"></ion-icon>
     </button>
-  </ion-card>
+    </ion-footer>
+  </ion-item-group>
 </ion-content>

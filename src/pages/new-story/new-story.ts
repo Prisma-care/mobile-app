@@ -28,6 +28,7 @@ export class NewStoryPage {
     this.dataUrl = navParams.get("dateUrl") as string;
     this.storyService.getAlbums().toPromise().then(albums => {
       this.albums = albums as Album[];
+      this.selectedAlbum = this.albums[0] || new Album();
     });
 
   }
@@ -49,6 +50,11 @@ export class NewStoryPage {
     if(this.step === 0){
 
       this.step = 1;
+    }
+  }
+  goToStep3(){
+    if(this.step === 1){
+      this.step = 2;
     }
   }
 }

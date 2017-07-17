@@ -9,30 +9,28 @@
 <ion-content padding *ngIf="album && isValidIndex(index) && album.stories[index]">
 
   <ion-card (swipe)="swipeEvent($event)">
-    <ion-card-header>
-    <img id="{{album.stories[index].id}}" src="{{getThumb(album.stories[index].source)}}"
-         style="width:100%; max-width:100%">
-    </ion-card-header>
     <ion-card-content>
+      <img id="{{album.stories[index].id}}" src="{{getThumb(album.stories[index].source)}}"
+           style="width:100%; max-width:100%">
       <!-- No more title
       <h2>{{album.stories[index].title}}</h2>  -->
-      <p class="description" *ngIf="album.stories[index].description">{{album.stories[index].description}}</p>
+      <ion-item class="description" color="general" *ngIf="album.stories[index].description">{{album.stories[index].description}}</ion-item>
       <div class="row">
-        <button ion-button icon-left block color="general">
-          <ion-icon name="md-create"></ion-icon>
-          Vul het verhaal aan
+        <button ion-button icon-left block color="transparent" style="text-align: left">
+          <ion-icon name="md-create" color="general"></ion-icon>
+          <p color="general">Vul het verhaal aan</p>
         </button>
       </div>
       <div class="row">
-        <button ion-button icon-left block color="general">
-          <ion-icon name="star"></ion-icon>
-          Favoriet
+        <button ion-button icon-left  block color="transparent" style="text-align: left">
+          <ion-icon name="star" color="general"></ion-icon>
+          <p color="general">Favoriet</p>
         </button>
       </div>
       <div class="row">
-        <button ion-button icon-left block color="general" (click)="next()">
-          <ion-icon name="md-arrow-forward"></ion-icon>
-          Volgende verhaal
+        <button ion-button icon-left block (click)="next()" color="transparent" style="text-align: left">
+          <ion-icon name="md-arrow-forward" color="general"></ion-icon>
+          <p color="general">Volgende verhaal</p>
         </button>
       </div>
     </ion-card-content>
