@@ -13,11 +13,11 @@
     </ion-slide>
   </ion-slides>
   <button style="text-align: center; height: 6%" ion-button full medium icon-right color="general"
-          (click)="goToSlide(currentSlide+1)" *ngIf="currentSlide < slides.length-1">Volgende
+          (click)="goToSlide(getCurrentSlide()+1)" *ngIf="getCurrentSlide() < slides.length-1">Volgende
     <ion-icon name="arrow-forward"></ion-icon>
   </button>
   <button style="text-align: center; height: 6%" ion-button full medium icon-right color="general"
-          (click)="goToTheApp()" *ngIf="currentSlide === slides.length-1">Begin
+          (click)="goToTheApp()" *ngIf="getCurrentSlide() === slides.length-1">Begin
     <ion-icon name="arrow-forward"></ion-icon>
   </button>
 </ion-content>
