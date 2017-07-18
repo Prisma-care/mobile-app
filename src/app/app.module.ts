@@ -23,6 +23,7 @@ import {NewStoryPage} from "../pages/new-story/new-story";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {UtilService} from "../services/util-service";
 import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-selection";
+import {EmptyPage} from "../pages/empty/empty";
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-sele
     PatientProfilePage,
     StoryDetailsPage,
     NewStoryPage,
+    EmptyPage,
     NewStorySelectionPage,
     TabsPage
   ],
@@ -52,6 +54,7 @@ import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-sele
     PatientProfilePage,
     StoryDetailsPage,
     NewStoryPage,
+    EmptyPage,
     NewStorySelectionPage,
     TabsPage
   ],

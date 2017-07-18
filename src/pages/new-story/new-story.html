@@ -13,24 +13,35 @@
       </ion-item>
     </ion-card-content>
     <ion-footer no-shadow>
-      <button ion-button full medium icon-right color="general" (click)="goToStep2()">Opslaan</button>
+      <button ion-button full medium icon-right color="general" (click)="goToStep2()" [disabled]="!description">Opslaan</button>
     </ion-footer>
   </ion-item-group>
 
   <ion-item-group *ngIf="step === 1">
-    <p class="question">Weet je wanneer het was?</p>
+    <img class="new-story-thumb" *ngIf="dataUrl" src="{{dataUrl}}">
+    <ion-card-title style="color: #ABAEB4;font-family: Varela;font-size: 20px;line-height: 29px;">Weet je wanneer het was?
+    </ion-card-title>
     <ion-card-content>
       <ion-item>
-        <ion-input type="number">
-          <button ion-button icon-right color="primary" (click)="goToStep2()">Opslaan
-            <ion-icon name="arrow-down"></ion-icon>
-          </button>
+        <ion-label color="general" stacked>Jaar</ion-label>
+        <ion-input type="number"max="2018" [(ngModel)]="year">
+        </ion-input>
+      </ion-item>
+      <ion-item *ngIf="year">
+        <ion-label color="general" stacked>Maand</ion-label>
+        <ion-input type="number" min="1" max="12" [(ngModel)]="month" >
+        </ion-input>
+      </ion-item>
+      <ion-item *ngIf="month && year">
+        <ion-label color="general" stacked>Dag</ion-label>
+        <ion-input type="number" min="1" max="31" [(ngModel)]="day">
         </ion-input>
       </ion-item>
     </ion-card-content>
-    <small><a>Overslagen</a></small>
     <ion-footer no-shadow>
-      <button ion-button full medium icon-right color="general" (click)="goToStep3()">Opslaan</button>
+      <button ion-button full small icon-only="" color="danger" (click)="goBack()"><ion-icon name="arrow-back"></ion-icon></button>
+      <button ion-button full medium icon-right color="danger" (click)="goToStep3()" *ngIf="!year">Overslagen</button>
+      <button ion-button full medium icon-right color="general" (click)="goToStep3()" *ngIf="year">Opslaan</button>
     </ion-footer>
   </ion-item-group>
 
@@ -39,16 +50,17 @@
       <ion-label>Bij welke periode hoort het verhaal?</ion-label>
     </ion-card-title>
     <ion-card-header>
-      <ion-select [(ngModel)]="selectedAlbum">
-        <ion-option *ngFor="let album of albums,let i=index" [value]="album" [selected]="album.id === selectedAlbum.id">
+      <ion-select color="general" [(ngModel)]="selectedAlbum">
+        <ion-option *ngFor="let album of albums,let i=index" [value]="album" [selected]="album.id === selectedAlbum.id" color="general">
           {{album.title}}
         </ion-option>
       </ion-select>
     </ion-card-header>
     <ion-footer no-shadow>
-    <button ion-button full medium icon-right color="general" (click)="goToStep2()">Opslaan
-      <ion-icon name="download"></ion-icon>
-    </button>
+      <button ion-button full small icon-only="" color="danger" (click)="goBack()"><ion-icon name="arrow-back"></ion-icon></button>
+      <button ion-button full medium icon-right color="general" (click)="commit()">Opslaan
+        <ion-icon name="download"></ion-icon>
+      </button>
     </ion-footer>
   </ion-item-group>
 </ion-content>
