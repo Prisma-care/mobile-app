@@ -39,11 +39,10 @@ export class UtilService{
   chooseAFile():string{
     let dataUrl:string ="";
     this.camera.getPicture({
-      destinationType:
-      this.camera.DestinationType.DATA_URL ,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      targetWidth: 1000,
-      targetHeight: 1000
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
     }).then((imageData) => {
       // imageData is a base64 encoded string
       console.log(imageData);
