@@ -30,17 +30,19 @@ export class StoryService extends PrismaService {
 
   getAlbums(): Observable<Album[]> {
     return this._http.get("assets/json/albums.json").map(res => {
-      /*let albums: Album[] = [];
-       res.json().forEach(album => albums.push(new Album(album)));
-       return albums;*/
       let albums: Album[];
       let hasAlbums: boolean = false;
       albums = JSON.parse(localStorage.getItem(env.temp.albums)) as Album[];
-      if(albums)
+      if (albums)
         hasAlbums = true;
       if (!hasAlbums) {
         albums = res.json() ? res.json() as Album[] : [];
-        localStorage.setItem(env.temp.albums, JSON.stringify(res.json() as Album[]));
+        let temp: Album[] = []
+        albums.forEach(album => {
+          album.stories = [];
+          temp.push(album);
+        });
+        localStorage.setItem(env.temp.albums, JSON.stringify(albums));
       }
       return albums;
     })
@@ -53,7 +55,12 @@ export class StoryService extends PrismaService {
     currentAlbums.forEach(album => {
       if (album.id === selectedAlbum.id) {
         isANewAlbum = false;
-        newStory.id = album.stories[album.stories.length - 1].id + 1;
+        if (album.stories.length === 0) {
+          album.stories = [];
+          newStory.id = "1";
+        }
+        else
+          newStory.id = album.stories[album.stories.length - 1].id + 1;
         album.stories.push(newStory);
       }
     });
@@ -61,7 +68,7 @@ export class StoryService extends PrismaService {
       newStory.id = "1";
       selectedAlbum = new Album();
       selectedAlbum.title = "Random";
-      selectedAlbum.id ="RandomId";
+      selectedAlbum.id = "RandomId";
       selectedAlbum.stories.push(newStory);
       currentAlbums.push(selectedAlbum);
     }

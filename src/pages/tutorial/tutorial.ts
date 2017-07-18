@@ -38,6 +38,7 @@ export class TutorialPage{
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
   goToTheApp() {
+    localStorage.clear();
    this.navCtrl.push(TabsPage);
   }
 

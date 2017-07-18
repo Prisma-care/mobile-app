@@ -10,6 +10,7 @@ import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {Camera} from "@ionic-native/camera";
 import {FileChooser} from "@ionic-native/file-chooser";
+import {EmptyPage} from "../empty/empty";
 
 
 /* TEMPORARY IMPORT */
@@ -33,7 +34,7 @@ export class StoriesPage implements OnInit {
   constructor(public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
               public navCtrl: NavController, protected stanizerService: StanizerService,
               protected userService: UserService, protected storyService: StoryService) {
-      this.stanizedYoutubeUrl = this.stanizerService.sanitize(this.youtubeUrl);
+    this.stanizedYoutubeUrl = this.stanizerService.sanitize(this.youtubeUrl);
   }
 
   ngOnInit(): void {
@@ -47,17 +48,24 @@ export class StoriesPage implements OnInit {
      console.log(JSON.stringify(stories)));
      */
   }
-  ionViewWillEnter():void{
+
+  ionViewWillEnter(): void {
     this.storyService.getAlbums().toPromise().then(albums => {
       this.albums = albums as Album[];
+      let empty: number = 0;
+      this.albums.forEach(album => {
+        if (album.stories.length > 0) empty++
+      });
+      if (empty === 0) {
+        this.navCtrl.push(EmptyPage);
+      }
     });
-
     this.storyService.getUserStories().toPromise().then(stories =>
       console.log("."));
   }
 
   getThumb(url: string): string {
-    if(url.startsWith("data:image/jpeg;base64"))
+    if (url.startsWith("data:image/jpeg;base64") || url.startsWith("assets"))
       return url;
     return "assets/img/t/" + url;
   }
@@ -91,7 +99,7 @@ export class StoriesPage implements OnInit {
                 targetHeight: 1000
               }).then((imageData) => {
                 // imageData is a base64 encoded string
-                let base64Image:string = "data:image/jpeg;base64," + imageData;
+                let base64Image: string = "data:image/jpeg;base64," + imageData;
                 this.navCtrl.push(NewStoryPage, {
                   "dateUrl": base64Image,
                   "album": album
