@@ -29,9 +29,10 @@ export class NewStorySelectionPage {
             icon: 'camera',
             cssClass: 'general',
             handler: () => {
-              let base64Image: string = this.utilService.takeAPicture();
+              let infos:{dataUrl:string,error:string} = this.utilService.takeAPicture();
+              //this.utilService.showErrorMessage("DataURl : " +  infos.dataUrl + "\n" + infos.error);
               this.navCtrl.push(NewStoryPage, {
-                "dataUrl": base64Image
+                "dataUrl": infos.dataUrl
               })
             }
           },
@@ -40,9 +41,10 @@ export class NewStorySelectionPage {
             role: 'destructive ',
             icon: 'image',
             handler: () => {
-              let base64Image: string = this.utilService.chooseAFile();
+              let infos:{dataUrl:string,error:string} = this.utilService.chooseAFile();
+             // this.utilService.showErrorMessage("DataURl : " +  infos.dataUrl + "\n" + infos.error);
               this.navCtrl.push(NewStoryPage, {
-                "dataUrl": base64Image
+                "dataUrl": infos.dataUrl
               })
             }
           },

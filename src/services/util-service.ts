@@ -12,8 +12,9 @@ export class UtilService{
 
   }
 
-  takeAPicture(): string{
+  takeAPicture(): {dataUrl:string,error:string}{
     let dataUrl:string ="";
+    let error:string;
     this.camera.getPicture({
       destinationType:
       this.camera.DestinationType.DATA_URL,
@@ -25,37 +26,40 @@ export class UtilService{
       dataUrl = "data:image/jpeg;base64," + imageData;
       return dataUrl;
     }, (err) => {
-      let alert = this.alertCtrl.create({
-        subTitle: "Error for taking a pic :" + err,
-        buttons: ['OK']
-      });
-      alert.present();
-      console.log("Error for taking a pic :" + err);
+      error=err;
     });
     //this.camera.cleanup().then();
-    return dataUrl;
+    error ?  this.showErrorMessage("Error for taking a pic :" + error).then() :"";
+    return {dataUrl:dataUrl,error:error};
   }
 
-  chooseAFile():string{
+  chooseAFile():{dataUrl:string,error:string}{
     let dataUrl:string ="";
+    let error:string;
     this.camera.getPicture({
       quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
       mediaType: this.camera.MediaType.PICTURE
     }).then((imageData) => {
       // imageData is a base64 encoded string
       console.log(imageData);
       dataUrl = "data:image/jpeg;base64," + imageData;
     }, (err) => {
-      let alert = this.alertCtrl.create({
-        subTitle: "Error for taking a pic :" + err,
-        buttons: ['OK']
-      });
-      alert.present();
-      console.log("Error for taking a pic :" + err);
+      error=err;
     });
     //this.camera.cleanup().then();
-    return dataUrl;
+    return {dataUrl:dataUrl,error:error};
+  }
+
+  showErrorMessage(errorMessage:string):Promise<any>{
+    let alert = this.alertCtrl.create({
+      title:"Error",
+      subTitle: errorMessage,
+      buttons: ['Ok']
+    });
+    console.log(errorMessage);
+    return  alert.present();
   }
 }
