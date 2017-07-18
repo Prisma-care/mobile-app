@@ -31,7 +31,7 @@ export class NewStorySelectionPage {
             handler: () => {
               let base64Image: string = this.utilService.takeAPicture();
               this.navCtrl.push(NewStoryPage, {
-                "dateUrl": base64Image
+                "dataUrl": base64Image
               })
             }
           },
@@ -42,7 +42,7 @@ export class NewStorySelectionPage {
             handler: () => {
               let base64Image: string = this.utilService.chooseAFile();
               this.navCtrl.push(NewStoryPage, {
-                "dateUrl": base64Image
+                "dataUrl": base64Image
               })
             }
           },
