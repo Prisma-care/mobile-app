@@ -16,6 +16,7 @@ export class NewStoryPage {
 
   //Step 1
   dataUrl: string = "familie/family1.jpg";
+
   description: string;
   placeHolder: string = "Schrijf het verhaal.\nHoe meer details hoe beter.";
   //Step 2
@@ -26,6 +27,7 @@ export class NewStoryPage {
   year:number;
   month:number;
   day:number;
+
   constructor(public navCtrl: NavController, private camera: Camera, public navParams: NavParams, private storyService: StoryService) {
     this.dataUrl = navParams.get("dateUrl") as string;
     this.storyService.getAlbums().toPromise().then(albums => {
@@ -54,6 +56,7 @@ export class NewStoryPage {
   goBack(){
     this.step--;
   }
+
   goToStep2(){
     if(this.step === 0){
 

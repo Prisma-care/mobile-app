@@ -17,6 +17,7 @@ export class NewStorySelectionPage {
   addText(){
     this.navCtrl.push(NewStoryPage);
   }
+  
   cameraActionSheet(){
     let actionSheet = this.actionsheetCtrl.create({
         title: 'Foto toevoegen',
