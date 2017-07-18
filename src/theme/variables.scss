@@ -35,7 +35,7 @@ $colors: (
   secondary: #33b5e5,
   danger: #ffbb33,
   light: #ABAEB4,
-  transparent: white,
+  transparent: rgba(216,216,216,0),
   dark: #1f5760,
   general: #647FC6
 );
@@ -93,12 +93,12 @@ $tabs-ios-tab-text-color: color($colors, light);
 $tabs-md-tab-text-color: $tabs-ios-tab-text-color;
 
 $tabs-md-tab-icon-color: color($colors, light);
-$tabs-md-tab-icon-color-active: color($colors, secondary);
+$tabs-md-tab-icon-color-active: color($colors, general);
 // Use the primary color as the background for the toolbar-md-background
-$toolbar-md-background: color($colors, general);
+$toolbar-md-background: color($colors, transparent);
 
 // Use the default background for the tabbar since it inherits from toolbar
-$tabs-md-background: color($colors, general);
+$tabs-md-background: color($colors, transparent);
 
 // Change the color of the tabs text
 $tab-button-md-active-color: $tabs-md-tab-icon-color-active;
