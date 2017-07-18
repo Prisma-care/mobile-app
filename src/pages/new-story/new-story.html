@@ -5,6 +5,8 @@
 </ion-header>
 
 <ion-content padding>
+
+  <pre> {{ dataUrl | json}}</pre>
   <ion-item-group *ngIf="step === 0">
     <img class="new-story-thumb" *ngIf="dataUrl" src="{{dataUrl}}">
     <ion-card-content>
