@@ -30,10 +30,9 @@ export class NewStorySelectionPage {
             cssClass: 'general',
             handler: () => {
               let base64Image: string = this.utilService.takeAPicture();
-              if (base64Image)
-                this.navCtrl.push(NewStoryPage, {
-                  "dateUrl": base64Image
-                })
+              this.navCtrl.push(NewStoryPage, {
+                "dateUrl": base64Image
+              })
             }
           },
           {
@@ -42,10 +41,9 @@ export class NewStorySelectionPage {
             icon: 'image',
             handler: () => {
               let base64Image: string = this.utilService.chooseAFile();
-              if (base64Image)
-                this.navCtrl.push(NewStoryPage, {
-                  "dateUrl": base64Image
-                })
+              this.navCtrl.push(NewStoryPage, {
+                "dateUrl": base64Image
+              })
             }
           },
           {
