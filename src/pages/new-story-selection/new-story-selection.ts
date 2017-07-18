@@ -41,7 +41,11 @@ export class NewStorySelectionPage {
             role: 'destructive ',
             icon: 'image',
             handler: () => {
-              console.log('addPhoto  with album clicked');
+              let base64Image: string = this.utilService.chooseAFile();
+              if (base64Image)
+                this.navCtrl.push(NewStoryPage, {
+                  "dateUrl": base64Image
+                })
             }
           },
           {

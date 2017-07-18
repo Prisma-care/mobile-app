@@ -14,24 +14,41 @@ export class UtilService{
   takeAPicture(): string{
     let dataUrl:string ="";
     this.camera.getPicture({
-      destinationType: this.camera
-        .DestinationType.DATA_URL,
+      destinationType:
+      this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
       targetWidth: 1000,
       targetHeight: 1000
     }).then((imageData) => {
       // imageData is a base64 encoded string
+      console.log(imageData);
       dataUrl = "data:image/jpeg;base64," + imageData;
     }, (err) => {
       console.log("Error for taking a pic :" + err);
     });
+    this.camera.cleanup().then();
     return dataUrl;
   }
 
   chooseAFile():string{
-    let dataUrl:string = "";
-    this.fileChooser.open()
-      .then(uri => dataUrl = uri)
-      .catch(e => console.log("Error for chosing a file : " + e));
+    let dataUrl:string ="";
+    this.camera.getPicture({
+      destinationType:
+      this.camera.DestinationType.DATA_URL ,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      targetWidth: 1000,
+      targetHeight: 1000
+    }).then((imageData) => {
+      // imageData is a base64 encoded string
+      console.log(imageData);
+      dataUrl = "data:image/jpeg;base64," + imageData;
+    }, (err) => {
+      console.log("Error for taking a pic :" + err);
+    });
+    this.camera.cleanup().then();
     return dataUrl;
   }
 }

@@ -40,7 +40,7 @@ export class TutorialPage {
   }
 
   goToTheApp() {
-    //localStorage.clear();
+    localStorage.clear();
     this.navCtrl.push(TabsPage);
   }
 
