@@ -30,9 +30,7 @@
             </div>
             <div
               (click)="showDetails(album,j)" *ngIf="!getThumb(item.source,item.description)">
-              <svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='100%' width='100%'>
-                <text x="10" y="20">{{item.description}}</text>
-              </svg>
+              <ion-card-content class="description">{{item.description}}</ion-card-content>
             </div>
 
             <!--<img id="{{item.id}}" src="{{getThumb(item.source)}}">-->
