@@ -14,6 +14,7 @@ export class TutorialPage{
 
 
   homeRoot = StoriesPage;
+  currentSlide:number = 0;
   slides: Array<any> = [
     {
       id: "slide1",
@@ -42,4 +43,8 @@ export class TutorialPage{
    this.navCtrl.push(TabsPage);
   }
 
+
+  goToSlide(){
+    this.slider.slideTo(1);
+  }
 }
