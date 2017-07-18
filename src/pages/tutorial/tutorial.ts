@@ -44,7 +44,8 @@ export class TutorialPage{
   }
 
 
-  goToSlide(){
-    this.slider.slideTo(1);
+  goToSlide(index:number){
+    this.slider.slideTo(index);
+    this.currentSlide = index;
   }
 }
