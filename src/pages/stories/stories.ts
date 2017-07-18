@@ -64,7 +64,10 @@ export class StoriesPage implements OnInit {
       console.log("."));
   }
 
-  getThumb(url: string): string {
+  getThumb(url: string, descripton?: string): string {
+    if (!url)
+    //return 'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' version=\'1.1\' height=\'50px\' width=\'120px\'><text x=\'0\' y=\'15\' fill=\'red\' font-size=\'20\'>'+ descripton + '</text></svg>';
+      return null;
     if (url.startsWith("data:image/jpeg;base64") || url.startsWith("assets"))
       return url;
     return "assets/img/t/" + url;

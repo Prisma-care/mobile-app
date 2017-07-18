@@ -20,7 +20,7 @@ page-stories {
     font-size: .9em;
     width: 100%;
     color: #fff;
-    text-shadow: 1px 1px 3px rgba(0,0,0,.6), 1px 1px 0 rgba(0,0,0,.6);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, .6), 1px 1px 0 rgba(0, 0, 0, .6);
   }
 
   .list-header {
@@ -39,13 +39,13 @@ page-stories {
 
   .story-item {
     // padding: 0.3em;
-    margin:1em 0 1em 1em;
+    margin: 1em 0 1em 1em;
   }
 
   .story-item div {
     background-size: cover;
     height: 100%;
-    box-shadow: 0 10px 20px 0 rgba(84,91,109,0.4);
+    box-shadow: 0 10px 20px 0 rgba(84, 91, 109, 0.4);
   }
 
   .story-item .slide-zoom {
@@ -62,23 +62,37 @@ page-stories {
   }
 
   .story-item img::after {
-      position: relative;
-      background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0, #fff 100%);
-      margin-top: -150px;
-      height: 150px;
-      height: 100%;
-      content: '';
-    }
+    position: relative;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0, #fff 100%);
+    margin-top: -150px;
+    height: 150px;
+    height: 100%;
+    content: '';
+  }
 
   ion-item.item.item-block {
     padding-left: 0;
-    .item-inner { padding-right: 0; margin-right: 0; }
-    .input-wrapper {  }
+    .item-inner {
+      padding-right: 0;
+      margin-right: 0;
+    }
+    .input-wrapper {
+    }
   }
-  ion-list-header .label { padding-left: 1.25em; }
+  ion-list-header .label {
+    padding-left: 1.25em;
+  }
 
   ion-list.list {
     margin-bottom: 0;
   }
-
+  .description {
+    height: 13.59%;
+    width: 83.61%;
+    color: #ABAEB4;
+    font-family: Varela;
+    font-size: map-get($sizes, medium);
+    line-height: 29px;
+    text-align: center;
+  }
 }

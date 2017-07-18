@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {ActionSheetController, NavController, NavParams} from 'ionic-angular';
+import {Component} from "@angular/core";
+import {ActionSheetController, NavController, NavParams} from "ionic-angular";
 import {NewStoryPage} from "../new-story/new-story";
 import {UtilService} from "../../services/util-service";
 
@@ -10,14 +10,15 @@ import {UtilService} from "../../services/util-service";
 })
 export class NewStorySelectionPage {
 
-  constructor(public actionsheetCtrl: ActionSheetController,public navCtrl: NavController, public navParams: NavParams,public utilService:UtilService) {
+  constructor(public actionsheetCtrl: ActionSheetController, public navCtrl: NavController, public navParams: NavParams, public utilService: UtilService) {
   }
 
 
-  addText(){
+  addText() {
     this.navCtrl.push(NewStoryPage);
   }
-  cameraActionSheet(){
+
+  cameraActionSheet() {
     let actionSheet = this.actionsheetCtrl.create({
         title: 'Foto toevoegen',
         cssClass: 'action-sheets-basic-page',
@@ -28,10 +29,11 @@ export class NewStorySelectionPage {
             icon: 'camera',
             cssClass: 'general',
             handler: () => {
-              let base64Image:string = this.utilService.takeAPicture();
-              this.navCtrl.push(NewStoryPage,{
-                "dateUrl": base64Image
-              })
+              let base64Image: string = this.utilService.takeAPicture();
+              if (base64Image)
+                this.navCtrl.push(NewStoryPage, {
+                  "dateUrl": base64Image
+                })
             }
           },
           {

@@ -52,7 +52,8 @@ export class NewStoryPage {
       newStory.date.setFullYear(this.year,this.month || 1 ,this.day || 1);
     }
     newStory.description = this.description;
-    newStory.source = this.dataUrl.indexOf("assets/img/t/anne.jpg") > -1 ? "anne.jpg" : this.dataUrl;
+    if(this.dataUrl)
+      newStory.source = this.dataUrl.indexOf("assets/img/t/anne.jpg") > -1 ? "anne.jpg" : this.dataUrl;
     newStory.type = StoryType.IMAGE;
     newStory.title = this.title;
     this.storyService.addStory(this.selectedAlbum, newStory).toPromise().then(res => {

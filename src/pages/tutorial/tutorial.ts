@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, ViewChild} from "@angular/core";
 import {NavController, NavParams, Slides} from "ionic-angular";
 import {TabsPage} from "../tabs/tabs";
 import {StoriesPage} from "../stories/stories";
@@ -8,12 +8,13 @@ import {StoriesPage} from "../stories/stories";
   selector: 'page-tutorial',
   templateUrl: 'tutorial.html',
 })
-export class TutorialPage{
+export class TutorialPage {
 
   @ViewChild(Slides) slider: Slides;
 
 
   homeRoot = StoriesPage;
+  currentSlide: number = 0;
   slides: Array<any> = [
     {
       id: "slide1",
@@ -37,9 +38,20 @@ export class TutorialPage{
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
+
   goToTheApp() {
-    localStorage.clear();
-   this.navCtrl.push(TabsPage);
+    //localStorage.clear();
+    this.navCtrl.push(TabsPage);
   }
 
+
+  goToSlide(index: number) {
+    this.slider.slideTo(index);
+    this.currentSlide = index;
+  }
+
+  getCurrentSlide(): number {
+    return  this.slider.getActiveIndex();
+    ;
+  }
 }
