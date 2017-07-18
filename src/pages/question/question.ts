@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { NavController, NavParams } from "ionic-angular";
+import { NewStoryPage } from "../new-story/new-story";
 
 @Component({
   selector: 'page-question',
@@ -28,7 +29,14 @@ export class QuestionPage implements OnInit {
   nextQuestion() {
     // TODO: implement a random question that avoids repetition
     this.currentQuestion = this.category.questions[Math.floor(Math.random()*this.category.questions.length)];
+  }
 
+  save() {
+    this.navCtrl.push(NewStoryPage, {
+      "questionAnswer": true,
+      "description": this.description,
+      "dateUrl": "" // todo: fix "date" ==> "data" & somehow clearly include content type 
+    });
   }
 
 }

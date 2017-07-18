@@ -13,5 +13,5 @@
     <ion-icon name="refresh" (click)="nextQuestion()"></ion-icon>
   </div>
   <ion-textarea placeholder="Weet je een antwoord?" [(ngModel)]="description" clearInput></ion-textarea>
-  <button ion-button full>Opslaan</button>
+  <button ion-button full (click)="save()">Opslaan</button>
 </ion-content>

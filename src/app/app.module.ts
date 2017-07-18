@@ -22,9 +22,11 @@ import { Camera } from '@ionic-native/camera';
 import {NewStoryPage} from "../pages/new-story/new-story";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {UtilService} from "../services/util-service";
+
 import { QuestionsPage } from "../pages/questions/questions";
 import { QuestionPage } from "../pages/question/question";
 import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-selection";
+import {EmptyPage} from "../pages/empty/empty";
 
 
 @NgModule({
@@ -38,6 +40,7 @@ import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-sele
     QuestionsPage,
     QuestionPage,
     NewStoryPage,
+    EmptyPage,
     NewStorySelectionPage,
     TabsPage
   ],
@@ -58,6 +61,7 @@ import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-sele
     NewStoryPage,
     QuestionsPage,
     QuestionPage,
+    EmptyPage,
     NewStorySelectionPage,
     TabsPage
   ],
