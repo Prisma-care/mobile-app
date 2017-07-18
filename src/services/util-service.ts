@@ -27,7 +27,7 @@ export class UtilService{
     }, (err) => {
       console.log("Error for taking a pic :" + err);
     });
-    this.camera.cleanup().then();
+    //this.camera.cleanup().then();
     return dataUrl;
   }
 
@@ -37,8 +37,6 @@ export class UtilService{
       destinationType:
       this.camera.DestinationType.DATA_URL ,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
       targetWidth: 1000,
       targetHeight: 1000
     }).then((imageData) => {
@@ -48,7 +46,7 @@ export class UtilService{
     }, (err) => {
       console.log("Error for taking a pic :" + err);
     });
-    this.camera.cleanup().then();
+    //this.camera.cleanup().then();
     return dataUrl;
   }
 }
