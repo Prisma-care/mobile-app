@@ -17,15 +17,13 @@ export class EmptyPage {
     console.log('ionViewDidLoad EmptyPage');
   }
   takeAPicture(){
-    let dataUrl:string = this.utilService.takeAPicture().dataUrl;
-    if(!dataUrl)
-      dataUrl = "assets/img/tutorial/empty-2.jpg";
-    if(dataUrl){
-      this.navCtrl.push(NewStoryPage,{
-        "dateUrl" : dataUrl
-      });
-    }
-  }
+    let pictureAttempt: Promise<any> = this.utilService.takeAPicture();
 
+    pictureAttempt.then(
+      (dataUrl) => {
+        this.navCtrl.push(NewStoryPage,
+          {"dataUrl": dataUrl})
+        });
+  }
 
 }

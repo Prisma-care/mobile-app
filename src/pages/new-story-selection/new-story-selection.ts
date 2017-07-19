@@ -25,23 +25,28 @@ export class NewStorySelectionPage {
         buttons: [
           {
             text: 'Maak foto',
-            role: 'destructive ',
+            role: 'destructive',
             icon: 'camera',
             cssClass: 'general',
             handler: () => {
-              let infos:{dataUrl:string,error:string} = this.utilService.takeAPicture();
+              let pictureAttempt: Promise<any> = this.utilService.takeAPicture();
+
+              pictureAttempt.then(
+                (dataUrl) => {
+                  this.navCtrl.push(NewStoryPage,
+                    {"dataUrl": dataUrl})
+                  });
+
               //this.utilService.showErrorMessage("DataURl : " +  infos.dataUrl + "\n" + infos.error);
-              this.navCtrl.push(NewStoryPage, {
-                "dataUrl": infos.dataUrl
-              })
+
             }
           },
           {
             text: 'Kies foto van camerarol',
-            role: 'destructive ',
+            role: 'destructive',
             icon: 'image',
             handler: () => {
-              let infos:{dataUrl:string,error:string} = this.utilService.chooseAFile();
+              let infos:{dataUrl:string,error:any} = this.utilService.chooseAFile();
              // this.utilService.showErrorMessage("DataURl : " +  infos.dataUrl + "\n" + infos.error);
               this.navCtrl.push(NewStoryPage, {
                 "dataUrl": infos.dataUrl
@@ -50,7 +55,7 @@ export class NewStorySelectionPage {
           },
           {
             text: 'Cancel',
-            role: 'cancel ',
+            role: 'cancel',
             icon: 'md-arrow-back',
             handler: () => {
               console.log('canceled');
