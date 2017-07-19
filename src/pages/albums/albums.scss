@@ -1,0 +1,38 @@
+albums-page {
+
+  .albums-header {
+    padding: 2em 6em;
+    //background-color: map-get($colors, 'primary');
+
+  }
+
+  .albums-header h2 {
+    font-size: map-get($sizes, 'large');
+    line-height: 33px;
+    text-align: center;
+    font-family: $prisma-ff;
+    color: map-get($colors, 'dark-text');
+  }
+
+  .album-thumb {
+    height: 50vw;
+    background-size: cover;
+    position: relative;
+  }
+
+  .col, [col-6] {
+    padding: 0;
+  }
+
+  .album-thumb h3 {
+    display: inline-block;
+    text-align: center;
+    margin: auto;
+    color: #fff;
+    position: absolute;
+    bottom: 1em;
+    left: 0;
+    width: 100%;
+
+  }
+}

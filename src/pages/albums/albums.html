@@ -1,0 +1,13 @@
+<ion-content>
+  <div class="albums-header">
+    <h2>Waarover babbelen we vandaag?</h2>
+  </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6 *ngFor="let album of albums,let i=index"
+      class="album-thumb" [ngStyle]="{'background-image': 'url(' + getThumb(album.stories[0].source) + ')'}">
+        <h3 class="hist-title">{{album.title ? album.title : '?'}}</h3>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

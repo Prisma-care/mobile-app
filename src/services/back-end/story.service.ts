@@ -43,7 +43,9 @@ export class StoryService extends PrismaService {
       })
       .catch(err => this.handleError(err));
 
-    /**return this._http.get("assets/json/albums.json").map(res => {
+
+    /*
+    return this._http.get("assets/json/albums.json").map(res => {
       let albums: Album[];
       let hasAlbums: boolean = false;
       albums = JSON.parse(localStorage.getItem(env.temp.albums)) as Album[];
@@ -58,11 +60,14 @@ export class StoryService extends PrismaService {
         });
         localStorage.setItem(env.temp.albums, JSON.stringify(albums));
       }
-      return albums;**/
+      return albums;
+    });
+    */
+
   }
 
 
-  /**addStory(selectedAlbum: Album, newStory: UserStory): Observable<any> {
+  addStory(selectedAlbum: Album, newStory: UserStory): Observable<any> {
     let currentAlbums: Album[] = JSON.parse(localStorage.getItem(env.temp.albums)) as Album[] || [];
 
     console.log("Before \n" + JSON.stringify(JSON.parse(localStorage.getItem(env.temp.albums)) as Album[]));
@@ -92,7 +97,9 @@ export class StoryService extends PrismaService {
     console.log("After \n" + JSON.stringify(JSON.parse(localStorage.getItem(env.temp.albums)) as Album[]));
     return Observable.of(true);
 
-  }*/
+  }
+
+  /*
   addStory(selectedAlbum: Album, newStory: UserStory): Observable<any> {
     let url: string = env.api.getPatient;
     return this._http.post(`${this._urlToApi}/${url}`, newStory)
@@ -104,6 +111,7 @@ export class StoryService extends PrismaService {
         return new Patient(res.json().response) as Patient;
       }).catch(err => this.handleError(err));
   }
+  */
 
   generateBasicAlbums(patientId: string): Observable<Album[]> {
     let url: string = env.api.getPatient;
@@ -137,4 +145,16 @@ export class StoryService extends PrismaService {
     })
       .catch(error => this.handleError(error));
   }
+
+  /** Get historical themes (just albums for now) */
+  getLOLBUMS(): Observable<Album[]> {
+    return this._http.get("assets/json/albums.json").map(res => {
+      /*let albums: Album[] = [];
+       res.json().forEach(album => albums.push(new Album(album)));
+       return albums;*/
+      return res.json() ? res.json() as Album[] : new Array<Album>();
+    })
+      .catch(error => this.handleError(error));
+  }
+
 }

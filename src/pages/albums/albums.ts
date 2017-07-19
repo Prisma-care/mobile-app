@@ -19,10 +19,10 @@ import {EmptyPage} from "../empty/empty";
  * More info on the slides management : https://ionicframework.com/docs/api/components/slides/Slides/
  */
 @Component({
-  selector: 'page-stories',
-  templateUrl: 'stories.html'
+  selector: 'albums-page',
+  templateUrl: 'albums.html'
 })
-export class StoriesPage implements OnInit {
+export class AlbumsPage implements OnInit {
 
   public youtubeUrl: string = "www.youtube.com/embed/ERD4CbBDNI0?rel=0&amp;showinfo=0";
   public stanizedYoutubeUrl: any;
@@ -50,18 +50,9 @@ export class StoriesPage implements OnInit {
   }
 
   ionViewWillEnter(): void {
-    this.storyService.getAlbums(3).toPromise().then(albums => {
-      this.albums = albums as Album[];
-      let empty: number = 0;
-      this.albums.forEach(album => {
-        if (album.stories.length > 0) empty++
-      });
-      /*
-      if (empty === 0) {
-        this.navCtrl.push(EmptyPage);
-      }
-      */
-    });
+    this.storyService.getLOLBUMS().toPromise().then(albums => {
+      this.albums = albums as Album[];});
+
     this.storyService.getUserStories().toPromise().then(stories =>
       console.log("."));
   }

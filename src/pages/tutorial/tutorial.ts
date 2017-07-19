@@ -3,6 +3,7 @@ import {NavController, NavParams, Slides} from "ionic-angular";
 import {TabsPage} from "../tabs/tabs";
 import {StoriesPage} from "../stories/stories";
 import {ApiTestingPage} from "../api-testing/api-testing";
+import { AlbumsPage } from "../albums/albums";
 
 
 @Component({
@@ -14,7 +15,7 @@ export class TutorialPage {
   @ViewChild(Slides) slider: Slides;
 
 
-  homeRoot = StoriesPage;
+  homeRoot = AlbumsPage;
   currentSlide: number = 0;
   slides: Array<any> = [
     {
@@ -41,7 +42,7 @@ export class TutorialPage {
   }
 
   goToTheApp() {
-    localStorage.clear();
+    // localStorage.clear();
     this.navCtrl.push(TabsPage);
   }
 

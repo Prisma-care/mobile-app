@@ -28,6 +28,7 @@ import { QuestionPage } from "../pages/question/question";
 import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-selection";
 import {EmptyPage} from "../pages/empty/empty";
 import {ApiTestingPage} from "../pages/api-testing/api-testing";
+import { AlbumsPage } from "../pages/albums/albums";
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import {ApiTestingPage} from "../pages/api-testing/api-testing";
     MyApp,
     TutorialPage,
     StoriesPage,
+    AlbumsPage,
     BrowsePage,
     PatientProfilePage,
     StoryDetailsPage,
@@ -57,6 +59,7 @@ import {ApiTestingPage} from "../pages/api-testing/api-testing";
     MyApp,
     TutorialPage,
     StoriesPage,
+    AlbumsPage,
     BrowsePage,
     PatientProfilePage,
     StoryDetailsPage,
