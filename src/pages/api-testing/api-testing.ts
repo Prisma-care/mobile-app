@@ -97,7 +97,7 @@ export class ApiTestingPage {
     // newStory.source = this.dataUrl.indexOf("assets/img/t/anne.jpg") > -1 ? "anne.jpg" : this.dataUrl;
     ///newStory.type = StoryType.IMAGE;
     newStory.creatorId = 1;
-    //this.storySerivce.addStory(3, this.patientAddedAlbums[2], newStory).toPromise().then(res => {
+    //this.storySerivce.oldAddStory(3, this.patientAddedAlbums[2], newStory).toPromise().then(res => {
     // newStory = res;
     //console.log("got the story :" + JSON.stringify(res));
 

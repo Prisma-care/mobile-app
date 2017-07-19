@@ -1,0 +1,29 @@
+albums-page {
+
+  .grid {
+    padding: 0;
+  }
+
+  .album-thumb {
+    height: 50vw; // todo: dynamic - set to width of comonent?
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+
+  .col, [col-6] {
+    padding: 0;
+  }
+
+  .album-thumb h3 {
+    display: inline-block;
+    text-align: center;
+    margin: auto;
+    color: #fff;
+    position: absolute;
+    bottom: 1em;
+    left: 0;
+    width: 100%;
+
+  }
+}
