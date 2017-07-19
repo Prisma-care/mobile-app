@@ -2,8 +2,8 @@
  * Created by Jean on 10-07-17.
  */
 
-export const BACKEND: string = 'http://localhost:8080';
-export const API_URL: string = BACKEND + '';
+export const BACKEND: string = 'http://146.185.145.169';
+export const API_URL: string = BACKEND + '/api/v1';
 
 
 export const env = {
@@ -12,7 +12,10 @@ export const env = {
   localstorage: {
   },
   api: {
-    getUsers: 'users'
+    getPatient: 'patient',
+    getAlbum: 'album',
+    getStory: 'story',
+    getAsset: 'asset'
   },
   temp: {
     albums:"albums"

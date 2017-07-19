@@ -1,5 +1,5 @@
 import {Injectable, OnInit} from "@angular/core";
-import {Http } from "@angular/http";
+import {Headers, Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/observable/of';
 import {API_URL, env} from "../../app/environment";

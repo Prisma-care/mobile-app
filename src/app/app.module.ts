@@ -14,7 +14,7 @@ import {SplashScreen} from "@ionic-native/splash-screen";
 import {StanizerService} from "../services/stanizer.service";
 import {StoryDetailsPage} from "../pages/storydetails/storydetails";
 import {PrismaService} from "../services/back-end/prisma-api.service";
-import {UserService} from "../services/back-end/user.service";
+import {PatientService} from "../services/back-end/user.service";
 import {HttpModule} from "@angular/http";
 import {StoryService} from "../services/back-end/story.service";
 import {TutorialPage} from "../pages/tutorial/tutorial";
@@ -22,7 +22,12 @@ import { Camera } from '@ionic-native/camera';
 import {NewStoryPage} from "../pages/new-story/new-story";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {UtilService} from "../services/util-service";
+
+import { QuestionsPage } from "../pages/questions/questions";
+import { QuestionPage } from "../pages/question/question";
 import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-selection";
+import {EmptyPage} from "../pages/empty/empty";
+import {ApiTestingPage} from "../pages/api-testing/api-testing";
 
 
 @NgModule({
@@ -33,8 +38,12 @@ import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-sele
     BrowsePage,
     PatientProfilePage,
     StoryDetailsPage,
+    QuestionsPage,
+    QuestionPage,
     NewStoryPage,
+    EmptyPage,
     NewStorySelectionPage,
+    ApiTestingPage,
     TabsPage
   ],
   imports: [
@@ -52,7 +61,11 @@ import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-sele
     PatientProfilePage,
     StoryDetailsPage,
     NewStoryPage,
+    QuestionsPage,
+    QuestionPage,
+    EmptyPage,
     NewStorySelectionPage,
+    ApiTestingPage,
     TabsPage
   ],
   providers: [
@@ -62,7 +75,7 @@ import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-sele
     StanizerService,
     PrismaService,
     StoryService,
-    UserService,
+    PatientService,
     Camera,
     FileChooser,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

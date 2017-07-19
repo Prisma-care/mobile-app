@@ -4,6 +4,7 @@ import {ActionSheetController, NavController} from "ionic-angular";
 import {StoriesPage} from "../stories/stories";
 import {BrowsePage} from "../browse/browse";
 import {PatientProfilePage} from "../patientprofile/patientprofile";
+import { QuestionsPage } from "../questions/questions";
 
 import { Camera } from '@ionic-native/camera';
 import {NewStoryPage} from "../new-story/new-story";
@@ -17,57 +18,11 @@ import {NewStorySelectionPage} from "../new-story-selection/new-story-selection"
 export class TabsPage {
 
   tab1Root = StoriesPage;
-  tab2Root = BrowsePage;
-  tab3Root = NewStorySelectionPage;
+  tab2Root = NewStorySelectionPage;
+  tab3Root = QuestionsPage;
 
   tab4Root = PatientProfilePage;
   constructor(public actionsheetCtrl: ActionSheetController,private utilService:UtilService,public navCtrl: NavController) {
   }
 
-  openMenu() {
-    let actionSheet = this.actionsheetCtrl.create({
-      title: 'Verhaal toevoegen',
-      cssClass: 'action-sheets-basic-page',
-      buttons: [
-        {
-          text: 'Foto nemen',
-          role: 'destructive ',
-          icon: 'camera',
-          handler: () => {
-              let base64Image:string = this.utilService.takeAPicture();
-              this.navCtrl.push(NewStoryPage,{
-                "dateUrl": base64Image
-              })
-          }
-        },
-        {
-          text: 'Foto uit album kiezen',
-          role: 'destructive ',
-          icon: 'image',
-          handler: () => {
-            console.log('addPhoto  with album clicked');
-          }
-        },
-        {
-          text: 'Youtube video kiezen',
-          role: 'destructive ',
-          icon: 'logo-youtube',
-          handler: () => {
-            console.log('choose youtube video clicked');
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel ',
-          icon: 'md-arrow-back',
-          handler: () => {
-            console.log('canceled');
-          }
-        },
-      ]
-
-  })
-    ;
-    actionSheet.present();
-  }
 }

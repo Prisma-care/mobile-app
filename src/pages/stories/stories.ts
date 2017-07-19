@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {ActionSheetController, NavController} from "ionic-angular";
 import {StanizerService} from "../../services/stanizer.service";
 import {StoryDetailsPage} from "../storydetails/storydetails";
-import {UserService} from "../../services/back-end/user.service";
+import {PatientService} from "../../services/back-end/user.service";
 import {StoryService} from "../../services/back-end/story.service";
 import {NewStoryPage} from "../new-story/new-story";
 import {User} from "../../dto/user";
@@ -10,6 +10,7 @@ import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {Camera} from "@ionic-native/camera";
 import {FileChooser} from "@ionic-native/file-chooser";
+import {EmptyPage} from "../empty/empty";
 
 
 /* TEMPORARY IMPORT */
@@ -32,13 +33,13 @@ export class StoriesPage implements OnInit {
 
   constructor(public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
               public navCtrl: NavController, protected stanizerService: StanizerService,
-              protected userService: UserService, protected storyService: StoryService) {
-      this.stanizedYoutubeUrl = this.stanizerService.sanitize(this.youtubeUrl);
+              protected userService: PatientService, protected storyService: StoryService) {
+    this.stanizedYoutubeUrl = this.stanizerService.sanitize(this.youtubeUrl);
   }
 
   ngOnInit(): void {
     /* TESTS: to remove
-     this.userService.getUser("12345").toPromise().then(user => {
+     this.patientService.getPatient("12345").toPromise().then(user => {
 
      this.user = user;
      });
@@ -47,17 +48,27 @@ export class StoriesPage implements OnInit {
      console.log(JSON.stringify(stories)));
      */
   }
-  ionViewWillEnter():void{
-    this.storyService.getAlbums().toPromise().then(albums => {
-      this.albums = albums as Album[];
-    });
 
+  ionViewWillEnter(): void {
+    this.storyService.getAlbums(3).toPromise().then(albums => {
+      this.albums = albums as Album[];
+      let empty: number = 0;
+      this.albums.forEach(album => {
+        if (album.stories.length > 0) empty++
+      });
+      if (empty === 0) {
+        this.navCtrl.push(EmptyPage);
+      }
+    });
     this.storyService.getUserStories().toPromise().then(stories =>
       console.log("."));
   }
 
-  getThumb(url: string): string {
-    if(url.startsWith("data:image/jpeg;base64"))
+  getThumb(url: string, descripton?: string): string {
+    if (!url)
+    //return 'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' version=\'1.1\' height=\'50px\' width=\'120px\'><text x=\'0\' y=\'15\' fill=\'red\' font-size=\'20\'>'+ descripton + '</text></svg>';
+      return null;
+    if (url.startsWith("data:image/jpeg;base64") || url.startsWith("assets"))
       return url;
     return "assets/img/t/" + url;
   }
@@ -91,7 +102,7 @@ export class StoriesPage implements OnInit {
                 targetHeight: 1000
               }).then((imageData) => {
                 // imageData is a base64 encoded string
-                let base64Image:string = "data:image/jpeg;base64," + imageData;
+                let base64Image: string = "data:image/jpeg;base64," + imageData;
                 this.navCtrl.push(NewStoryPage, {
                   "dateUrl": base64Image,
                   "album": album

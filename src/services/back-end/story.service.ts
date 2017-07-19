@@ -7,6 +7,7 @@ import {Injectable} from "@angular/core";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {env} from "../../app/environment";
+import {Patient} from "../../dto/patient";
 
 @Injectable()
 export class StoryService extends PrismaService {
@@ -28,32 +29,54 @@ export class StoryService extends PrismaService {
       .catch(error => this.handleError(error));
   }
 
-  getAlbums(): Observable<Album[]> {
-    return this._http.get("assets/json/albums.json").map(res => {
-      /*let albums: Album[] = [];
-       res.json().forEach(album => albums.push(new Album(album)));
-       return albums;*/
+  getAlbums(patientId: string | number): Observable<Album[]> {
+
+    let url: string = env.api.getPatient;
+    let albumUrl: string = env.api.getAlbum;
+    return this._http.get(`${this._urlToApi}/${url}/${patientId}/${albumUrl}`, {
+      headers: this._head
+    })
+      .map(res => {
+        let albums: Album[] = [];
+        res.json().response.forEach(album => albums.push(new Album(album)));
+        return albums;
+      })
+      .catch(err => this.handleError(err));
+
+    /**return this._http.get("assets/json/albums.json").map(res => {
       let albums: Album[];
       let hasAlbums: boolean = false;
       albums = JSON.parse(localStorage.getItem(env.temp.albums)) as Album[];
-      if(albums)
+      if (albums)
         hasAlbums = true;
       if (!hasAlbums) {
         albums = res.json() ? res.json() as Album[] : [];
-        localStorage.setItem(env.temp.albums, JSON.stringify(res.json() as Album[]));
+        let temp: Album[] = []
+        albums.forEach(album => {
+          album.stories = [];
+          temp.push(album);
+        });
+        localStorage.setItem(env.temp.albums, JSON.stringify(albums));
       }
-      return albums;
-    })
-      .catch(error => this.handleError(error));
+      return albums;**/
   }
 
-  addStory(selectedAlbum: Album, newStory: UserStory): Observable<any> {
+
+  /**addStory(selectedAlbum: Album, newStory: UserStory): Observable<any> {
     let currentAlbums: Album[] = JSON.parse(localStorage.getItem(env.temp.albums)) as Album[] || [];
+
+    console.log("Before \n" + JSON.stringify(JSON.parse(localStorage.getItem(env.temp.albums)) as Album[]));
     let isANewAlbum: boolean = true;
     currentAlbums.forEach(album => {
       if (album.id === selectedAlbum.id) {
         isANewAlbum = false;
-        newStory.id = album.stories[album.stories.length - 1].id + 1;
+        if (album.stories.length === 0) {
+          album.stories = [];
+          newStory.id = "1";
+        }
+        else {
+          newStory.id = album.stories[album.stories.length - 1].id + 1;
+        }
         album.stories.push(newStory);
       }
     });
@@ -61,13 +84,47 @@ export class StoryService extends PrismaService {
       newStory.id = "1";
       selectedAlbum = new Album();
       selectedAlbum.title = "Random";
-      selectedAlbum.id ="RandomId";
+      selectedAlbum.id = "RandomId";
       selectedAlbum.stories.push(newStory);
       currentAlbums.push(selectedAlbum);
     }
     localStorage.setItem(env.temp.albums, JSON.stringify(currentAlbums as Album[]));
+    console.log("After \n" + JSON.stringify(JSON.parse(localStorage.getItem(env.temp.albums)) as Album[]));
     return Observable.of(true);
 
+  }*/
+  addStory(selectedAlbum: Album, newStory: UserStory): Observable<any> {
+    let url: string = env.api.getPatient;
+    return this._http.post(`${this._urlToApi}/${url}`, newStory)
+      .map(res => {
+        // If request fails, throw an Error that will be caught
+        if (res.status < 200 || res.status >= 300) {
+          return null;
+        }
+        return new Patient(res.json().response) as Patient;
+      }).catch(err => this.handleError(err));
+  }
+
+  generateBasicAlbums(patientId: string): Observable<Album[]> {
+    let url: string = env.api.getPatient;
+    let albumUrl: string = env.api.getAlbum;
+    return this._http.get("assets/json/albums.json").map(res => {
+      let albums: Album[] = res.json();
+      let returnedAlbums: Album[] = [];
+      if (!albums)
+        return;
+      albums.forEach(album => {
+        this._http.post(`${this._urlToApi}/${url}/${patientId}/${albumUrl}`, album)
+          .map(res => {
+            // If request fails, throw an Error that will be caught
+            if (res.status < 200 || res.status >= 300) {
+              return null;
+            }
+            return new Album(res.json().response) as Album;
+          }).toPromise().then(res2 => returnedAlbums.push(res2)).catch(err => this.handleError(err));
+      });
+      return returnedAlbums;
+    }).catch(err => this.handleError(err));
   }
 
   /** Get historical themes (just albums for now) */
