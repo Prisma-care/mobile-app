@@ -1,17 +1,19 @@
-import { AbstractStory } from './abstract-story';
+import {AbstractStory} from './abstract-story';
 
-export class UserStory extends AbstractStory {
-    albumId: string;
-    originId: string; // heritage origin story
-    date: Date;
-
+export class UserStory {
+  id:string;
+  creatorId: number; // heritage origin story
+  albumId: number;
+  description: string;
+  source:string;
 
   constructor(json?) {
-    super(json);
-    if(!json)
+    if (!json)
       return;
+    this.id = json.id;
     this.albumId = json.albumId;
-    this.originId = json.originId;
-    this.date = new Date(json.date);
+    this.creatorId = json.creatorId;
+    this.description =json.description;
+    this.source = json.source;
   }
 }

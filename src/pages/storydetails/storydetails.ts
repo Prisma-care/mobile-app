@@ -27,9 +27,7 @@ export class StoryDetailsPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.storyService.getUserStory(this.album.stories[this.index].id)
-      .toPromise()
-      .then(story => this.story = story as UserStory);
+
     if (this.navParams.get("slide")) {
       //this.navCtrl.remove(this.navCtrl.length()-2);
     }

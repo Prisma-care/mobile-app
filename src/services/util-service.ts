@@ -13,7 +13,7 @@ export class UtilService{
   }
 
   pictureOptions : CameraOptions = {
-    destinationType: this.camera.DestinationType.DATA_URL,
+    destinationType: this.camera.DestinationType.FILE_URI,
     encodingType: this.camera.EncodingType.JPEG,
     targetWidth: 1000,
     targetHeight: 1000,

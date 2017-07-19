@@ -12,12 +12,16 @@ import {Patient} from "../../dto/patient";
 @Injectable()
 export class StoryService extends PrismaService {
 
-  getUserStory(id: string): Observable<UserStory> {
-    return this.getUserStories()
-      .map(stories => {
-        let s = stories.find(story => story.id == id);
-        return s ? new UserStory(s) : new UserStory();
-      });
+  getUserStory(userId:string,storyId: string): Observable<UserStory> {
+    let url: string = env.api.getPatient;
+    let storyUrl:string = env.api.getStory;
+    return this._http.get(`${this._urlToApi}/${url}/${userId}/${storyUrl}/${storyId}`, {
+      headers: this._head
+    })
+      .map(res => {
+        return new UserStory(res.json().response);
+      })
+      .catch(err => this.handleError(err));
   }
 
   getUserStories(): Observable<UserStory[]> {
@@ -93,18 +97,30 @@ export class StoryService extends PrismaService {
     return Observable.of(true);
 
   }*/
-  addStory(selectedAlbum: Album, newStory: UserStory): Observable<any> {
+  addStory(userId:number,selectedAlbum: Album, newStory: UserStory): Observable<any> {
     let url: string = env.api.getPatient;
-    return this._http.post(`${this._urlToApi}/${url}`, newStory)
+    let storyUrl:string = env.api.getStory;
+    return this._http.post(`${this._urlToApi}/${url}/${userId}/${storyUrl}`, newStory)
       .map(res => {
         // If request fails, throw an Error that will be caught
         if (res.status < 200 || res.status >= 300) {
           return null;
         }
-        return new Patient(res.json().response) as Patient;
+        return new UserStory(res.json().response) as UserStory;
       }).catch(err => this.handleError(err));
   }
 
+  postImage(image:File,userStory: UserStory): Observable<any> {
+    let url: string = env.api.getPatient;
+    return this._http.post(`${this._urlToApi}/${url}`, userStory)
+      .map(res => {
+        // If request fails, throw an Error that will be caught
+        if (res.status < 200 || res.status >= 300) {
+          return null;
+        }
+        return new UserStory(res.json().response) as UserStory;
+      }).catch(err => this.handleError(err));
+  }
   generateBasicAlbums(patientId: string): Observable<Album[]> {
     let url: string = env.api.getPatient;
     let albumUrl: string = env.api.getAlbum;

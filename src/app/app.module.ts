@@ -28,7 +28,10 @@ import { QuestionPage } from "../pages/question/question";
 import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-selection";
 import {EmptyPage} from "../pages/empty/empty";
 import {ApiTestingPage} from "../pages/api-testing/api-testing";
-
+import {FileTransfer} from "@ionic-native/file-transfer";
+import { File } from '@ionic-native/file';
+import {Transfer} from "@ionic-native/transfer";
+import {FilePath} from "@ionic-native/file-path";
 
 @NgModule({
   declarations: [
@@ -77,7 +80,11 @@ import {ApiTestingPage} from "../pages/api-testing/api-testing";
     StoryService,
     PatientService,
     Camera,
+    File,
+    FileTransfer,
     FileChooser,
+    Transfer,
+    FilePath,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

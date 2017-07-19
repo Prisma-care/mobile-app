@@ -46,18 +46,18 @@ export class NewStoryPage {
 
   commit() {
     let newStory: UserStory = new UserStory();
-    newStory.albumId = this.selectedAlbum.id;
-    newStory.dateAdded = new Date();
+    newStory.albumId = +this.selectedAlbum.id;
+    //newStory.dateAdded = new Date();
     if(this.year) {
-      newStory.date = new Date();
-      newStory.date.setFullYear(this.year,this.month || 1 ,this.day || 1);
+     // newStory.date = new Date();
+     // newStory.date.setFullYear(this.year,this.month || 1 ,this.day || 1);
     }
     newStory.description = this.description;
     if(this.dataUrl)
       newStory.source = this.dataUrl.indexOf("assets/img/t/anne.jpg") > -1 ? "anne.jpg" : this.dataUrl;
-    newStory.type = StoryType.IMAGE;
-    newStory.title = this.title;
-    this.storyService.addStory(this.selectedAlbum, newStory).toPromise().then(res => {
+    //newStory.type = StoryType.IMAGE;
+    //newStory.title = this.title;
+    this.storyService.addStory(3,this.selectedAlbum, newStory).toPromise().then(res => {
       this.navCtrl.push(StoriesPage);
     });
   }
