@@ -7,7 +7,6 @@ import {MyApp} from "./app.component";
 import {StoriesPage} from "../pages/stories/stories";
 import {BrowsePage} from "../pages/browse/browse";
 import {PatientProfilePage} from "../pages/patientprofile/patientprofile";
-import {TabsPage} from "../pages/tabs/tabs";
 
 import {StatusBar} from "@ionic-native/status-bar";
 import {SplashScreen} from "@ionic-native/splash-screen";
@@ -29,6 +28,7 @@ import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-sele
 import {EmptyPage} from "../pages/empty/empty";
 import {ApiTestingPage} from "../pages/api-testing/api-testing";
 import { AlbumsPage } from "../pages/albums/albums";
+import { AlbumDetailPage } from "../pages/album-detail/album-detail";
 
 
 @NgModule({
@@ -37,6 +37,7 @@ import { AlbumsPage } from "../pages/albums/albums";
     TutorialPage,
     StoriesPage,
     AlbumsPage,
+    AlbumDetailPage,
     BrowsePage,
     PatientProfilePage,
     StoryDetailsPage,
@@ -46,7 +47,6 @@ import { AlbumsPage } from "../pages/albums/albums";
     EmptyPage,
     NewStorySelectionPage,
     ApiTestingPage,
-    TabsPage
   ],
   imports: [
     BrowserModule,
@@ -60,6 +60,7 @@ import { AlbumsPage } from "../pages/albums/albums";
     TutorialPage,
     StoriesPage,
     AlbumsPage,
+    AlbumDetailPage,
     BrowsePage,
     PatientProfilePage,
     StoryDetailsPage,
@@ -69,7 +70,6 @@ import { AlbumsPage } from "../pages/albums/albums";
     EmptyPage,
     NewStorySelectionPage,
     ApiTestingPage,
-    TabsPage
   ],
   providers: [
     StatusBar,

@@ -1,11 +1,12 @@
 <ion-content>
-  <div class="albums-header">
+  <div class="page-header">
     <h2>Waarover babbelen we vandaag?</h2>
   </div>
   <ion-grid>
     <ion-row>
-      <ion-col col-6 *ngFor="let album of albums,let i=index"
-      class="album-thumb" [ngStyle]="{'background-image': 'url(' + getThumb(album.stories[0].source) + ')'}">
+      <ion-col col-6 col-md-4 *ngFor="let album of albums,let i=index"
+      class="album-thumb" [ngStyle]="{'background-image': 'url(' + getThumb(album.stories[0].source) + ')'}"
+      (click)="showDetails(album)">
         <h3 class="hist-title">{{album.title ? album.title : '?'}}</h3>
       </ion-col>
     </ion-row>

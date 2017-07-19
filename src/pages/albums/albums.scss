@@ -1,22 +1,13 @@
 albums-page {
 
-  .albums-header {
-    padding: 2em 6em;
-    //background-color: map-get($colors, 'primary');
-
-  }
-
-  .albums-header h2 {
-    font-size: map-get($sizes, 'large');
-    line-height: 33px;
-    text-align: center;
-    font-family: $prisma-ff;
-    color: map-get($colors, 'dark-text');
+  .grid {
+    padding: 0;
   }
 
   .album-thumb {
-    height: 50vw;
+    height: 50vw; // todo: dynamic - set to width of comonent?
     background-size: cover;
+    background-position: center;
     position: relative;
   }
 

@@ -11,6 +11,7 @@ import {Album} from "../../dto/album";
 import {Camera} from "@ionic-native/camera";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {EmptyPage} from "../empty/empty";
+import { AlbumDetailPage } from "../album-detail/album-detail";
 
 
 /* TEMPORARY IMPORT */
@@ -71,9 +72,8 @@ export class AlbumsPage implements OnInit {
   }
 
   showDetails(album: Album, index: number) {
-    this.navCtrl.push(StoryDetailsPage, {
+    this.navCtrl.push(AlbumDetailPage, {
       "album": album,
-      "index": index ? index : 0
     })
   }
 

@@ -1,6 +1,5 @@
 import {Component, ViewChild} from "@angular/core";
 import {NavController, NavParams, Slides} from "ionic-angular";
-import {TabsPage} from "../tabs/tabs";
 import {StoriesPage} from "../stories/stories";
 import {ApiTestingPage} from "../api-testing/api-testing";
 import { AlbumsPage } from "../albums/albums";
@@ -43,7 +42,7 @@ export class TutorialPage {
 
   goToTheApp() {
     // localStorage.clear();
-    this.navCtrl.push(TabsPage);
+    this.navCtrl.push(AlbumsPage);
   }
 
 

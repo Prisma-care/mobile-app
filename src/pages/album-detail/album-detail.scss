@@ -1,0 +1,63 @@
+album-detail {
+
+  .grid {
+    padding: 0;
+  }
+
+  .page-header {
+
+    ion-icon {
+      margin: auto;
+      font-size: 2em;
+      text-align: center;
+      color: map-get($colors, 'primary');
+      width: 100%;
+    }
+
+  }
+
+  .album-thumb {
+    height: 50vw; // todo: dynamic - set to width of comonent?
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+
+  .col, [col-6] {
+    padding: 0;
+  }
+
+  .album-thumb h3 {
+    display: inline-block;
+    text-align: center;
+    margin: auto;
+    color: #fff;
+    position: absolute;
+    bottom: 1em;
+    left: 0;
+    width: 100%;
+
+  }
+
+  .add-new-container {
+    background-color: map-get($colors, 'primary');
+    color: #fff;
+    width: 100%;
+    padding: 2.5em 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .add-new > * {
+    display: block;
+  }
+
+  .add-new > ion-icon {
+    font-size: 3em;
+    text-align: center;
+  }
+
+  .add-new > span {
+  }
+}
