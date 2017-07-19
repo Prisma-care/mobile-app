@@ -46,11 +46,13 @@ export class NewStorySelectionPage {
             role: 'destructive',
             icon: 'image',
             handler: () => {
-              let infos:{dataUrl:string,error:any} = this.utilService.chooseAFile();
-             // this.utilService.showErrorMessage("DataURl : " +  infos.dataUrl + "\n" + infos.error);
-              this.navCtrl.push(NewStoryPage, {
-                "dataUrl": infos.dataUrl
-              })
+              let fileChooseAttempt: Promise<any> = this.utilService.chooseAFile();
+
+              fileChooseAttempt.then(
+                (dataUrl) => {
+                  this.navCtrl.push(NewStoryPage,
+                    {"dataUrl": dataUrl})
+                  });
             }
           },
           {
