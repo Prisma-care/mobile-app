@@ -29,9 +29,6 @@ export class StoryService extends PrismaService {
   }
 
   getAlbums(): Observable<Album[]> {
-    this._http.get("http://146.185.145.169/api/v1/patient/1").map(res => {
-      return res.json();
-    }).toPromise().then(sol => console.log(JSON.stringify(sol)));
     return this._http.get("assets/json/albums.json").map(res => {
       let albums: Album[];
       let hasAlbums: boolean = false;
@@ -54,6 +51,8 @@ export class StoryService extends PrismaService {
 
   addStory(selectedAlbum: Album, newStory: UserStory): Observable<any> {
     let currentAlbums: Album[] = JSON.parse(localStorage.getItem(env.temp.albums)) as Album[] || [];
+
+    console.log("Before \n" + JSON.stringify(JSON.parse(localStorage.getItem(env.temp.albums)) as Album[]));
     let isANewAlbum: boolean = true;
     currentAlbums.forEach(album => {
       if (album.id === selectedAlbum.id) {
@@ -62,8 +61,9 @@ export class StoryService extends PrismaService {
           album.stories = [];
           newStory.id = "1";
         }
-        else
+        else {
           newStory.id = album.stories[album.stories.length - 1].id + 1;
+        }
         album.stories.push(newStory);
       }
     });
@@ -76,6 +76,7 @@ export class StoryService extends PrismaService {
       currentAlbums.push(selectedAlbum);
     }
     localStorage.setItem(env.temp.albums, JSON.stringify(currentAlbums as Album[]));
+    console.log("After \n" + JSON.stringify(JSON.parse(localStorage.getItem(env.temp.albums)) as Album[]));
     return Observable.of(true);
 
   }
