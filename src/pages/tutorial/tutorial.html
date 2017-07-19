@@ -20,4 +20,7 @@
           (click)="goToTheApp()" *ngIf="getCurrentSlide() === slides.length-1">Begin
     <ion-icon name="arrow-forward"></ion-icon>
   </button>
+  <ion-fab right bottom>
+    <button ion-fab color="light" (click)="testApi()">ApiTest</button>
+  </ion-fab>
 </ion-content>

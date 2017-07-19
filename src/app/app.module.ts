@@ -14,7 +14,7 @@ import {SplashScreen} from "@ionic-native/splash-screen";
 import {StanizerService} from "../services/stanizer.service";
 import {StoryDetailsPage} from "../pages/storydetails/storydetails";
 import {PrismaService} from "../services/back-end/prisma-api.service";
-import {UserService} from "../services/back-end/user.service";
+import {PatientService} from "../services/back-end/user.service";
 import {HttpModule} from "@angular/http";
 import {StoryService} from "../services/back-end/story.service";
 import {TutorialPage} from "../pages/tutorial/tutorial";
@@ -27,6 +27,7 @@ import { QuestionsPage } from "../pages/questions/questions";
 import { QuestionPage } from "../pages/question/question";
 import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-selection";
 import {EmptyPage} from "../pages/empty/empty";
+import {ApiTestingPage} from "../pages/api-testing/api-testing";
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import {EmptyPage} from "../pages/empty/empty";
     NewStoryPage,
     EmptyPage,
     NewStorySelectionPage,
+    ApiTestingPage,
     TabsPage
   ],
   imports: [
@@ -63,6 +65,7 @@ import {EmptyPage} from "../pages/empty/empty";
     QuestionPage,
     EmptyPage,
     NewStorySelectionPage,
+    ApiTestingPage,
     TabsPage
   ],
   providers: [
@@ -72,7 +75,7 @@ import {EmptyPage} from "../pages/empty/empty";
     StanizerService,
     PrismaService,
     StoryService,
-    UserService,
+    PatientService,
     Camera,
     FileChooser,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

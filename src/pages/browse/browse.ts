@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActionSheetController, NavController} from 'ionic-angular';
 import { StanizerService } from '../../services/stanizer.service';
 import { StoriesPage } from "../stories/stories";
-import { UserService } from "../../services/back-end/user.service";
+import { PatientService } from "../../services/back-end/user.service";
 import { StoryService } from "../../services/back-end/story.service";
 import { Album } from "../../dto/album";
 import {FileChooser} from "@ionic-native/file-chooser";
@@ -19,7 +19,7 @@ export class BrowsePage extends StoriesPage implements OnInit {
 
   constructor(public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
               public navCtrl: NavController, protected stanizerService: StanizerService,
-              protected userService: UserService, protected storyService: StoryService) {
+              protected userService: PatientService, protected storyService: StoryService) {
     super(actionsheetCtrl, camera, fileChooser, navCtrl, stanizerService, userService, storyService);
   }
 
