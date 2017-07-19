@@ -7,6 +7,7 @@ import {Injectable} from "@angular/core";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {env} from "../../app/environment";
+import {Patient} from "../../dto/patient";
 
 @Injectable()
 export class StoryService extends PrismaService {
@@ -79,6 +80,29 @@ export class StoryService extends PrismaService {
     console.log("After \n" + JSON.stringify(JSON.parse(localStorage.getItem(env.temp.albums)) as Album[]));
     return Observable.of(true);
 
+  }
+
+
+  generateBasicAlbums(patientId: string) {
+    let url: string = env.api.getPatient;
+    let albumUrl: string = env.api.getAlbum;
+    this._http.get("assets/json/albums.json").map(res => {
+      let albums: Album[] = res.json();
+      let returnedAlbums: Album[] = [];
+      if (!albums)
+        return;
+      albums.forEach(album => {
+        this._http.post(`${this._urlToApi}/${url}/${patientId}/${albumUrl}`, album)
+          .map(res => {
+            // If request fails, throw an Error that will be caught
+            if (res.status < 200 || res.status >= 300) {
+              return null;
+            }
+            return new Album(res.json().response) as Album;
+          }).toPromise().then(res2 => returnedAlbums.push(res2)).catch(err => this.handleError(err));
+      });
+      return returnedAlbums;
+    }).catch(err => this.handleError(err));
   }
 
   /** Get historical themes (just albums for now) */
