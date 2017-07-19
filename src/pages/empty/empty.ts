@@ -10,14 +10,14 @@ import {BrowsePage} from "../browse/browse";
 })
 export class EmptyPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public  util:UtilService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public  utilService:UtilService) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EmptyPage');
   }
   takeAPicture(){
-    let dataUrl:string = this.util.takeAPicture();
+    let dataUrl:string = this.utilService.takeAPicture().dataUrl;
     if(!dataUrl)
       dataUrl = "assets/img/tutorial/empty-2.jpg";
     if(dataUrl){

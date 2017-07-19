@@ -6,6 +6,7 @@ import {StoryService} from "../../services/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
 import {StoryType} from "../../dto/enum/story-type";
 import {StoriesPage} from "../stories/stories";
+import {UtilService} from "../../services/util-service";
 
 @Component({
   selector: 'page-new-story',
@@ -15,7 +16,7 @@ export class NewStoryPage {
 
 
   //Step 1
-  dataUrl: string = "familie/family1.jpg";
+  dataUrl: string ;
   description: string;
   placeHolder: string = "Schrijf het verhaal.\nHoe meer details hoe beter.";
   //Step 2
@@ -27,8 +28,8 @@ export class NewStoryPage {
   month:number;
   day:number;
 
-  constructor(public navCtrl: NavController, private camera: Camera, public navParams: NavParams, private storyService: StoryService) {
-    this.dataUrl = navParams.get("dateUrl") as string;
+  constructor(public navCtrl: NavController, private camera: Camera, public navParams: NavParams, private storyService: StoryService,private utilService:UtilService) {
+    this.dataUrl = navParams.get("dataUrl") as string || "familie/family1.jpg";
     this.storyService.getAlbums().toPromise().then(albums => {
       this.albums = albums as Album[];
       // if there are three or more albums, select the last one, otherwise create a new one (?)
@@ -67,10 +68,10 @@ export class NewStoryPage {
 
   goToStep2(){
     if(this.step === 0){
-
       this.step = 1;
     }
   }
+
   goToStep3(){
     if(this.step === 1){
       this.step = 2;
