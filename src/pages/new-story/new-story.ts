@@ -30,7 +30,7 @@ export class NewStoryPage {
 
   constructor(public navCtrl: NavController, private camera: Camera, public navParams: NavParams, private storyService: StoryService,private utilService:UtilService) {
     this.dataUrl = navParams.get("dataUrl") as string || "familie/family1.jpg";
-    this.storyService.getAlbums().toPromise().then(albums => {
+    this.storyService.getAlbums(3).toPromise().then(albums => {
       this.albums = albums as Album[];
       // if there are three or more albums, select the last one, otherwise create a new one (?)
       this.selectedAlbum = this.albums[2] || new Album();

@@ -11,13 +11,14 @@ export abstract class AbstractUser {
   location: string;
 
   constructor(json?) {
-    if (json) {
-      this.firstName = json.firstName;
-      this.lastName = json.lastName;
-      this.dateOfBirth = new Date(json.dateOfBirth);
-      this.birthPlace = json.birthPlace;
-      this.location = json.location;
-    }
+    if (!json)
+      return;
+    this.id = json.id;
+    this.firstName = json.firstName;
+    this.lastName = json.lastName;
+    this.dateOfBirth = new Date(json.dateOfBirth);
+    this.birthPlace = json.birthPlace;
+    this.location = json.location;
   }
 
   getThumbnail(): string {

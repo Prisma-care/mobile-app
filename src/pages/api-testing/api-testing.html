@@ -40,10 +40,17 @@
   <pre>
     {{patientAdded | json}}
   </pre>
+  <pre>
+    {{patientAddedAlbums | json}}
+  </pre>
   <div padding>
     <button ion-button color="primary" (click)="addUser()"block>Sing up</button>
+  </div>
+  <div padding>
+    <button ion-button color="primary" (click)="generateAlbums()"block>Generate Albums</button>
   </div>
   <ion-fab right bottom>
     <button ion-fab color="light" (click)="backToTuto()">back</button>
   </ion-fab>
+
 </ion-content>

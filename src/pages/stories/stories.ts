@@ -50,7 +50,7 @@ export class StoriesPage implements OnInit {
   }
 
   ionViewWillEnter(): void {
-    this.storyService.getAlbums().toPromise().then(albums => {
+    this.storyService.getAlbums(3).toPromise().then(albums => {
       this.albums = albums as Album[];
       let empty: number = 0;
       this.albums.forEach(album => {
