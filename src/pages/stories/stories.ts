@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {ActionSheetController, NavController} from "ionic-angular";
 import {StanizerService} from "../../services/stanizer.service";
 import {StoryDetailsPage} from "../storydetails/storydetails";
-import {UserService} from "../../services/back-end/user.service";
+import {PatientService} from "../../services/back-end/user.service";
 import {StoryService} from "../../services/back-end/story.service";
 import {NewStoryPage} from "../new-story/new-story";
 import {User} from "../../dto/user";
@@ -33,13 +33,13 @@ export class StoriesPage implements OnInit {
 
   constructor(public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
               public navCtrl: NavController, protected stanizerService: StanizerService,
-              protected userService: UserService, protected storyService: StoryService) {
+              protected userService: PatientService, protected storyService: StoryService) {
     this.stanizedYoutubeUrl = this.stanizerService.sanitize(this.youtubeUrl);
   }
 
   ngOnInit(): void {
     /* TESTS: to remove
-     this.userService.getUser("12345").toPromise().then(user => {
+     this.patientService.getPatient("12345").toPromise().then(user => {
 
      this.user = user;
      });
@@ -50,7 +50,7 @@ export class StoriesPage implements OnInit {
   }
 
   ionViewWillEnter(): void {
-    this.storyService.getAlbums().toPromise().then(albums => {
+    this.storyService.getAlbums(3).toPromise().then(albums => {
       this.albums = albums as Album[];
       let empty: number = 0;
       this.albums.forEach(album => {

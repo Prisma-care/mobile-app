@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Test me out !</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list>
+
+    <ion-item>
+    <ion-label>firstName</ion-label>
+    <ion-input type="text" value="jean" [(ngModel)]="patientToAdd.firstName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>lastName</ion-label>
+      <ion-input type="text" value="pacif" [(ngModel)]="patientToAdd.lastName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>carehome</ion-label>
+      <ion-input type="text" value="heis" [(ngModel)]="patientToAdd.careHome"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>dateOfBirth</ion-label>
+      <ion-input type="date" value="" [(ngModel)]="patientToAdd.dateOfBirth"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>birthPlace</ion-label>
+      <ion-input type="date" value="" [(ngModel)]="patientToAdd.birthPlace"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>location</ion-label>
+      <ion-input type="text" value="bxl" [(ngModel)]="patientToAdd.location"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <pre>
+    {{patientAdded | json}}
+  </pre>
+  <pre>
+    {{patientAddedAlbums | json}}
+  </pre>
+  <div padding>
+    <button ion-button color="primary" (click)="addUser()"block>Sing up</button>
+  </div>
+  <div padding>
+    <button ion-button color="primary" (click)="generateAlbums()"block>Generate Albums</button>
+  </div>
+  <ion-fab right bottom>
+    <button ion-fab color="light" (click)="backToTuto()">back</button>
+  </ion-fab>
+
+</ion-content>
