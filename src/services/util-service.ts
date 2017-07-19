@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Camera} from "@ionic-native/camera";
+import {Camera, CameraOptions} from "@ionic-native/camera";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {AlertController} from "ionic-angular";
 
@@ -12,25 +12,23 @@ export class UtilService{
 
   }
 
-  takeAPicture(): {dataUrl:string,error:string}{
+  pictureOptions : CameraOptions = {
+    destinationType: this.camera.DestinationType.DATA_URL,
+    encodingType: this.camera.EncodingType.JPEG,
+    targetWidth: 1000,
+    targetHeight: 1000
+  };
+
+  takeAPicture(): Promise<any> {
     let dataUrl:string ="";
     let error:string;
-    this.camera.getPicture({
-      destinationType:
-      this.camera.DestinationType.DATA_URL,
-      targetWidth: 1000,
-      targetHeight: 1000
-    }).then((imageData) => {
+    return this.camera.getPicture(this.pictureOptions).then((imageData) => {
       // imageData is a base64 encoded string
-      console.log(imageData);
-      dataUrl = "data:image/jpeg;base64," + imageData;
-      return dataUrl;
+      return dataUrl = "data:image/jpeg;base64," + imageData;
     }, (err) => {
-      error=err;
+      this.showErrorMessage("Error for taking a pic :" + err);
+      return err;
     });
-    //this.camera.cleanup().then();
-    error ?  this.showErrorMessage("Error for taking a pic :" + error).then() :"";
-    return {dataUrl:dataUrl,error:error};
   }
 
   chooseAFile():{dataUrl:string,error:string}{
