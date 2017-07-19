@@ -16,7 +16,8 @@ export class UtilService{
     destinationType: this.camera.DestinationType.DATA_URL,
     encodingType: this.camera.EncodingType.JPEG,
     targetWidth: 1000,
-    targetHeight: 1000
+    targetHeight: 1000,
+    correctOrientation: true
   };
 
   takeAPicture(): Promise<any> {
