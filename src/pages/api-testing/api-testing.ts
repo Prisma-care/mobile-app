@@ -49,11 +49,12 @@ export class ApiTestingPage {
   }
 
   ionViewDidLoad() {
-    this.patientService.getPatient("3").toPromise().then(res => {
+    this.patientService.getPatient("1").toPromise().then(res => {
       this.patientAdded = res;
+      this.storySerivce.getAlbums(this.patientAdded.id).toPromise().then(res => this.patientAddedAlbums = res);
+      this.storySerivce.getUserStory(this.patientAdded.id, "21").toPromise().then(res => this.userStory = res);
     })
-    this.storySerivce.getAlbums(this.patientAdded.id).toPromise().then(res => this.patientAddedAlbums = res);
-    this.storySerivce.getUserStory(this.patientAdded.id, "10").toPromise().then(res => this.userStory = res);
+
   }
 
   backToTuto() {
@@ -116,7 +117,7 @@ export class ApiTestingPage {
     //console.log("got the story :" + JSON.stringify(res));
 
     // this.utilService.takeAPicture().then(res => {
-    this.fileTransfer.upload("empty-1.jpg", API_URL + '/' + env.api.getPatient + '/' + 3 + '/' + env.api.getStory + '/' + 10 + '/' + env.api.getAsset, options)
+    this.fileTransfer.upload("empty-1.jpg", API_URL + '/' + env.api.getPatient + '/' + 3 + '/' + env.api.getStory + '/' + 21 + '/' + env.api.getAsset, options)
       .then((data) => {
         console.log("got the data");
         newStory.source = data.response;
@@ -280,10 +281,12 @@ export class ApiTestingPage {
 
   public uploadImage() {
     // Destination URL
-    var url = API_URL + '/' + env.api.getPatient + '/' + 1 + '/' + env.api.getStory + '/' + 19 + '/' + env.api.getAsset;
+    var url = API_URL + '/' + env.api.getPatient + '/' + 1 + '/' + env.api.getStory + '/' + 21 + '/' + env.api.getAsset;
+
+
 
     // File for Upload
-    var targetPath = this.pathForImage(this.lastImage);
+    var targetPath = cordova.file.documentsDirectory + 'assets/img/tutorial/empty-1.jpg'; //this.pathForImage(this.lastImage);
 
     // File name only
     var filename = this.lastImage;

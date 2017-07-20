@@ -2,7 +2,7 @@
  * Created by Jean on 10-07-17.
  */
 
-export const BACKEND: string = 'http://146.185.145.169';
+export const BACKEND: string = 'https://prisma.care';
 export const API_URL: string = BACKEND + '/api/v1';
 
 
