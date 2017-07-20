@@ -68,4 +68,14 @@ export class AlbumsPage implements OnInit {
       "album": album,
     })
   }
+
+  getBackgroundImage(i: number): string {
+    if (this.albums[i].isEmpty()) {
+      return ""
+    }
+    else {
+      let imageSrc = this.albums[i].stories[0].source;
+      return "url('" + this.getThumb(imageSrc) + "')";
+    }
+  }
 }

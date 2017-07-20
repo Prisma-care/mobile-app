@@ -8,6 +8,7 @@ albums-page {
     height: 50vw; // todo: dynamic - set to width of comonent?
     background-size: cover;
     background-position: center;
+    background-color: color($colors, dark-gray);
     position: relative;
   }
 

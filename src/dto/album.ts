@@ -13,7 +13,10 @@ export class Album {
     this.id = json.id;
     this.title = json.title;
     this.description = json.description;
-    if (json.stories) // TODO: these are not full stories
-      json.stories.push(story => new UserStory(story));
+    json.stories.forEach((story) => this.stories.push(new UserStory(story)));
+  }
+
+  isEmpty(): boolean {
+    return this.stories.length === 0;
   }
 }
