@@ -9,21 +9,24 @@
         "title": "Sabena Security",
         "description": "De werplaats van Marie-Josée vroeger.",
         "type": "2",
-        "source": "werk/sabena-security.jpg"
+        "source": "werk/sabena-security.jpg",
+        "favorited": false
       },
       {
         "id": "2",
         "title": "Poster",
         "description": "Deze poster hing op in het bureau.",
         "type": "2",
-        "source": "werk/sabenaposter.jpg"
+        "source": "werk/sabenaposter.jpg",
+        "favorited": false
       },
       {
         "id": "4",
         "title": "Bureau",
         "description": "Waar Marie haar werk deed.",
         "type": "2",
-        "source": "werk/office.jpg"
+        "source": "werk/office.jpg",
+        "favorited": false
       }
     ]
   },
@@ -37,28 +40,32 @@
         "title": "Baby",
         "description": "Frederik toen hij nog heel klein was.",
         "type": "2",
-        "source": "kindertijd/baby.jpg"
+        "source": "kindertijd/baby.jpg",
+        "favorited": false
       },
       {
         "id": "2",
         "title": "Pannenkoeken op zondag",
         "description": "Een geliefkoosd moment van Frederik in het weekend.",
         "type": "2",
-        "source": "kindertijd/pancakes.jpg"
+        "source": "kindertijd/pancakes.jpg",
+        "favorited": false
       },
       {
         "id": "3",
         "title": "Buitenspelen",
         "description": "Anne en Frank in de tuin.",
         "type": "2",
-        "source": "kindertijd/hek.jpg"
+        "source": "kindertijd/hek.jpg",
+        "favorited": false
       },
       {
         "id": "4",
         "title": "De 1ste klas",
         "description": "Onze oude klas van het eerste leerjaar in Steenokkerzeel.",
         "type": "2",
-        "source": "kindertijd/klas-klein.jpg"
+        "source": "kindertijd/klas-klein.jpg",
+        "favorited": false
       }
     ]
   },
@@ -72,27 +79,31 @@
         "title": "Familiefoto in de tuin",
         "description": "In Halle",
         "type": "2",
-        "source": "familie/family1.jpg"
+        "source": "familie/family1.jpg",
+        "favorited": false
       },
       {
         "id": "2",
         "title": "Familiefoto",
         "type": "2",
-        "source": "familie/duo.jpg"
+        "source": "familie/duo.jpg",
+        "favorited": false
       },
       {
         "id": "3",
         "title": "Verjaardag",
         "description": "De verjaardag van Roland",
         "type": "2",
-        "source": "familie/verjaardag2.jpg"
+        "source": "familie/verjaardag2.jpg",
+        "favorited": false
       },
       {
         "id": "4",
         "title": "Iedereen",
         "description": "Recente familiefoto met iedereen erop.",
         "type": "2",
-        "source": "familie/family2.jpg"
+        "source": "familie/family2.jpg",
+        "favorited": false
       }
     ]
   },
@@ -106,28 +117,32 @@
         "title": "Moskou",
         "description": "Op het rode plein tijdens een reis door Rusland.",
         "type": "2",
-        "source": "plaatsen/moskow.jpg"
+        "source": "plaatsen/moskow.jpg",
+        "favorited": false
       },
       {
         "id": "2",
         "title": "Split",
         "description": "In Kroatië.",
         "type": "2",
-        "source": "plaatsen/split-croatia.jpg"
+        "source": "plaatsen/split-croatia.jpg",
+        "favorited": false
       },
       {
         "id": "4",
         "title": "Hallerbos",
         "description": "Hier gingen we regelmatig wandelen.",
         "type": "2",
-        "source": "plaatsen/hallerbos.jpg"
+        "source": "plaatsen/hallerbos.jpg",
+        "favorited": false
       },
       {
         "id": "5",
         "title": "Stadhuis Halle",
         "description": "Hier zijn Marie-Josée en Roland getrouwd.",
         "type": "2",
-        "source": "plaatsen/stadhuishalle.jpg"
+        "source": "plaatsen/stadhuishalle.jpg",
+        "favorited": false
       }
     ]
   },
@@ -141,21 +156,24 @@
         "title": "Art Nouveau",
         "description": "Marie vind Art Nouveau heel mooi.",
         "type": "2",
-        "source": "kunst/artnouveau.jpg"
+        "source": "kunst/artnouveau.jpg",
+        "favorited": false
       },
       {
         "id": "3",
         "title": "The Three Tenors",
         "description": "De favoriete muziekgroep van Marie.",
         "type": "2",
-        "source": "kunst/threetenors.jpg"
+        "source": "kunst/threetenors.jpg",
+        "favorited": false
       },
       {
         "id": "4",
         "title": "Tasselhuis",
         "description": "Het tasselhuis zijn we eens gaan bekijken.",
         "type": "2",
-        "source": "kunst/tasselplay.jpg"
+        "source": "kunst/tasselplay.jpg",
+        "favorited": false
       }
     ]
   }

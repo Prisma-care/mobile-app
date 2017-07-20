@@ -7,12 +7,13 @@ import {TutorialPage} from "../pages/tutorial/tutorial";
 import {PatientService} from "../services/back-end/user.service";
 import {env} from "./environment";
 import {User} from "../dto/user";
+import { AlbumsPage } from "../pages/albums/albums";
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage: any = TutorialPage;
+  rootPage: any = AlbumsPage;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public patientService: PatientService) {
     platform.ready().then(() => {

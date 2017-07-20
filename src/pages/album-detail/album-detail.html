@@ -11,8 +11,12 @@
   <ion-grid>
     <ion-row>
       <ion-col col-6 col-md-4 *ngFor="let stories of album.stories,let i=index"
-      class="album-thumb" [ngStyle]="{'background-image': 'url(' + getThumb(album.stories[i].source) + ')'}"
       (click)="showDetails(album, i)">
+        <div class="album-thumb"
+        [ngStyle]="{'background-image': 'url(' + getThumb(album.stories[i].source) + ')'}">
+        </div>
+        <ion-icon class="star" name="{{isFavorited(i) ? 'star' : 'star-outline'}}"
+          [class.favorited]="isFavorited(i)" ></ion-icon>
       </ion-col>
     </ion-row>
   </ion-grid>

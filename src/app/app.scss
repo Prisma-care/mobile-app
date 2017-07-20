@@ -36,7 +36,7 @@ h1, h2, h3, .toolbar-title, ion-list-header .label, .tab-button-text {
   line-height: 33px;
   text-align: center;
   font-family: $prisma-ff;
-  color: map-get($colors, 'dark-text');
+  color: map-get($colors, 'dark-gray');
 }
 
 // TOOLBAR
@@ -55,3 +55,17 @@ h1, h2, h3, .toolbar-title, ion-list-header .label, .tab-button-text {
 .toolbar-background-md {
   background-color: map-get($colors, 'primary');
 }
+
+//   STARS
+  .star {
+    display: block;
+    position: absolute;
+    right: 0.7em;
+    bottom: 0.7em;
+    font-size: 3em;
+    color: color($colors, dark-gray);
+  }
+
+  .star.favorited {
+    color: color($colors, yellow);
+  }

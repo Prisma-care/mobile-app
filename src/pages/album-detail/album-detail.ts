@@ -32,6 +32,7 @@ export class AlbumDetailPage implements OnInit {
      */
   }
 
+
   getThumb(url: string): string {
     return "assets/img/t/" + url;
   }
@@ -93,10 +94,15 @@ export class AlbumDetailPage implements OnInit {
     ;
     actionSheet.present();
   }
+
   showDetails(album: Album, index: number) {
     this.navCtrl.push(StoryDetailsPage, {
       "album": album,
       "index": index ? index : 0
     })
+  }
+
+  isFavorited(i: number): boolean {
+    return this.album.stories[i].favorited;
   }
 }

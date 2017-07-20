@@ -9,8 +9,12 @@
 <ion-content padding *ngIf="album && isValidIndex(index) && album.stories[index]">
 
   <div (swipe)="swipeEvent($event)">
-    <img id="{{album.stories[index].id}}" src="{{getThumb(album.stories[index].source)}}"
+    <div class="image-container">
+      <img id="{{album.stories[index].id}}" src="{{getThumb(album.stories[index].source)}}"
          style="width:100%; max-width:100%" *ngIf="album.stories[index].source">
+      <ion-icon class="star" name="{{isFavorited() ? 'star' : 'star-outline'}}"
+        [class.favorited]="isFavorited()" (click)="toggleFavorite()" ></ion-icon>
+    </div>
     <!-- No more title
     <h2>{{album.stories[index].title}}</h2>  -->
     <div class="description" color="general" *ngIf="album.stories[index].description">

@@ -13,16 +13,12 @@ export class StoryDetailsPage implements OnInit {
   public index: number;
   public story: UserStory;
 
-
-  //Just for testing
-  public likes: number = 12;
-  public hasLiked = false;
-
+  // TODO: get favorite in backend &
+  // 1 like?
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private storyService: StoryService) {
     this.album = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
-    this.likes = this.index * 3;
   }
 
   ngOnInit(): void {
@@ -57,9 +53,16 @@ export class StoryDetailsPage implements OnInit {
     this.index = this.index === 0 ? this.album.stories.length - 1 : this.index - 1;
   }
 
-  addLike() {
-    console.log("addigng likes");
-    this.likes = this.hasLiked ? this.likes + 1 : this.likes - 1;
-    this.hasLiked = !this.hasLiked;
+  private getStory(): UserStory {
+    return this.album.stories[this.index];
+  }
+
+  isFavorited(): boolean {
+    return this.getStory().favorited;
+  }
+
+  // TODO: this should be method on the story...
+  toggleFavorite(): void {
+    this.getStory().favorited = this.getStory().favorited ? false : true;
   }
 }
