@@ -6,16 +6,18 @@
 
 <ion-content padding>
   <ion-item-group>
-    <img class="new-story-thumb" *ngIf="dataUrl" src="{{dataUrl}}">
+    <img class="new-story-thumb" *ngIf="dataUrl" src="{{utilService.pathForImage(dataUrl)}}">
     <ion-card-content>
       <ion-item>
-        <ion-textarea class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="description" rows="7" clearInput></ion-textarea>
+        <ion-textarea class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="description" rows="7"
+                      clearInput></ion-textarea>
       </ion-item>
     </ion-card-content>
-    <ion-footer no-shadow>
-      <button class="save-button" ion-button full medium icon-right color="general" (click)="commit()" [disabled]="!description">
-        <ion-icon name="checkmark"></ion-icon><p>Opslaan<p>
-      </button>
-    </ion-footer>
+    <button class="save-button"  full medium icon-right color="general" (click)="commit()"
+            [disabled]="!description">
+      <ion-icon name="checkmark"></ion-icon>
+      <p>Opslaan
+      <p>
+    </button>
   </ion-item-group>
 </ion-content>
