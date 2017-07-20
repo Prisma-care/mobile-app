@@ -38,6 +38,7 @@ export class NewStoryPage {
     , private transfer: Transfer, public loadingCtrl: LoadingController) {
     this.dataUrl = navParams.get("dataUrl") as string;
     this.selectedAlbum = navParams.get("album") as Album;
+    this.utilService.presentToast("Test : " + this.dataUrl);
     // check if source is a question answer
     if (navParams.get("questionAnswer")) {
       this.description = navParams.get("description");

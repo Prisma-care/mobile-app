@@ -50,6 +50,7 @@ export class NewStorySelectionPage {
 
               fileChooseAttempt.then(
                 (dataUrl) => {
+                  this.utilService.presentToast("Adding stuff : " + dataUrl);
                   this.navCtrl.push(NewStoryPage,
                     {"dataUrl": dataUrl})
                 });
