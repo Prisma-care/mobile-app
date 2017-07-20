@@ -4,6 +4,8 @@ import {StoryService} from "../../services/back-end/story.service";
 import {Album} from "../../dto/album";
 import {UtilService} from "../../services/util-service";
 import {NewStoryPage} from "../new-story/new-story";
+import {StoriesPage} from "../stories/stories";
+import { StoryDetailsPage } from "../storydetails/storydetails";
 
 @Component({
   selector: 'album-detail',
@@ -90,5 +92,11 @@ export class AlbumDetailPage implements OnInit {
       })
     ;
     actionSheet.present();
+  }
+  showDetails(album: Album, index: number) {
+    this.navCtrl.push(StoryDetailsPage, {
+      "album": album,
+      "index": index ? index : 0
+    })
   }
 }

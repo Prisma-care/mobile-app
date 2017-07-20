@@ -36,7 +36,7 @@
         "cordova-plugin-compat": "^1.1.0",
         "cordova-plugin-console": "^1.0.7",
         "cordova-plugin-device": "^1.1.6",
-        "cordova-plugin-file": "^4.0.0",
+        "cordova-plugin-file": "^4.3.3",
         "cordova-plugin-file-transfer": "^1.6.3",
         "cordova-plugin-filechooser": "^1.0.1",
         "cordova-plugin-filepath": "^1.0.2",
