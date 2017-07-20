@@ -41,7 +41,19 @@ export class StoryService extends PrismaService {
     })
       .map(res => {
         let albums: Album[] = [];
-        res.json().response.forEach(album => albums.push(new Album(album)));
+        res.json().response.forEach(album =>
+          {
+              /* probably not needed
+            // fill in the stories
+            album.stories.forEach(
+              (story) => {
+                this.getUserStory()
+              }
+            );
+            */
+            albums.push(new Album(album));
+          }
+        );
         return albums;
       })
       .catch(err => this.handleError(err));
@@ -168,7 +180,9 @@ export class StoryService extends PrismaService {
       /*let albums: Album[] = [];
        res.json().forEach(album => albums.push(new Album(album)));
        return albums;*/
-      return res.json() ? res.json() as Album[] : new Array<Album>();
+     let albums: Album[] = [];
+     res.json().forEach(album => albums.push(new Album(album)));
+     return albums;
     })
       .catch(error => this.handleError(error));
   }

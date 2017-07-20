@@ -39,28 +39,6 @@ album-detail {
 
   }
 
-  .add-new-container {
-    background-color: map-get($colors, 'primary');
-    color: #fff;
-    width: 100%;
-    padding: 2.5em 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .add-new > * {
-    display: block;
-  }
-
-  .add-new > ion-icon {
-    font-size: 3em;
-    text-align: center;
-  }
-
-  .add-new > span {
-  }
-
   .star {
     font-size: 2.5em;
   }

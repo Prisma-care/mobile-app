@@ -1,5 +1,11 @@
 [
   {
+    "id": "100",
+    "title": "De leegte",
+    "description": "Waar ik vroeger werkte.",
+    "stories": []
+  },
+  {
     "id": "1",
     "title": "Werk",
     "description": "Waar ik vroeger werkte.",

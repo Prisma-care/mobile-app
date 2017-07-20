@@ -47,7 +47,7 @@ export class AlbumsPage implements OnInit {
   }
 
   ionViewWillEnter(): void {
-    this.storyService.getLOLBUMS().toPromise().then(albums => {
+    this.storyService.getAlbums(1).toPromise().then(albums => {
       this.albums = albums as Album[];
     });
   }
@@ -67,5 +67,15 @@ export class AlbumsPage implements OnInit {
     this.navCtrl.push(AlbumDetailPage, {
       "album": album,
     })
+  }
+
+  getBackgroundImage(i: number): string {
+    if (this.albums[i].isEmpty()) {
+      return ""
+    }
+    else {
+      let imageSrc = this.albums[i].stories[0].source;
+      return "url('" + this.getThumb(imageSrc) + "')";
+    }
   }
 }
