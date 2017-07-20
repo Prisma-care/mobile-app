@@ -78,8 +78,9 @@ export class UtilService {
     let toast = this.toastCtrl.create({
       message: text,
       duration: 8000,
-      position: 'rigth',
-      closeButtonText: "Ok"
+      position: 'top',
+      closeButtonText: "Ok",
+      showCloseButton: true,
     });
     toast.present();
   }

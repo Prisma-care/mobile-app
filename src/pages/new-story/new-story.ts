@@ -69,7 +69,7 @@ export class NewStoryPage {
 
   public uploadImage(patientId: number | string, storyId: number | string, lastImage: string): Promise<any> {
     // Destination URL
-    var url = API_URL + '/' + env.api.getPatient + '/' + 1 + '/' + env.api.getStory + '/' + 20 + '/' + env.api.getAsset;
+    var url = API_URL + '/' + env.api.getPatient + '/' + patientId + '/' + env.api.getStory + '/' + lastImage + '/' + env.api.getAsset;
     // File for Upload
     var targetPath = //cordova.file.documentsDirectory + 'assets/img/tutorial/empty-1.jpg';
       this.utilService.pathForImage(lastImage);
