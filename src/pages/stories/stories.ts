@@ -10,7 +10,6 @@ import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {Camera} from "@ionic-native/camera";
 import {FileChooser} from "@ionic-native/file-chooser";
-import {EmptyPage} from "../empty/empty";
 
 
 /* TEMPORARY IMPORT */
@@ -56,9 +55,11 @@ export class StoriesPage implements OnInit {
       this.albums.forEach(album => {
         if (album.stories.length > 0) empty++
       });
-      if (empty === 0) {
-        this.navCtrl.push(EmptyPage);
-      }
+      /*
+       if (empty === 0) {
+       this.navCtrl.push(EmptyPage);
+       }
+       */
     });
     this.storyService.getUserStories().toPromise().then(stories =>
       console.log("."));

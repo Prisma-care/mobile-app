@@ -5,15 +5,15 @@ import {AlertController} from "ionic-angular";
 
 
 @Injectable()
-export class UtilService{
+export class UtilService {
 
 
-  constructor(public alertCtrl: AlertController,private camera: Camera,private fileChooser: FileChooser){
+  constructor(public alertCtrl: AlertController, private camera: Camera, private fileChooser: FileChooser) {
 
   }
 
-  pictureOptions : CameraOptions = {
-    destinationType: this.camera.DestinationType.DATA_URL,
+  pictureOptions: CameraOptions = {
+    destinationType: this.camera.DestinationType.FILE_URI,
     encodingType: this.camera.EncodingType.JPEG,
     targetWidth: 1000,
     targetHeight: 1000,
@@ -30,7 +30,7 @@ export class UtilService{
     });
   }
 
-  chooseFileOption : CameraOptions = {
+  chooseFileOption: CameraOptions = {
     quality: 100,
     destinationType: this.camera.DestinationType.DATA_URL,
     encodingType: this.camera.EncodingType.JPEG,
@@ -48,13 +48,13 @@ export class UtilService{
     });
   }
 
-  showErrorMessage(errorMessage:string):Promise<any>{
+  showErrorMessage(errorMessage: string): Promise<any> {
     let alert = this.alertCtrl.create({
-      title:"Error",
+      title: "Error",
       subTitle: errorMessage,
       buttons: ['Ok']
     });
     console.log(errorMessage);
-    return  alert.present();
+    return alert.present();
   }
 }

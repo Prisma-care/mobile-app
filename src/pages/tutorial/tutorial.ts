@@ -1,8 +1,7 @@
 import {Component, ViewChild} from "@angular/core";
 import {NavController, NavParams, Slides} from "ionic-angular";
-import {TabsPage} from "../tabs/tabs";
-import {StoriesPage} from "../stories/stories";
 import {ApiTestingPage} from "../api-testing/api-testing";
+import {AlbumsPage} from "../albums/albums";
 
 
 @Component({
@@ -14,7 +13,7 @@ export class TutorialPage {
   @ViewChild(Slides) slider: Slides;
 
 
-  homeRoot = StoriesPage;
+  homeRoot = AlbumsPage;
   currentSlide: number = 0;
   slides: Array<any> = [
     {
@@ -41,8 +40,8 @@ export class TutorialPage {
   }
 
   goToTheApp() {
-    localStorage.clear();
-    this.navCtrl.push(TabsPage);
+    // localStorage.clear();
+    this.navCtrl.push(AlbumsPage);
   }
 
 
@@ -52,11 +51,11 @@ export class TutorialPage {
   }
 
   getCurrentSlide(): number {
-    return  this.slider.getActiveIndex();
+    return this.slider.getActiveIndex();
     ;
   }
 
-  testApi(){
+  testApi() {
     this.navCtrl.push(ApiTestingPage);
   }
 }

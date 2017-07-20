@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{album.title || "Album"}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="page-header">
+    <h2>This is a test question? Or is it?</h2>
+    <ion-icon name="refresh"></ion-icon>
+  </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6 col-md-4 *ngFor="let stories of album.stories,let i=index"
+               class="album-thumb" [ngStyle]="{'background-image': 'url(' + getThumb(album.stories[i].source) + ')'}">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div (click)="openActionSheet()" class="add-new-container">
+    <div class="add-new">
+      <ion-icon name="camera"></ion-icon>
+      <span>Voeg verhaal toe</span>
+    </div>
+  </div>
+</ion-content>

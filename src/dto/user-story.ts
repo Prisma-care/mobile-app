@@ -1,17 +1,23 @@
-import { AbstractStory } from './abstract-story';
-
-export class UserStory extends AbstractStory {
-    albumId: string;
-    originId: string; // heritage origin story
-    date: Date;
-
+export class UserStory {
+  id: string;
+  albumId: number;
+  description: string;
+  title: string;
+  happened_at: Date;
+  creatorId: number; // heritage origin story
+  favorited: boolean;
+  source: string;
 
   constructor(json?) {
-    super(json);
-    if(!json)
+    if (!json)
       return;
+    this.id = json.id;
     this.albumId = json.albumId;
-    this.originId = json.originId;
-    this.date = new Date(json.date);
+    this.creatorId = json.creatorId;
+    this.description = json.description;
+    this.source = json.source;
+    this.favorited = json.favorited;
+    if (json.happened_at)
+      this.happened_at = new Date(json.happened_at);
   }
 }

@@ -1,6 +1,5 @@
 // http://ionicframework.com/docs/v2/theming/
 
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -15,12 +14,42 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
-
 @font-face {
-	font-family: Varela;
-	src: url('../assets/fonts/varela.woff2') format('woff2');
+  font-family: Varela;
+  src: url('../assets/fonts/varela.woff2') format('woff2');
 }
 
 h1, h2, h3, .toolbar-title, ion-list-header .label, .tab-button-text {
-	font-family: Varela,'Noto Sans';
+  font-family: Varela, 'Noto Sans';
+}
+
+// PAGE HEADER
+
+.page-header {
+  padding: 2em 6em;
+  //background-color: map-get($colors, 'primary');
+
+}
+
+.page-header h2 {
+  font-size: map-get($sizes, 'large');
+  line-height: 33px;
+  text-align: center;
+  font-family: $prisma-ff;
+  color: map-get($colors, 'dark-text');
+}
+
+// TOOLBAR
+
+.toolbar-background-md {
+
+  background-color: map-get($colors, 'primary');
+
+  .toolbar-title-md {
+    color: #fff;
+  }
+
+  .bar-button {
+    color: #fff;
+  }
 }

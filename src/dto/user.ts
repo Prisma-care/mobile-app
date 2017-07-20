@@ -6,6 +6,7 @@ export class User extends AbstractUser {
   email: string;
   password: string;
   relations: Relation[] = [];
+
   constructor(json?) {
     super(json);
     if (!json)

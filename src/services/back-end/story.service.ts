@@ -7,17 +7,20 @@ import {Injectable} from "@angular/core";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {env} from "../../app/environment";
-import {Patient} from "../../dto/patient";
 
 @Injectable()
 export class StoryService extends PrismaService {
 
-  getUserStory(id: string): Observable<UserStory> {
-    return this.getUserStories()
-      .map(stories => {
-        let s = stories.find(story => story.id == id);
-        return s ? new UserStory(s) : new UserStory();
-      });
+  getUserStory(userId: string, storyId: string): Observable<UserStory> {
+    let url: string = env.api.getPatient;
+    let storyUrl: string = env.api.getStory;
+    return this._http.get(`${this._urlToApi}/${url}/${userId}/${storyUrl}/${storyId}`, {
+      headers: this._head
+    })
+      .map(res => {
+        return new UserStory(res.json().response);
+      })
+      .catch(err => this.handleError(err));
   }
 
   getUserStories(): Observable<UserStory[]> {
@@ -43,26 +46,31 @@ export class StoryService extends PrismaService {
       })
       .catch(err => this.handleError(err));
 
-    /**return this._http.get("assets/json/albums.json").map(res => {
-      let albums: Album[];
-      let hasAlbums: boolean = false;
-      albums = JSON.parse(localStorage.getItem(env.temp.albums)) as Album[];
-      if (albums)
-        hasAlbums = true;
-      if (!hasAlbums) {
-        albums = res.json() ? res.json() as Album[] : [];
-        let temp: Album[] = []
-        albums.forEach(album => {
-          album.stories = [];
-          temp.push(album);
-        });
-        localStorage.setItem(env.temp.albums, JSON.stringify(albums));
-      }
-      return albums;**/
+
+    /*
+     return this._http.get("assets/json/albums.json").map(res => {
+     let albums: Album[];
+     let hasAlbums: boolean = false;
+     albums = JSON.parse(localStorage.getItem(env.temp.albums)) as Album[];
+     if (albums)
+     hasAlbums = true;
+     if (!hasAlbums) {
+     albums = res.json() ? res.json() as Album[] : [];
+     let temp: Album[] = []
+     albums.forEach(album => {
+     album.stories = [];
+     temp.push(album);
+     });
+     localStorage.setItem(env.temp.albums, JSON.stringify(albums));
+     }
+     return albums;
+     });
+     */
+
   }
 
 
-  /**addStory(selectedAlbum: Album, newStory: UserStory): Observable<any> {
+  oldAddStory(selectedAlbum: Album, newStory: UserStory): Observable<any> {
     let currentAlbums: Album[] = JSON.parse(localStorage.getItem(env.temp.albums)) as Album[] || [];
 
     console.log("Before \n" + JSON.stringify(JSON.parse(localStorage.getItem(env.temp.albums)) as Album[]));
@@ -91,17 +99,30 @@ export class StoryService extends PrismaService {
     localStorage.setItem(env.temp.albums, JSON.stringify(currentAlbums as Album[]));
     console.log("After \n" + JSON.stringify(JSON.parse(localStorage.getItem(env.temp.albums)) as Album[]));
     return Observable.of(true);
+  }
 
-  }*/
-  addStory(selectedAlbum: Album, newStory: UserStory): Observable<any> {
+  addStory(userId: number, newStory: UserStory): Observable<any> {
     let url: string = env.api.getPatient;
-    return this._http.post(`${this._urlToApi}/${url}`, newStory)
+    let storyUrl: string = env.api.getStory;
+    return this._http.post(`${this._urlToApi}/${url}/${userId}/${storyUrl}`, newStory)
       .map(res => {
         // If request fails, throw an Error that will be caught
         if (res.status < 200 || res.status >= 300) {
           return null;
         }
-        return new Patient(res.json().response) as Patient;
+        return new UserStory(res.json().response) as UserStory;
+      }).catch(err => this.handleError(err));
+  }
+
+  postImage(image: File, userStory: UserStory): Observable<any> {
+    let url: string = env.api.getPatient;
+    return this._http.post(`${this._urlToApi}/${url}`, userStory)
+      .map(res => {
+        // If request fails, throw an Error that will be caught
+        if (res.status < 200 || res.status >= 300) {
+          return null;
+        }
+        return new UserStory(res.json().response) as UserStory;
       }).catch(err => this.handleError(err));
   }
 
@@ -137,4 +158,16 @@ export class StoryService extends PrismaService {
     })
       .catch(error => this.handleError(error));
   }
+
+  /** Get historical themes (just albums for now) */
+  getLOLBUMS(): Observable<Album[]> {
+    return this._http.get("assets/json/albums.json").map(res => {
+      /*let albums: Album[] = [];
+       res.json().forEach(album => albums.push(new Album(album)));
+       return albums;*/
+      return res.json() ? res.json() as Album[] : new Array<Album>();
+    })
+      .catch(error => this.handleError(error));
+  }
+
 }

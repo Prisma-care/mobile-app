@@ -11,8 +11,8 @@
   <ion-list>
 
     <ion-item>
-    <ion-label>firstName</ion-label>
-    <ion-input type="text" value="jean" [(ngModel)]="patientToAdd.firstName"></ion-input>
+      <ion-label>firstName</ion-label>
+      <ion-input type="text" value="jean" [(ngModel)]="patientToAdd.firstName"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>lastName</ion-label>
@@ -43,14 +43,32 @@
   <pre>
     {{patientAddedAlbums | json}}
   </pre>
+  <pre>
+    {{userStory | json}}
+  </pre>
+  <p>
+    {{error | json}}
+  </p>
+  <img [src]="targetPathSS">
+  <img [src]="userStory.source">
   <div padding>
-    <button ion-button color="primary" (click)="addUser()"block>Sing up</button>
+    <button ion-button color="primary" (click)="addUser()" block>Sing up</button>
   </div>
   <div padding>
-    <button ion-button color="primary" (click)="generateAlbums()"block>Generate Albums</button>
+    <button ion-button color="primary" (click)="generateAlbums()" block>Generate Albums</button>
   </div>
   <ion-fab right bottom>
     <button ion-fab color="light" (click)="backToTuto()">back</button>
+  </ion-fab>
+  <ion-fab right top>
+    <button ion-fab color="light" (click)="addStory()">story</button>
+  </ion-fab>
+  <ion-fab left top>
+    <button ion-fab color="light" (click)="takePicture()">takePic</button>
+  </ion-fab>
+
+  <ion-fab left bottom="">
+    <button ion-fab color="light" (click)="uploadImage()">Upload</button>
   </ion-fab>
 
 </ion-content>

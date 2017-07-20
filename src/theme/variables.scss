@@ -31,13 +31,15 @@ $content-padding: 0;
 
 $colors: (
   // primary:    #488aff,
-  primary: #ff4444,
+  primary: #647FC6,
   secondary: #33b5e5,
   danger: #ffbb33,
   light: #ABAEB4,
-  transparent: rgba(216,216,216,0),
+  transparent: rgba(216, 216, 216, 0),
   dark: #1f5760,
-  general: #647FC6
+  general: #647FC6,
+  // prisma added
+  dark-text: #545B6E
 );
 
 $sizes: (
@@ -47,6 +49,9 @@ $sizes: (
   text: 15px,
   icons: 30px
 );
+
+// default font family
+$prisma-ff: 'Varela';
 
 // App iOS Variables
 // --------------------------------------------------
@@ -83,10 +88,10 @@ $sizes: (
 @import "noto-sans";
 
 //Custom schemas
-$tabs-md-tab-font-size: map_get($sizes,medium);
+$tabs-md-tab-font-size: map_get($sizes, medium);
 $tabs-ios-tab-font-size: $tabs-md-tab-font-size;
 
-$tabs-md-tab-icon-size: map_get($sizes,icons);
+$tabs-md-tab-icon-size: map_get($sizes, icons);
 $tabs-ios-tab-icon-size: $tabs-md-tab-icon-size;
 
 $tabs-ios-tab-text-color: color($colors, light);
@@ -105,8 +110,8 @@ $tab-button-md-active-color: $tabs-md-tab-icon-color-active;
 $tab-button-md-inactive-color: $tab-button-md-active-color;
 
 // Change the color of the tabs text
-$tabs-md-tab-color-active:                $tab-button-md-active-color;
-$tabs-md-tab-color:                       $tab-button-md-inactive-color;
+$tabs-md-tab-color-active: $tab-button-md-active-color;
+$tabs-md-tab-color: $tab-button-md-inactive-color;
 
 // Change the color of the tabs text
 

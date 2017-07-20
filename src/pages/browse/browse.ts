@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {ActionSheetController, NavController} from 'ionic-angular';
-import { StanizerService } from '../../services/stanizer.service';
-import { StoriesPage } from "../stories/stories";
-import { PatientService } from "../../services/back-end/user.service";
-import { StoryService } from "../../services/back-end/story.service";
-import { Album } from "../../dto/album";
+import {Component, OnInit} from "@angular/core";
+import {ActionSheetController, NavController} from "ionic-angular";
+import {StanizerService} from "../../services/stanizer.service";
+import {StoriesPage} from "../stories/stories";
+import {PatientService} from "../../services/back-end/user.service";
+import {StoryService} from "../../services/back-end/story.service";
+import {Album} from "../../dto/album";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {Camera} from "@ionic-native/camera";
 
@@ -34,7 +34,7 @@ export class BrowsePage extends StoriesPage implements OnInit {
 
   // override because we do not want StoriePages' ionViewWillEnter() to execute
   // this would override the history albums with the story albums
-  ionViewWillEnter():void {
+  ionViewWillEnter(): void {
     // emtpy!
   }
 
