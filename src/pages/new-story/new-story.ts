@@ -57,7 +57,7 @@ export class NewStoryPage {
       newStory.source = this.dataUrl.indexOf("assets/img/t/anne.jpg") > -1 ? "anne.jpg" : this.dataUrl;
     //newStory.type = StoryType.IMAGE;
     //newStory.title = this.title;
-    this.storyService.addStory(3,this.selectedAlbum, newStory).toPromise().then(res => {
+    this.storyService.addStory(3 ,newStory).toPromise().then(res => {
       this.navCtrl.push(StoriesPage);
     });
   }

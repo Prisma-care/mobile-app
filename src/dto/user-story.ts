@@ -1,11 +1,14 @@
 import {AbstractStory} from './abstract-story';
 
 export class UserStory {
-  id:string;
-  creatorId: number; // heritage origin story
+  id: string;
   albumId: number;
   description: string;
-  source:string;
+  title: string;
+  happened_at: Date;
+  creatorId: number; // heritage origin story
+  favorited: boolean;
+  source: string;
 
   constructor(json?) {
     if (!json)
@@ -13,7 +16,10 @@ export class UserStory {
     this.id = json.id;
     this.albumId = json.albumId;
     this.creatorId = json.creatorId;
-    this.description =json.description;
+    this.description = json.description;
     this.source = json.source;
+    this.favorited = json.favorited;
+    if (json.happened_at)
+      this.happened_at = new Date(json.happened_at);
   }
 }

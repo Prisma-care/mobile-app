@@ -71,6 +71,16 @@ export class ApiTestingPage {
     })
   }
 
+  addStory(){
+    let newStory: UserStory = new UserStory();
+    //newStory.albumId = this.patientAddedAlbums[2].id;
+    // newStory.dateAdded = new Date();
+    newStory.description = "1";
+    newStory.favorited = true;
+    newStory.albumId = 3;
+    newStory.creatorId = 1;
+    this.storySerivce.addStory(1,newStory).toPromise().then(res => this.userStory = res);
+  }
   tryUploading() {
     this.upload().then(res => console.log("Uploaded done " + JSON.stringify(res)));
   }
@@ -151,11 +161,12 @@ export class ApiTestingPage {
         //newStory.albumId = this.patientAddedAlbums[2].id;
         // newStory.dateAdded = new Date();
         newStory.description = "Just Testing 2";
+        newStory.albumId =  +this.patientAddedAlbums[2].id;
         // if(this.dataUrl)
         // newStory.source = this.dataUrl.indexOf("assets/img/t/anne.jpg") > -1 ? "anne.jpg" : this.dataUrl;
         ///newStory.type = StoryType.IMAGE;
         // newStory.title = "test";
-        this.storySerivce.addStory(3, this.patientAddedAlbums[2], newStory).toPromise().then(res => {
+        this.storySerivce.addStory(3, newStory).toPromise().then(res => {
           //this.navCtrl.push(StoriesPage);
         });
         //formData.append('file', JSON.stringify(u));
@@ -265,7 +276,7 @@ export class ApiTestingPage {
 
   public uploadImage() {
     // Destination URL
-    var url =  API_URL + '/' + env.api.getPatient + '/' + 3 + '/' + env.api.getStory + '/' + 10 + '/' + env.api.getAsset;
+    var url =  API_URL + '/' + env.api.getPatient + '/' + 1 + '/' + env.api.getStory + '/' + 19 + '/' + env.api.getAsset;
 
     // File for Upload
     var targetPath = this.pathForImage(this.lastImage);
