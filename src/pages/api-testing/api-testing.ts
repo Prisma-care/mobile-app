@@ -265,7 +265,7 @@ export class ApiTestingPage {
   private presentToast(text) {
     let toast = this.toastCtrl.create({
       message: text,
-      duration: 900
+      duration: 6000
     });
     toast.present();
   }
@@ -281,22 +281,24 @@ export class ApiTestingPage {
 
   public uploadImage() {
     // Destination URL
-    var url = API_URL + '/' + env.api.getPatient + '/' + 1 + '/' + env.api.getStory + '/' + 21 + '/' + env.api.getAsset;
+    var url = API_URL + '/' + env.api.getPatient + '/' + 1 + '/' + env.api.getStory + '/' + 20 + '/' + env.api.getAsset;
 
 
 
     // File for Upload
-    var targetPath = cordova.file.documentsDirectory + 'assets/img/tutorial/empty-1.jpg'; //this.pathForImage(this.lastImage);
+    var targetPath = //cordova.file.documentsDirectory + 'assets/img/tutorial/empty-1.jpg';
+      this.pathForImage(this.lastImage);
 
     // File name only
     var filename = this.lastImage;
 
     var options = {
-      fileKey: "file",
-      fileName: filename,
-      chunkedMode: false,
-      mimeType: "multipart/form-data",
-      params: {'fileName': filename}
+      fileKey: "image",
+      fileName: "image",
+      mimeType: "image/jpeg",
+      headers: {
+        "Connection": "close"
+      }
     };
 
     const fileTransfer: TransferObject = this.transfer.create();
