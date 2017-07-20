@@ -10,6 +10,7 @@ import {API_URL, env} from "../../app/environment";
 import {Transfer, TransferObject} from "@ionic-native/transfer";
 import {User} from "../../dto/user";
 import {Patient} from "../../dto/patient";
+import {AlbumsPage} from "../albums/albums";
 
 @Component({
   selector: 'page-new-story',
@@ -55,10 +56,10 @@ export class NewStoryPage {
     this.storyService.addStory(+this.currentPatient.id, newStory).toPromise().then(addedStory => {
       if (this.dataUrl) {
         this.uploadImage(this.currentPatient.id,addedStory.id,this.dataUrl ).then(res =>  {
-          this.navCtrl.push(StoriesPage)
+          this.navCtrl.push(AlbumsPage)
         }).catch(err => {});
       } else {
-        this.navCtrl.push(StoriesPage);
+        this.navCtrl.push(AlbumsPage);
       }
 
     });
