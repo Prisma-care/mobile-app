@@ -97,8 +97,9 @@ export class NewStoryPage {
     // Destination URL
     var url = API_URL + '/' + env.api.getPatient + '/' + patientId + '/' + env.api.getStory + '/' + lastImage + '/' + env.api.getAsset;
     // File for Upload
-    var targetPath = //cordova.file.documentsDirectory + 'assets/img/tutorial/empty-1.jpg';
-      this.utilService.pathForImage(lastImage);
+    console.log("LastImage : " + lastImage);
+    var targetPath = this.utilService.pathForImage(lastImage);
+    console.log("Path : " + targetPath);
 
     var options = {
       fileKey: "asset",
