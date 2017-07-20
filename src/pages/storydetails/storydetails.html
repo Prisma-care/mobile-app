@@ -8,34 +8,36 @@
 
 <ion-content padding *ngIf="album && isValidIndex(index) && album.stories[index]">
 
-  <ion-card (swipe)="swipeEvent($event)">
-    <ion-card-content>
-      <img id="{{album.stories[index].id}}" src="{{getThumb(album.stories[index].source)}}"
-           style="width:100%; max-width:100%" *ngIf="album.stories[index].source">
-      <!-- No more title
-      <h2>{{album.stories[index].title}}</h2>  -->
-      <ion-item class="description" color="general" *ngIf="album.stories[index].description">
-        {{album.stories[index].description}}
-      </ion-item>
-      <div class="row">
-        <button ion-button icon-left block color="transparent" style="text-align: left">
+  <div (swipe)="swipeEvent($event)">
+    <img id="{{album.stories[index].id}}" src="{{getThumb(album.stories[index].source)}}"
+         style="width:100%; max-width:100%" *ngIf="album.stories[index].source">
+    <!-- No more title
+    <h2>{{album.stories[index].title}}</h2>  -->
+    <div class="description" color="general" *ngIf="album.stories[index].description">
+      {{album.stories[index].description}}
+    </div>
+    <div class="row">
+      <button class="detail-button">
+        <div>
           <ion-icon name="md-create" color="general"></ion-icon>
-          <p color="general">Vul het verhaal aan</p>
-        </button>
-      </div>
-      <div class="row">
-        <button ion-button icon-left block color="transparent" style="text-align: left">
-          <ion-icon name="star" color="general"></ion-icon>
-          <p color="general">Favoriet</p>
-        </button>
-      </div>
-      <div class="row">
-        <button ion-button icon-left block (click)="next()" color="transparent" style="text-align: left">
-          <ion-icon name="md-arrow-forward" color="general"></ion-icon>
-          <p color="general">Volgende verhaal</p>
-        </button>
-      </div>
-    </ion-card-content>
-  </ion-card>
+          <p>Vul het verhaal aan</p>
+        </div>
+      </button>
+    </div>
+    <!--
+    <div class="row">
+      <button ion-button full icon-left color="transparent" style="text-align: left">
+        <ion-icon name="star" color="general"></ion-icon>
+        <p color="general">Favoriet</p>
+      </button>
+    </div>
+    <div class="row">
+      <button ion-button full icon-left (click)="next()" color="transparent" style="text-align: left">
+        <ion-icon name="md-arrow-forward" color="general"></ion-icon>
+        <p color="general">Volgende verhaal</p>
+      </button>
+    </div>
+    -->
+  </div>
 
 </ion-content>

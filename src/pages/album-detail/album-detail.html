@@ -11,7 +11,8 @@
   <ion-grid>
     <ion-row>
       <ion-col col-6 col-md-4 *ngFor="let stories of album.stories,let i=index"
-               class="album-thumb" [ngStyle]="{'background-image': 'url(' + getThumb(album.stories[i].source) + ')'}">
+      class="album-thumb" [ngStyle]="{'background-image': 'url(' + getThumb(album.stories[i].source) + ')'}"
+      (click)="showDetails(album, i)">
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -41,15 +41,17 @@ h1, h2, h3, .toolbar-title, ion-list-header .label, .tab-button-text {
 
 // TOOLBAR
 
+.header .toolbar {
+
+  .toolbar-content .title .toolbar-title {
+    color: #fff;
+  }
+
+  .bar-button .button-inner {
+    color: #fff;
+  }
+}
+
 .toolbar-background-md {
-
   background-color: map-get($colors, 'primary');
-
-  .toolbar-title-md {
-    color: #fff;
-  }
-
-  .bar-button {
-    color: #fff;
-  }
 }
