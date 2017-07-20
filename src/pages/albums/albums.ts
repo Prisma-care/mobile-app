@@ -47,7 +47,7 @@ export class AlbumsPage implements OnInit {
   }
 
   ionViewWillEnter(): void {
-    this.storyService.getLOLBUMS().toPromise().then(albums => {
+    this.storyService.getAlbums(1).toPromise().then(albums => {
       this.albums = albums as Album[];
     });
   }
