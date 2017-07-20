@@ -6,7 +6,7 @@
 
 <ion-content padding>
   <ion-item-group>
-    <img class="new-story-thumb" *ngIf="dataUrl" src="{{dataUrl}}">
+    <img class="new-story-thumb" *ngIf="dataUrl" src="{{utilService.pathForImage(dataUrl)}}">
     <ion-card-content>
       <ion-item>
         <ion-textarea class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="description" rows="7" clearInput></ion-textarea>

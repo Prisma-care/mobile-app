@@ -24,7 +24,7 @@ export class UtilService {
     return this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
   }
 
-  public takePicture(sourceType?): Promise<any> {
+  public takePicture(sourceType?): Promise<string> {
     if (!sourceType)
       sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
     // Create options for the Camera Dialog
@@ -41,7 +41,7 @@ export class UtilService {
     return this.camera.getPicture(options).then((imagePath) => {
       // Special handling for Android library
       if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-        this.filePath.resolveNativePath(imagePath)
+        return this.filePath.resolveNativePath(imagePath)
           .then(filePath => {
             let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
             let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
@@ -77,7 +77,9 @@ export class UtilService {
   public presentToast(text) {
     let toast = this.toastCtrl.create({
       message: text,
-      duration: 1000
+      duration: 8000,
+      position: 'rigth',
+      closeButtonText: "Ok"
     });
     toast.present();
   }

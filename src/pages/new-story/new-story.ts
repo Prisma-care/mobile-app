@@ -66,6 +66,7 @@ export class NewStoryPage {
     });
   }
 
+
   public uploadImage(patientId: number | string, storyId: number | string, lastImage: string): Promise<any> {
     // Destination URL
     var url = API_URL + '/' + env.api.getPatient + '/' + 1 + '/' + env.api.getStory + '/' + 20 + '/' + env.api.getAsset;
