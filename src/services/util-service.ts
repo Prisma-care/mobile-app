@@ -1,51 +1,94 @@
 import {Injectable} from "@angular/core";
-import {Camera, CameraOptions} from "@ionic-native/camera";
+import {Camera} from "@ionic-native/camera";
 import {FileChooser} from "@ionic-native/file-chooser";
-import {AlertController} from "ionic-angular";
+import {AlertController, LoadingController, Platform, ToastController} from "ionic-angular";
+import {File} from "@ionic-native/file";
+import {FilePath} from "@ionic-native/file-path";
 
 
+declare var cordova: any;
 @Injectable()
 export class UtilService {
 
-
-  constructor(public alertCtrl: AlertController, private camera: Camera, private fileChooser: FileChooser) {
+  constructor(public alertCtrl: AlertController, private camera: Camera, private file: File,
+              private fileChooser: FileChooser, private filePath: FilePath, public toastCtrl: ToastController, public platform: Platform, public loadingCtrl: LoadingController,) {
 
   }
 
-  pictureOptions: CameraOptions = {
-    destinationType: this.camera.DestinationType.FILE_URI,
-    encodingType: this.camera.EncodingType.JPEG,
-    targetWidth: 1000,
-    targetHeight: 1000,
-    correctOrientation: true
-  };
-
+  // Picture related stuff.
   takeAPicture(): Promise<any> {
-    return this.camera.getPicture(this.pictureOptions).then((imageData) => {
-      // imageData is a base64 encoded string
-      return "data:image/jpeg;base64," + imageData;
-    }, (err) => {
-      this.showErrorMessage("Error for taking a pic :" + err);
-      return err;
-    });
-  }
-
-  chooseFileOption: CameraOptions = {
-    quality: 100,
-    destinationType: this.camera.DestinationType.DATA_URL,
-    encodingType: this.camera.EncodingType.JPEG,
-    sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-    mediaType: this.camera.MediaType.PICTURE
+    return this.takePicture(this.camera.PictureSourceType.CAMERA);
   }
 
   chooseAFile(): Promise<any> {
-    return this.camera.getPicture(this.chooseFileOption).then((imageData) => {
-      // imageData is a base64 encoded string
-      return "data:image/jpeg;base64," + imageData;
+    return this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+  }
+
+  public takePicture(sourceType?): Promise<any> {
+    if (!sourceType)
+      sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
+    // Create options for the Camera Dialog
+    var options = {
+      quality: 10,
+      sourceType: sourceType,
+      saveToPhotoAlbum: false,
+      encodingType: this.camera.EncodingType.JPEG,
+      targetWidth: 1000,
+      targetHeight: 1000,
+      correctOrientation: true
+    };
+    // Get the data of an image
+    return this.camera.getPicture(options).then((imagePath) => {
+      // Special handling for Android library
+      if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+        this.filePath.resolveNativePath(imagePath)
+          .then(filePath => {
+            let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+            let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+            this.copyFileToLocalDir(correctPath, currentName, this.createFileName()).then(lastImage => {return lastImage});
+          });
+      } else {
+        var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+        var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+        this.copyFileToLocalDir(correctPath, currentName, this.createFileName()).then(lastImage => {return lastImage});
+      }
     }, (err) => {
-      this.showErrorMessage("Error for taking a pic :" + err);
-      return err;
+      this.presentToast('Error while selecting image.');
     });
+  }
+
+  // Create a new name for the image
+  public createFileName() {
+    var d = new Date(),
+      n = d.getTime(),
+      newFileName = n + ".jpg";
+    return newFileName;
+  }
+
+// Copy the image to a local folder
+  public copyFileToLocalDir(namePath, currentName, newFileName): Promise<string> {
+    return this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
+      return newFileName;
+    }, error => {
+      this.presentToast('Error while storing file.');
+    });
+  }
+
+  public presentToast(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 6000
+    });
+    toast.present();
+  }
+
+// Always get the accurate path to your apps folder
+  public pathForImage(img) {
+    if (img === null) {
+      return '';
+    } else {
+      return cordova.file.dataDirectory + img;
+    }
   }
 
   showErrorMessage(errorMessage: string): Promise<any> {
@@ -57,4 +100,6 @@ export class UtilService {
     console.log(errorMessage);
     return alert.present();
   }
+
+
 }

@@ -282,9 +282,6 @@ export class ApiTestingPage {
   public uploadImage() {
     // Destination URL
     var url = API_URL + '/' + env.api.getPatient + '/' + 1 + '/' + env.api.getStory + '/' + 20 + '/' + env.api.getAsset;
-
-
-
     // File for Upload
     var targetPath = //cordova.file.documentsDirectory + 'assets/img/tutorial/empty-1.jpg';
       this.pathForImage(this.lastImage);
@@ -293,8 +290,8 @@ export class ApiTestingPage {
     var filename = this.lastImage;
 
     var options = {
-      fileKey: "image",
-      fileName: "image",
+      fileKey: "asset",
+      fileName: "asset",
       mimeType: "image/jpeg",
       headers: {
         "Connection": "close"

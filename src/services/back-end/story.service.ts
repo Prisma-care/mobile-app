@@ -104,7 +104,7 @@ export class StoryService extends PrismaService {
     return Observable.of(true);
   }
 
-  addStory(userId: number, newStory: UserStory): Observable<any> {
+  addStory(userId: number, newStory: UserStory): Observable<UserStory> {
     let url: string = env.api.getPatient;
     let storyUrl: string = env.api.getStory;
     return this._http.post(`${this._urlToApi}/${url}/${userId}/${storyUrl}`, newStory)
