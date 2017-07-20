@@ -4,13 +4,13 @@ import {Camera} from "@ionic-native/camera";
 import {Album} from "../../dto/album";
 import {StoryService} from "../../services/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
-import {StoriesPage} from "../stories/stories";
 import {UtilService} from "../../services/util-service";
 import {API_URL, env} from "../../app/environment";
 import {Transfer, TransferObject} from "@ionic-native/transfer";
 import {User} from "../../dto/user";
 import {Patient} from "../../dto/patient";
 import {AlbumsPage} from "../albums/albums";
+import {StoryDetailsPage} from "../storydetails/storydetails";
 
 @Component({
   selector: 'page-new-story',
@@ -18,8 +18,8 @@ import {AlbumsPage} from "../albums/albums";
 })
 export class NewStoryPage {
 
-  user:User = JSON.parse(localStorage.getItem(env.temp.fakeUser)) as User;
-  currentPatient:Patient = JSON.parse(localStorage.getItem(env.temp.fakePatient)) as Patient;
+  user: User = JSON.parse(localStorage.getItem(env.temp.fakeUser)) as User;
+  currentPatient: Patient = JSON.parse(localStorage.getItem(env.temp.fakePatient)) as Patient;
 
   dataUrl: string;
   dataUploadTrigger: Promise<any>;
@@ -30,6 +30,9 @@ export class NewStoryPage {
   title: string;
 
 
+  index:number =0;
+  oldStory: UserStory;
+
 //file Transfer
   loading: Loading;
 
@@ -38,6 +41,14 @@ export class NewStoryPage {
     , private transfer: Transfer, public loadingCtrl: LoadingController) {
     this.dataUrl = navParams.get("dataUrl") as string;
     this.selectedAlbum = navParams.get("album") as Album;
+    this.index = navParams.get("index") as number;
+
+    this.oldStory = navParams.get("story") as UserStory;
+    if (this.oldStory) {
+      this.description = this.oldStory.description;
+      this.dataUrl = this.oldStory.source;
+    }
+
     this.utilService.presentToast("Test : " + this.dataUrl);
     // check if source is a question answer
     if (navParams.get("questionAnswer")) {
@@ -48,17 +59,22 @@ export class NewStoryPage {
   }
 
   commit() {
+    if (this.oldStory) {
+      this.update();
+      return;
+    }
     let newStory: UserStory = new UserStory();
     newStory.albumId = +this.selectedAlbum.id;
-   // newStory.happened_at = new Date();
+    // newStory.happened_at = new Date();
     newStory.description = this.description;
     newStory.creatorId = 1;
     //will add the upload system
     this.storyService.addStory(+this.currentPatient.id, newStory).toPromise().then(addedStory => {
       if (this.dataUrl) {
-        this.uploadImage(this.currentPatient.id,addedStory.id,this.dataUrl ).then(res =>  {
+        this.uploadImage(this.currentPatient.id, addedStory.id, this.dataUrl).then(res => {
           this.navCtrl.push(AlbumsPage)
-        }).catch(err => {});
+        }).catch(err => {
+        });
       } else {
         this.navCtrl.push(AlbumsPage);
       }
@@ -66,6 +82,16 @@ export class NewStoryPage {
     });
   }
 
+
+  update(){
+    this.oldStory.description = this.description;
+    this.storyService.addStory(+this.currentPatient.id, this.oldStory).toPromise().then(addedStory => {
+      this.navCtrl.push(StoryDetailsPage,{
+        "album":this.selectedAlbum,
+        "index" : this.index
+      });
+    });
+  }
 
   public uploadImage(patientId: number | string, storyId: number | string, lastImage: string): Promise<any> {
     // Destination URL

@@ -3,6 +3,7 @@ import {NavController, NavParams} from "ionic-angular";
 import {StoryService} from "../../services/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
+import {NewStoryPage} from "../new-story/new-story";
 
 @Component({
   selector: 'page-storydetails',
@@ -64,5 +65,14 @@ export class StoryDetailsPage implements OnInit {
   // TODO: this should be method on the story...
   toggleFavorite(): void {
     this.getStory().favorited = this.getStory().favorited ? false : true;
+  }
+
+  editDescription() {
+    let story: UserStory = this.getStory();
+    this.navCtrl.push(NewStoryPage, {
+      "album": this.album,
+      "story": story,
+      "index": this.index
+    })
   }
 }
