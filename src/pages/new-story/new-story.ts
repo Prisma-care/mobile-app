@@ -98,8 +98,7 @@ export class NewStoryPage {
     var url = API_URL + '/' + env.api.getPatient + '/' + patientId + '/' + env.api.getStory + '/' + lastImage + '/' + env.api.getAsset;
     // File for Upload
     console.log("LastImage : " + lastImage);
-    var targetPath = this.utilService.pathForImage(lastImage);
-    console.log("Path : " + targetPath);
+
 
     var options = {
       fileKey: "asset",
@@ -116,14 +115,16 @@ export class NewStoryPage {
       content: 'Uploading...',
     });
     this.loading.present();
+    var targetPath = this.utilService.pathForImage(lastImage);
+    console.log("Path : " + targetPath);
     // Use the FileTransfer to upload the image
     return fileTransfer.upload(targetPath, url, options).then(data => {
       this.loading.dismissAll()
       this.utilService.presentToast('Image succesful uploaded. : ' + targetPath + "\n" + JSON.stringify(data));
     }, err => {
       this.loading.dismissAll()
-      this.utilService.presentToast('Error while uploading file.' + '\n' + JSON.stringify(err));
-    });
+     // this.utilService.presentToast('Error while uploading file.' + '\n' + JSON.stringify(err));
+    }); 
   }
 
 }
