@@ -47,7 +47,7 @@ export class StoryService extends PrismaService {
       .catch(err => this.handleError(err));
   }
 
-  getAlbum(patientId: string | number,albumId: string | number): Observable<Album> {
+  getAlbum(patientId: string | number, albumId: string | number): Observable<Album> {
     let url: string = env.api.getPatient;
     let albumUrl: string = env.api.getAlbum;
     return this._http.get(`${this._urlToApi}/${url}/${patientId}/${albumUrl}/${albumId}`, {
@@ -59,7 +59,18 @@ export class StoryService extends PrismaService {
       .catch(err => this.handleError(err));
   }
 
-
+  addAlbum(patientId: string | number, album: Album): Observable<Album> {
+    let url: string = env.api.getPatient;
+    let albumUrl: string = env.api.getAlbum;
+    return this._http.post(`${this._urlToApi}/${url}/${patientId}/${albumUrl}`, album)
+      .map(res => {
+        // If request fails, throw an Error that will be caught
+        if (res.status < 200 || res.status >= 300) {
+          return null;
+        }
+        return new Album(res.json().response) as Album;
+      }).catch(err => this.handleError(err));
+  }
 
 
   oldAddStory(selectedAlbum: Album, newStory: UserStory): Observable<any> {
@@ -161,5 +172,6 @@ export class StoryService extends PrismaService {
     })
       .catch(error => this.handleError(error));
   }
+
 
 }
