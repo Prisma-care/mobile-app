@@ -35,7 +35,7 @@ export class NewStorySelectionPage {
                 (dataUrl) => {
                   this.navCtrl.push(NewStoryPage,
                     {"dataUrl": dataUrl})
-                  });
+                });
 
               //this.utilService.showErrorMessage("DataURl : " +  infos.dataUrl + "\n" + infos.error);
 
@@ -52,7 +52,7 @@ export class NewStorySelectionPage {
                 (dataUrl) => {
                   this.navCtrl.push(NewStoryPage,
                     {"dataUrl": dataUrl})
-                  });
+                });
             }
           },
           {

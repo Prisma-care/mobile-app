@@ -1,5 +1,3 @@
-import {AbstractStory} from './abstract-story';
-
 export class UserStory {
   id: string;
   albumId: number;

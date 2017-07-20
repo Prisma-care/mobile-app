@@ -6,7 +6,7 @@ export class WorkPlace {
   period: Date;
 
   constructor(json?) {
-    if(!json)
+    if (!json)
       return;
     this.title = json.title;
     this.company = json.company; // TODO: not in spec yet

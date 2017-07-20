@@ -6,7 +6,7 @@ export class Comment {
 
 
   constructor(json?) {
-    if(!json)
+    if (!json)
       return;
     this.id = json.id;
     this.storyId = json.storyId;

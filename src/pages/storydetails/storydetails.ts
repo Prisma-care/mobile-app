@@ -3,7 +3,6 @@ import {NavController, NavParams} from "ionic-angular";
 import {StoryService} from "../../services/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
-import {StoriesPage} from "../stories/stories";
 
 @Component({
   selector: 'page-storydetails',
@@ -55,7 +54,7 @@ export class StoryDetailsPage implements OnInit {
   }
 
   previous(): void {
-    this.index =  this.index === 0 ? this.album.stories.length - 1 : this.index - 1;
+    this.index = this.index === 0 ? this.album.stories.length - 1 : this.index - 1;
   }
 
   addLike() {

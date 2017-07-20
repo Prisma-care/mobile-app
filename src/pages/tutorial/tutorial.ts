@@ -1,8 +1,7 @@
 import {Component, ViewChild} from "@angular/core";
 import {NavController, NavParams, Slides} from "ionic-angular";
-import {StoriesPage} from "../stories/stories";
 import {ApiTestingPage} from "../api-testing/api-testing";
-import { AlbumsPage } from "../albums/albums";
+import {AlbumsPage} from "../albums/albums";
 
 
 @Component({
@@ -52,11 +51,11 @@ export class TutorialPage {
   }
 
   getCurrentSlide(): number {
-    return  this.slider.getActiveIndex();
+    return this.slider.getActiveIndex();
     ;
   }
 
-  testApi(){
+  testApi() {
     this.navCtrl.push(ApiTestingPage);
   }
 }

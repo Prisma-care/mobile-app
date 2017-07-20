@@ -27,8 +27,8 @@ export abstract class AbstractStory {
     this.dateHappened = new Date(json.dateHappened);
     this.likes = json.likes;
     if (json.comments)
-      json.comments.forEach(comment =>     this.comments.push(new Comment(comment)));
+      json.comments.forEach(comment => this.comments.push(new Comment(comment)));
     if (json.categories)
-      json.categories.forEach(category =>   this.categories.push(new Category(category)));
+      json.categories.forEach(category => this.categories.push(new Category(category)));
   }
 }

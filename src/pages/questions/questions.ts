@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import { QUESTIONS } from "./questions.json";
-import { QuestionPage } from "../question/question";
-import { NavController } from "ionic-angular";
+import {Component, OnInit} from "@angular/core";
+import {QUESTIONS} from "./questions.json";
+import {QuestionPage} from "../question/question";
+import {NavController} from "ionic-angular";
 
 @Component({
   selector: 'page-questions',
@@ -10,9 +10,10 @@ import { NavController } from "ionic-angular";
 
 export class QuestionsPage implements OnInit {
 
-  categories : any[];
+  categories: any[];
 
-  constructor(private navCtrl: NavController) { }
+  constructor(private navCtrl: NavController) {
+  }
 
   ngOnInit(): void {
     var _id = 1;

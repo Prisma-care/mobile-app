@@ -2,7 +2,6 @@ import {AbstractUser} from "./abstract-user";
 import {WorkPlace} from "./work-place";
 import {Relation} from "./relation";
 import {Category} from "./category";
-import { UserStory } from "./user-story";
 
 export class Patient extends AbstractUser {
   careHome: string;

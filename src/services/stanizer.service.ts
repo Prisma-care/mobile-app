@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {DomSanitizer} from '@angular/platform-browser';
+import {Injectable} from "@angular/core";
+import {DomSanitizer} from "@angular/platform-browser";
 @Injectable()
 export class StanizerService {
 

@@ -1,24 +1,20 @@
 import {Component, OnInit} from "@angular/core";
 import {ActionSheetController, NavController} from "ionic-angular";
 import {StanizerService} from "../../services/stanizer.service";
-import {StoryDetailsPage} from "../storydetails/storydetails";
 import {PatientService} from "../../services/back-end/user.service";
 import {StoryService} from "../../services/back-end/story.service";
-import {NewStoryPage} from "../new-story/new-story";
 import {User} from "../../dto/user";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {Camera} from "@ionic-native/camera";
 import {FileChooser} from "@ionic-native/file-chooser";
-import {EmptyPage} from "../empty/empty";
-import { AlbumDetailPage } from "../album-detail/album-detail";
+import {AlbumDetailPage} from "../album-detail/album-detail";
+import {env} from "../../app/environment";
 
 
 /* TEMPORARY IMPORT */
 
-/**
- * More info on the slides management : https://ionicframework.com/docs/api/components/slides/Slides/
- */
+
 @Component({
   selector: 'albums-page',
   templateUrl: 'albums.html'
@@ -28,7 +24,7 @@ export class AlbumsPage implements OnInit {
   public youtubeUrl: string = "www.youtube.com/embed/ERD4CbBDNI0?rel=0&amp;showinfo=0";
   public stanizedYoutubeUrl: any;
 
-  user: User;
+  user: User = JSON.parse(localStorage.getItem(env.temp.fakeUser)) as User;
 
   albums: Album[];
 
@@ -52,16 +48,12 @@ export class AlbumsPage implements OnInit {
 
   ionViewWillEnter(): void {
     this.storyService.getLOLBUMS().toPromise().then(albums => {
-      this.albums = albums as Album[];});
-
-    this.storyService.getUserStories().toPromise().then(stories =>
-      console.log("."));
+      this.albums = albums as Album[];
+    });
   }
 
   getThumb(url: string, descripton?: string): string {
-    if (!url)
-    //return 'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' version=\'1.1\' height=\'50px\' width=\'120px\'><text x=\'0\' y=\'15\' fill=\'red\' font-size=\'20\'>'+ descripton + '</text></svg>';
-      return null;
+    if (!url) return null;
     if (url.startsWith("data:image/jpeg;base64") || url.startsWith("assets"))
       return url;
     return "assets/img/t/" + url;
@@ -75,69 +67,5 @@ export class AlbumsPage implements OnInit {
     this.navCtrl.push(AlbumDetailPage, {
       "album": album,
     })
-  }
-
-  showNewStory(album: Album) {
-    let actionSheet = this.actionsheetCtrl.create({
-        title: 'Verhaal toevoegen',
-        cssClass: 'action-sheets-basic-page',
-        buttons: [
-          {
-            text: 'Foto nemen',
-            role: 'destructive ',
-            icon: 'camera',
-            handler: () => {
-
-              this.camera.getPicture({
-                destinationType: this.camera
-                  .DestinationType.DATA_URL,
-                targetWidth: 1000,
-                targetHeight: 1000
-              }).then((imageData) => {
-                // imageData is a base64 encoded string
-                let base64Image: string = "data:image/jpeg;base64," + imageData;
-                this.navCtrl.push(NewStoryPage, {
-                  "dateUrl": base64Image,
-                  "album": album
-                })
-              }, (err) => {
-                console.log(err);
-              });
-
-            }
-          },
-          {
-            text: 'Foto uit album kiezen',
-            role: 'destructive ',
-            icon: 'image',
-            handler: () => {
-              this.fileChooser.open()
-                .then(uri => console.log(uri))
-                .catch(e => console.log(e));
-            }
-          },
-          {
-            text: 'Youtube video kiezen',
-            role: 'destructive ',
-            icon: 'logo-youtube',
-            handler: () => {
-              this.navCtrl.push(NewStoryPage, {
-                "album": album
-              });
-            }
-          },
-          {
-            text: 'Cancel',
-            role: 'cancel ',
-            icon: 'md-arrow-back',
-            handler: () => {
-              console.log('canceled');
-            }
-          },
-        ]
-
-      })
-    ;
-    actionSheet.present();
   }
 }

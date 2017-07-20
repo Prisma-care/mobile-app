@@ -9,15 +9,17 @@ export const API_URL: string = BACKEND + '/api/v1';
 export const env = {
   production: false,
   jwtToken: 'id_token',
-  localstorage: {
-  },
+  localstorage: {},
   api: {
     getPatient: 'patient',
     getAlbum: 'album',
     getStory: 'story',
-    getAsset: 'asset'
+    getAsset: 'asset',
+    getUser: 'user'
   },
   temp: {
-    albums:"albums"
+    albums: "albums",
+    fakeUser: "user",
+    fakePatient: "patient"
   }
 };

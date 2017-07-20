@@ -1,9 +1,13 @@
-import {Component} from '@angular/core';
+import {Component} from "@angular/core";
 import {
   ActionSheetController,
-  AlertController, IonicPage, Loading, LoadingController, NavController, NavParams, Platform,
+  AlertController,
+  Loading,
+  LoadingController,
+  NavController,
+  Platform,
   ToastController
-} from 'ionic-angular';
+} from "ionic-angular";
 import {TutorialPage} from "../tutorial/tutorial";
 import {PatientService} from "../../services/back-end/user.service";
 import {Patient} from "../../dto/patient";
@@ -11,12 +15,10 @@ import {StoryService} from "../../services/back-end/story.service";
 import {Album} from "../../dto/album";
 import {UtilService} from "../../services/util-service";
 import {UserStory} from "../../dto/user-story";
-import {StoryType} from "../../dto/enum/story-type";
-import {StoriesPage} from "../stories/stories";
 import {API_URL, env} from "../../app/environment";
-import {FileTransferObject, FileUploadOptions, FileTransfer} from "@ionic-native/file-transfer";
+import {FileTransfer, FileTransferObject, FileUploadOptions} from "@ionic-native/file-transfer";
 import {FilePath} from "@ionic-native/file-path";
-import {File} from '@ionic-native/file';
+import {File} from "@ionic-native/file";
 import {Transfer, TransferObject} from "@ionic-native/transfer";
 import {Camera} from "@ionic-native/camera";
 
@@ -35,10 +37,11 @@ export class ApiTestingPage {
   fileTransfer: FileTransferObject;
   lastImage: string = null;
   loading: Loading;
-  error:string;
+  error: string;
 
-  static targetPathS:String;
-  targetPathSS:String =ApiTestingPage.targetPathS;
+  static targetPathS: String;
+  targetPathSS: String = ApiTestingPage.targetPathS;
+
   constructor(public navCtrl: NavController, private camera: Camera, private transfer: Transfer, private file: File, private filePath: FilePath, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public platform: Platform, public loadingCtrl: LoadingController,
               public patientService: PatientService, public storySerivce: StoryService,
               public utilService: UtilService, private transfer2: FileTransfer, public alertCtrl: AlertController) {
@@ -71,7 +74,7 @@ export class ApiTestingPage {
     })
   }
 
-  addStory(){
+  addStory() {
     let newStory: UserStory = new UserStory();
     //newStory.albumId = this.patientAddedAlbums[2].id;
     // newStory.dateAdded = new Date();
@@ -79,8 +82,9 @@ export class ApiTestingPage {
     newStory.favorited = true;
     newStory.albumId = 3;
     newStory.creatorId = 1;
-    this.storySerivce.addStory(1,newStory).toPromise().then(res => this.userStory = res);
+    this.storySerivce.addStory(1, newStory).toPromise().then(res => this.userStory = res);
   }
+
   tryUploading() {
     this.upload().then(res => console.log("Uploaded done " + JSON.stringify(res)));
   }
@@ -161,7 +165,7 @@ export class ApiTestingPage {
         //newStory.albumId = this.patientAddedAlbums[2].id;
         // newStory.dateAdded = new Date();
         newStory.description = "Just Testing 2";
-        newStory.albumId =  +this.patientAddedAlbums[2].id;
+        newStory.albumId = +this.patientAddedAlbums[2].id;
         // if(this.dataUrl)
         // newStory.source = this.dataUrl.indexOf("assets/img/t/anne.jpg") > -1 ? "anne.jpg" : this.dataUrl;
         ///newStory.type = StoryType.IMAGE;
@@ -211,7 +215,7 @@ export class ApiTestingPage {
   }
 
   public takePicture(sourceType?) {
-    if(!sourceType)
+    if (!sourceType)
       sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
     // Create options for the Camera Dialog
     var options = {
@@ -276,7 +280,7 @@ export class ApiTestingPage {
 
   public uploadImage() {
     // Destination URL
-    var url =  API_URL + '/' + env.api.getPatient + '/' + 1 + '/' + env.api.getStory + '/' + 19 + '/' + env.api.getAsset;
+    var url = API_URL + '/' + env.api.getPatient + '/' + 1 + '/' + env.api.getStory + '/' + 19 + '/' + env.api.getAsset;
 
     // File for Upload
     var targetPath = this.pathForImage(this.lastImage);
@@ -289,7 +293,7 @@ export class ApiTestingPage {
       fileName: filename,
       chunkedMode: false,
       mimeType: "multipart/form-data",
-      params : {'fileName': filename}
+      params: {'fileName': filename}
     };
 
     const fileTransfer: TransferObject = this.transfer.create();
@@ -306,8 +310,8 @@ export class ApiTestingPage {
       this.presentToast('Image succesful uploaded. : ' + targetPath + "\n" + JSON.stringify(data));
     }, err => {
       this.loading.dismissAll()
-      this.presentToast('Error while uploading file.' +'\n' + JSON.stringify(err));
-      this.error = 'Error while uploading file.' +'\n' + JSON.stringify(err);
+      this.presentToast('Error while uploading file.' + '\n' + JSON.stringify(err));
+      this.error = 'Error while uploading file.' + '\n' + JSON.stringify(err);
     });
   }
 }

@@ -7,14 +7,13 @@ import {Injectable} from "@angular/core";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {env} from "../../app/environment";
-import {Patient} from "../../dto/patient";
 
 @Injectable()
 export class StoryService extends PrismaService {
 
-  getUserStory(userId:string,storyId: string): Observable<UserStory> {
+  getUserStory(userId: string, storyId: string): Observable<UserStory> {
     let url: string = env.api.getPatient;
-    let storyUrl:string = env.api.getStory;
+    let storyUrl: string = env.api.getStory;
     return this._http.get(`${this._urlToApi}/${url}/${userId}/${storyUrl}/${storyId}`, {
       headers: this._head
     })
@@ -49,24 +48,24 @@ export class StoryService extends PrismaService {
 
 
     /*
-    return this._http.get("assets/json/albums.json").map(res => {
-      let albums: Album[];
-      let hasAlbums: boolean = false;
-      albums = JSON.parse(localStorage.getItem(env.temp.albums)) as Album[];
-      if (albums)
-        hasAlbums = true;
-      if (!hasAlbums) {
-        albums = res.json() ? res.json() as Album[] : [];
-        let temp: Album[] = []
-        albums.forEach(album => {
-          album.stories = [];
-          temp.push(album);
-        });
-        localStorage.setItem(env.temp.albums, JSON.stringify(albums));
-      }
-      return albums;
-    });
-    */
+     return this._http.get("assets/json/albums.json").map(res => {
+     let albums: Album[];
+     let hasAlbums: boolean = false;
+     albums = JSON.parse(localStorage.getItem(env.temp.albums)) as Album[];
+     if (albums)
+     hasAlbums = true;
+     if (!hasAlbums) {
+     albums = res.json() ? res.json() as Album[] : [];
+     let temp: Album[] = []
+     albums.forEach(album => {
+     album.stories = [];
+     temp.push(album);
+     });
+     localStorage.setItem(env.temp.albums, JSON.stringify(albums));
+     }
+     return albums;
+     });
+     */
 
   }
 
@@ -102,9 +101,9 @@ export class StoryService extends PrismaService {
     return Observable.of(true);
   }
 
-  addStory(userId:number, newStory: UserStory): Observable<any> {
+  addStory(userId: number, newStory: UserStory): Observable<any> {
     let url: string = env.api.getPatient;
-    let storyUrl:string = env.api.getStory;
+    let storyUrl: string = env.api.getStory;
     return this._http.post(`${this._urlToApi}/${url}/${userId}/${storyUrl}`, newStory)
       .map(res => {
         // If request fails, throw an Error that will be caught
@@ -115,7 +114,7 @@ export class StoryService extends PrismaService {
       }).catch(err => this.handleError(err));
   }
 
-  postImage(image:File,userStory: UserStory): Observable<any> {
+  postImage(image: File, userStory: UserStory): Observable<any> {
     let url: string = env.api.getPatient;
     return this._http.post(`${this._urlToApi}/${url}`, userStory)
       .map(res => {
@@ -126,6 +125,7 @@ export class StoryService extends PrismaService {
         return new UserStory(res.json().response) as UserStory;
       }).catch(err => this.handleError(err));
   }
+
   generateBasicAlbums(patientId: string): Observable<Album[]> {
     let url: string = env.api.getPatient;
     let albumUrl: string = env.api.getAlbum;
