@@ -80,7 +80,7 @@ export class AlbumDetailPage implements OnInit {
             }
           },
           {
-            text: 'Cancel',
+            text: 'Annuleer',
             role: 'cancel',
             icon: 'md-arrow-back',
             handler: () => {
