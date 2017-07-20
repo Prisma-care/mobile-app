@@ -1,4 +1,4 @@
-page-newstory {
+page-new-story {
   .question {
     height: 29px;
     width: 248px;
@@ -11,6 +11,20 @@ page-newstory {
   .select-md .select-icon, .select-ios.select-icon {
     border: 1px black solid;
   }
+
+  .save-button {
+    text-transform: none;
+    font-size: map-get($sizes, 'medium');
+    height: 2.4em;
+  }
+
+  .save-button p {
+    margin-left: 1em;
+  }
+
+  .story-text {
+    font-size: map-get($sizes, 'medium');
+  }
+
+
 }
-
-
