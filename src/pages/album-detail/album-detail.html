@@ -10,10 +10,13 @@
   </div>
   <ion-grid>
     <ion-row>
-      <ion-col col-6 col-md-4 *ngFor="let stories of album.stories,let i=index"
+      <ion-col col-6 col-md-4 *ngFor="let story of album.stories,let i=index"
       (click)="showDetails(album, i)">
         <div class="album-thumb"
-        [ngStyle]="{'background-image': 'url(' + getThumb(album.stories[i].source) + ')'}">
+        [style]="sanitize(album.getBackgroundImage(i))">
+          <div class="description-wrapper" *ngIf="!story.source && story.description">
+            <p class="story-description">{{story.description}}</p>
+          </div>
         </div>
         <ion-icon class="star" name="{{isFavorited(i) ? 'star' : 'star-outline'}}"
           [class.favorited]="isFavorited(i)" ></ion-icon>

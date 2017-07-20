@@ -74,8 +74,11 @@ export class AlbumsPage implements OnInit {
       return ""
     }
     else {
+      /*
       let imageSrc = this.albums[i].stories[0].source;
-      return "url('" + this.getThumb(imageSrc) + "')";
+      return "url('" + imageSrc + "')";
+      */
+      return this.albums[i].getBackgroundImage(0);
     }
   }
 }

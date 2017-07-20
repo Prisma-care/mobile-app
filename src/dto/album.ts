@@ -19,4 +19,12 @@ export class Album {
   isEmpty(): boolean {
     return this.stories.length === 0;
   }
+
+  getBackgroundImage(i: number): string {
+    if (this.stories[i]) {
+      return this.stories[i].source;
+    }
+    else return "";
+  }
+
 }

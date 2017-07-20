@@ -9,4 +9,8 @@ export class StanizerService {
   public sanitize(url: string) {
     return this.sanitizer.bypassSecurityTrustUrl(url);
   }
+
+  public sanitizeStyle(url: string) {
+    return this.sanitizer.bypassSecurityTrustStyle(url);
+  }
 }

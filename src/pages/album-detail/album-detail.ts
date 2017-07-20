@@ -6,6 +6,8 @@ import {UtilService} from "../../services/util-service";
 import {NewStoryPage} from "../new-story/new-story";
 import {StoriesPage} from "../stories/stories";
 import { StoryDetailsPage } from "../storydetails/storydetails";
+import { DomSanitizer } from "@angular/platform-browser/platform-browser";
+import { StanizerService } from "../../services/stanizer.service";
 
 @Component({
   selector: 'album-detail',
@@ -16,7 +18,7 @@ export class AlbumDetailPage implements OnInit {
   public album: Album;
 
   constructor(public navCtrl: NavController, public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
-              private storyService: StoryService) {
+              private storyService: StoryService, private sanitizer: StanizerService) {
     this.album = navParams.get("album") as Album;
   }
 
@@ -34,7 +36,7 @@ export class AlbumDetailPage implements OnInit {
 
 
   getThumb(url: string): string {
-    return "assets/img/t/" + url;
+    return "" + url;
   }
 
   openActionSheet() {
@@ -93,6 +95,14 @@ export class AlbumDetailPage implements OnInit {
       })
     ;
     actionSheet.present();
+  }
+
+  // DOM Sanitizer for image urls
+  sanitize(url): any {
+    console.log("sanitize attempt: " + url);
+    const style = `background-image: url(${url})`;
+    console.log(style);
+    return this.sanitizer.sanitizeStyle(style);
   }
 
   showDetails(album: Album, index: number) {
