@@ -29,7 +29,7 @@ export class UtilService {
       sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
     // Create options for the Camera Dialog
     var options = {
-      quality: 10,
+      quality: 40,
       sourceType: sourceType,
       saveToPhotoAlbum: false,
       encodingType: this.camera.EncodingType.JPEG,
@@ -45,12 +45,12 @@ export class UtilService {
           .then(filePath => {
             let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
             let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-            this.copyFileToLocalDir(correctPath, currentName, this.createFileName()).then(lastImage => {return lastImage});
+            return this.copyFileToLocalDir(correctPath, currentName, this.createFileName()).then(lastImage => {return lastImage});
           });
       } else {
         var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
         var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-        this.copyFileToLocalDir(correctPath, currentName, this.createFileName()).then(lastImage => {return lastImage});
+        return this.copyFileToLocalDir(correctPath, currentName, this.createFileName()).then(lastImage => {return lastImage});
       }
     }, (err) => {
       this.presentToast('Error while selecting image.');
@@ -77,7 +77,7 @@ export class UtilService {
   public presentToast(text) {
     let toast = this.toastCtrl.create({
       message: text,
-      duration: 6000
+      duration: 1000
     });
     toast.present();
   }
