@@ -95,9 +95,10 @@ export class NewStoryPage {
 
   public uploadImage(patientId: number | string, storyId: number | string, lastImage: string): Promise<any> {
     // Destination URL
-    var url = API_URL + '/' + env.api.getPatient + '/' + patientId + '/' + env.api.getStory + '/' + lastImage + '/' + env.api.getAsset;
+    var url = API_URL + '/' + env.api.getPatient + '/' + patientId + '/' + env.api.getStory + '/' + storyId + '/' + env.api.getAsset;
     // File for Upload
     console.log("LastImage : " + lastImage);
+    console.log("Url: " + url);
 
 
     var options = {
@@ -124,7 +125,7 @@ export class NewStoryPage {
     }, err => {
       this.loading.dismissAll()
      // this.utilService.presentToast('Error while uploading file.' + '\n' + JSON.stringify(err));
-    }); 
+    });
   }
 
 }
