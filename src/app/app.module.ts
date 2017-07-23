@@ -35,6 +35,7 @@ import {AlbumsPage} from "../pages/albums/albums";
 import {AlbumDetailPage} from "../pages/album-detail/album-detail";
 import { AuthService } from '../providers/auth-service/auth-service';
 import { QuestionService } from "../providers/question-service/question.service";
+import { AlbumQuestions } from "../pages/album-detail/album-questions";
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import { QuestionService } from "../providers/question-service/question.service"
     EmptyPage,
     NewStorySelectionPage,
     ApiTestingPage,
+    AlbumQuestions
   ],
   imports: [
     BrowserModule,
@@ -72,6 +74,7 @@ import { QuestionService } from "../providers/question-service/question.service"
     EmptyPage,
     NewStorySelectionPage,
     ApiTestingPage,
+    AlbumQuestions
   ],
   providers: [
     StatusBar,

@@ -4,18 +4,6 @@ album-detail {
     padding: 0;
   }
 
-  .page-header {
-
-    ion-icon {
-      margin: auto;
-      font-size: 2em;
-      text-align: center;
-      color: map-get($colors, 'primary');
-      width: 100%;
-    }
-
-  }
-
   .album-thumb {
     height: 50vw; // todo: dynamic - set to width of comonent?
     background-size: cover;
