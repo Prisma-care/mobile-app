@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {NavController, NavParams} from "ionic-angular";
-import {StoryService} from "../../services/back-end/story.service";
+import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {NewStoryPage} from "../new-story/new-story";

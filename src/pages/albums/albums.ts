@@ -1,8 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {ActionSheetController, NavController} from "ionic-angular";
-import {StanizerService} from "../../services/stanizer.service";
-import {PatientService} from "../../services/back-end/user.service";
-import {StoryService} from "../../services/back-end/story.service";
+import {StanizerService} from "../../providers/stanizer.service";
+import {PatientService} from "../../providers/back-end/user.service";
+import {StoryService} from "../../providers/back-end/story.service";
 import {User} from "../../dto/user";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";

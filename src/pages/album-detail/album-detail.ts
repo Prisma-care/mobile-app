@@ -1,13 +1,13 @@
 import {Component, OnInit} from "@angular/core";
 import {ActionSheetController, NavController, NavParams} from "ionic-angular";
-import {StoryService} from "../../services/back-end/story.service";
+import {StoryService} from "../../providers/back-end/story.service";
 import {Album} from "../../dto/album";
-import {UtilService} from "../../services/util-service";
+import {UtilService} from "../../providers/util-service";
 import {NewStoryPage} from "../new-story/new-story";
 import {StoriesPage} from "../stories/stories";
 import { StoryDetailsPage } from "../storydetails/storydetails";
 import { DomSanitizer } from "@angular/platform-browser/platform-browser";
-import { StanizerService } from "../../services/stanizer.service";
+import { StanizerService } from "../../providers/stanizer.service";
 
 @Component({
   selector: 'album-detail',
