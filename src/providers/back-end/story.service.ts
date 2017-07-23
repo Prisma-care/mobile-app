@@ -41,32 +41,47 @@ export class StoryService extends PrismaService {
     })
       .map(res => {
         let albums: Album[] = [];
-        res.json().response.forEach(album => albums.push(new Album(album)));
+        res.json().response.forEach(album =>
+          {
+              /* probably not needed
+            // fill in the stories
+            album.stories.forEach(
+              (story) => {
+                this.getUserStory()
+              }
+            );
+            */
+            albums.push(new Album(album));
+          }
+        );
         return albums;
       })
       .catch(err => this.handleError(err));
+  }
 
+  getAlbum(patientId: string | number, albumId: string | number): Observable<Album> {
+    let url: string = env.api.getPatient;
+    let albumUrl: string = env.api.getAlbum;
+    return this._http.get(`${this._urlToApi}/${url}/${patientId}/${albumUrl}/${albumId}`, {
+      headers: this._head
+    })
+      .map(res => {
+        return new Album(res.json().response);
+      })
+      .catch(err => this.handleError(err));
+  }
 
-    /*
-     return this._http.get("assets/json/albums.json").map(res => {
-     let albums: Album[];
-     let hasAlbums: boolean = false;
-     albums = JSON.parse(localStorage.getItem(env.temp.albums)) as Album[];
-     if (albums)
-     hasAlbums = true;
-     if (!hasAlbums) {
-     albums = res.json() ? res.json() as Album[] : [];
-     let temp: Album[] = []
-     albums.forEach(album => {
-     album.stories = [];
-     temp.push(album);
-     });
-     localStorage.setItem(env.temp.albums, JSON.stringify(albums));
-     }
-     return albums;
-     });
-     */
-
+  addAlbum(patientId: string | number, album: Album): Observable<Album> {
+    let url: string = env.api.getPatient;
+    let albumUrl: string = env.api.getAlbum;
+    return this._http.post(`${this._urlToApi}/${url}/${patientId}/${albumUrl}`, album)
+      .map(res => {
+        // If request fails, throw an Error that will be caught
+        if (res.status < 200 || res.status >= 300) {
+          return null;
+        }
+        return new Album(res.json().response) as Album;
+      }).catch(err => this.handleError(err));
   }
 
 
@@ -101,7 +116,7 @@ export class StoryService extends PrismaService {
     return Observable.of(true);
   }
 
-  addStory(userId: number, newStory: UserStory): Observable<any> {
+  addStory(userId: number, newStory: UserStory): Observable<UserStory> {
     let url: string = env.api.getPatient;
     let storyUrl: string = env.api.getStory;
     return this._http.post(`${this._urlToApi}/${url}/${userId}/${storyUrl}`, newStory)
@@ -165,9 +180,12 @@ export class StoryService extends PrismaService {
       /*let albums: Album[] = [];
        res.json().forEach(album => albums.push(new Album(album)));
        return albums;*/
-      return res.json() ? res.json() as Album[] : new Array<Album>();
+     let albums: Album[] = [];
+     res.json().forEach(album => albums.push(new Album(album)));
+     return albums;
     })
       .catch(error => this.handleError(error));
   }
+
 
 }

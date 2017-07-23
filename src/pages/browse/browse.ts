@@ -1,9 +1,9 @@
 import {Component, OnInit} from "@angular/core";
 import {ActionSheetController, NavController} from "ionic-angular";
-import {StanizerService} from "../../services/stanizer.service";
+import {StanizerService} from "../../providers/stanizer.service";
 import {StoriesPage} from "../stories/stories";
-import {PatientService} from "../../services/back-end/user.service";
-import {StoryService} from "../../services/back-end/story.service";
+import {PatientService} from "../../providers/back-end/user.service";
+import {StoryService} from "../../providers/back-end/story.service";
 import {Album} from "../../dto/album";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {Camera} from "@ionic-native/camera";

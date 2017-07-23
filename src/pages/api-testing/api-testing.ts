@@ -9,11 +9,11 @@ import {
   ToastController
 } from "ionic-angular";
 import {TutorialPage} from "../tutorial/tutorial";
-import {PatientService} from "../../services/back-end/user.service";
+import {PatientService} from "../../providers/back-end/user.service";
 import {Patient} from "../../dto/patient";
-import {StoryService} from "../../services/back-end/story.service";
+import {StoryService} from "../../providers/back-end/story.service";
 import {Album} from "../../dto/album";
-import {UtilService} from "../../services/util-service";
+import {UtilService} from "../../providers/util-service";
 import {UserStory} from "../../dto/user-story";
 import {API_URL, env} from "../../app/environment";
 import {FileTransfer, FileTransferObject, FileUploadOptions} from "@ionic-native/file-transfer";
@@ -282,9 +282,6 @@ export class ApiTestingPage {
   public uploadImage() {
     // Destination URL
     var url = API_URL + '/' + env.api.getPatient + '/' + 1 + '/' + env.api.getStory + '/' + 20 + '/' + env.api.getAsset;
-
-
-
     // File for Upload
     var targetPath = //cordova.file.documentsDirectory + 'assets/img/tutorial/empty-1.jpg';
       this.pathForImage(this.lastImage);
@@ -293,8 +290,8 @@ export class ApiTestingPage {
     var filename = this.lastImage;
 
     var options = {
-      fileKey: "image",
-      fileName: "image",
+      fileKey: "asset",
+      fileName: "asset",
       mimeType: "image/jpeg",
       headers: {
         "Connection": "close"

@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import {NavController, NavParams} from "ionic-angular";
-import {UtilService} from "../../services/util-service";
+import {UtilService} from "../../providers/util-service";
 import {NewStoryPage} from "../new-story/new-story";
 
 @Component({

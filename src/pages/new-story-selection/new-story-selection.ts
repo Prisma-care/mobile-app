@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {ActionSheetController, NavController, NavParams} from "ionic-angular";
 import {NewStoryPage} from "../new-story/new-story";
-import {UtilService} from "../../services/util-service";
+import {UtilService} from "../../providers/util-service";
 
 
 @Component({
@@ -50,6 +50,7 @@ export class NewStorySelectionPage {
 
               fileChooseAttempt.then(
                 (dataUrl) => {
+                  this.utilService.presentToast(dataUrl);
                   this.navCtrl.push(NewStoryPage,
                     {"dataUrl": dataUrl})
                 });

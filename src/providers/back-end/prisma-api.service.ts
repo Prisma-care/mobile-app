@@ -4,11 +4,7 @@ import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/of";
 import {API_URL, env} from "../../app/environment";
 import {Storage} from "@ionic/storage";
-/**
- * Created by Jean on 10-07-17.
- *
- * General back=end service, used to fetch data from the back-end api.
- */
+
 
 @Injectable()
 export class PrismaService implements OnInit {

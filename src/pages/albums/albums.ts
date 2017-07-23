@@ -1,8 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {ActionSheetController, NavController} from "ionic-angular";
-import {StanizerService} from "../../services/stanizer.service";
-import {PatientService} from "../../services/back-end/user.service";
-import {StoryService} from "../../services/back-end/story.service";
+import {StanizerService} from "../../providers/stanizer.service";
+import {PatientService} from "../../providers/back-end/user.service";
+import {StoryService} from "../../providers/back-end/story.service";
 import {User} from "../../dto/user";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
@@ -47,7 +47,7 @@ export class AlbumsPage implements OnInit {
   }
 
   ionViewWillEnter(): void {
-    this.storyService.getLOLBUMS().toPromise().then(albums => {
+    this.storyService.getAlbums(1).toPromise().then(albums => {
       this.albums = albums as Album[];
     });
   }
@@ -67,5 +67,18 @@ export class AlbumsPage implements OnInit {
     this.navCtrl.push(AlbumDetailPage, {
       "album": album,
     })
+  }
+
+  getBackgroundImage(i: number): string {
+    if (this.albums[i].isEmpty()) {
+      return ""
+    }
+    else {
+      /*
+      let imageSrc = this.albums[i].stories[0].source;
+      return "url('" + imageSrc + "')";
+      */
+      return this.albums[i].getBackgroundImage(0);
+    }
   }
 }

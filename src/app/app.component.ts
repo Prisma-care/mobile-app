@@ -4,7 +4,7 @@ import {StatusBar} from "@ionic-native/status-bar";
 import {SplashScreen} from "@ionic-native/splash-screen";
 
 import {TutorialPage} from "../pages/tutorial/tutorial";
-import {PatientService} from "../services/back-end/user.service";
+import {PatientService} from "../providers/back-end/user.service";
 import {env} from "./environment";
 import {User} from "../dto/user";
 import { AlbumsPage } from "../pages/albums/albums";

@@ -10,7 +10,7 @@
 
   <div (swipe)="swipeEvent($event)">
     <div class="image-container">
-      <img id="{{album.stories[index].id}}" src="{{getThumb(album.stories[index].source)}}"
+      <img id="{{album.stories[index].id}}" src="{{album.stories[index].source}}"
          style="width:100%; max-width:100%" *ngIf="album.stories[index].source">
       <ion-icon class="star" name="{{isFavorited() ? 'star' : 'star-outline'}}"
         [class.favorited]="isFavorited()" (click)="toggleFavorite()" ></ion-icon>
@@ -21,7 +21,7 @@
       {{album.stories[index].description}}
     </div>
     <div class="row">
-      <button class="detail-button">
+      <button ion-button class="detail-button" (click)="editDescription()">
         <div>
           <ion-icon name="md-create" color="general"></ion-icon>
           <p>Vul het verhaal aan</p>
