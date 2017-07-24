@@ -36,12 +36,14 @@ import {AlbumDetailPage} from "../pages/album-detail/album-detail";
 import { AuthService } from '../providers/auth-service/auth-service';
 import { QuestionService } from "../providers/question-service/question.service";
 import { AlbumQuestions } from "../pages/album-detail/album-questions";
+import {LoginPage} from "../pages/login/login";
 
 
 @NgModule({
   declarations: [
     MyApp,
     TutorialPage,
+    LoginPage,
     StoriesPage,
     AlbumsPage,
     AlbumDetailPage,
@@ -62,6 +64,7 @@ import { AlbumQuestions } from "../pages/album-detail/album-questions";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    LoginPage,
     TutorialPage,
     StoriesPage,
     AlbumsPage,
