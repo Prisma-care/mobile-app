@@ -14,7 +14,7 @@ import { OnInit, Component, Input } from "@angular/core";
 export class AlbumQuestions implements OnInit {
 
   currentQuestion: string = "";
-  questions: string[];
+  questions: string[] = [];
 
   @Input() query: string;
 

@@ -21,7 +21,7 @@ export class QuestionService {
       return [].concat.apply([], matchingCategories.map(mc => mc.questions));
     }
     else {
-      return null;
+      return [];
     }
   }
 

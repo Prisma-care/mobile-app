@@ -22,7 +22,6 @@ import {NewStoryPage} from "../pages/new-story/new-story";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {UtilService} from "../providers/util-service";
 
-import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-selection";
 import {EmptyPage} from "../pages/empty/empty";
 import {ApiTestingPage} from "../pages/api-testing/api-testing";
 
@@ -50,7 +49,6 @@ import { AlbumQuestions } from "../pages/album-detail/album-questions";
     StoryDetailsPage,
     NewStoryPage,
     EmptyPage,
-    NewStorySelectionPage,
     ApiTestingPage,
     AlbumQuestions
   ],
@@ -72,7 +70,6 @@ import { AlbumQuestions } from "../pages/album-detail/album-questions";
     StoryDetailsPage,
     NewStoryPage,
     EmptyPage,
-    NewStorySelectionPage,
     ApiTestingPage,
     AlbumQuestions
   ],
