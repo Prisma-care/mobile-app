@@ -11,8 +11,8 @@ export class LoginPage {
 
   isSigningUp:boolean = false;
 
-  login:string ="";
   password:string="";
+  passwordConfirm: string = "";
 
   firstname:string="";
   lastname:string="";
@@ -30,6 +30,7 @@ export class LoginPage {
   signIn(){
 
   }
+
   signUp(){
 
   }
