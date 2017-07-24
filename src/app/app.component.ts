@@ -8,12 +8,13 @@ import {PatientService} from "../providers/back-end/user.service";
 import {env} from "./environment";
 import {User} from "../dto/user";
 import { AlbumsPage } from "../pages/albums/albums";
+import {LoginPage} from "../pages/login/login";
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage: any = TutorialPage;
+  rootPage: any = LoginPage;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public patientService: PatientService) {
     platform.ready().then(() => {
