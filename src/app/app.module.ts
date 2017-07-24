@@ -29,6 +29,7 @@ import {FileTransfer} from "@ionic-native/file-transfer";
 import {File} from "@ionic-native/file";
 import {Transfer} from "@ionic-native/transfer";
 import {FilePath} from "@ionic-native/file-path";
+import {Dialogs} from "@ionic-native/dialogs"
 
 import {AlbumsPage} from "../pages/albums/albums";
 import {AlbumDetailPage} from "../pages/album-detail/album-detail";
@@ -89,7 +90,8 @@ import { AlbumQuestions } from "../pages/album-detail/album-questions";
     Transfer,
     FilePath,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthService
+    AuthService,
+    Dialogs
   ]
 })
 export class AppModule {

@@ -24,7 +24,9 @@ export class StoryService extends PrismaService {
   }
 
   getUserStories(): Observable<UserStory[]> {
-    return this._http.get("assets/json/stories.json").map(res => {
+    return this._http.get("assets/json/stories.json", {
+      headers: this._head
+    }).map(res => {
       let userStories: UserStory[] = [];
       res.json().forEach(story => userStories.push(new UserStory(story)));
       return userStories;
@@ -71,16 +73,21 @@ export class StoryService extends PrismaService {
       .catch(err => this.handleError(err));
   }
 
-  addAlbum(patientId: string | number, album: Album): Observable<Album> {
+  addAlbum(patientId: string | number, title: string): Observable<Album> {
     let url: string = env.api.getPatient;
     let albumUrl: string = env.api.getAlbum;
-    return this._http.post(`${this._urlToApi}/${url}/${patientId}/${albumUrl}`, album)
+    return this._http.post(`${this._urlToApi}/${url}/${patientId}/${albumUrl}`, {title: title}, {
+      headers: this._head
+    })
       .map(res => {
         // If request fails, throw an Error that will be caught
         if (res.status < 200 || res.status >= 300) {
           return null;
         }
-        return new Album(res.json().response) as Album;
+        let albumContent = res.json();
+        albumContent["title"] = title;
+        // todo: description?
+        return new Album(albumContent);
       }).catch(err => this.handleError(err));
   }
 
@@ -119,7 +126,9 @@ export class StoryService extends PrismaService {
   addStory(userId: number, newStory: UserStory): Observable<UserStory> {
     let url: string = env.api.getPatient;
     let storyUrl: string = env.api.getStory;
-    return this._http.post(`${this._urlToApi}/${url}/${userId}/${storyUrl}`, newStory)
+    return this._http.post(`${this._urlToApi}/${url}/${userId}/${storyUrl}`, newStory, {
+      headers: this._head
+    })
       .map(res => {
         // If request fails, throw an Error that will be caught
         if (res.status < 200 || res.status >= 300) {
@@ -144,7 +153,9 @@ export class StoryService extends PrismaService {
 
   postImage(image: File, userStory: UserStory): Observable<any> {
     let url: string = env.api.getPatient;
-    return this._http.post(`${this._urlToApi}/${url}`, userStory)
+    return this._http.post(`${this._urlToApi}/${url}`, userStory, {
+      headers: this._head
+    })
       .map(res => {
         // If request fails, throw an Error that will be caught
         if (res.status < 200 || res.status >= 300) {
@@ -163,7 +174,9 @@ export class StoryService extends PrismaService {
       if (!albums)
         return;
       albums.forEach(album => {
-        this._http.post(`${this._urlToApi}/${url}/${patientId}/${albumUrl}`, album)
+        this._http.post(`${this._urlToApi}/${url}/${patientId}/${albumUrl}`, album, {
+          headers: this._head
+        })
           .map(res => {
             // If request fails, throw an Error that will be caught
             if (res.status < 200 || res.status >= 300) {
@@ -178,7 +191,9 @@ export class StoryService extends PrismaService {
 
   /** Get historical themes (just albums for now) */
   getThemes(): Observable<Album[]> {
-    return this._http.get("assets/json/themes.json").map(res => {
+    return this._http.get("assets/json/themes.json", {
+      headers: this._head
+    }).map(res => {
       /*let albums: Album[] = [];
        res.json().forEach(album => albums.push(new Album(album)));
        return albums;*/
@@ -189,7 +204,9 @@ export class StoryService extends PrismaService {
 
   /** Get historical themes (just albums for now) */
   getLOLBUMS(): Observable<Album[]> {
-    return this._http.get("assets/json/albums.json").map(res => {
+    return this._http.get("assets/json/albums.json", {
+      headers: this._head
+    }).map(res => {
       /*let albums: Album[] = [];
        res.json().forEach(album => albums.push(new Album(album)));
        return albums;*/

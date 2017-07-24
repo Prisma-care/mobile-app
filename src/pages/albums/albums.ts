@@ -10,6 +10,8 @@ import {Camera} from "@ionic-native/camera";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {AlbumDetailPage} from "../album-detail/album-detail";
 import {env} from "../../app/environment";
+import { Dialogs } from "@ionic-native/dialogs";
+import { Patient } from "../../dto/patient";
 
 
 /* TEMPORARY IMPORT */
@@ -30,24 +32,21 @@ export class AlbumsPage implements OnInit {
 
   constructor(public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
               public navCtrl: NavController, protected sanitizer: StanizerService,
-              protected userService: PatientService, protected storyService: StoryService) {
+              protected userService: PatientService, protected storyService: StoryService,
+              protected dialogs: Dialogs) {
     this.stanizedYoutubeUrl = this.sanitizer.sanitize(this.youtubeUrl);
+
   }
 
+  currentPatient: Patient;
+
   ngOnInit(): void {
-    /* TESTS: to remove
-     this.patientService.getPatient("12345").toPromise().then(user => {
-
-     this.user = user;
-     });
-
-     this.storyService.getUserStories().toPromise().then(stories =>
-     console.log(JSON.stringify(stories)));
-     */
+    // TODO: replace with a service method
+    this.currentPatient =JSON.parse(localStorage.getItem(env.temp.fakePatient)) as Patient;
   }
 
   ionViewWillEnter(): void {
-    this.storyService.getAlbums(1).toPromise().then(albums => {
+    this.storyService.getAlbums(this.currentPatient.id).toPromise().then(albums => {
       this.albums = albums as Album[];
     });
   }
@@ -87,6 +86,23 @@ export class AlbumsPage implements OnInit {
       console.log("Bg image[" + index + "] of album " + this.albums[i].title + " :" + style);
       return this.sanitizer.sanitizeStyle(style);
     }
+  }
+
+  addAlbum(): void {
+
+    this.dialogs.prompt('Hoe wil je het album noemen?', 'Albumnaam', ['Voeg toe', 'Annuleer'])
+    .then(callbackObject => {
+      // "Voeg toe" clicked
+      if (callbackObject.buttonIndex === 1) {
+        this.storyService.addAlbum(this.currentPatient.id, callbackObject.input1).toPromise()
+          .then(album => {
+            console.log("Created album: " + JSON.stringify(album));
+            this.albums.push(album as Album);
+          })
+          .catch(() => console.log("Dialog error"))
+      }
+    })
+    .catch(e => console.log('Error displaying dialog', e));
   }
 
   isRepresentativeOfTheAlbum(story: UserStory): boolean {
