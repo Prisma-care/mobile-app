@@ -23,14 +23,6 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       this.patientService.getPatient("1").toPromise().then(res => localStorage.setItem(env.temp.fakePatient, JSON.stringify(res)));
-      let fakeUser: User = new User();
-      fakeUser.email = "prisma@mail.com";
-      fakeUser.password = "prisma";
-      fakeUser.firstName = "Frederik";
-      fakeUser.lastName = "Jinx";
-      localStorage.setItem(env.temp.fakeUser, JSON.stringify(fakeUser));
-      // this.patientService.addUser(fakeUser).toPromise().then(res => localStorage.setItem(env.temp.fakeUser,JSON.stringify(res)));
-      //this.patientService.getUser("1").toPromise().then(res => localStorage.setItem(env.temp.fakeUser,JSON.stringify(res)));
     });
   }
 }

@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {NavController, NavParams} from "ionic-angular";
 import {User} from "../../dto/user";
 import {AuthService} from "../../providers/auth-service/auth-service";
@@ -9,7 +9,8 @@ import {AlbumsPage} from "../albums/albums";
   selector: 'page-login',
   templateUrl: 'login.html',
 })
-export class LoginPage {
+export class LoginPage implements  OnInit{
+
 
 
   isSigningUp: boolean = false;
@@ -25,6 +26,15 @@ export class LoginPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,public authService:AuthService) {
   }
 
+
+  ngOnInit(): void {
+    if(this.authService.isLoggedIn()) {
+      this.navCtrl.push(AlbumsPage).then(() => {
+        const index = this.navCtrl.getActive().index;
+        this.navCtrl.remove(index - 1);
+      })
+    }
+  }
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
   }
