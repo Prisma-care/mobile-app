@@ -104,6 +104,8 @@ export class AlbumDetailPage implements OnInit {
 
   // DOM Sanitizer for image urls
   sanitize(url): any {
+    if(!url)
+      return "";
     const style = `background-image: url(${url})`;
     return this.sanitizer.sanitizeStyle(style);
   }
