@@ -15,7 +15,8 @@ export class AuthService extends PrismaService {
   // e.g. the auth token
   login(login:string, password:string): Observable<boolean> {
     let url: string = env.api.getSignIn;
-    return this._http.post(`${this._urlToApi}/${url}`,{login:login,password:password} , {
+    let userUrl: string = env.api.getUser;
+    return this._http.post(`${this._urlToApi}/${userUrl}/${url}`,{"email":login,"password":password} , {
       headers: this._head,
     }).map(res => {
       if (res.status < 200 || res.status >= 300) {
@@ -46,14 +47,14 @@ export class AuthService extends PrismaService {
   }
 
   signUp(user:User): Observable<boolean>{
-    let url: string = env.api.getSignIn;
+    let url: string = env.api.getUser;
     return this._http.post(`${this._urlToApi}/${url}`,user, {
       headers: this._head,
     }).map(res => {
       if (res.status < 200 || res.status >= 300) {
         return false;
       }
-      return true;
+      return this.login(user.email,user.password).toPromise().then(res2 => res2);
     }).catch(err => this.handleError(err));
   }
 

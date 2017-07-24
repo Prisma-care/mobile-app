@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component} from "@angular/core";
+import {NavController, NavParams} from "ionic-angular";
+import {User} from "../../dto/user";
+import {AuthService} from "../../providers/auth-service/auth-service";
+import {AlbumsPage} from "../albums/albums";
 
 
 @Component({
@@ -9,17 +12,17 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class LoginPage {
 
 
-  isSigningUp:boolean = false;
+  isSigningUp: boolean = false;
 
-  password:string="";
-  passwordConfirm: string = "";
+  password: string = "123";
+  passwordConfirm: string = "123";
 
-  firstname:string="";
-  lastname:string="";
-  email:string ="";
+  firstname: string = "Jean";
+  lastname: string = "Paci";
+  email: string = "user@mail.com";
 
 
- constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public authService:AuthService) {
   }
 
   ionViewDidLoad() {
@@ -27,11 +30,24 @@ export class LoginPage {
   }
 
 
-  signIn(){
-
+  signIn() {
+    this.authService.login(this.email, this.password).toPromise().then(res => {
+      if(res){
+        this.navCtrl.push(AlbumsPage);
+      }
+    })
   }
 
-  signUp(){
-
+  signUp() {
+    let user: User = new User();
+    user.email = this.email;
+    user.password = this.password;
+    user.firstName = this.firstname;
+    user.lastName = this.lastname;
+    this.authService.signUp(user).toPromise().then(res => {
+      if(res){
+        this.navCtrl.push(AlbumsPage);
+      }
+    })
   }
 }
