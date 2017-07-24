@@ -83,7 +83,8 @@ export class AlbumsPage implements OnInit {
       if (index === -1)
         index = 0;
       const style = `background-image: url(${this.albums[i].getBackgroundImage(index)})`;
-      console.log("Bg image[" + index + "] of album " + this.albums[i].title + " :" + style);
+      if(!this.albums[i].getBackgroundImage(index))
+        return "";
       return this.sanitizer.sanitizeStyle(style);
     }
   }
