@@ -4,6 +4,7 @@ import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {NewStoryPage} from "../new-story/new-story";
+import {AuthService} from "../../providers/auth-service/auth-service";
 
 @Component({
   selector: 'page-storydetails',
@@ -17,13 +18,12 @@ export class StoryDetailsPage implements OnInit {
   // TODO: get favorite in backend &
   // 1 like?
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private storyService: StoryService) {
+              private storyService: StoryService, public authService: AuthService) {
     this.album = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
   }
 
   ngOnInit(): void {
-
     if (this.navParams.get("slide")) {
       //this.navCtrl.remove(this.navCtrl.length()-2);
     }
@@ -62,9 +62,17 @@ export class StoryDetailsPage implements OnInit {
     return this.getStory().favorited;
   }
 
-  // TODO: this should be method on the story...
   toggleFavorite(): void {
-    this.getStory().favorited = this.getStory().favorited ? false : true;
+    // this.getStory().favorited = this.getStory().favorited ? false : true;
+    //this.album.stories[this.index].user
+
+    let story: UserStory = new UserStory();
+    story.favorited = this.album.stories[this.index].favorited ? false : true;
+    story.id = this.album.stories[this.index].id;
+    this.storyService.updateStory(+this.authService.getCurrentPatient().id, story).toPromise().then(addedStory => {
+      this.album.stories[this.index] = addedStory;
+    });
+
   }
 
   editDescription() {

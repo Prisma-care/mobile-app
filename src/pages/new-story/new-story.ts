@@ -11,6 +11,9 @@ import {User} from "../../dto/user";
 import {Patient} from "../../dto/patient";
 import {AlbumsPage} from "../albums/albums";
 import {StoryDetailsPage} from "../storydetails/storydetails";
+import {StanizerService} from "../../providers/stanizer.service";
+import {SafeUrl} from "@angular/platform-browser";
+import {AuthService} from "../../providers/auth-service/auth-service";
 
 @Component({
   selector: 'page-new-story',
@@ -18,10 +21,7 @@ import {StoryDetailsPage} from "../storydetails/storydetails";
 })
 export class NewStoryPage {
 
-  user: User = JSON.parse(localStorage.getItem(env.temp.fakeUser)) as User;
-  currentPatient: Patient = JSON.parse(localStorage.getItem(env.temp.fakePatient)) as Patient;
-
-  dataUrl: string;
+  dataUrl: string | SafeUrl;
   dataUploadTrigger: Promise<any>;
   description: string;
   placeHolder: string = "Schrijf het verhaal.\nHoe meer details hoe beter.";
@@ -30,15 +30,16 @@ export class NewStoryPage {
   title: string;
 
 
-  index:number =0;
+  index: number = 0;
   oldStory: UserStory;
 
 //file Transfer
   loading: Loading;
 
   constructor(public navCtrl: NavController, private camera: Camera, public navParams: NavParams,
-              private storyService: StoryService, private utilService: UtilService
-    , private transfer: Transfer, public loadingCtrl: LoadingController) {
+              private storyService: StoryService, private utilService: UtilService,
+              private transfer: Transfer, public loadingCtrl: LoadingController,
+              private authSerive: AuthService, public stanizer: StanizerService) {
     this.dataUrl = navParams.get("dataUrl") as string;
     this.selectedAlbum = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
@@ -46,7 +47,7 @@ export class NewStoryPage {
     this.oldStory = navParams.get("story") as UserStory;
     if (this.oldStory) {
       this.description = this.oldStory.description;
-      this.dataUrl = this.oldStory.source;
+      this.dataUrl = stanizer.sanitize(this.oldStory.source);
     }
 
     this.utilService.presentToast("Test : " + this.dataUrl);
@@ -65,30 +66,32 @@ export class NewStoryPage {
     }
     let newStory: UserStory = new UserStory();
     newStory.albumId = +this.selectedAlbum.id;
-    // newStory.happened_at = new Date();
     newStory.description = this.description;
     newStory.creatorId = 1;
-    //will add the upload system
-    this.storyService.addStory(+this.currentPatient.id, newStory).toPromise().then(addedStory => {
+    this.storyService.addStory(+this.authSerive.getCurrentPatient().id, newStory).toPromise().then(addedStory => {
       if (this.dataUrl) {
-        this.uploadImage(this.currentPatient.id, addedStory.id, this.dataUrl).then(res => {
-          this.navCtrl.push(AlbumsPage)
+        this.uploadImage(this.authSerive.getCurrentPatient().id, addedStory.id, this.dataUrl + "").then(res => {
+          this.navCtrl.popTo(AlbumsPage, {
+            "album": this.selectedAlbum,
+          });
         }).catch(err => {
         });
-      } else {
-        this.navCtrl.push(AlbumsPage);
       }
-
+      else {
+        this.navCtrl.popTo(AlbumsPage, {
+          "album": this.selectedAlbum,
+        });
+      }
     });
   }
 
 
-  update(){
+  update() {
     this.oldStory.description = this.description;
-    this.storyService.addStory(+this.currentPatient.id, this.oldStory).toPromise().then(addedStory => {
-      this.navCtrl.push(StoryDetailsPage,{
-        "album":this.selectedAlbum,
-        "index" : this.index
+    this.storyService.addStory(+this.authSerive.getCurrentPatient().id, this.oldStory).toPromise().then(addedStory => {
+      this.navCtrl.push(StoryDetailsPage, {
+        "album": this.selectedAlbum,
+        "index": this.index
       });
     });
   }
@@ -124,7 +127,7 @@ export class NewStoryPage {
       this.utilService.presentToast('Image succesful uploaded. : ' + targetPath + "\n" + JSON.stringify(data));
     }, err => {
       this.loading.dismissAll()
-     // this.utilService.presentToast('Error while uploading file.' + '\n' + JSON.stringify(err));
+      // this.utilService.presentToast('Error while uploading file.' + '\n' + JSON.stringify(err));
     });
   }
 

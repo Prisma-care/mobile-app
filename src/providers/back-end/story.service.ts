@@ -138,6 +138,19 @@ export class StoryService extends PrismaService {
       }).catch(err => this.handleError(err));
   }
 
+  updateStory(userId: number, newStory: UserStory): Observable<UserStory> {
+    let url: string = env.api.getPatient;
+    let storyUrl: string = env.api.getStory;
+    return this._http.patch(`${this._urlToApi}/${url}/${userId}/${storyUrl}/${newStory.id}`, newStory)
+      .map(res => {
+        // If request fails, throw an Error that will be caught
+        if (res.status < 200 || res.status >= 300) {
+          return null;
+        }
+        return new UserStory(res.json().response) as UserStory;
+      }).catch(err => this.handleError(err));
+  }
+
   postImage(image: File, userStory: UserStory): Observable<any> {
     let url: string = env.api.getPatient;
     return this._http.post(`${this._urlToApi}/${url}`, userStory, {

@@ -31,10 +31,11 @@ export class AlbumsPage implements OnInit {
   albums: Album[];
 
   constructor(public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
-              public navCtrl: NavController, protected stanizerService: StanizerService,
+              public navCtrl: NavController, protected sanitizer: StanizerService,
               protected userService: PatientService, protected storyService: StoryService,
               protected dialogs: Dialogs) {
-    this.stanizedYoutubeUrl = this.stanizerService.sanitize(this.youtubeUrl);
+    this.stanizedYoutubeUrl = this.sanitizer.sanitize(this.youtubeUrl);
+
   }
 
   currentPatient: Patient;
@@ -67,16 +68,23 @@ export class AlbumsPage implements OnInit {
     })
   }
 
-  getBackgroundImage(i: number): string {
+  getBackgroundImage(i: number): any {
     if (this.albums[i].isEmpty()) {
       return ""
     }
     else {
       /*
-      let imageSrc = this.albums[i].stories[0].source;
-      return "url('" + imageSrc + "')";
-      */
-      return this.albums[i].getBackgroundImage(0);
+       let imageSrc = this.albums[i].stories[0].source;
+       return "url('" + imageSrc + "')";
+       */
+      let index = this.albums[i].stories.findIndex(this.isRepresentativeOfTheAlbum);
+      if (index === -1)
+        index = this.albums[i].stories.findIndex(this.hasAnImage);
+      if (index === -1)
+        index = 0;
+      const style = `background-image: url(${this.albums[i].getBackgroundImage(index)})`;
+      console.log("Bg image[" + index + "] of album " + this.albums[i].title + " :" + style);
+      return this.sanitizer.sanitizeStyle(style);
     }
   }
 
@@ -96,4 +104,15 @@ export class AlbumsPage implements OnInit {
     })
     .catch(e => console.log('Error displaying dialog', e));
   }
+
+  isRepresentativeOfTheAlbum(story: UserStory): boolean {
+    console.log(JSON.stringify(story) + "\n \t result : " + (!!story.source && !!story.favorited));
+    return !!story.source && !!story.favorited;
+  }
+
+  hasAnImage(story: UserStory) {
+    console.log(JSON.stringify(story) + "\n \t result type b : " + (!!story.source));
+    return !!story.source;
+  }
+
 }

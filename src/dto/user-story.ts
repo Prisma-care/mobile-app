@@ -13,10 +13,10 @@ export class UserStory {
       return;
     this.id = json.id;
     this.albumId = json.albumId;
-    this.creatorId = json.creatorId;
+    this.creatorId = json.creatorId || 1;
     this.description = json.description;
     this.source = json.source;
-    this.favorited = json.favorited;
+    this.favorited = json.favorited || false;
     if (json.happened_at)
       this.happened_at = new Date(json.happened_at);
   }
