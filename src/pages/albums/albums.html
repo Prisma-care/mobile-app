@@ -6,7 +6,7 @@
     <ion-row>
       <ion-col col-6 col-md-4 *ngFor="let album of albums,let i=index"
                class="album-thumb"
-               [style.background-image]="getBackgroundImage(i)"
+               [style]="getBackgroundImage(i)"
                (click)="showDetails(album)">
         <h3 class="hist-title">{{album.title ? album.title : '?'}}</h3>
       </ion-col>
