@@ -11,6 +11,7 @@ export const env = {
   jwtToken: 'id_token',
   localstorage: {},
   api: {
+    getSignIn:'signin',
     getPatient: 'patient',
     getAlbum: 'album',
     getStory: 'story',
