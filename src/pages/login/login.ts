@@ -31,7 +31,7 @@ export class LoginPage implements  OnInit{
     if(this.authService.isLoggedIn()) {
       this.navCtrl.push(AlbumsPage).then(() => {
         const index = this.navCtrl.getActive().index;
-        this.navCtrl.remove(index - 1);
+        //  this.navCtrl.remove(index - 1);
       })
     }
   }
