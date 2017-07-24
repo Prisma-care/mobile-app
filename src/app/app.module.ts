@@ -22,8 +22,6 @@ import {NewStoryPage} from "../pages/new-story/new-story";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {UtilService} from "../providers/util-service";
 
-import {QuestionsPage} from "../pages/questions/questions";
-import {QuestionPage} from "../pages/question/question";
 import {NewStorySelectionPage} from "../pages/new-story-selection/new-story-selection";
 import {EmptyPage} from "../pages/empty/empty";
 import {ApiTestingPage} from "../pages/api-testing/api-testing";
@@ -36,6 +34,8 @@ import {FilePath} from "@ionic-native/file-path";
 import {AlbumsPage} from "../pages/albums/albums";
 import {AlbumDetailPage} from "../pages/album-detail/album-detail";
 import { AuthService } from '../providers/auth-service/auth-service';
+import { QuestionService } from "../providers/question-service/question.service";
+import { AlbumQuestions } from "../pages/album-detail/album-questions";
 
 
 @NgModule({
@@ -48,12 +48,11 @@ import { AuthService } from '../providers/auth-service/auth-service';
     BrowsePage,
     PatientProfilePage,
     StoryDetailsPage,
-    QuestionsPage,
-    QuestionPage,
     NewStoryPage,
     EmptyPage,
     NewStorySelectionPage,
     ApiTestingPage,
+    AlbumQuestions
   ],
   imports: [
     BrowserModule,
@@ -72,17 +71,17 @@ import { AuthService } from '../providers/auth-service/auth-service';
     PatientProfilePage,
     StoryDetailsPage,
     NewStoryPage,
-    QuestionsPage,
-    QuestionPage,
     EmptyPage,
     NewStorySelectionPage,
     ApiTestingPage,
+    AlbumQuestions
   ],
   providers: [
     StatusBar,
     SplashScreen,
     UtilService,
     StanizerService,
+    QuestionService,
     PrismaService,
     StoryService,
     PatientService,
