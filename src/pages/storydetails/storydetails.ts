@@ -5,20 +5,22 @@ import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {NewStoryPage} from "../new-story/new-story";
 import {AuthService} from "../../providers/auth-service/auth-service";
+import {AuthGuard} from "../auth-guard";
 
 @Component({
   selector: 'page-storydetails',
   templateUrl: 'storydetails.html'
 })
-export class StoryDetailsPage implements OnInit {
+export class StoryDetailsPage extends  AuthGuard implements OnInit {
   public album: Album;
   public index: number;
   public story: UserStory;
 
   // TODO: get favorite in backend &
   // 1 like?
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              private storyService: StoryService, public authService: AuthService) {
+  constructor(protected  authService:AuthService,public navCtrl: NavController, public navParams: NavParams,
+              private storyService: StoryService) {
+    super(authService);
     this.album = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
   }

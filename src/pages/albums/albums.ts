@@ -12,6 +12,8 @@ import {AlbumDetailPage} from "../album-detail/album-detail";
 import {env} from "../../app/environment";
 import { Dialogs } from "@ionic-native/dialogs";
 import { Patient } from "../../dto/patient";
+import {AuthGuard} from "../auth-guard";
+import {AuthService} from "../../providers/auth-service/auth-service";
 
 
 /* TEMPORARY IMPORT */
@@ -21,21 +23,19 @@ import { Patient } from "../../dto/patient";
   selector: 'albums-page',
   templateUrl: 'albums.html'
 })
-export class AlbumsPage implements OnInit {
+export class AlbumsPage extends AuthGuard implements OnInit {
 
-  public youtubeUrl: string = "www.youtube.com/embed/ERD4CbBDNI0?rel=0&amp;showinfo=0";
-  public stanizedYoutubeUrl: any;
 
   user: User = JSON.parse(localStorage.getItem(env.temp.fakeUser)) as User;
 
   albums: Album[];
 
-  constructor(public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
+  constructor(public authService: AuthService, public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
               public navCtrl: NavController, protected sanitizer: StanizerService,
-              protected userService: PatientService, protected storyService: StoryService,
+              protected patientService: PatientService, protected storyService: StoryService,
               protected dialogs: Dialogs) {
-    this.stanizedYoutubeUrl = this.sanitizer.sanitize(this.youtubeUrl);
-
+    super(authService);
+    this.patientService.getPatient("1").toPromise().then(res => localStorage.setItem(env.temp.fakePatient, JSON.stringify(res)));
   }
 
   currentPatient: Patient;
@@ -97,7 +97,6 @@ export class AlbumsPage implements OnInit {
       if (callbackObject.buttonIndex === 1) {
         this.storyService.addAlbum(this.currentPatient.id, callbackObject.input1).toPromise()
           .then(album => {
-            console.log("Created album: " + JSON.stringify(album));
             this.albums.push(album as Album);
           })
           .catch(() => console.log("Dialog error"))
@@ -107,12 +106,10 @@ export class AlbumsPage implements OnInit {
   }
 
   isRepresentativeOfTheAlbum(story: UserStory): boolean {
-    console.log(JSON.stringify(story) + "\n \t result : " + (!!story.source && !!story.favorited));
     return !!story.source && !!story.favorited;
   }
 
   hasAnImage(story: UserStory) {
-    console.log(JSON.stringify(story) + "\n \t result type b : " + (!!story.source));
     return !!story.source;
   }
 

@@ -7,19 +7,21 @@ import {NewStoryPage} from "../new-story/new-story";
 import {StoryDetailsPage} from "../storydetails/storydetails";
 import {StanizerService} from "../../providers/stanizer.service";
 import {AuthService} from "../../providers/auth-service/auth-service";
+import {AuthGuard} from "../auth-guard";
 
 @Component({
   selector: 'album-detail',
   templateUrl: 'album-detail.html'
 })
 
-export class AlbumDetailPage implements OnInit {
+export class AlbumDetailPage extends AuthGuard implements OnInit {
 
 
   public album: Album;
 
-  constructor(public navCtrl: NavController, public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
-              private storyService: StoryService, private sanitizer: StanizerService, private authService: AuthService) {
+  constructor(protected authService: AuthService,public navCtrl: NavController, public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
+              private storyService: StoryService, private sanitizer: StanizerService ) {
+    super(authService);
     this.album = navParams.get("album") as Album;
   }
 

@@ -10,6 +10,8 @@ import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {Camera} from "@ionic-native/camera";
 import {FileChooser} from "@ionic-native/file-chooser";
+import {AuthService} from "../../providers/auth-service/auth-service";
+import {AuthGuard} from "../auth-guard";
 
 
 /* TEMPORARY IMPORT */
@@ -21,7 +23,7 @@ import {FileChooser} from "@ionic-native/file-chooser";
   selector: 'page-stories',
   templateUrl: 'stories.html'
 })
-export class StoriesPage implements OnInit {
+export class StoriesPage extends AuthGuard implements OnInit {
 
   public youtubeUrl: string = "www.youtube.com/embed/ERD4CbBDNI0?rel=0&amp;showinfo=0";
   public stanizedYoutubeUrl: any;
@@ -30,9 +32,10 @@ export class StoriesPage implements OnInit {
 
   albums: Album[];
 
-  constructor(public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
+  constructor(protected  authService:AuthService,public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
               public navCtrl: NavController, protected stanizerService: StanizerService,
               protected userService: PatientService, protected storyService: StoryService) {
+    super(authService);
     this.stanizedYoutubeUrl = this.stanizerService.sanitize(this.youtubeUrl);
   }
 
