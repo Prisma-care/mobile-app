@@ -1,5 +1,7 @@
 import { QuestionService } from "../../providers/question-service/question.service";
 import { OnInit, Component, Input } from "@angular/core";
+import {AuthGuard} from "../auth-guard";
+import {AuthService} from "../../providers/auth-service/auth-service";
 
 @Component({
   selector: 'album-questions',
@@ -11,14 +13,14 @@ import { OnInit, Component, Input } from "@angular/core";
     `
 })
 
-export class AlbumQuestions implements OnInit {
+export class AlbumQuestions extends AuthGuard implements OnInit {
 
   currentQuestion: string = "";
   questions: string[] = [];
 
   @Input() query: string;
 
-  constructor(private questionService: QuestionService) {}
+  constructor(protected authService: AuthService,private questionService: QuestionService) {super(authService);}
 
   ngOnInit(): void {
     this.questions = this.questionService.getQuestions(this.query);

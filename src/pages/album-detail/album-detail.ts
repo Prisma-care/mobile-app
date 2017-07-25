@@ -7,20 +7,24 @@ import {NewStoryPage} from "../new-story/new-story";
 import {StoryDetailsPage} from "../storydetails/storydetails";
 import {StanizerService} from "../../providers/stanizer.service";
 import {AuthService} from "../../providers/auth-service/auth-service";
+import {AuthGuard} from "../auth-guard";
 
 @Component({
   selector: 'album-detail',
   templateUrl: 'album-detail.html'
 })
 
-export class AlbumDetailPage implements OnInit {
+export class AlbumDetailPage extends AuthGuard implements OnInit {
 
 
   public album: Album;
 
-  constructor(public navCtrl: NavController, public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
-              private storyService: StoryService, private sanitizer: StanizerService, private authService: AuthService) {
+  constructor(protected authService: AuthService, public navCtrl: NavController, public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
+              private storyService: StoryService, private sanitizer: StanizerService) {
+    super(authService);
     this.album = navParams.get("album") as Album;
+
+    console.log(JSON.stringify(this.album.stories));
   }
 
   ngOnInit(): void {
@@ -28,13 +32,13 @@ export class AlbumDetailPage implements OnInit {
 
   ionViewWillEnter(): void {
     if (this.album)
-      this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).subscribe(res => this.album = res);
+      this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).subscribe(res => {
+        this.album = res;
+        console.log(JSON.stringify(this.album.stories));
+      });
 
   }
 
-  getThumb(url: string): string {
-    return "" + url;
-  }
 
   openActionSheet() {
     let actionSheet = this.actionsheetCtrl.create({
@@ -103,10 +107,12 @@ export class AlbumDetailPage implements OnInit {
   }
 
   // DOM Sanitizer for image urls
-  sanitize(url): any {
-    if(!url)
+  sanitize(i: number): any {
+    let url: string = this.album.getBackgroundImage(i);
+    if (!url)
       return "";
-    const style = `background-image: url(${url})`;
+    const style = `url(${url})`;
+    //console.log("Made : " + style);
     return this.sanitizer.sanitizeStyle(style);
   }
 

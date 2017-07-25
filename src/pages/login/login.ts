@@ -38,7 +38,9 @@ export class LoginPage implements  OnInit{
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
   }
-
+  ionViewCanLeave():boolean{
+    return true;
+  }
 
   signIn() {
     this.authService.login(this.email, this.password).toPromise().then(res => {
