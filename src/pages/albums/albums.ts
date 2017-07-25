@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {ActionSheetController, NavController} from "ionic-angular";
+import {ActionSheetController, NavController, AlertController} from "ionic-angular";
 import {StanizerService} from "../../providers/stanizer.service";
 import {PatientService} from "../../providers/back-end/user.service";
 import {StoryService} from "../../providers/back-end/story.service";
@@ -10,8 +10,9 @@ import {Camera} from "@ionic-native/camera";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {AlbumDetailPage} from "../album-detail/album-detail";
 import {env} from "../../app/environment";
-import { Dialogs } from "@ionic-native/dialogs";
 import { Patient } from "../../dto/patient";
+import {AuthGuard} from "../auth-guard";
+import {AuthService} from "../../providers/auth-service/auth-service";
 
 
 /* TEMPORARY IMPORT */
@@ -21,32 +22,32 @@ import { Patient } from "../../dto/patient";
   selector: 'albums-page',
   templateUrl: 'albums.html'
 })
-export class AlbumsPage implements OnInit {
+export class AlbumsPage extends AuthGuard implements OnInit {
 
-  public youtubeUrl: string = "www.youtube.com/embed/ERD4CbBDNI0?rel=0&amp;showinfo=0";
-  public stanizedYoutubeUrl: any;
 
   user: User = JSON.parse(localStorage.getItem(env.temp.fakeUser)) as User;
 
   albums: Album[];
 
-  constructor(public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
+  constructor(public authService: AuthService, public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
               public navCtrl: NavController, protected sanitizer: StanizerService,
-              protected userService: PatientService, protected storyService: StoryService,
-              protected dialogs: Dialogs) {
-    this.stanizedYoutubeUrl = this.sanitizer.sanitize(this.youtubeUrl);
-
+              protected patientService: PatientService, protected storyService: StoryService,
+              protected alertCtrl: AlertController) {
+    super(authService);
+    this.currentPatient =this.authService.getCurrentPatient();
+    console.log("");
   }
 
   currentPatient: Patient;
 
   ngOnInit(): void {
     // TODO: replace with a service method
-    this.currentPatient =JSON.parse(localStorage.getItem(env.temp.fakePatient)) as Patient;
+    this.currentPatient =this.authService.getCurrentPatient();
   }
 
   ionViewWillEnter(): void {
-    this.storyService.getAlbums(this.currentPatient.id).toPromise().then(albums => {
+   console.log("Test : " + JSON.stringify(this.authService.getCurrentPatient()));
+    this.storyService.getAlbums(this.authService.getCurrentPatient().id).toPromise().then(albums => {
       this.albums = albums as Album[];
     });
   }
@@ -83,35 +84,59 @@ export class AlbumsPage implements OnInit {
       if (index === -1)
         index = 0;
       const style = `background-image: url(${this.albums[i].getBackgroundImage(index)})`;
-      console.log("Bg image[" + index + "] of album " + this.albums[i].title + " :" + style);
+      if(!this.albums[i].getBackgroundImage(index))
+        return "";
       return this.sanitizer.sanitizeStyle(style);
     }
   }
 
   addAlbum(): void {
 
-    this.dialogs.prompt('Hoe wil je het album noemen?', 'Albumnaam', ['Voeg toe', 'Annuleer'])
-    .then(callbackObject => {
-      // "Voeg toe" clicked
-      if (callbackObject.buttonIndex === 1) {
-        this.storyService.addAlbum(this.currentPatient.id, callbackObject.input1).toPromise()
-          .then(album => {
-            console.log("Created album: " + JSON.stringify(album));
-            this.albums.push(album as Album);
-          })
-          .catch(() => console.log("Dialog error"))
-      }
-    })
-    .catch(e => console.log('Error displaying dialog', e));
+    let albumFailedAlert = this.alertCtrl.create({
+      title: 'Fout bij het maken van het album',
+      subTitle: 'Onze excuses, het album kon niet aangemaakt worden. Er is iets fout met Prisma.\nProbeer later nog eens opnieuw!',
+      buttons: ['Ok']
+    });
+
+    this.alertCtrl.create( {
+      "title": 'Voeg album toe',
+      "message": 'Hoe wil je het album noemen?',
+        inputs: [
+          {
+            name: 'title',
+            placeholder: 'bv. Kajakclub'
+          },
+        ],
+        buttons: [
+          {
+            text: 'Annuleer',
+            handler: data => { }
+          },
+          {
+            text: 'Voeg toe',
+            handler: data => {
+              this.storyService.addAlbum(this.currentPatient.id, data.title).toPromise()
+                .then(album => {
+
+                  //this.albums.push(album as Album);
+                  // TODO: this would spare us a whole refresh
+                  // but it gives errors
+
+                  // complete albums refresh
+                  this.ionViewWillEnter()
+                })
+                .catch(() => albumFailedAlert.present());
+            }
+          }
+        ]
+    }).present();
   }
 
   isRepresentativeOfTheAlbum(story: UserStory): boolean {
-    console.log(JSON.stringify(story) + "\n \t result : " + (!!story.source && !!story.favorited));
     return !!story.source && !!story.favorited;
   }
 
   hasAnImage(story: UserStory) {
-    console.log(JSON.stringify(story) + "\n \t result type b : " + (!!story.source));
     return !!story.source;
   }
 

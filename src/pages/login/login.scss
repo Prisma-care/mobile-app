@@ -1,0 +1,23 @@
+page-login {
+  .prisma-header img {
+    width: 55%;
+    max-width: 18em;
+    display: block;
+    margin: 10% auto;
+  }
+
+  .signup-suggestion {
+
+    margin: auto;
+    text-align: center;
+
+    p {
+      font-size: 1.2em;
+      color: color($colors, dark-gray);
+    }
+  }
+
+  #signin-button {
+    margin: auto;
+  }
+}

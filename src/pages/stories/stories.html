@@ -22,17 +22,12 @@
 
         </ion-list-header>
         <ion-slides slidesPerView=3 zoom=true>
-          <ion-slide class="story-item" *ngFor="let item of getStories(album),let j=index"
-          >
-            <div
-              (click)="showDetails(album,j)"
-              [ngStyle]="{'background-image': 'url(' + getThumb(item.source) + ')'}" *ngIf="getThumb(item.source)">
+          <ion-slide class="story-item" *ngFor="let item of getStories(album),let j=index">
+            <div *ngIf="getThumb(item.source)">
+              <div (click)="showDetails(album,j)" *ngIf="!getThumb(item.source,item.description)">
+                  <ion-card-content class="description">{{item.description}}</ion-card-content>
+              </div>
             </div>
-            <div
-              (click)="showDetails(album,j)" *ngIf="!getThumb(item.source,item.description)">
-              <ion-card-content class="description">{{item.description}}</ion-card-content>
-            </div>
-
             <!--<img id="{{item.id}}" src="{{getThumb(item.source)}}">-->
             <!-- <div class="card-title">{{item.title}}</div>-->
           </ion-slide>

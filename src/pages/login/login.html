@@ -1,0 +1,61 @@
+<ion-content padding no-bounce>
+
+  <div class="prisma-header">
+    <img src="assets/icon/prisma-logo.png"/>
+  </div>
+
+  <!--  Login case -->
+  <div *ngIf="!isSigningUp">
+    <ion-list>
+      <ion-item>
+        <ion-label fixed>E-mail adres</ion-label>
+        <ion-input type="text" [(ngModel)]="email" value=""></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label fixed>Paswoord</ion-label>
+        <ion-input type="password" [(ngModel)]="password"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <button id="signin-button" ion-button color="general" (click)="signIn()">Aanmelden</button>
+
+    <div class="signup-suggestion">
+      <p>Of heb je nog geen account?</p>
+      <button ion-button color="general" (click)="isSigningUp=true">Registreer</button>
+    </div>
+
+  </div>
+  <!--  Sign up case -->
+  <div *ngIf="isSigningUp">
+    <ion-list>
+      <ion-item>
+        <ion-label fixed>Voornaam</ion-label>
+        <ion-input type="text" value="" [(ngModel)]="firstname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>Achternaam</ion-label>
+        <ion-input type="text" value="" [(ngModel)]="lastname"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label fixed>E-mail adres</ion-label>
+        <ion-input type="text" value="" [(ngModel)]="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label fixed>Paswoord</ion-label>
+        <ion-input type="password" [(ngModel)]="password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>Paswoord (typ het nog eens)</ion-label>
+        <ion-input type="password" [(ngModel)]="passwordConfirm"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <button ion-button color="general" (click)="isSigningUp=false">Annuleer</button>
+    <button ion-button color="general" (click)="signUp()">Registreer</button>
+
+  </div>
+
+</ion-content>

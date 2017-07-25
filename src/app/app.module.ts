@@ -5,7 +5,6 @@ import {IonicStorageModule} from "@ionic/storage";
 import {MyApp} from "./app.component";
 
 import {StoriesPage} from "../pages/stories/stories";
-import {BrowsePage} from "../pages/browse/browse";
 import {PatientProfilePage} from "../pages/patientprofile/patientprofile";
 
 import {StatusBar} from "@ionic-native/status-bar";
@@ -22,34 +21,34 @@ import {NewStoryPage} from "../pages/new-story/new-story";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {UtilService} from "../providers/util-service";
 
-import {EmptyPage} from "../pages/empty/empty";
 import {ApiTestingPage} from "../pages/api-testing/api-testing";
 
 import {FileTransfer} from "@ionic-native/file-transfer";
 import {File} from "@ionic-native/file";
 import {Transfer} from "@ionic-native/transfer";
 import {FilePath} from "@ionic-native/file-path";
-import {Dialogs} from "@ionic-native/dialogs"
 
 import {AlbumsPage} from "../pages/albums/albums";
 import {AlbumDetailPage} from "../pages/album-detail/album-detail";
 import { AuthService } from '../providers/auth-service/auth-service';
 import { QuestionService } from "../providers/question-service/question.service";
 import { AlbumQuestions } from "../pages/album-detail/album-questions";
+import {LoginPage} from "../pages/login/login";
+import {AuthGuard} from "../pages/auth-guard";
+import {NativePageTransitions} from "@ionic-native/native-page-transitions";
 
 
 @NgModule({
   declarations: [
     MyApp,
     TutorialPage,
+    LoginPage,
     StoriesPage,
     AlbumsPage,
     AlbumDetailPage,
-    BrowsePage,
     PatientProfilePage,
     StoryDetailsPage,
     NewStoryPage,
-    EmptyPage,
     ApiTestingPage,
     AlbumQuestions
   ],
@@ -62,15 +61,14 @@ import { AlbumQuestions } from "../pages/album-detail/album-questions";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    LoginPage,
     TutorialPage,
     StoriesPage,
     AlbumsPage,
     AlbumDetailPage,
-    BrowsePage,
     PatientProfilePage,
     StoryDetailsPage,
     NewStoryPage,
-    EmptyPage,
     ApiTestingPage,
     AlbumQuestions
   ],
@@ -83,15 +81,16 @@ import { AlbumQuestions } from "../pages/album-detail/album-questions";
     PrismaService,
     StoryService,
     PatientService,
+    AuthGuard,
     Camera,
     File,
     FileTransfer,
     FileChooser,
     Transfer,
     FilePath,
+    NativePageTransitions,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthService,
-    Dialogs
+    AuthService
   ]
 })
 export class AppModule {

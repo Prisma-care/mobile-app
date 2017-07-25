@@ -14,12 +14,13 @@ import {StoryDetailsPage} from "../storydetails/storydetails";
 import {StanizerService} from "../../providers/stanizer.service";
 import {SafeUrl} from "@angular/platform-browser";
 import {AuthService} from "../../providers/auth-service/auth-service";
+import {AuthGuard} from "../auth-guard";
 
 @Component({
   selector: 'page-new-story',
   templateUrl: 'new-story.html',
 })
-export class NewStoryPage {
+export class NewStoryPage extends  AuthGuard{
 
   dataUrl: string | SafeUrl;
   dataUploadTrigger: Promise<any>;
@@ -36,10 +37,11 @@ export class NewStoryPage {
 //file Transfer
   loading: Loading;
 
-  constructor(public navCtrl: NavController, private camera: Camera, public navParams: NavParams,
+  constructor( protected authService: AuthService,public navCtrl: NavController, private camera: Camera, public navParams: NavParams,
               private storyService: StoryService, private utilService: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
-              private authSerive: AuthService, public stanizer: StanizerService) {
+              public stanizer: StanizerService) {
+    super(authService)
     this.dataUrl = navParams.get("dataUrl") as string;
     this.selectedAlbum = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
@@ -50,7 +52,6 @@ export class NewStoryPage {
       this.dataUrl = stanizer.sanitize(this.oldStory.source);
     }
 
-    this.utilService.presentToast("Test : " + this.dataUrl);
     // check if source is a question answer
     if (navParams.get("questionAnswer")) {
       this.description = navParams.get("description");
@@ -68,9 +69,9 @@ export class NewStoryPage {
     newStory.albumId = +this.selectedAlbum.id;
     newStory.description = this.description;
     newStory.creatorId = 1;
-    this.storyService.addStory(+this.authSerive.getCurrentPatient().id, newStory).toPromise().then(addedStory => {
+    this.storyService.addStory(+this.authService.getCurrentPatient().id, newStory).toPromise().then(addedStory => {
       if (this.dataUrl) {
-        this.uploadImage(this.authSerive.getCurrentPatient().id, addedStory.id, this.dataUrl + "").then(res => {
+        this.uploadImage(this.authService.getCurrentPatient().id, addedStory.id, this.dataUrl + "").then(res => {
           this.navCtrl.popTo(AlbumsPage, {
             "album": this.selectedAlbum,
           });
@@ -88,7 +89,7 @@ export class NewStoryPage {
 
   update() {
     this.oldStory.description = this.description;
-    this.storyService.addStory(+this.authSerive.getCurrentPatient().id, this.oldStory).toPromise().then(addedStory => {
+    this.storyService.addStory(+this.authService.getCurrentPatient().id, this.oldStory).toPromise().then(addedStory => {
       this.navCtrl.push(StoryDetailsPage, {
         "album": this.selectedAlbum,
         "index": this.index
@@ -109,7 +110,8 @@ export class NewStoryPage {
       fileName: "asset",
       mimeType: "image/jpeg",
       headers: {
-        "Connection": "close"
+        "Connection": "close",
+        "Authorization": "Bearer " + localStorage.getItem(env.jwtToken)
       }
     };
 

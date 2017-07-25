@@ -10,16 +10,21 @@
 
   <div (swipe)="swipeEvent($event)">
     <div class="image-container">
-      <img id="{{album.stories[index].id}}" src="{{album.stories[index].source}}"
-         style="width:100%; max-width:100%" *ngIf="album.stories[index].source">
-      <ion-icon class="star" name="{{isFavorited() ? 'star' : 'star-outline'}}"
-        [class.favorited]="isFavorited()" (click)="toggleFavorite()" ></ion-icon>
+      <div *ngIf="album.stories[index].source">
+        <img id="{{album.stories[index].id}}" src="{{album.stories[index].source}}"
+           style="width:100%; max-width:100%">
+        <ion-icon class="star" name="{{isFavorited() ? 'star' : 'star-outline'}}"
+                  [class.favorited]="isFavorited()" (click)="toggleFavorite()" ></ion-icon>
+      </div>
     </div>
     <!-- No more title
     <h2>{{album.stories[index].title}}</h2>  -->
     <div class="description" color="general" *ngIf="album.stories[index].description">
       {{album.stories[index].description}}
+      <p style="text-align: center;"><ion-icon *ngIf="!album.stories[index].source" class="star2" name="{{isFavorited() ? 'star' : 'star-outline'}}"
+                [class.favorited]="isFavorited()" (click)="toggleFavorite()" ></ion-icon></p>
     </div>
+
     <div class="row">
       <button ion-button class="detail-button" (click)="editDescription()">
         <div>

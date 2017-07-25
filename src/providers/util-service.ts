@@ -29,7 +29,7 @@ export class UtilService {
       sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
     // Create options for the Camera Dialog
     var options = {
-      quality: 100,
+      quality: 90,
       sourceType: sourceType,
       saveToPhotoAlbum: false,
       encodingType: this.camera.EncodingType.JPEG,
