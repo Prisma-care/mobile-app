@@ -141,7 +141,9 @@ export class StoryService extends PrismaService {
   updateStory(userId: number, newStory: UserStory): Observable<UserStory> {
     let url: string = env.api.getPatient;
     let storyUrl: string = env.api.getStory;
-    return this._http.patch(`${this._urlToApi}/${url}/${userId}/${storyUrl}/${newStory.id}`, newStory)
+    return this._http.patch(`${this._urlToApi}/${url}/${userId}/${storyUrl}/${newStory.id}`, newStory,  {
+      headers: this._head
+    } )
       .map(res => {
         // If request fails, throw an Error that will be caught
         if (res.status < 200 || res.status >= 300) {
