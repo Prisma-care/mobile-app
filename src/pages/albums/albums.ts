@@ -117,7 +117,13 @@ export class AlbumsPage extends AuthGuard implements OnInit {
             handler: data => {
               this.storyService.addAlbum(this.currentPatient.id, data.title).toPromise()
                 .then(album => {
-                  this.albums.push(album as Album);
+
+                  //this.albums.push(album as Album);
+                  // TODO: this would spare us a whole refresh
+                  // but it gives errors
+
+                  // complete albums refresh
+                  this.ionViewWillEnter()
                 })
                 .catch(() => albumFailedAlert.present());
             }
