@@ -8,7 +8,7 @@ import {env} from "../../app/environment";
 import {PatientService} from "../back-end/user.service";
 import {UtilService} from "../util-service";
 import {Storage} from "@ionic/storage";
-import {Http} from "@angular/http/src";
+import {Http} from "@angular/http";
 
 @Injectable()
 export class AuthService extends PrismaService {
