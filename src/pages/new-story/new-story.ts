@@ -52,7 +52,6 @@ export class NewStoryPage extends  AuthGuard{
       this.dataUrl = stanizer.sanitize(this.oldStory.source);
     }
 
-    this.utilService.presentToast("Test : " + this.dataUrl);
     // check if source is a question answer
     if (navParams.get("questionAnswer")) {
       this.description = navParams.get("description");
