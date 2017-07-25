@@ -35,6 +35,7 @@ import { QuestionService } from "../providers/question-service/question.service"
 import { AlbumQuestions } from "../pages/album-detail/album-questions";
 import {LoginPage} from "../pages/login/login";
 import {AuthGuard} from "../pages/auth-guard";
+import {NativePageTransitions} from "@ionic-native/native-page-transitions";
 
 
 @NgModule({
@@ -87,6 +88,7 @@ import {AuthGuard} from "../pages/auth-guard";
     FileChooser,
     Transfer,
     FilePath,
+    NativePageTransitions,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService
   ]

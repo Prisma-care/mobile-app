@@ -6,20 +6,22 @@ import {Album} from "../../dto/album";
 import {NewStoryPage} from "../new-story/new-story";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
+import {NativePageTransitions, NativeTransitionOptions} from "@ionic-native/native-page-transitions";
 
 @Component({
   selector: 'page-storydetails',
-  templateUrl: 'storydetails.html'
+  templateUrl: 'storydetails.html',
+
 })
-export class StoryDetailsPage extends  AuthGuard implements OnInit {
+export class StoryDetailsPage extends AuthGuard implements OnInit {
   public album: Album;
   public index: number;
   public story: UserStory;
 
   // TODO: get favorite in backend &
   // 1 like?
-  constructor(protected  authService:AuthService,public navCtrl: NavController, public navParams: NavParams,
-              private storyService: StoryService) {
+  constructor(protected  authService: AuthService, public navCtrl: NavController, public navParams: NavParams,
+              private storyService: StoryService, private nativePageTransitions: NativePageTransitions) {
     super(authService);
     this.album = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
@@ -40,12 +42,39 @@ export class StoryDetailsPage extends  AuthGuard implements OnInit {
   }
 
   swipeEvent(e) {
+
+    let options: NativeTransitionOptions = {
+      direction: 'up',
+      duration: 500,
+      slowdownfactor: 3,
+      slidePixels: 20,
+      iosdelay: 100,
+      androiddelay: 150,
+    };
     //swipes left
-    if (e.direction == 4)
+    if (e.direction == 4) {
+      options.direction = 'rigth';
+      this.nativePageTransitions.flip(options)
+        .then(onSucess => {
+        })
+        .catch(err => {
+        });
       this.previous();
+
+    }
+
     //swipes rigth
-    if (e.direction == 2)
+    if (e.direction == 2) {
+      options.direction = 'left';
+      this.nativePageTransitions.flip(options)
+        .then(onSucess => {
+        })
+        .catch(err => {
+        });
       this.next();
+    }
+
+
   }
 
   next(): void {
@@ -54,6 +83,7 @@ export class StoryDetailsPage extends  AuthGuard implements OnInit {
 
   previous(): void {
     this.index = this.index === 0 ? this.album.stories.length - 1 : this.index - 1;
+
   }
 
   private getStory(): UserStory {
