@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {ActionSheetController, NavController} from "ionic-angular";
+import {ActionSheetController, NavController, AlertController} from "ionic-angular";
 import {StanizerService} from "../../providers/stanizer.service";
 import {PatientService} from "../../providers/back-end/user.service";
 import {StoryService} from "../../providers/back-end/story.service";
@@ -10,7 +10,6 @@ import {Camera} from "@ionic-native/camera";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {AlbumDetailPage} from "../album-detail/album-detail";
 import {env} from "../../app/environment";
-import { Dialogs } from "@ionic-native/dialogs";
 import { Patient } from "../../dto/patient";
 import {AuthGuard} from "../auth-guard";
 import {AuthService} from "../../providers/auth-service/auth-service";
@@ -33,7 +32,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   constructor(public authService: AuthService, public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
               public navCtrl: NavController, protected sanitizer: StanizerService,
               protected patientService: PatientService, protected storyService: StoryService,
-              protected dialogs: Dialogs) {
+              protected alertCtrl: AlertController) {
     super(authService);
     this.patientService.getPatient("1").toPromise().then(res => localStorage.setItem(env.temp.fakePatient, JSON.stringify(res)));
   }
@@ -50,7 +49,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     this.storyService.getAlbums(this.currentPatient.id).toPromise().then(albums => {
       this.albums = albums as Album[];
     });
-    
+
   }
 
   getThumb(url: string, descripton?: string): string {
@@ -93,18 +92,38 @@ export class AlbumsPage extends AuthGuard implements OnInit {
 
   addAlbum(): void {
 
-    this.dialogs.prompt('Hoe wil je het album noemen?', 'Albumnaam', ['Voeg toe', 'Annuleer'])
-    .then(callbackObject => {
-      // "Voeg toe" clicked
-      if (callbackObject.buttonIndex === 1) {
-        this.storyService.addAlbum(this.currentPatient.id, callbackObject.input1).toPromise()
-          .then(album => {
-            this.albums.push(album as Album);
-          })
-          .catch(() => console.log("Dialog error"))
-      }
-    })
-    .catch(e => console.log('Error displaying dialog', e));
+    let albumFailedAlert = this.alertCtrl.create({
+      title: 'Fout bij het maken van het album',
+      subTitle: 'Onze excuses, het album kon niet aangemaakt worden. Er is iets fout met Prisma.\nProbeer later nog eens opnieuw!',
+      buttons: ['Ok']
+    });
+
+    this.alertCtrl.create( {
+      "title": 'Voeg album toe',
+      "message": 'Hoe wil je het album noemen?',
+        inputs: [
+          {
+            name: 'title',
+            placeholder: 'bv. Kajakclub'
+          },
+        ],
+        buttons: [
+          {
+            text: 'Annuleer',
+            handler: data => { }
+          },
+          {
+            text: 'Voeg toe',
+            handler: data => {
+              this.storyService.addAlbum(this.currentPatient.id, data.title).toPromise()
+                .then(album => {
+                  this.albums.push(album as Album);
+                })
+                .catch(() => albumFailedAlert.present());
+            }
+          }
+        ]
+    }).present();
   }
 
   isRepresentativeOfTheAlbum(story: UserStory): boolean {
