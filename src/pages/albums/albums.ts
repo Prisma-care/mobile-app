@@ -46,9 +46,11 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   }
 
   ionViewWillEnter(): void {
+
     this.storyService.getAlbums(this.currentPatient.id).toPromise().then(albums => {
       this.albums = albums as Album[];
     });
+    
   }
 
   getThumb(url: string, descripton?: string): string {
