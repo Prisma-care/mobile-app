@@ -34,17 +34,19 @@ export class AlbumsPage extends AuthGuard implements OnInit {
               protected patientService: PatientService, protected storyService: StoryService,
               protected alertCtrl: AlertController) {
     super(authService);
-    this.patientService.getPatient("1").toPromise().then(res => localStorage.setItem(env.temp.fakePatient, JSON.stringify(res)));
+    this.currentPatient =this.authService.getCurrentPatient();
+    console.log("");
   }
 
   currentPatient: Patient;
 
   ngOnInit(): void {
     // TODO: replace with a service method
-    this.currentPatient =JSON.parse(localStorage.getItem(env.temp.fakePatient)) as Patient;
+    this.currentPatient =this.authService.getCurrentPatient();
   }
 
   ionViewWillEnter(): void {
+   console.log("Test : " + JSON.stringify(this.authService.getCurrentPatient()));
     this.storyService.getAlbums(this.authService.getCurrentPatient().id).toPromise().then(albums => {
       this.albums = albums as Album[];
     });

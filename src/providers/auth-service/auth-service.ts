@@ -80,7 +80,21 @@ export class AuthService extends PrismaService {
   }
 
   getCurrentPatient(): Patient {
-    this.patientService.getPatient("1").toPromise().then(res => localStorage.setItem(env.temp.fakePatient, JSON.stringify(res)));
-    return JSON.parse(localStorage.getItem(env.temp.fakePatient)) as Patient;
-  }
+    if (this.isLoggedIn()) {
+      if (localStorage.getItem(env.temp.fakePatient)
+          && JSON.parse(localStorage.getItem(env.temp.fakePatient)).id
+        ) {
+        return JSON.parse(localStorage.getItem(env.temp.fakePatient)) as Patient;
+      }
+      else {
+        // TODO: we assume patient 1
+        this.patientService.getPatient("1").toPromise().then( res => {
+            localStorage.setItem(env.temp.fakePatient, JSON.stringify(res))
+            return res;
+          }
+        );
+      }
+    }
+    return null;
+}
 }

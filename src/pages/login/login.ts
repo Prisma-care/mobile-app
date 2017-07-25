@@ -3,6 +3,7 @@ import {NavController, NavParams} from "ionic-angular";
 import {User} from "../../dto/user";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {AlbumsPage} from "../albums/albums";
+import {UtilService} from "../../providers/util-service";
 
 
 @Component({
@@ -23,7 +24,7 @@ export class LoginPage implements  OnInit{
   email: string = "user@mail.com";
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public authService:AuthService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public authService:AuthService,public utilService:UtilService) {
   }
 
 
@@ -46,6 +47,8 @@ export class LoginPage implements  OnInit{
     this.authService.login(this.email, this.password).toPromise().then(res => {
       if(res){
         this.navCtrl.push(AlbumsPage);
+      }else{
+        this.utilService.showErrorMessage("Bad login/password");
       }
     })
   }
