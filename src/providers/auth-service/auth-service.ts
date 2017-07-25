@@ -5,11 +5,20 @@ import {Observable} from "rxjs/Observable";
 import {User} from "../../dto/user";
 import {Patient} from "../../dto/patient";
 import {env} from "../../app/environment";
+import {PatientService} from "../back-end/user.service";
+import {UtilService} from "../util-service";
+import {Storage} from "@ionic/storage";
+import {Http} from "@angular/http/src";
 
 @Injectable()
 export class AuthService extends PrismaService {
+  patientService:PatientService;
 
+  constructor(_httpSer: Http, storageSer: Storage, utilService:UtilService, public patientServiceIn:PatientService){
+    super(_httpSer,storageSer,utilService);
+    this.patientService = patientServiceIn;
 
+  }
   // Login a user
   // Normally make a server request and store
   // e.g. the auth token
@@ -71,6 +80,7 @@ export class AuthService extends PrismaService {
   }
 
   getCurrentPatient(): Patient {
+    this.patientService.getPatient("1").toPromise().then(res => localStorage.setItem(env.temp.fakePatient, JSON.stringify(res)));
     return JSON.parse(localStorage.getItem(env.temp.fakePatient)) as Patient;
   }
 }
