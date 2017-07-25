@@ -69,10 +69,10 @@ export class StoryDetailsPage extends  AuthGuard implements OnInit {
     //this.album.stories[this.index].user
 
     let story: UserStory = new UserStory();
-    story.favorited = this.album.stories[this.index].favorited ? false : true;
+    this.album.stories[this.index].favorited = story.favorited = !this.album.stories[this.index].favorited;
     story.id = this.album.stories[this.index].id;
     this.storyService.updateStory(+this.authService.getCurrentPatient().id, story).toPromise().then(addedStory => {
-      
+
     });
 
   }
