@@ -46,9 +46,11 @@ export class AlbumsPage implements OnInit {
   }
 
   ionViewWillEnter(): void {
+
     this.storyService.getAlbums(this.currentPatient.id).toPromise().then(albums => {
       this.albums = albums as Album[];
     });
+    
   }
 
   getThumb(url: string, descripton?: string): string {
@@ -107,12 +109,10 @@ export class AlbumsPage implements OnInit {
   }
 
   isRepresentativeOfTheAlbum(story: UserStory): boolean {
-    console.log(JSON.stringify(story) + "\n \t result : " + (!!story.source && !!story.favorited));
     return !!story.source && !!story.favorited;
   }
 
   hasAnImage(story: UserStory) {
-    console.log(JSON.stringify(story) + "\n \t result type b : " + (!!story.source));
     return !!story.source;
   }
 

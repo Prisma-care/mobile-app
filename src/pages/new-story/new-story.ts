@@ -109,7 +109,8 @@ export class NewStoryPage {
       fileName: "asset",
       mimeType: "image/jpeg",
       headers: {
-        "Connection": "close"
+        "Connection": "close",
+        "Authorization": "Bearer " + localStorage.getItem(env.jwtToken)
       }
     };
 
