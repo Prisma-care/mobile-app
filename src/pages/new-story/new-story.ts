@@ -22,7 +22,7 @@ import {AuthGuard} from "../auth-guard";
 })
 export class NewStoryPage extends  AuthGuard{
 
-  dataUrl: string | SafeUrl;
+  dataUrl: string ;
   dataUploadTrigger: Promise<any>;
   description: string;
   placeHolder: string = "Schrijf het verhaal.\nHoe meer details hoe beter.";
@@ -49,7 +49,7 @@ export class NewStoryPage extends  AuthGuard{
     this.oldStory = navParams.get("story") as UserStory;
     if (this.oldStory) {
       this.description = this.oldStory.description;
-      this.dataUrl = stanizer.sanitize(this.oldStory.source);
+      this.dataUrl = this.oldStory.source;
     }
 
     // check if source is a question answer
@@ -90,7 +90,7 @@ export class NewStoryPage extends  AuthGuard{
   update() {
     this.oldStory.description = this.description;
     this.storyService.addStory(+this.authService.getCurrentPatient().id, this.oldStory).toPromise().then(addedStory => {
-      this.navCtrl.push(StoryDetailsPage, {
+      this.navCtrl.popTo(StoryDetailsPage, {
         "album": this.selectedAlbum,
         "index": this.index
       });
@@ -133,4 +133,12 @@ export class NewStoryPage extends  AuthGuard{
     });
   }
 
+
+  sanitizeUrl(){
+    if(this.oldStory){
+      return this.stanizer.sanitize(this.dataUrl);
+    }else{
+      return this.utilService.pathForImage(this.dataUrl);
+    }
+  }
 }

@@ -22,5 +22,10 @@ export const env = {
     albums: "albums",
     fakeUser: "user",
     fakePatient: "patient"
+  },
+  methods: {
+    addNewStory:'addNewStory',
+    replaceDescription:'replaceDescription',
+    replaceImage: 'replaceImage'
   }
 };
