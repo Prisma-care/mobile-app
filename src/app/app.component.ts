@@ -1,5 +1,5 @@
-import {Component} from "@angular/core";
-import {Platform} from "ionic-angular";
+import {Component, ViewChild} from "@angular/core";
+import {MenuController, Nav, Platform, NavController} from "ionic-angular";
 import {StatusBar} from "@ionic-native/status-bar";
 import {SplashScreen} from "@ionic-native/splash-screen";
 
@@ -9,14 +9,18 @@ import {env} from "./environment";
 import {User} from "../dto/user";
 import { AlbumsPage } from "../pages/albums/albums";
 import {LoginPage} from "../pages/login/login";
+import {AuthService} from "../providers/auth-service/auth-service";
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
+
+  @ViewChild(Nav) nav: Nav;
   rootPage: any = LoginPage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public patientService: PatientService) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
+              public patientService: PatientService,public authService:AuthService,public menu: MenuController) {
     //localStorage.clear();
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -24,5 +28,12 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
     });
+  }
+
+  logout(){
+    console.log("login out");
+    this.menu.close();
+    this.authService.logout();
+    this.nav.setRoot(LoginPage);
   }
 }

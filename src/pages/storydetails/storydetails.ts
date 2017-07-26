@@ -11,6 +11,7 @@ import {UtilService} from "../../providers/util-service";
 import {env} from "../../app/environment";
 import {StanizerService} from "../../providers/stanizer.service";
 import {StoryOptionsComponent} from "./story-options.component";
+import {LoginPage} from "../login/login";
 
 @Component({
   selector: 'page-storydetails',
@@ -38,7 +39,15 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
       //this.navCtrl.remove(this.navCtrl.length()-2);
     }
   }
-
+  ionViewWillEnter() {
+    console.log("dajdajjda2");
+    if (!this.authService.isLoggedIn()) {
+      console.log("trying");
+      this.navCtrl.setRoot(LoginPage);
+      this.navCtrl.popTo(LoginPage);
+    }
+    //return this.authService.isLoggedIn();
+  }
   getThumb(url: string): string {
     return "assets/img/t/" + url;
   }
@@ -187,7 +196,14 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   showMore(event) : void {
 
-    let popover = this.popoverCtrl.create(StoryOptionsComponent);
+    let popover = this.popoverCtrl.create(StoryOptionsComponent, {
+      story: this.getStory()
+    });
+    popover.onDidDismiss(dismissData => {
+      if ((dismissData) == "delete") {
+        this.navCtrl.pop(); // if the story was deleted, pop the story view
+      }
+    })
     popover.present({
         ev: event
     });

@@ -160,6 +160,23 @@ export class StoryService extends PrismaService {
       }).catch(err => this.handleError(err));
   }
 
+  deleteStory(userId: number,storyId:number): Observable<boolean> {
+    let url: string = env.api.getPatient;
+    let storyUrl: string = env.api.getStory;
+    return this._http.delete(`${this._urlToApi}/${url}/${userId}/${storyUrl}/${storyId}`, {
+      headers: this._head
+    })
+      .map(res => {
+        // If request fails, throw an Error that will be caught
+        if (res.status < 200 || res.status >= 300) {
+          return false;
+        }
+        return true;
+      }).catch(err => this.handleError(err));
+  }
+
+  // TODO: userId should be refactored to patientId here everywhere
+
   updateStory(userId: number, newStory: UserStory): Observable<UserStory> {
     let url: string = env.api.getPatient;
     let storyUrl: string = env.api.getStory;
