@@ -9,7 +9,7 @@
     <div *ngIf="dataUrl">
       <img class="new-story-thumb" [src]="sanitizeUrl()">
     </div>
-    <ion-card-content>
+    <ion-card-content *ngIf="method.indexOf(methods.replaceImage) < 0">
       <ion-item>
         <ion-textarea autofocus class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="description" rows="7"
                       clearInput></ion-textarea>

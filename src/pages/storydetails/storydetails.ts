@@ -122,10 +122,11 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
 
   replaceOrAddImage() {
+    let story: UserStory = this.getStory();
     let actionSheet = this.actionsheetCtrl.create({
         title: 'Foto toevoegen',
         cssClass: 'action-sheets-basic-page',
-        buttons: [,
+        buttons: [
           {
             text: 'Maak foto',
             role: 'destructive',
@@ -140,6 +141,8 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
                     {
                       "dataUrl": dataUrl,
                       "album": this.album,
+                      "story": story,
+                      "index": this.index,
                       "method": env.methods.replaceImage
                     })
                 });
@@ -158,6 +161,8 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
                     {
                       "dataUrl": dataUrl,
                       "album": this.album,
+                      "story": story,
+                      "index": this.index,
                       "method": env.methods.replaceImage
                     })
                 });
@@ -168,7 +173,6 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
             role: 'cancel',
             icon: 'md-arrow-back',
             handler: () => {
-              console.log('canceled');
             }
           },
         ]

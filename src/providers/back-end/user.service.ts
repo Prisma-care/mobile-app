@@ -7,15 +7,16 @@ import "rxjs/Rx";
 import {Injectable} from "@angular/core";
 import {Patient} from "../../dto/patient";
 import {env} from "../../app/environment";
+import {Headers, Http} from "@angular/http";
 
 @Injectable()
 export class PatientService extends PrismaService {
 
 
-  getPatient(id: string): Observable<Patient> {
+  getPatient(id: string,headers?:Headers): Observable<Patient> {
     let url: string = env.api.getPatient;
     return this._http.get(`${this._urlToApi}/${url}/${id}`, {
-      headers: this._head
+      headers: headers || this._head
     })
       .map(res => {
         console.log("Got patient: " + JSON.stringify(res.json().response))
