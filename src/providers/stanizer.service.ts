@@ -10,6 +10,10 @@ export class StanizerService {
     return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
+  public sanitizeVideo(url: string) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
   public sanitizeStyle(url: string) {
     return this.sanitizer.bypassSecurityTrustStyle(url);
   }

@@ -15,7 +15,8 @@ export class AuthGuard {
   }
 
   ionViewCanEnter():boolean{
-    console.log("trying to log : " + this.authService.isLoggedIn());
+   if(!this.authService.isLoggedIn())
+     this.navCrtlIn.popTo(LoginPage);
     return this.authService.isLoggedIn();
   }
 }

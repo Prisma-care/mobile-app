@@ -35,7 +35,6 @@ export class AlbumsPage extends AuthGuard implements OnInit {
               protected alertCtrl: AlertController) {
     super(authService);
     this.currentPatient =this.authService.getCurrentPatient();
-    console.log("");
   }
 
   currentPatient: Patient;

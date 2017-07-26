@@ -8,13 +8,13 @@
   <div *ngIf="!isSigningUp">
     <ion-list>
       <ion-item>
-        <ion-label fixed>E-mail adres</ion-label>
-        <ion-input type="text" [(ngModel)]="email" value=""></ion-input>
+        <ion-label fixed>E-mail adres*</ion-label>
+        <ion-input type="text" [(ngModel)]="email" required></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label fixed>Paswoord</ion-label>
-        <ion-input type="password" [(ngModel)]="password"></ion-input>
+        <ion-label fixed>Paswoord*</ion-label>
+        <ion-input type="password" [(ngModel)]="password" required></ion-input>
       </ion-item>
     </ion-list>
 
@@ -30,26 +30,26 @@
   <div *ngIf="isSigningUp">
     <ion-list>
       <ion-item>
-        <ion-label fixed>Voornaam</ion-label>
-        <ion-input type="text" value="" [(ngModel)]="firstname"></ion-input>
+        <ion-label fixed>Voornaam*</ion-label>
+        <ion-input type="text" value="" [(ngModel)]="firstname" required></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label fixed>Achternaam</ion-label>
-        <ion-input type="text" value="" [(ngModel)]="lastname"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label fixed>E-mail adres</ion-label>
-        <ion-input type="email" value="" [(ngModel)]="email"></ion-input>
+        <ion-label fixed>Achternaam*</ion-label>
+        <ion-input type="text" value="" [(ngModel)]="lastname" required></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label fixed>Paswoord</ion-label>
-        <ion-input type="password" [(ngModel)]="password"></ion-input>
+        <ion-label fixed>E-mail adres*</ion-label>
+        <ion-input type="email" value="" [(ngModel)]="email" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label fixed>Paswoord*</ion-label>
+        <ion-input type="password" [(ngModel)]="password" required></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label fixed>Paswoord (typ het nog eens)</ion-label>
-        <ion-input type="password" [(ngModel)]="passwordConfirm"></ion-input>
+        <ion-label fixed>Paswoord* (typ het nog eens)</ion-label>
+        <ion-input type="password" [(ngModel)]="passwordConfirm" required></ion-input>
       </ion-item>
     </ion-list>
 

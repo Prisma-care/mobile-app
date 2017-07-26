@@ -9,10 +9,18 @@
 <ion-content padding *ngIf="album && isValidIndex(index) && album.stories[index]">
   <div class="swipe-wrapper" (swipe)="swipeEvent($event)">
     <div>
-      <div class="image-container">
+      <div class="image-container" *ngIf="album.stories[index].source.includes('youtube.com') < 0">
         <div *ngIf="album.stories[index].source">
-          <img id="{{album.stories[index].id}}" src="{{album.stories[index].source}}"
+          <img id="Image{{album.stories[index].id}}" [src]="stanize(album.stories[index].source)"
              style="width:100%; max-width:100%">
+          <ion-icon class="star" name="{{isFavorited() ? 'star' : 'star-outline'}}"
+                    [class.favorited]="isFavorited()" (click)="toggleFavorite()" ></ion-icon>
+        </div>
+      </div>
+      <div class="image-container" *ngIf="album.stories[index].source.includes('youtube.com') >= 0">
+        <div *ngIf="album.stories[index].source">
+          <iframe target="_parent" id="Video{{album.stories[index].id}}" width="100%" height="315" [src]="stanizeVideo(album.stories[index].source)" frameborder="0" allowfullscreen style="width:100%; max-width:100%">>
+          </iframe>
           <ion-icon class="star" name="{{isFavorited() ? 'star' : 'star-outline'}}"
                     [class.favorited]="isFavorited()" (click)="toggleFavorite()" ></ion-icon>
         </div>

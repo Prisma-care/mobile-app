@@ -53,7 +53,18 @@ export class StoryService extends PrismaService {
               }
             );
             */
-            albums.push(new Album(album));
+              let al:Album = new Album(album);
+            if (al.title.toLowerCase().indexOf("sport") >= 0) {
+              let fakeStory: UserStory = new UserStory();
+              fakeStory.title = "The 3 tenors";
+              fakeStory.favorited = true;
+              fakeStory.description ="Youtube video";
+              fakeStory.creatorId = 1;
+              fakeStory.id = "2000";
+              fakeStory.source = "https://www.youtube.com/embed/ERD4CbBDNI0?rel=0&amp;controls=0&amp;showinfo=0?ecver=1?&start=45";
+              al.stories.push(fakeStory);
+            }
+            albums.push(al);
           }
         );
         return albums;
@@ -68,7 +79,18 @@ export class StoryService extends PrismaService {
       headers: this._head
     })
       .map(res => {
-        return new Album(res.json().response);
+        let al:Album = new Album(res.json().response);
+        if (al.title.toLowerCase().indexOf("sport") >= 0) {
+          let fakeStory: UserStory = new UserStory();
+          fakeStory.title = "The 3 tenors";
+          fakeStory.favorited = true;
+          fakeStory.description ="Youtube video";
+          fakeStory.creatorId = 1;
+          fakeStory.id = "2000";
+          fakeStory.source = "https://www.youtube.com/embed/ERD4CbBDNI0?rel=0&amp;showinfo=0?ecver=1&start=45";
+          al.stories.push(fakeStory);
+        }
+        return al;
       })
       .catch(err => this.handleError(err));
   }

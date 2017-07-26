@@ -41,13 +41,11 @@ export class PrismaService implements OnInit {
   public handleError(error: Response | any) {
     console.log("Error ! " + JSON.stringify(error));
     //logs out if no user token avaible when needed
-    /**if(JSON.stringify(error).toLocaleLowerCase().includes("token_invalid") || JSON.stringify(error).toLocaleLowerCase().includes("token_not_provided")){
-      if(localStorage.getItem((env.jwtToken))){
+    if(JSON.stringify(error).toLocaleLowerCase().indexOf("token_invalid") >= 0 || JSON.stringify(error).toLocaleLowerCase().indexOf("token_not_provided") >= 0){
         localStorage.removeItem(env.jwtToken);
         localStorage.removeItem(env.temp.fakeUser);
-       //utilService.presentToast("Lo")
-      }
-    }*/
+        localStorage.removeItem(env.temp.fakePatient);
+    }
 
     return Observable.of(error) as Observable<any>;
   }
