@@ -69,9 +69,31 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     })
   }
 
+  /*
+  private colors: any = {
+    "yellow": "#FAD820",
+    "orange": "#FF9F00",
+    "red": "#F35A4B",
+    "purple": "#D95DB4",
+    "blue": "#637DC8"
+  };
+  */
+
+  private colorCodes: string[] = ["#FAD820", "#FF9F00", "#F35A4B", "#D95DB4", "#637DC8"];
+
+  getBackgroundColor(i: number): string {
+    if (this.albums[i].isEmpty()) {
+      let currentColor: string = this.colorCodes[i % this.colorCodes.length];
+      return currentColor;
+    }
+    else {
+      return "";
+    }
+  }
+
   getBackgroundImage(i: number): any {
     if (this.albums[i].isEmpty()) {
-      return ""
+      return "";
     }
     else {
       /*
