@@ -8,6 +8,7 @@ import {StoryDetailsPage} from "../storydetails/storydetails";
 import {StanizerService} from "../../providers/stanizer.service";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
+import {env} from "../../app/environment";
 
 @Component({
   selector: 'album-detail',
@@ -23,8 +24,6 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
               private storyService: StoryService, private sanitizer: StanizerService) {
     super(authService);
     this.album = navParams.get("album") as Album;
-
-    console.log(JSON.stringify(this.album.stories));
   }
 
   ngOnInit(): void {
@@ -52,7 +51,8 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
             cssClass: 'general',
             handler: () => {
               this.navCtrl.push(NewStoryPage, {
-                "album": this.album
+                "album": this.album,
+                "method" : env.methods.addNewStory
               });
             }
           },
@@ -69,7 +69,8 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
                   this.navCtrl.push(NewStoryPage,
                     {
                       "dataUrl": dataUrl,
-                      "album": this.album
+                      "album": this.album,
+                      "method" : env.methods.addNewStory
                     })
                 });
             }
@@ -86,7 +87,8 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
                   this.navCtrl.push(NewStoryPage,
                     {
                       "dataUrl": dataUrl,
-                      "album": this.album
+                      "album": this.album,
+                      "method" : env.methods.addNewStory
                     })
                 });
             }

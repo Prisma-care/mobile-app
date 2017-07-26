@@ -21,7 +21,7 @@ export class PrismaService implements OnInit {
     // Domain you wish to allow
     this._head.set('Access-Control-Allow-Origin', API_URL);
     // Request methods you wish to allow
-    this._head.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    this._head.set('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
     // Set to true if you need the website to include cookies in  requests
     this._head.set('Access-Control-Allow-Credentials', JSON.stringify(true));
     this._head.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
