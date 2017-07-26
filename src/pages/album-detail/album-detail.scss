@@ -1,5 +1,15 @@
 album-detail {
 
+  ion-title {
+    float: left;
+  }
+
+  .add-story-icon {
+    float: right;
+    margin-right: 5%;
+    font-size: 2em;
+  }
+
   .grid {
     padding: 0;
   }
