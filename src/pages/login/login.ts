@@ -30,14 +30,10 @@ export class LoginPage implements  OnInit{
 
   ngOnInit(): void {
     if(this.authService.isLoggedIn()) {
-      this.navCtrl.push(AlbumsPage).then(() => {
-        const index = this.navCtrl.getActive().index;
-        //  this.navCtrl.remove(index - 1);
-      })
+      this.navCtrl.setRoot(AlbumsPage);
     }
   }
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
   }
   ionViewCanLeave():boolean{
     return true;
@@ -46,7 +42,7 @@ export class LoginPage implements  OnInit{
   signIn() {
     this.authService.login(this.email, this.password).toPromise().then(res => {
       if(res){
-        this.navCtrl.push(AlbumsPage);
+        this.navCtrl.setRoot(AlbumsPage);
       }else{
         this.utilService.showErrorMessage("Bad login/password");
       }
@@ -61,7 +57,7 @@ export class LoginPage implements  OnInit{
     user.lastName = this.lastname;
     this.authService.signUp(user).toPromise().then(res => {
       if(res){
-        this.navCtrl.push(AlbumsPage);
+        this.navCtrl.setRoot(AlbumsPage);
       }
     })
   }

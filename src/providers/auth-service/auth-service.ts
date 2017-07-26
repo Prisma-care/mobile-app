@@ -60,6 +60,7 @@ export class AuthService extends PrismaService {
   logout(): void {
     localStorage.removeItem(env.jwtToken);
     localStorage.removeItem(env.temp.fakeUser);
+    localStorage.removeItem(env.temp.fakePatient);
   }
 
   signUp(user: User): Observable<boolean> {

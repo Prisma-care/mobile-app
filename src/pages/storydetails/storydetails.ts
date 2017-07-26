@@ -10,6 +10,7 @@ import {NativePageTransitions, NativeTransitionOptions} from "@ionic-native/nati
 import {UtilService} from "../../providers/util-service";
 import {env} from "../../app/environment";
 import {StanizerService} from "../../providers/stanizer.service";
+import {LoginPage} from "../login/login";
 
 @Component({
   selector: 'page-storydetails',
@@ -36,7 +37,15 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
       //this.navCtrl.remove(this.navCtrl.length()-2);
     }
   }
-
+  ionViewWillEnter() {
+    console.log("dajdajjda2");
+    if (!this.authService.isLoggedIn()) {
+      console.log("trying");
+      this.navCtrl.setRoot(LoginPage);
+      this.navCtrl.popTo(LoginPage);
+    }
+    //return this.authService.isLoggedIn();
+  }
   getThumb(url: string): string {
     return "assets/img/t/" + url;
   }

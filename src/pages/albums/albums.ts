@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {ActionSheetController, NavController, AlertController} from "ionic-angular";
+import {ActionSheetController, NavController, AlertController, MenuController} from "ionic-angular";
 import {StanizerService} from "../../providers/stanizer.service";
 import {PatientService} from "../../providers/back-end/user.service";
 import {StoryService} from "../../providers/back-end/story.service";
@@ -32,9 +32,10 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   constructor(public authService: AuthService, public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
               public navCtrl: NavController, protected sanitizer: StanizerService,
               protected patientService: PatientService, protected storyService: StoryService,
-              protected alertCtrl: AlertController) {
+              protected alertCtrl: AlertController, menu: MenuController) {
     super(authService);
     this.currentPatient =this.authService.getCurrentPatient();
+    menu.enable(true);
   }
 
   currentPatient: Patient;
