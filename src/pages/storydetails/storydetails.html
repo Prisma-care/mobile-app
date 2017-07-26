@@ -11,7 +11,7 @@
     <div>
       <div class="image-container" *ngIf="album.stories[index].source.includes('youtube.com') < 0">
         <div *ngIf="album.stories[index].source">
-          <img id="Image{{album.stories[index].id}}" [src]="stanize(album.stories[index].source)"
+          <img id="{{album.stories[index].id}}" [src]="stanize(album.stories[index].source)"
              style="width:100%; max-width:100%">
           <ion-icon class="star" name="{{isFavorited() ? 'star' : 'star-outline'}}"
                     [class.favorited]="isFavorited()" (click)="toggleFavorite()" ></ion-icon>
