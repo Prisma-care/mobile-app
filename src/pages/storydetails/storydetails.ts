@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {NavController, NavParams} from "ionic-angular";
+import {ActionSheetController, NavController, NavParams} from "ionic-angular";
 import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
@@ -7,6 +7,8 @@ import {NewStoryPage} from "../new-story/new-story";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
 import {NativePageTransitions, NativeTransitionOptions} from "@ionic-native/native-page-transitions";
+import {UtilService} from "../../providers/util-service";
+import {env} from "../../app/environment";
 
 @Component({
   selector: 'page-storydetails',
@@ -21,7 +23,8 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   // TODO: get favorite in backend &
   // 1 like?
   constructor(protected  authService: AuthService, public navCtrl: NavController, public navParams: NavParams,
-              private storyService: StoryService, private nativePageTransitions: NativePageTransitions) {
+              private storyService: StoryService, private nativePageTransitions: NativePageTransitions,
+              public actionsheetCtrl:ActionSheetController, public utilService:UtilService) {
     super(authService);
     this.album = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
@@ -54,7 +57,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     //swipes left
     if (e.direction == 4) {
       options.direction = 'rigth';
-      this.nativePageTransitions.flip(options)
+      this.nativePageTransitions.fade(options)
         .then(onSucess => {
         })
         .catch(err => {
@@ -66,7 +69,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     //swipes rigth
     if (e.direction == 2) {
       options.direction = 'left';
-      this.nativePageTransitions.flip(options)
+      this.nativePageTransitions.fade(options)
         .then(onSucess => {
         })
         .catch(err => {
@@ -112,7 +115,66 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     this.navCtrl.push(NewStoryPage, {
       "album": this.album,
       "story": story,
-      "index": this.index
+      "index": this.index,
+      "method": env.methods.replaceDescription
     })
+  }
+
+
+  replaceOrAddImage() {
+    let actionSheet = this.actionsheetCtrl.create({
+        title: 'Foto toevoegen',
+        cssClass: 'action-sheets-basic-page',
+        buttons: [,
+          {
+            text: 'Maak foto',
+            role: 'destructive',
+            icon: 'camera',
+            cssClass: 'general',
+            handler: () => {
+              let pictureAttempt: Promise<any> = this.utilService.takeAPicture();
+
+              pictureAttempt.then(
+                (dataUrl) => {
+                  this.navCtrl.push(NewStoryPage,
+                    {
+                      "dataUrl": dataUrl,
+                      "album": this.album,
+                      "method": env.methods.replaceImage
+                    })
+                });
+            }
+          },
+          {
+            text: 'Kies foto van camerarol',
+            role: 'destructive',
+            icon: 'image',
+            handler: () => {
+              let fileChooseAttempt: Promise<any> = this.utilService.chooseAFile();
+
+              fileChooseAttempt.then(
+                (dataUrl) => {
+                  this.navCtrl.push(NewStoryPage,
+                    {
+                      "dataUrl": dataUrl,
+                      "album": this.album,
+                      "method": env.methods.replaceImage
+                    })
+                });
+            }
+          },
+          {
+            text: 'Annuleer',
+            role: 'cancel',
+            icon: 'md-arrow-back',
+            handler: () => {
+              console.log('canceled');
+            }
+          },
+        ]
+
+      })
+    ;
+    actionSheet.present();
   }
 }
