@@ -17,7 +17,7 @@
             <p class="story-description">{{story.description}}</p>
           </div>
         </div>
-        <ion-icon class="star" name="{{isFavorited(i) ? 'star' : 'star-outline'}}"
+        <ion-icon *ngIf="isFavorited(i)" class="star" name="star"
           [class.favorited]="isFavorited(i)" ></ion-icon>
       </ion-col>
     </ion-row>
