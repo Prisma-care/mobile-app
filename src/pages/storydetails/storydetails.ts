@@ -10,7 +10,7 @@ import {NativePageTransitions, NativeTransitionOptions} from "@ionic-native/nati
 import {UtilService} from "../../providers/util-service";
 import {env} from "../../app/environment";
 import {StanizerService} from "../../providers/stanizer.service";
-import {MoreComponent} from "./more.component";
+import {StoryOptionsComponent} from "./story-options.component";
 
 @Component({
   selector: 'page-storydetails',
@@ -187,7 +187,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   showMore(event) : void {
 
-    let popover = this.popoverCtrl.create(MoreComponent);
+    let popover = this.popoverCtrl.create(StoryOptionsComponent);
     popover.present({
         ev: event
     });

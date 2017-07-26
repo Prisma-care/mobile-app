@@ -1,11 +1,9 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
+    <ion-title class="detail-title">
       {{ album.title || '?' }}
     </ion-title>
-    <button ion-button icon-only (click)="showMore($event)">
-      <ion-icon name="more"></ion-icon>
-    </button>
+    <ion-icon name="more" (click)="showMore($event)" class="story-options" end></ion-icon>
   </ion-navbar>
 </ion-header>
 

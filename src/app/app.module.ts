@@ -36,7 +36,7 @@ import { AlbumQuestions } from "../pages/album-detail/album-questions";
 import {LoginPage} from "../pages/login/login";
 import {AuthGuard} from "../pages/auth-guard";
 import {NativePageTransitions} from "@ionic-native/native-page-transitions";
-
+import { StoryOptionsComponent } from "../pages/storydetails/story-options.component";
 
 @NgModule({
   declarations: [
@@ -50,7 +50,8 @@ import {NativePageTransitions} from "@ionic-native/native-page-transitions";
     StoryDetailsPage,
     NewStoryPage,
     ApiTestingPage,
-    AlbumQuestions
+    AlbumQuestions,
+    StoryOptionsComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +71,8 @@ import {NativePageTransitions} from "@ionic-native/native-page-transitions";
     StoryDetailsPage,
     NewStoryPage,
     ApiTestingPage,
-    AlbumQuestions
+    AlbumQuestions,
+    StoryOptionsComponent
   ],
   providers: [
     StatusBar,
