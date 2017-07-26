@@ -9,6 +9,7 @@ import {AuthGuard} from "../auth-guard";
 import {NativePageTransitions, NativeTransitionOptions} from "@ionic-native/native-page-transitions";
 import {UtilService} from "../../providers/util-service";
 import {env} from "../../app/environment";
+import {StanizerService} from "../../providers/stanizer.service";
 
 @Component({
   selector: 'page-storydetails',
@@ -24,7 +25,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   // 1 like?
   constructor(protected  authService: AuthService, public navCtrl: NavController, public navParams: NavParams,
               private storyService: StoryService, private nativePageTransitions: NativePageTransitions,
-              public actionsheetCtrl:ActionSheetController, public utilService:UtilService) {
+              public actionsheetCtrl:ActionSheetController, public utilService:UtilService, public stanizer:StanizerService) {
     super(authService);
     this.album = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
@@ -180,5 +181,12 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
       })
     ;
     actionSheet.present();
+  }
+
+  stanize(url:string){
+    return this.stanizer.sanitize(url);
+  }
+  stanizeVideo(url:string){
+    return this.stanizer.sanitizeVideo(url);
   }
 }

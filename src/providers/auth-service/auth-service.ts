@@ -70,7 +70,8 @@ export class AuthService extends PrismaService {
       if (res.status < 200 || res.status >= 300) {
         return false;
       }
-      return this.login(user.email, user.password).toPromise().then(res2 => res2);
+      console.log("trying to login");
+      return this.login(user.email, user.password).toPromise();
     }).catch(err => this.handleError(err));
   }
 

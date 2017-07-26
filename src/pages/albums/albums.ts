@@ -35,7 +35,6 @@ export class AlbumsPage extends AuthGuard implements OnInit {
               protected alertCtrl: AlertController) {
     super(authService);
     this.currentPatient =this.authService.getCurrentPatient();
-    console.log("");
   }
 
   currentPatient: Patient;
@@ -52,12 +51,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     });
   }
 
-  getThumb(url: string, descripton?: string): string {
-    if (!url) return null;
-    if (url.startsWith("data:image/jpeg;base64") || url.startsWith("assets"))
-      return url;
-    return "assets/img/t/" + url;
-  }
+
 
   getStories(album: Album): UserStory[] {
     return album.stories;
@@ -105,7 +99,8 @@ export class AlbumsPage extends AuthGuard implements OnInit {
         index = this.albums[i].stories.findIndex(this.hasAnImage);
       if (index === -1)
         index = 0;
-      const style = `background-image: url(${this.albums[i].getBackgroundImage(index)})`;
+      let thumb:string = this.getThumb(this.albums[i].getBackgroundImage(index));
+      const style = `background-image: url(${thumb})`;
       if(!this.albums[i].getBackgroundImage(index))
         return "";
       return this.sanitizer.sanitizeStyle(style);
@@ -162,4 +157,15 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     return !!story.source;
   }
 
+
+  getThumb(url: string) {
+    if (url.toLowerCase().indexOf("youtube.com") >= 0) {
+      var reg = /embed\/(.+?)\?/;
+      let video = url.match(reg)[1];
+      let thumbailLink = "http://img.youtube.com/vi/" + video + "/0.jpg";
+      return thumbailLink;
+    } else {
+      return url;
+    }
+  }
 }

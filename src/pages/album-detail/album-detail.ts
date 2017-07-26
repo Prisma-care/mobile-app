@@ -52,7 +52,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
             handler: () => {
               this.navCtrl.push(NewStoryPage, {
                 "album": this.album,
-                "method" : env.methods.addNewStory
+                "method": env.methods.addNewStory
               });
             }
           },
@@ -70,7 +70,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
                     {
                       "dataUrl": dataUrl,
                       "album": this.album,
-                      "method" : env.methods.addNewStory
+                      "method": env.methods.addNewStory
                     })
                 });
             }
@@ -88,7 +88,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
                     {
                       "dataUrl": dataUrl,
                       "album": this.album,
-                      "method" : env.methods.addNewStory
+                      "method": env.methods.addNewStory
                     })
                 });
             }
@@ -113,6 +113,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     let url: string = this.album.getBackgroundImage(i);
     if (!url)
       return "";
+    url = this.getThumb(url);
     const style = `url(${url})`;
     //console.log("Made : " + style);
     return this.sanitizer.sanitizeStyle(style);
@@ -127,5 +128,16 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
   isFavorited(i: number): boolean {
     return this.album.stories[i].favorited;
+  }
+
+  getThumb(url: string) {
+    if (url.toLowerCase().indexOf("youtube.com") >= 0) {
+      var reg = /embed\/(.+?)\?/;
+      let video = url.match(reg)[1];
+      let thumbailLink = "http://img.youtube.com/vi/" + video + "/0.jpg";
+      return thumbailLink;
+    } else {
+      return url;
+    }
   }
 }

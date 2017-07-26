@@ -55,7 +55,10 @@ export class NewStoryPage extends AuthGuard {
     this.oldStory = navParams.get("story") as UserStory;
     if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
       this.description = this.oldStory.description;
-      this.dataUrl = this.oldStory.source;
+      if (this.oldStory.source.toLowerCase().indexOf("youtube.com") < 0)
+        this.dataUrl = this.oldStory.source;
+      else
+        this.dataUrl = null;
     }
 
     if (this.method.indexOf(env.methods.replaceImage) >= 0) {
@@ -83,7 +86,10 @@ export class NewStoryPage extends AuthGuard {
     }
     let newStory: UserStory = new UserStory();
     newStory.albumId = +this.selectedAlbum.id;
-    newStory.description = this.description;
+    if (this.description)
+      newStory.description = this.description;
+    else
+      newStory.description = "";
     newStory.creatorId = 1;
     this.storyService.addStory(+this.authService.getCurrentPatient().id, newStory).toPromise().then(addedStory => {
       if (this.dataUrl) {
