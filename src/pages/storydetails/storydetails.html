@@ -7,46 +7,50 @@
 </ion-header>
 
 <ion-content padding *ngIf="album && isValidIndex(index) && album.stories[index]">
-
-  <div (swipe)="swipeEvent($event)">
-    <div class="image-container">
-      <div *ngIf="album.stories[index].source">
-        <img id="{{album.stories[index].id}}" src="{{album.stories[index].source}}"
-           style="width:100%; max-width:100%">
-        <ion-icon class="star" name="{{isFavorited() ? 'star' : 'star-outline'}}"
-                  [class.favorited]="isFavorited()" (click)="toggleFavorite()" ></ion-icon>
-      </div>
-    </div>
-    <!-- No more title
-    <h2>{{album.stories[index].title}}</h2>  -->
-    <div class="description" color="general" *ngIf="album.stories[index].description">
-      {{album.stories[index].description}}
-      <p style="text-align: center;"><ion-icon *ngIf="!album.stories[index].source" class="star2" name="{{isFavorited() ? 'star' : 'star-outline'}}"
-                [class.favorited]="isFavorited()" (click)="toggleFavorite()" ></ion-icon></p>
-    </div>
-
-    <div class="row">
-      <button ion-button class="detail-button" (click)="editDescription()">
-        <div>
-          <ion-icon name="md-create" color="general"></ion-icon>
-          <p>Vul het verhaal aan</p>
+  <div class="swipe-wrapper" (swipe)="swipeEvent($event)">
+    <div>
+      <div class="image-container">
+        <div *ngIf="album.stories[index].source">
+          <img id="{{album.stories[index].id}}" src="{{album.stories[index].source}}"
+             style="width:100%; max-width:100%">
+          <ion-icon class="star" name="{{isFavorited() ? 'star' : 'star-outline'}}"
+                    [class.favorited]="isFavorited()" (click)="toggleFavorite()" ></ion-icon>
         </div>
-      </button>
-    </div>
-    <!--
-    <div class="row">
-      <button ion-button full icon-left color="transparent" style="text-align: left">
-        <ion-icon name="star" color="general"></ion-icon>
-        <p color="general">Favoriet</p>
-      </button>
-    </div>
-    <div class="row">
-      <button ion-button full icon-left (click)="next()" color="transparent" style="text-align: left">
-        <ion-icon name="md-arrow-forward" color="general"></ion-icon>
-        <p color="general">Volgende verhaal</p>
-      </button>
-    </div>
-    -->
-  </div>
+      </div>
+      <!-- No more title
+      <h2>{{album.stories[index].title}}</h2>  -->
+      <div class="description" color="general" *ngIf="album.stories[index].description">
+        {{album.stories[index].description}}
+        <p style="text-align: center;"><ion-icon *ngIf="!album.stories[index].source" class="star2" name="{{isFavorited() ? 'star' : 'star-outline'}}"
+                  [class.favorited]="isFavorited()" (click)="toggleFavorite()" ></ion-icon></p>
+      </div>
 
+      <div class="row">
+        <div class="detail-button" (click)="editDescription()">
+          <div>
+            <ion-icon name="md-create" color="general"></ion-icon>
+            <p>Vul het verhaal aan</p>
+          </div>
+          <div>
+            <ion-icon name="camera" color="general"></ion-icon>
+            <p>Voeg een foto toe</p> <!-- "Vervang foto" if already existing -->
+          </div>
+        </div>
+      </div>
+      <!--
+      <div class="row">
+        <button ion-button full icon-left color="transparent" style="text-align: left">
+          <ion-icon name="star" color="general"></ion-icon>
+          <p color="general">Favoriet</p>
+        </button>
+      </div>
+      <div class="row">
+        <button ion-button full icon-left (click)="next()" color="transparent" style="text-align: left">
+          <ion-icon name="md-arrow-forward" color="general"></ion-icon>
+          <p color="general">Volgende verhaal</p>
+        </button>
+      </div>
+      -->
+    </div>
+  </div>
 </ion-content>

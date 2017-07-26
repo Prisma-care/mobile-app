@@ -7,8 +7,10 @@ import {AuthService} from "../../providers/auth-service/auth-service";
   selector: 'album-questions',
   template: `
       <div class="page-header" *ngIf="currentQuestion">
-        <h2>{{currentQuestion}}</h2>
-        <ion-icon name="refresh" (click)="nextQuestion()"></ion-icon>
+        <div (click)="nextQuestion()">
+          <h2>{{currentQuestion}}</h2>
+          <ion-icon name="refresh"></ion-icon>
+        </div>
       </div>
     `
 })
