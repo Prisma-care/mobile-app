@@ -26,12 +26,12 @@
       </div>
 
       <div class="row">
-        <div class="detail-button" (click)="editDescription()">
-          <div class="story-action">
+        <div class="detail-button">
+          <div class="story-action" (click)="editDescription()">
             <ion-icon name="md-create" color="general"></ion-icon>
             <p>Vul het verhaal aan</p>
           </div>
-          <div class="story-action">
+          <div class="story-action" (click)="replaceOrAddImage()" *ngIf="!album.stories[index].source">
             <ion-icon name="camera" color="general"></ion-icon>
             <p>Voeg een foto toe</p> <!-- "Vervang foto" if already existing -->
           </div>

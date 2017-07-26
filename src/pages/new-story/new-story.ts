@@ -7,12 +7,9 @@ import {UserStory} from "../../dto/user-story";
 import {UtilService} from "../../providers/util-service";
 import {API_URL, env} from "../../app/environment";
 import {Transfer, TransferObject} from "@ionic-native/transfer";
-import {User} from "../../dto/user";
-import {Patient} from "../../dto/patient";
 import {AlbumsPage} from "../albums/albums";
 import {StoryDetailsPage} from "../storydetails/storydetails";
 import {StanizerService} from "../../providers/stanizer.service";
-import {SafeUrl} from "@angular/platform-browser";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
 
@@ -20,9 +17,16 @@ import {AuthGuard} from "../auth-guard";
   selector: 'page-new-story',
   templateUrl: 'new-story.html',
 })
-export class NewStoryPage extends  AuthGuard{
+export class NewStoryPage extends AuthGuard {
 
-  dataUrl: string ;
+
+  methods: {
+    addNewStory: string,
+    replaceDescription: string,
+    replaceImage: string
+  } = env.methods;
+  method: string = env.methods.addNewStory;
+  dataUrl: string;
   dataUploadTrigger: Promise<any>;
   description: string;
   placeHolder: string = "Schrijf het verhaal.\nHoe meer details hoe beter.";
@@ -37,20 +41,28 @@ export class NewStoryPage extends  AuthGuard{
 //file Transfer
   loading: Loading;
 
-  constructor( protected authService: AuthService,public navCtrl: NavController, private camera: Camera, public navParams: NavParams,
+  constructor(protected authService: AuthService, public navCtrl: NavController, private camera: Camera, public navParams: NavParams,
               private storyService: StoryService, private utilService: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
               public stanizer: StanizerService) {
-    super(authService)
+    super(authService);
+    this.method = navParams.get("method") as string;
     this.dataUrl = navParams.get("dataUrl") as string;
     this.selectedAlbum = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
 
+
     this.oldStory = navParams.get("story") as UserStory;
-    if (this.oldStory) {
+    if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
       this.description = this.oldStory.description;
       this.dataUrl = this.oldStory.source;
     }
+
+    if (this.method.indexOf(env.methods.replaceImage) >= 0) {
+      this.description = this.oldStory.description;
+      this.commit();
+    }
+
 
     // check if source is a question answer
     if (navParams.get("questionAnswer")) {
@@ -61,8 +73,12 @@ export class NewStoryPage extends  AuthGuard{
   }
 
   commit() {
-    if (this.oldStory) {
-      this.update();
+    if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
+      this.updateDescription();
+      return;
+    }
+    if (this.method.indexOf(env.methods.replaceImage) >= 0) {
+      this.updateImage();
       return;
     }
     let newStory: UserStory = new UserStory();
@@ -87,7 +103,7 @@ export class NewStoryPage extends  AuthGuard{
   }
 
 
-  update() {
+  updateDescription() {
     this.oldStory.description = this.description;
     this.storyService.addStory(+this.authService.getCurrentPatient().id, this.oldStory).toPromise().then(addedStory => {
       this.navCtrl.popTo(StoryDetailsPage, {
@@ -95,6 +111,19 @@ export class NewStoryPage extends  AuthGuard{
         "index": this.index
       });
     });
+  }
+
+  updateImage() {
+    console.log("trying to update");
+    if (this.dataUrl) {
+      this.uploadImage(this.authService.getCurrentPatient().id, this.oldStory.id, this.dataUrl + "").then(res => {
+        this.navCtrl.popTo(AlbumsPage, {
+          "album": this.selectedAlbum,
+        });
+      }).catch(err => {
+        console.log("Upload eror :" + JSON.stringify(err));
+      });
+    }
   }
 
   public uploadImage(patientId: number | string, storyId: number | string, lastImage: string): Promise<any> {
@@ -134,10 +163,10 @@ export class NewStoryPage extends  AuthGuard{
   }
 
 
-  sanitizeUrl(){
-    if(this.oldStory){
+  sanitizeUrl() {
+    if (this.oldStory) {
       return this.stanizer.sanitize(this.dataUrl);
-    }else{
+    } else {
       return this.utilService.pathForImage(this.dataUrl);
     }
   }

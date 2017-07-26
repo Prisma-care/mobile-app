@@ -19,9 +19,34 @@
   src: url('../assets/fonts/varela.woff2') format('woff2');
 }
 
-h1, h2, h3, .toolbar-title, ion-list-header .label, .tab-button-text, p {
+//h1, h2, h3, .toolbar-title, ion-list-header .label, .tab-button-text, p {
+* {
   font-family: Varela, 'Noto Sans';
 }
+
+// INPUT VALIDATION STYLE
+/*
+$text-input-highlight-color-valid:	color($colors, light-gray);
+$text-input-highlight-color-invalid:	color($colors, light-gray);
+$text-input-placeholder-color: color($colors, light-gray);
+*/
+
+.item-input .item-inner,
+.list-md .item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child,
+.list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child,
+.list-md .item-input.ng-valid.item-input-has-value.input-has-focus,
+.list-md .item-input.ng-valid.input-has-focus:not(.item-input-has-value),
+.list-md .item-input.ng-valid.input-has-value.input-has-focus,
+ {
+   //border-bottom: 2px solid map-get($colors, light-gray) !important;
+   border-bottom: none !important;
+   box-shadow:none !important;
+}
+
+.list-md .item-input:last-child {
+  border: none !important;
+}
+
 
 // PAGE HEADER
 
