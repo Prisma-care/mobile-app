@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {ActionSheetController, NavController, NavParams} from "ionic-angular";
+import {ActionSheetController, NavController, NavParams, PopoverController} from "ionic-angular";
 import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
@@ -10,6 +10,7 @@ import {NativePageTransitions, NativeTransitionOptions} from "@ionic-native/nati
 import {UtilService} from "../../providers/util-service";
 import {env} from "../../app/environment";
 import {StanizerService} from "../../providers/stanizer.service";
+import {MoreComponent} from "./more.component";
 
 @Component({
   selector: 'page-storydetails',
@@ -25,7 +26,8 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   // 1 like?
   constructor(protected  authService: AuthService, public navCtrl: NavController, public navParams: NavParams,
               private storyService: StoryService, private nativePageTransitions: NativePageTransitions,
-              public actionsheetCtrl:ActionSheetController, public utilService:UtilService, public stanizer:StanizerService) {
+              public actionsheetCtrl:ActionSheetController, public utilService:UtilService,
+              public stanizer:StanizerService, public popoverCtrl: PopoverController) {
     super(authService);
     this.album = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
@@ -181,6 +183,15 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
       })
     ;
     actionSheet.present();
+  }
+
+  showMore(event) : void {
+
+    let popover = this.popoverCtrl.create(MoreComponent);
+    popover.present({
+        ev: event
+    });
+
   }
 
   stanize(url:string){
