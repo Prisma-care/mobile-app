@@ -2,8 +2,8 @@
  * Created by Jean on 10-07-17.
  */
 
-export const BACKEND: string = 'https://prisma.care';
-export const API_URL: string = BACKEND + '/api/v1';
+export const BACKEND: string = 'https://api.prisma.care';
+export const API_URL: string = BACKEND + '/v1';
 
 
 export const env = {
