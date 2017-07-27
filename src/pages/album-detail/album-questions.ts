@@ -33,6 +33,10 @@ export class AlbumQuestions extends AuthGuard implements OnInit {
     this.nextQuestion();
   }
 
+  ionViewWillEnter(): void {
+    this.questions = this.shuffle(this.questions);
+  }
+
 
   private questionIndex: number = 0;
 
