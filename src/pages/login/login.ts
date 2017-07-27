@@ -15,12 +15,12 @@ export class LoginPage implements OnInit {
 
   isSigningUp: boolean = false;
 
-  password: string = "123";
-  passwordConfirm: string = "123";
+  password: string = "";
+  passwordConfirm: string = "";
 
-  firstname: string = "Jean";
-  lastname: string = "Paci";
-  email: string = "user@mail.com";
+  firstname: string = "";
+  lastname: string = "";
+  email: string = ";
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthService, public utilService: UtilService) {
