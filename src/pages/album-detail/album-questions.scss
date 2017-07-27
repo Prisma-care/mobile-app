@@ -2,12 +2,19 @@ album-questions {
 
   .page-header {
 
-    ion-icon {
+    background-color: #fff;
+
+    h2 {
+      color: color($colors, dark-gray);
+    }
+
+    .question-refresh {
       margin: auto;
-      font-size: 2em;
+      font-size: map-get($sizes, 'extra-large');
       text-align: center;
       color: map-get($colors, 'primary');
       width: 100%;
+      margin-top: 0.4em;
     }
 
   }

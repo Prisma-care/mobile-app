@@ -1,13 +1,8 @@
-<ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon color="black" name='menu'></ion-icon>
-    </button>
-  </ion-navbar>
-</ion-header>
-
 <ion-content>
   <div class="page-header">
+    <button ion-button menuToggle class="albums-menu">
+      <ion-icon color="black" name='menu'></ion-icon>
+    </button>
     <h2>{{'Waarover babbelen we vandaag' | translate }}?</h2>
   </div>
   <ion-grid>
@@ -19,7 +14,7 @@
                (click)="showDetails(album)">
         <h3 class="hist-title">{{album.title ? album.title : '?'}}</h3>
         <ion-icon name="logo-youtube" color="white"
-                  style="color: white; position: absolute;display: block;font-size: 50px;top: 35%;left: 35%;"
+                  class="movie-indicator"
                   *ngIf="isAVideoBackground(i)"></ion-icon>
       </ion-col>
     </ion-row>

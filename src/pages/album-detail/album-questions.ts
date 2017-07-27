@@ -11,7 +11,7 @@ import {TranslatorService} from "../../providers/translator.service";
     <div class="page-header" *ngIf="currentQuestion">
       <div (click)="nextQuestion()">
         <h2>{{currentQuestion}}</h2>
-        <ion-icon name="refresh"></ion-icon>
+        <ion-icon name="refresh" class="question-refresh"></ion-icon>
       </div>
     </div>
   `
