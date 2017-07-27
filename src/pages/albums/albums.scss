@@ -18,6 +18,9 @@ albums-page {
     background-size: cover;
     background-position: center;
     background-color: color($colors, dark-gray);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     position: relative;
   }
 
@@ -35,5 +38,12 @@ albums-page {
     bottom: 1em;
     left: 0;
     width: 100%;
+  }
+
+  .movie-indicator {
+    color: white;
+    display: block;
+    margin: 0 auto;
+    font-size: 50px;
   }
 }
