@@ -1,9 +1,8 @@
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
-      <ion-icon name='menu'></ion-icon>
+      <ion-icon color="black" name='menu'></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -19,8 +18,8 @@
                [style.background-color]="getBackgroundColor(i)"
                (click)="showDetails(album)">
         <h3 class="hist-title">{{album.title ? album.title : '?'}}</h3>
-        <ion-icon name="logo-youtube" color="red"
-                  style="color: red; position: absolute;display: block;font-size: 50px;top: 35%;left: 35%;"
+        <ion-icon name="logo-youtube" color="gray"
+                  style="color: gray; position: absolute;display: block;font-size: 50px;top: 35%;left: 35%;"
                   *ngIf="isAVideoBackground(i)"></ion-icon>
       </ion-col>
     </ion-row>
