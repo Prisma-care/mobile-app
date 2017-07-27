@@ -12,8 +12,8 @@ export const QUESTIONS = [
     "questions": [
       "In wat voor huis woonden jullie?",
       "Welke namen heb je gekregen? Ben je vernoemd naar iemand?",
-      "Hadden jullie huisdieren?",
-      "Hadden jullie als gezin een speciale gewoonte of traditie?",
+      "Hebben jullie huisdieren?",
+      "Hebben jullie als gezin een speciale gewoonte of traditie?",
       "Wat at je het liefst?",
       "Welke kleding droeg je toen?"
     ],
@@ -24,6 +24,7 @@ export const QUESTIONS = [
       "Welk beroep heb je het langst uitgeoefend?",
       "Waar ging je voor het eerst werken?",
       "Welke vakantiejobs heb je vroeger gedaan?",
+      "Herinner je je nog een leuke collega?"
     ],
     "keywords": ["werk", "bureau"]
   },
@@ -32,7 +33,7 @@ export const QUESTIONS = [
       "In welke basisschool zat je? Waarom daar?",
       "Herinner je je nog een leerkracht van vroeger?"
     ],
-    "keywords": ["school", "leerkracht", "klas"]
+    "keywords": ["school", "leerkracht", "klas", "kindertijd"]
   },
   {
     "questions": [
@@ -53,9 +54,10 @@ export const QUESTIONS = [
   {
     "questions": [
       "Wat doe je het liefst in je vrije tijd?",
-      "Ging je graag uit? Met wie en waar dan?",
-      "Keek je televisie? Wat waren je lievelingsprogramma's?",
-      "Wat is je favoriete muziek? Ging je soms naar concerten?"
+      "Ga je graag uit? Met wie en waar dan?",
+      "Kijk je televisie? Wat zijn je lievelingsprogramma's?",
+      "Wat is je favoriete muziek? Ga je soms naar concerten?",
+      "Bespeel je een instrument?"
     ],
     "keywords": ["vrije tijd", "hobby", "hobbies"]
   },
@@ -73,7 +75,6 @@ export const QUESTIONS = [
       "Wanneer ging je voor het eerst alleen op vakantie? Waar was dat?",
       "Op welke manier reisde je vooral?",
       "Wat is de mooiste stad die je al hebt bezocht?"
-
     ],
     "keywords": ["vakantie", "reizen", "reis", "avontuur"]
   },
@@ -81,10 +82,30 @@ export const QUESTIONS = [
   {
     "questions": [
       "Wie is je favoriete voetballer?",
-      "Beoefende je een sport?",
+      "Beoefen je een sport?",
+      "Welke sport volg je graag?",
+      "Heb je ooit een wedstrijd gewonnen in een sport?"
     ],
     "keywords": ["sport"]
-  }
+  },
+  {
+    "questions": [
+      "Wat is je lievelingsgerecht?",
+      "Eet je soms iets exotisch?",
+      "Wat is je favoriete Italiaanse gerecht?",
+      "Welke Vlaamse kost is jouw favoriet?",
+      "Wat is jouw favoriet snoepgoed?",
+      ""
+    ],
+    "keywords": ["voeding", "eten"]
+  },
+  {
+    "questions": [
+      "Ga je soms op café in je gemeente?",
+      "Herinner je je nog een buurtfeest?"
+    ],
+    "keywords": ["gemeente", "roeselare"]
+  },
 ];
 
 // Todo: club, vereniging, ...
