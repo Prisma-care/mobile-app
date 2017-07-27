@@ -34,9 +34,6 @@ export class LoginPage implements OnInit {
     }
   }
 
-  ionViewDidLoad() {
-  }
-
   ionViewCanLeave(): boolean {
     return true;
   }

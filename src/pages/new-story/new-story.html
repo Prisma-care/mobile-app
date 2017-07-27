@@ -7,7 +7,7 @@
 <ion-content padding>
   <ion-item-group>
     <ion-item>
-      <ion-thumbnail *ngIf="dataUrl" style="padding-left: 7%;">
+      <ion-thumbnail *ngIf="dataUrl && method.indexOf(methods.replaceDescription) < 0" style="padding-left: 7%;">
         <img class="new-story-thumb" [src]="sanitizeUrl()">
       </ion-thumbnail>
       <ion-item *ngIf="method.indexOf(methods.replaceImage) < 0">

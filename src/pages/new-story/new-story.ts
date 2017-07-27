@@ -1,6 +1,5 @@
 import {Component} from "@angular/core";
 import {Loading, LoadingController, NavController, NavParams} from "ionic-angular";
-import {Camera} from "@ionic-native/camera";
 import {Album} from "../../dto/album";
 import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
@@ -27,7 +26,6 @@ export class NewStoryPage extends AuthGuard {
   } = env.methods;
   method: string = env.methods.addNewStory;
   dataUrl: string;
-  dataUploadTrigger: Promise<any>;
   description: string;
   placeHolder: string = "Schrijf het verhaal.\nHoe meer details hoe beter.";
 
@@ -41,7 +39,7 @@ export class NewStoryPage extends AuthGuard {
 //file Transfer
   loading: Loading;
 
-  constructor(protected authService: AuthService, public navCtrl: NavController, private camera: Camera, public navParams: NavParams,
+  constructor(protected authService: AuthService, public navCtrl: NavController, public navParams: NavParams,
               private storyService: StoryService, private utilService: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
               public stanizer: StanizerService) {
@@ -98,6 +96,7 @@ export class NewStoryPage extends AuthGuard {
             "album": this.selectedAlbum,
           });
         }).catch(err => {
+          console.log(err);
         });
       }
       else {
@@ -114,7 +113,7 @@ export class NewStoryPage extends AuthGuard {
     let updatedStory = new UserStory();
     updatedStory.id = this.oldStory.id;
     updatedStory.description = this.oldStory.description;
-    this.storyService.updateStory(+this.authService.getCurrentPatient().id , updatedStory).toPromise().then(addedStory => {
+    this.storyService.updateStory(+this.authService.getCurrentPatient().id, updatedStory).toPromise().then(addedStory => {
       this.navCtrl.popTo(StoryDetailsPage, {
         "album": this.selectedAlbum,
         "index": this.index
