@@ -9,7 +9,7 @@ export const API_URL: string = BACKEND + '/v1';
 export const env = {
   production: false,
   jwtToken: 'id_token',
-  localstorage: {},
+  localstorage: {LOCALSTORAGE_SELECTEDLANG : "langs"},
   api: {
     getSignIn: 'signin',
     getPatient: 'patient',
