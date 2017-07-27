@@ -13,6 +13,11 @@ albums-page {
     -webkit-box-shadow: none;
   }
 
+  .album-overlay {
+    // TODO: doesn't work, fix this
+    background: linear-gradient(180deg, rgba(84,91,110,0) 0%, rgba(84,91,110,0.7) 100%);
+  }
+
   .album-thumb {
     height: 50vw; // todo: dynamic - set to width of comonent?
     background-size: cover;
@@ -22,6 +27,7 @@ albums-page {
     flex-direction: column;
     justify-content: center;
     position: relative;
+    text-shadow: rgba(0,0,0,.6) 1px 1px 0;
   }
 
   .col, [col-6] {
@@ -38,6 +44,7 @@ albums-page {
     bottom: 1em;
     left: 0;
     width: 100%;
+
   }
 
   .movie-indicator {
