@@ -130,8 +130,15 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       buttons: ['Ok']
     });
 
+    let text1:string = 'Voeg album toe';
+    let text2:string = 'Annuleer';
+    let text3:string = 'Voeg toe';
+    this.translatorService.translate.get(text1).subscribe(value => text1 = value);
+    this.translatorService.translate.get(text2).subscribe(value => text2 = value);
+    this.translatorService.translate.get(text3).subscribe(value => text3 = value);
+
     this.alertCtrl.create({
-      "title": 'Voeg album toe',
+      "title": text1,
       "message": 'Hoe wil je het album noemen?',
       inputs: [
         {
@@ -141,12 +148,12 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       ],
       buttons: [
         {
-          text: 'Annuleer',
+          text: text2,
           handler: data => {
           }
         },
         {
-          text: 'Voeg toe',
+          text: text3,
           handler: data => {
             this.storyService.addAlbum(this.currentPatient.id, data.title).toPromise()
               .then(album => {
