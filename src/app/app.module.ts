@@ -4,8 +4,6 @@ import {IonicApp, IonicErrorHandler, IonicModule} from "ionic-angular";
 import {IonicStorageModule} from "@ionic/storage";
 import {MyApp} from "./app.component";
 
-import {StoriesPage} from "../pages/stories/stories";
-import {PatientProfilePage} from "../pages/patientprofile/patientprofile";
 
 import {StatusBar} from "@ionic-native/status-bar";
 import {SplashScreen} from "@ionic-native/splash-screen";
@@ -44,10 +42,8 @@ import {TranslatorService} from "../providers/translator.service";
   declarations: [
     MyApp,
     LoginPage,
-    StoriesPage,
     AlbumsPage,
     AlbumDetailPage,
-    PatientProfilePage,
     StoryDetailsPage,
     NewStoryPage,
     AlbumQuestions,
@@ -70,10 +66,8 @@ import {TranslatorService} from "../providers/translator.service";
   entryComponents: [
     MyApp,
     LoginPage,
-    StoriesPage,
     AlbumsPage,
     AlbumDetailPage,
-    PatientProfilePage,
     StoryDetailsPage,
     NewStoryPage,
     AlbumQuestions,

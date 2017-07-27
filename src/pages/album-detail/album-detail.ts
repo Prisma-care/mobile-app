@@ -39,12 +39,29 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
 
   openActionSheet() {
+    let text1:string = 'Tekst schrijven';
+    let text2:string = 'Maak foto';
+    let text3:string = 'Kies foto van camerarol';
+    let text4:string = 'Annuleer';
+    this.translatorService.translate.get(text1).subscribe(
+      value => text1 = value
+    );
+    this.translatorService.translate.get(text2).subscribe(
+      value => text2 = value
+    );
+    this.translatorService.translate.get(text3).subscribe(
+      value => text3 = value
+    );
+    this.translatorService.translate.get(text4).subscribe(
+      value => text4 = value
+    );
+
     let actionSheet = this.actionsheetCtrl.create({
         title: 'Foto toevoegen',
         cssClass: 'action-sheets-basic-page',
         buttons: [
           {
-            text: 'Tekst schrijven',
+            text: text1,
             role: 'destructive',
             icon: 'text',
             cssClass: 'general',
@@ -56,7 +73,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
             }
           },
           {
-            text: 'Maak foto',
+            text: text2,
             role: 'destructive',
             icon: 'camera',
             cssClass: 'general',
@@ -76,7 +93,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
             }
           },
           {
-            text: 'Kies foto van camerarol',
+            text: text3,
             role: 'destructive',
             icon: 'image',
             handler: () => {
@@ -95,7 +112,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
             }
           },
           {
-            text: 'Annuleer',
+            text: text4,
             role: 'cancel',
             icon: 'md-arrow-back',
             handler: () => {
