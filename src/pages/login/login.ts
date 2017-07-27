@@ -20,7 +20,7 @@ export class LoginPage implements OnInit {
 
   firstname: string = "";
   lastname: string = "";
-  email: string = ";
+  email: string = "";
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthService, public utilService: UtilService) {
