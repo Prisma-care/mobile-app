@@ -13,7 +13,7 @@ import {StanizerService} from "../providers/stanizer.service";
 import {StoryDetailsPage} from "../pages/storydetails/storydetails";
 import {PrismaService} from "../providers/back-end/prisma-api.service";
 import {PatientService} from "../providers/back-end/user.service";
-import {HttpModule} from "@angular/http";
+import {HttpModule, Http} from "@angular/http";
 import {StoryService} from "../providers/back-end/story.service";
 import {Camera} from "@ionic-native/camera";
 import {NewStoryPage} from "../pages/new-story/new-story";
@@ -35,6 +35,10 @@ import {LoginPage} from "../pages/login/login";
 import {AuthGuard} from "../pages/auth-guard";
 import {NativePageTransitions} from "@ionic-native/native-page-transitions";
 import {StoryOptionsComponent} from "../pages/storydetails/story-options.component";
+import {TranslateModule, TranslateLoader, TranslateService} from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import {TranslatorService} from "../providers/translator.service";
+
 
 @NgModule({
   declarations: [
@@ -53,6 +57,13 @@ import {StoryOptionsComponent} from "../pages/storydetails/story-options.compone
     BrowserModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [Http]
+      }
+    }),
     HttpModule
   ],
   bootstrap: [IonicApp],
@@ -85,9 +96,15 @@ import {StoryOptionsComponent} from "../pages/storydetails/story-options.compone
     Transfer,
     FilePath,
     NativePageTransitions,
+    TranslatorService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService
   ]
 })
 export class AppModule {
+}
+
+
+export function createTranslateLoader(http: Http) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
