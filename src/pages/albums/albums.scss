@@ -4,6 +4,15 @@ albums-page {
     padding: 0;
   }
 
+  .albums-menu {
+    position: absolute;
+    top: 0.2em;
+    left: 0.2em;
+    font-size: 1.7em;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+  }
+
   .album-thumb {
     height: 50vw; // todo: dynamic - set to width of comonent?
     background-size: cover;

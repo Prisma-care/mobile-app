@@ -52,15 +52,22 @@ $text-input-placeholder-color: color($colors, light-gray);
 .page-header {
   padding: 2em 3em;
   //background-color: map-get($colors, 'primary');
-
+  height: 50vw;
+  background-color: color($colors, primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
 }
 
 .page-header h2 {
-  font-size: map-get($sizes, 'large');
-  line-height: 33px;
+  font-size: map-get($sizes, 'extra-large');
+  margin: 0;
+  //line-height: 33px;
   text-align: center;
   font-family: $prisma-ff;
-  color: map-get($colors, 'dark-gray');
+  // color: map-get($colors, 'dark-gray');
+  color: #fff;
 }
 
 // TOOLBAR
