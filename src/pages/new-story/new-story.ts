@@ -45,7 +45,7 @@ export class NewStoryPage extends AuthGuard {
               private storyService: StoryService, private utilService: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
               public stanizer: StanizerService) {
-    super(authService);
+    super(authService, navCtrl);
     this.method = navParams.get("method") as string;
     this.dataUrl = navParams.get("dataUrl") as string;
     this.selectedAlbum = navParams.get("album") as Album;
@@ -123,8 +123,9 @@ export class NewStoryPage extends AuthGuard {
     console.log("trying to update");
     if (this.dataUrl) {
       this.uploadImage(this.authService.getCurrentPatient().id, this.oldStory.id, this.dataUrl + "").then(res => {
-        this.navCtrl.popTo(AlbumsPage, {
+        this.navCtrl.popTo(StoryDetailsPage, {
           "album": this.selectedAlbum,
+          "index": this.index
         });
       }).catch(err => {
         console.log("Upload eror :" + JSON.stringify(err));
@@ -136,9 +137,6 @@ export class NewStoryPage extends AuthGuard {
     // Destination URL
     var url = API_URL + '/' + env.api.getPatient + '/' + patientId + '/' + env.api.getStory + '/' + storyId + '/' + env.api.getAsset;
     // File for Upload
-    console.log("LastImage : " + lastImage);
-    console.log("Url: " + url);
-
 
     var options = {
       fileKey: "asset",

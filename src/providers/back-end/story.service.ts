@@ -11,9 +11,21 @@ import {env} from "../../app/environment";
 @Injectable()
 export class StoryService extends PrismaService {
 
+  //For demo prupose !!!
+  public static fakeStory1: UserStory;
+  public static fakeStory2: UserStory;
+  public static fakeStory3: UserStory;
+
   getUserStory(userId: string, storyId: string): Observable<UserStory> {
     let url: string = env.api.getPatient;
     let storyUrl: string = env.api.getStory;
+    //For demo prupose !!!
+    if (storyId.indexOf("2000") >= 0)
+      return Observable.of(StoryService.fakeStory1);
+    if (storyId.indexOf("2001") >= 0)
+      return Observable.of(StoryService.fakeStory2);
+    if (storyId.indexOf("2002") >= 0)
+      return Observable.of(StoryService.fakeStory3);
     return this._http.get(`${this._urlToApi}/${url}/${userId}/${storyUrl}/${storyId}`, {
       headers: this._head
     })
@@ -43,28 +55,17 @@ export class StoryService extends PrismaService {
     })
       .map(res => {
         let albums: Album[] = [];
-        res.json().response.forEach(album =>
-          {
-              /* probably not needed
-            // fill in the stories
-            album.stories.forEach(
-              (story) => {
-                this.getUserStory()
-              }
-            );
-            */
-              let al:Album = new Album(album);
-            if (al.title.toLowerCase().indexOf("sport") >= 0) {
-              let fakeStory: UserStory = new UserStory();
-              fakeStory.title = "The 3 tenors";
-              fakeStory.favorited = true;
-              fakeStory.description ="Youtube video";
-              fakeStory.creatorId = 1;
-              fakeStory.id = "2000";
-              fakeStory.source = "https://www.youtube.com/embed/ERD4CbBDNI0?rel=0&amp;controls=0&amp;showinfo=0?ecver=1?&start=45";
-              al.stories.push(fakeStory);
-            }
-            albums.push(al);
+        res.json().response.forEach(album => {
+            /* probably not needed
+             // fill in the stories
+             album.stories.forEach(
+             (story) => {
+             this.getUserStory()
+             }
+             );
+             */
+            let al: Album = new Album(album);
+            albums.push(this.setYoutubeVideoExemple(al));
           }
         );
         return albums;
@@ -79,18 +80,8 @@ export class StoryService extends PrismaService {
       headers: this._head
     })
       .map(res => {
-        let al:Album = new Album(res.json().response);
-        if (al.title.toLowerCase().indexOf("sport") >= 0) {
-          let fakeStory: UserStory = new UserStory();
-          fakeStory.title = "The 3 tenors";
-          fakeStory.favorited = true;
-          fakeStory.description ="Youtube video";
-          fakeStory.creatorId = 1;
-          fakeStory.id = "2000";
-          fakeStory.source = "https://www.youtube.com/embed/ERD4CbBDNI0?rel=0&amp;showinfo=0?ecver=1&start=45";
-          al.stories.push(fakeStory);
-        }
-        return al;
+        let al: Album = new Album(res.json().response);
+        return this.setYoutubeVideoExemple(al);
       })
       .catch(err => this.handleError(err));
   }
@@ -160,7 +151,7 @@ export class StoryService extends PrismaService {
       }).catch(err => this.handleError(err));
   }
 
-  deleteStory(userId: number,storyId:number): Observable<boolean> {
+  deleteStory(userId: number, storyId: number): Observable<boolean> {
     let url: string = env.api.getPatient;
     let storyUrl: string = env.api.getStory;
     return this._http.delete(`${this._urlToApi}/${url}/${userId}/${storyUrl}/${storyId}`, {
@@ -180,9 +171,9 @@ export class StoryService extends PrismaService {
   updateStory(userId: number, newStory: UserStory): Observable<UserStory> {
     let url: string = env.api.getPatient;
     let storyUrl: string = env.api.getStory;
-    return this._http.patch(`${this._urlToApi}/${url}/${userId}/${storyUrl}/${newStory.id}`, newStory,  {
+    return this._http.patch(`${this._urlToApi}/${url}/${userId}/${storyUrl}/${newStory.id}`, newStory, {
       headers: this._head
-    } )
+    })
       .map(res => {
         // If request fails, throw an Error that will be caught
         if (res.status < 200 || res.status >= 300) {
@@ -251,12 +242,56 @@ export class StoryService extends PrismaService {
       /*let albums: Album[] = [];
        res.json().forEach(album => albums.push(new Album(album)));
        return albums;*/
-     let albums: Album[] = [];
-     res.json().forEach(album => albums.push(new Album(album)));
-     return albums;
+      let albums: Album[] = [];
+      res.json().forEach(album => albums.push(new Album(album)));
+      return albums;
     })
       .catch(error => this.handleError(error));
   }
 
+//For demo prupose !!!
+  setYoutubeVideoExemple(al: Album): Album {
+    if (al.title.toLowerCase().indexOf("vrije tijd") >= 0) {
+      if (!StoryService.fakeStory1) {
+        let fakeStory: UserStory = new UserStory();
+        fakeStory.title = "The 3 tenors";
+        fakeStory.favorited = true;
+        fakeStory.description = "Youtube video";
+        fakeStory.creatorId = 1;
+        fakeStory.id = "2000";
+        fakeStory.source = "https://www.youtube.com/embed/ERD4CbBDNI0?rel=0&amp;showinfo=0?ecver=1&start=45";
+        StoryService.fakeStory1 = fakeStory;
+      }
+      al.stories.push(StoryService.fakeStory1);
+    }
 
+    if (al.title.toLowerCase().indexOf("kindert") >= 0) {
+      if (!StoryService.fakeStory2) {
+        let fakeStory: UserStory = new UserStory();
+        fakeStory.title = "Eviva España";
+        fakeStory.favorited = true;
+        fakeStory.description = "Samantha - Eviva España (Tienerklanken, 1972)";
+        fakeStory.creatorId = 1;
+        fakeStory.id = "2001";
+        fakeStory.source = "https://www.youtube.com/embed/mLWSnAZh32o?rel=0&amp;showinfo=0?ecver=1";
+        StoryService.fakeStory2 = fakeStory;
+      }
+      al.stories.push(StoryService.fakeStory2);
+    }
+
+    if (al.title.toLowerCase().indexOf("sport") >= 0) {
+      if (!StoryService.fakeStory3) {
+        let fakeStory: UserStory = new UserStory();
+        fakeStory.title = "Paul Van Himst";
+        fakeStory.favorited = true;
+        fakeStory.description = "Paul Van Himst vs Arsenal Finale Coppa delle Fiere 1969 1970";
+        fakeStory.creatorId = 1;
+        fakeStory.id = "2002";
+        fakeStory.source = "https://www.youtube.com/embed/hE2eO-LwZps?rel=0&amp;showinfo=0?ecver=1&start=10";
+        StoryService.fakeStory3 = fakeStory;
+      }
+      al.stories.push(StoryService.fakeStory3);
+    }
+    return al;
+  }
 }

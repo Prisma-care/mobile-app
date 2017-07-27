@@ -22,7 +22,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
   constructor(protected authService: AuthService, public navCtrl: NavController, public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
               private storyService: StoryService, private sanitizer: StanizerService) {
-    super(authService);
+    super(authService, navCtrl);
     this.album = navParams.get("album") as Album;
   }
 
@@ -33,9 +33,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     if (this.album)
       this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).subscribe(res => {
         this.album = res;
-        console.log(JSON.stringify(this.album.stories));
       });
-
   }
 
 
@@ -117,6 +115,16 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     const style = `url(${url})`;
     //console.log("Made : " + style);
     return this.sanitizer.sanitizeStyle(style);
+  }
+
+
+  isAVideoBackground(i: number): boolean {
+    let url: string = this.album.getBackgroundImage(i);
+    if (!url)
+      return false;
+    url = this.getThumb(url);
+    //console.log("Made : " + style);
+    return url.toLowerCase().indexOf("img.youtube") >= 0;
   }
 
   showDetails(album: Album, index: number) {

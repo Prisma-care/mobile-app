@@ -1,5 +1,5 @@
 import {ErrorHandler, NgModule} from "@angular/core";
-import {BrowserModule } from "@angular/platform-browser";
+import {BrowserModule} from "@angular/platform-browser";
 import {IonicApp, IonicErrorHandler, IonicModule} from "ionic-angular";
 import {IonicStorageModule} from "@ionic/storage";
 import {MyApp} from "./app.component";
@@ -15,13 +15,11 @@ import {PrismaService} from "../providers/back-end/prisma-api.service";
 import {PatientService} from "../providers/back-end/user.service";
 import {HttpModule} from "@angular/http";
 import {StoryService} from "../providers/back-end/story.service";
-import {TutorialPage} from "../pages/tutorial/tutorial";
 import {Camera} from "@ionic-native/camera";
 import {NewStoryPage} from "../pages/new-story/new-story";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {UtilService} from "../providers/util-service";
 
-import {ApiTestingPage} from "../pages/api-testing/api-testing";
 
 import {FileTransfer} from "@ionic-native/file-transfer";
 import {File} from "@ionic-native/file";
@@ -30,18 +28,17 @@ import {FilePath} from "@ionic-native/file-path";
 
 import {AlbumsPage} from "../pages/albums/albums";
 import {AlbumDetailPage} from "../pages/album-detail/album-detail";
-import { AuthService } from '../providers/auth-service/auth-service';
-import { QuestionService } from "../providers/question-service/question.service";
-import { AlbumQuestions } from "../pages/album-detail/album-questions";
+import {AuthService} from "../providers/auth-service/auth-service";
+import {QuestionService} from "../providers/question-service/question.service";
+import {AlbumQuestions} from "../pages/album-detail/album-questions";
 import {LoginPage} from "../pages/login/login";
 import {AuthGuard} from "../pages/auth-guard";
 import {NativePageTransitions} from "@ionic-native/native-page-transitions";
-import { StoryOptionsComponent } from "../pages/storydetails/story-options.component";
+import {StoryOptionsComponent} from "../pages/storydetails/story-options.component";
 
 @NgModule({
   declarations: [
     MyApp,
-    TutorialPage,
     LoginPage,
     StoriesPage,
     AlbumsPage,
@@ -49,7 +46,6 @@ import { StoryOptionsComponent } from "../pages/storydetails/story-options.compo
     PatientProfilePage,
     StoryDetailsPage,
     NewStoryPage,
-    ApiTestingPage,
     AlbumQuestions,
     StoryOptionsComponent
   ],
@@ -63,14 +59,12 @@ import { StoryOptionsComponent } from "../pages/storydetails/story-options.compo
   entryComponents: [
     MyApp,
     LoginPage,
-    TutorialPage,
     StoriesPage,
     AlbumsPage,
     AlbumDetailPage,
     PatientProfilePage,
     StoryDetailsPage,
     NewStoryPage,
-    ApiTestingPage,
     AlbumQuestions,
     StoryOptionsComponent
   ],

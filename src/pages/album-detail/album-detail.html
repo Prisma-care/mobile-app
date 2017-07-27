@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-title>{{album.title || "Album"}}</ion-title>
     <ion-icon class="add-story-icon" end name="camera" color="white"
-      (click)="openActionSheet()"></ion-icon>
+              (click)="openActionSheet()"></ion-icon>
   </ion-navbar>
 </ion-header>
 
@@ -11,15 +11,18 @@
   <ion-grid>
     <ion-row>
       <ion-col col-6 col-md-4 *ngFor="let story of album.stories,let i=index"
-      (click)="showDetails(album, i)">
+               (click)="showDetails(album, i)">
         <div class="album-thumb"
-        [style.backgroundImage]="sanitize(i)">
+             [style.backgroundImage]="sanitize(i)">
           <div class="description-wrapper" *ngIf="!story.source && story.description">
             <p class="story-description">{{story.description}}</p>
           </div>
         </div>
+        <ion-icon name="logo-youtube" color="red"
+                  style=" position: absolute;display: block;font-size: 50px;top: 35%;left: 35%;"
+                  *ngIf="isAVideoBackground(i)"></ion-icon>
         <ion-icon *ngIf="isFavorited(i)" class="star" name="star"
-          [class.favorited]="isFavorited(i)" ></ion-icon>
+                  [class.favorited]="isFavorited(i)"></ion-icon>
       </ion-col>
     </ion-row>
   </ion-grid>

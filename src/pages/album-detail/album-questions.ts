@@ -1,18 +1,19 @@
-import { QuestionService } from "../../providers/question-service/question.service";
-import { OnInit, Component, Input } from "@angular/core";
+import {QuestionService} from "../../providers/question-service/question.service";
+import {Component, Input, OnInit} from "@angular/core";
 import {AuthGuard} from "../auth-guard";
 import {AuthService} from "../../providers/auth-service/auth-service";
+import {NavController} from "ionic-angular";
 
 @Component({
   selector: 'album-questions',
   template: `
-      <div class="page-header" *ngIf="currentQuestion">
-        <div (click)="nextQuestion()">
-          <h2>{{currentQuestion}}</h2>
-          <ion-icon name="refresh"></ion-icon>
-        </div>
+    <div class="page-header" *ngIf="currentQuestion">
+      <div (click)="nextQuestion()">
+        <h2>{{currentQuestion}}</h2>
+        <ion-icon name="refresh"></ion-icon>
       </div>
-    `
+    </div>
+  `
 })
 
 export class AlbumQuestions extends AuthGuard implements OnInit {
@@ -22,7 +23,9 @@ export class AlbumQuestions extends AuthGuard implements OnInit {
 
   @Input() query: string;
 
-  constructor(protected authService: AuthService,private questionService: QuestionService) {super(authService);}
+  constructor(protected authService: AuthService, public navCtrl: NavController, private questionService: QuestionService) {
+    super(authService, navCtrl);
+  }
 
   ngOnInit(): void {
     this.questions = this.questionService.getQuestions(this.query);

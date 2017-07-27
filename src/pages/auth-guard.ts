@@ -7,17 +7,19 @@ import {Injectable} from "@angular/core";
 @Injectable()
 export class AuthGuard {
   //General injection
-  constructor(protected authService: AuthService, protected  navCrtlIn?: NavController) {
-
+  constructor(protected authService: AuthService, protected  navCtrl: NavController) {
   }
 
   ionViewCanEnter(): boolean {
-    console.log("dajdajjda");
+    console.log("dajdajjda2");
     if (!this.authService.isLoggedIn()) {
       console.log("trying");
-     // this.navCrtlIn.setRoot(LoginPage);
-     // this.navCrtlIn.push(LoginPage);
+      this.navCtrl.setRoot(LoginPage).then(res => {
+        this.navCtrl.popToRoot();
+        return false;
+      });
+    } else {
+      return true;
     }
-    return true;
   }
 }

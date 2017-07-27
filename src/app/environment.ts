@@ -2,8 +2,8 @@
  * Created by Jean on 10-07-17.
  */
 
-export const BACKEND: string = 'https://prisma.care';
-export const API_URL: string = BACKEND + '/api/v1';
+export const BACKEND: string = 'https://api.prisma.care';
+export const API_URL: string = BACKEND + '/v1';
 
 
 export const env = {
@@ -11,7 +11,7 @@ export const env = {
   jwtToken: 'id_token',
   localstorage: {},
   api: {
-    getSignIn:'signin',
+    getSignIn: 'signin',
     getPatient: 'patient',
     getAlbum: 'album',
     getStory: 'story',
@@ -24,8 +24,8 @@ export const env = {
     fakePatient: "patient"
   },
   methods: {
-    addNewStory:'addNewStory',
-    replaceDescription:'replaceDescription',
+    addNewStory: 'addNewStory',
+    replaceDescription: 'replaceDescription',
     replaceImage: 'replaceImage'
   }
 };

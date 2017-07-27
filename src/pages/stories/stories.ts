@@ -4,7 +4,6 @@ import {StanizerService} from "../../providers/stanizer.service";
 import {StoryDetailsPage} from "../storydetails/storydetails";
 import {PatientService} from "../../providers/back-end/user.service";
 import {StoryService} from "../../providers/back-end/story.service";
-import {NewStoryPage} from "../new-story/new-story";
 import {User} from "../../dto/user";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
@@ -32,10 +31,10 @@ export class StoriesPage extends AuthGuard implements OnInit {
 
   albums: Album[];
 
-  constructor(protected  authService:AuthService,public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
-              public navCtrl: NavController, protected stanizerService: StanizerService,
+  constructor(protected  authService: AuthService, public navCtrl: NavController, public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
+              protected stanizerService: StanizerService,
               protected userService: PatientService, protected storyService: StoryService) {
-    super(authService);
+    super(authService, navCtrl);
     this.stanizedYoutubeUrl = this.stanizerService.sanitize(this.youtubeUrl);
   }
 

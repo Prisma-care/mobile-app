@@ -19,6 +19,9 @@
                [style.background-color]="getBackgroundColor(i)"
                (click)="showDetails(album)">
         <h3 class="hist-title">{{album.title ? album.title : '?'}}</h3>
+        <ion-icon name="logo-youtube" color="red"
+                  style="color: red; position: absolute;display: block;font-size: 50px;top: 35%;left: 35%;"
+                  *ngIf="isAVideoBackground(i)"></ion-icon>
       </ion-col>
     </ion-row>
   </ion-grid>
