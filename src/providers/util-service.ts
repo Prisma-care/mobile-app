@@ -98,13 +98,14 @@ export class UtilService {
     }
   }
 
-  showErrorMessage(errorMessage: string): Promise<any> {
-    let alert = this.alertCtrl.create({
+  showErrorMessage(errorMessage: string,alertController?:AlertController): Promise<any> {
+    let aletCtrl = alertController || this.alertCtrl;
+    let alert = aletCtrl.create({
       title: "Error",
       subTitle: errorMessage,
       buttons: ['Ok']
     });
-    console.log(errorMessage);
+
     return alert.present();
   }
 

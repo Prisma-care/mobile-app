@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {NavController, NavParams} from "ionic-angular";
+import {AlertController, NavController, NavParams} from "ionic-angular";
 import {User} from "../../dto/user";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {AlbumsPage} from "../albums/albums";
@@ -23,7 +23,8 @@ export class LoginPage implements OnInit {
   email: string = "";
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthService, public utilService: UtilService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthService, public utilService: UtilService
+    , public alertCtrl: AlertController) {
   }
 
 
@@ -41,13 +42,27 @@ export class LoginPage implements OnInit {
   }
 
   signIn() {
+    if (!this.email || !this.password) {
+      this.loginError("Geen login/password");
+      return;
+    }
     this.authService.login(this.email, this.password).toPromise().then(res => {
-      if (res) {
+      if (this.authService.isLoggedIn()) {
         this.navCtrl.setRoot(AlbumsPage);
       } else {
-        this.utilService.showErrorMessage("Bad login/password");
+        this.loginError();
       }
     })
+  }
+
+  loginError(errorMessage?:string) {
+    let alert = this.alertCtrl.create({
+      title: "Error",
+      subTitle: "Bad login/password",
+      buttons: ['Ok']
+    });
+
+    return alert.present();
   }
 
   signUp() {
@@ -59,6 +74,8 @@ export class LoginPage implements OnInit {
     this.authService.signUp(user).toPromise().then(res => {
       if (res) {
         this.navCtrl.setRoot(AlbumsPage);
+      }else {
+        this.loginError("Invalid data");
       }
     })
   }
