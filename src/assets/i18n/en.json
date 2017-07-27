@@ -1,3 +1,13 @@
 {
-  "Paswoord": "Paswoord"
+  "Paswoord": "Paswoord",
+  "Aanmelden" : "Log in",
+  "Registreer" : "Register",
+  "Of heb je nog geen account" : "Do you have an account",
+  "Voornaam" : "First name",
+  "Achternaam" : "Last name",
+  "Annuleer" : "Cancel",
+  "Afmelden" : "Log out",
+  "Waarover babbelen we vandaag" : "What are we talking about today",
+  "Voeg album toe" : "Add an album"
+
 }

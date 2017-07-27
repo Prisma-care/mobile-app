@@ -13,6 +13,7 @@ import {env} from "../../app/environment";
 import {Patient} from "../../dto/patient";
 import {AuthGuard} from "../auth-guard";
 import {AuthService} from "../../providers/auth-service/auth-service";
+import {TranslatorService} from "../../providers/translator.service";
 
 
 /* TEMPORARY IMPORT */
@@ -29,11 +30,11 @@ export class AlbumsPage extends AuthGuard implements OnInit {
 
   albums: Album[];
 
-  constructor(public authService: AuthService, public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
-              public navCtrl: NavController, protected sanitizer: StanizerService,
+  constructor(public authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService, public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
+              protected sanitizer: StanizerService,
               protected patientService: PatientService, protected storyService: StoryService,
               protected alertCtrl: AlertController, menu: MenuController) {
-    super(authService, navCtrl);
+    super(authService, navCtrl, translatorService);
     this.currentPatient = this.authService.getCurrentPatient();
     menu.enable(true);
   }

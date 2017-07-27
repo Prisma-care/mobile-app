@@ -11,6 +11,7 @@ import {StoryDetailsPage} from "../storydetails/storydetails";
 import {StanizerService} from "../../providers/stanizer.service";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
+import {TranslatorService} from "../../providers/translator.service";
 
 @Component({
   selector: 'page-new-story',
@@ -39,11 +40,11 @@ export class NewStoryPage extends AuthGuard {
 //file Transfer
   loading: Loading;
 
-  constructor(protected authService: AuthService, public navCtrl: NavController, public navParams: NavParams,
+  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,public navParams: NavParams,
               private storyService: StoryService, private utilService: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
               public stanizer: StanizerService) {
-    super(authService, navCtrl);
+    super(authService, navCtrl,translatorService);
     this.method = navParams.get("method") as string;
     this.dataUrl = navParams.get("dataUrl") as string;
     this.selectedAlbum = navParams.get("album") as Album;
