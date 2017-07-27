@@ -14,7 +14,7 @@ export class PrismaService implements OnInit {
   _http: Http;
   static storage: Storage;
 
-  constructor(_httpSer: Http, storageSer: Storage, utilService:UtilService) {
+  constructor(_httpSer: Http, storageSer: Storage, utilService: UtilService) {
     this._http = _httpSer;
     PrismaService.storage = storageSer;
     // this._head.set('Accept', 'application/json,application/pdf,application/plain; charset=UTF-8');
@@ -41,10 +41,10 @@ export class PrismaService implements OnInit {
   public handleError(error: Response | any) {
     console.log("Error ! " + JSON.stringify(error));
     //logs out if no user token avaible when needed
-    if(JSON.stringify(error).toLocaleLowerCase().indexOf("token_invalid") >= 0 || JSON.stringify(error).toLocaleLowerCase().indexOf("token_not_provided") >= 0){
-        localStorage.removeItem(env.jwtToken);
-        localStorage.removeItem(env.temp.fakeUser);
-        localStorage.removeItem(env.temp.fakePatient);
+    if (JSON.stringify(error).toLocaleLowerCase().indexOf("token_invalid") >= 0 || JSON.stringify(error).toLocaleLowerCase().indexOf("token_not_provided") >= 0) {
+      localStorage.removeItem(env.jwtToken);
+      localStorage.removeItem(env.temp.fakeUser);
+      localStorage.removeItem(env.temp.fakePatient);
     }
 
     return Observable.of(error) as Observable<any>;

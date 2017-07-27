@@ -37,16 +37,15 @@ $text-input-placeholder-color: color($colors, light-gray);
 .list-md .item-input.ng-valid.item-input-has-value.input-has-focus,
 .list-md .item-input.ng-valid.input-has-focus:not(.item-input-has-value),
 .list-md .item-input.ng-valid.input-has-value.input-has-focus,
- {
-   //border-bottom: 2px solid map-get($colors, light-gray) !important;
-   border-bottom: none !important;
-   box-shadow:none !important;
+{
+  //border-bottom: 2px solid map-get($colors, light-gray) !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
 }
 
 .list-md .item-input:last-child {
   border: none !important;
 }
-
 
 // PAGE HEADER
 
@@ -82,40 +81,40 @@ $text-input-placeholder-color: color($colors, light-gray);
 }
 
 //   STARS
-  .star {
-    display: block;
-    position: absolute;
-    right: 0.7em;
-    bottom: 0.7em;
-    font-size: 3em;
-    color: color($colors, yellow);
-  }
+.star {
+  display: block;
+  position: absolute;
+  right: 0.7em;
+  bottom: 0.7em;
+  font-size: 3em;
+  color: color($colors, yellow);
+}
 
-  // TODO: class may be redundant now
-  .star.favorited {
-    color: color($colors, yellow);
-  }
+// TODO: class may be redundant now
+.star.favorited {
+  color: color($colors, yellow);
+}
 
-  // ADD NEW STORY/ALBUM header
+// ADD NEW STORY/ALBUM header
 
-  .add-new-container {
-    background-color: map-get($colors, 'primary');
-    color: #fff;
-    width: 100%;
-    height: 50vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.add-new-container {
+  background-color: map-get($colors, 'primary');
+  color: #fff;
+  width: 100%;
+  height: 50vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .add-new > * {
-    display: block;
-  }
+.add-new > * {
+  display: block;
+}
 
-  .add-new > ion-icon {
-    font-size: 3em;
-    text-align: center;
-  }
+.add-new > ion-icon {
+  font-size: 3em;
+  text-align: center;
+}
 
-  .add-new > span {
-  }
+.add-new > span {
+}

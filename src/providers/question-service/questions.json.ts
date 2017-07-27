@@ -20,8 +20,7 @@ export const QUESTIONS = [
     "keywords": ["kindertijd", "kind", "jeugd", "gezin"]
   },
   {
-    "questions":
-     [
+    "questions": [
       "Welk beroep heb je het langst uitgeoefend?",
       "Waar ging je voor het eerst werken?",
       "Welke vakantiejobs heb je vroeger gedaan?",

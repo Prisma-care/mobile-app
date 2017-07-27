@@ -10,8 +10,7 @@ import {UtilService} from "../../providers/util-service";
   selector: 'page-login',
   templateUrl: 'login.html',
 })
-export class LoginPage implements  OnInit{
-
+export class LoginPage implements OnInit {
 
 
   isSigningUp: boolean = false;
@@ -24,26 +23,28 @@ export class LoginPage implements  OnInit{
   email: string = "user@mail.com";
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public authService:AuthService,public utilService:UtilService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthService, public utilService: UtilService) {
   }
 
 
   ngOnInit(): void {
-    if(this.authService.isLoggedIn()) {
+    if (this.authService.isLoggedIn()) {
       this.navCtrl.setRoot(AlbumsPage);
     }
   }
+
   ionViewDidLoad() {
   }
-  ionViewCanLeave():boolean{
+
+  ionViewCanLeave(): boolean {
     return true;
   }
 
   signIn() {
     this.authService.login(this.email, this.password).toPromise().then(res => {
-      if(res){
+      if (res) {
         this.navCtrl.setRoot(AlbumsPage);
-      }else{
+      } else {
         this.utilService.showErrorMessage("Bad login/password");
       }
     })
@@ -56,7 +57,7 @@ export class LoginPage implements  OnInit{
     user.firstName = this.firstname;
     user.lastName = this.lastname;
     this.authService.signUp(user).toPromise().then(res => {
-      if(res){
+      if (res) {
         this.navCtrl.setRoot(AlbumsPage);
       }
     })

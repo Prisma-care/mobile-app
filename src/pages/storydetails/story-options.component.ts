@@ -1,8 +1,7 @@
-import { ViewController, NavController, NavParams } from "ionic-angular";
-import { Component } from "@angular/core";
-import { UserStory } from "../../dto/user-story";
-import { StoryService } from "../../providers/back-end/story.service";
-import { AuthService } from "../../providers/auth-service/auth-service";
+import {NavController, NavParams, ViewController} from "ionic-angular";
+import {Component} from "@angular/core";
+import {StoryService} from "../../providers/back-end/story.service";
+import {AuthService} from "../../providers/auth-service/auth-service";
 
 @Component({
   template: `
@@ -30,8 +29,8 @@ export class StoryOptionsComponent {
   }
 
   /* Unused
-  close() {
-    this.viewCtrl.dismiss();
-  }
-  */
+   close() {
+   this.viewCtrl.dismiss();
+   }
+   */
 }

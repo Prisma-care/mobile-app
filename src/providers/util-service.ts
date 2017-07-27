@@ -45,12 +45,16 @@ export class UtilService {
           .then(filePath => {
             let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
             let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-            return this.copyFileToLocalDir(correctPath, currentName, this.createFileName()).then(lastImage => {return lastImage});
+            return this.copyFileToLocalDir(correctPath, currentName, this.createFileName()).then(lastImage => {
+              return lastImage
+            });
           });
       } else {
         var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
         var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-        return this.copyFileToLocalDir(correctPath, currentName, this.createFileName()).then(lastImage => {return lastImage});
+        return this.copyFileToLocalDir(correctPath, currentName, this.createFileName()).then(lastImage => {
+          return lastImage
+        });
       }
     }, (err) => {
       this.presentToast('Error while selecting image.');

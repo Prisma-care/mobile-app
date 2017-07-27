@@ -25,7 +25,7 @@
           <ion-slide class="story-item" *ngFor="let item of getStories(album),let j=index">
             <div *ngIf="getThumb(item.source)">
               <div (click)="showDetails(album,j)" *ngIf="!getThumb(item.source,item.description)">
-                  <ion-card-content class="description">{{item.description}}</ion-card-content>
+                <ion-card-content class="description">{{item.description}}</ion-card-content>
               </div>
             </div>
             <!--<img id="{{item.id}}" src="{{getThumb(item.source)}}">-->
