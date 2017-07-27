@@ -1,3 +1,12 @@
 {
-  "Paswoord": "Mdp"
+  "Paswoord": "Mdp",
+  "Aanmelden" : "Se connecter",
+  "Registreer" : "S'inscrire",
+  "Of heb je nog geen account" : "Avez vous un compte",
+  "Voornaam" : "Prénom",
+  "Achternaam" : "Nom",
+  "Annuleer" : "Annuler",
+  "Afmelden" : "Se déconnecter",
+  "Waarover babbelen we vandaag" : "Quel est le sujet du jour",
+  "Voeg album toe" : "Ajouter un album"
 }

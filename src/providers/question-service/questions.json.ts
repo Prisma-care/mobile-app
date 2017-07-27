@@ -95,7 +95,6 @@ export const QUESTIONS = [
       "Wat is je favoriete Italiaanse gerecht?",
       "Welke Vlaamse kost is jouw favoriet?",
       "Wat is jouw favoriet snoepgoed?",
-      ""
     ],
     "keywords": ["voeding", "eten"]
   },

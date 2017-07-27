@@ -3,6 +3,7 @@ import {Component, Input, OnInit} from "@angular/core";
 import {AuthGuard} from "../auth-guard";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {NavController} from "ionic-angular";
+import {TranslatorService} from "../../providers/translator.service";
 
 @Component({
   selector: 'album-questions',
@@ -23,8 +24,8 @@ export class AlbumQuestions extends AuthGuard implements OnInit {
 
   @Input() query: string;
 
-  constructor(protected authService: AuthService, public navCtrl: NavController, private questionService: QuestionService) {
-    super(authService, navCtrl);
+  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,private questionService: QuestionService) {
+    super(authService, navCtrl,translatorService);
   }
 
   ngOnInit(): void {

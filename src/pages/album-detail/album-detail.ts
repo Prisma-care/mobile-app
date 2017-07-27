@@ -9,6 +9,7 @@ import {StanizerService} from "../../providers/stanizer.service";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
 import {env} from "../../app/environment";
+import {TranslatorService} from "../../providers/translator.service";
 
 @Component({
   selector: 'album-detail',
@@ -20,9 +21,9 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
   public album: Album;
 
-  constructor(protected authService: AuthService, public navCtrl: NavController, public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
+  constructor(protected authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService, public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
               private storyService: StoryService, private sanitizer: StanizerService) {
-    super(authService, navCtrl);
+    super(authService, navCtrl,translatorService);
     this.album = navParams.get("album") as Album;
   }
 

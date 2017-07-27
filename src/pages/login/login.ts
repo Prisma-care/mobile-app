@@ -27,7 +27,7 @@ export class LoginPage implements OnInit {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthService, public utilService: UtilService
-    , public alertCtrl: AlertController,  private translatorService: TranslatorService) {
+    , public alertCtrl: AlertController,  public translatorService: TranslatorService) {
     translatorService.refresh();
     this.translate = translatorService.translate;
     this.translator = translatorService;

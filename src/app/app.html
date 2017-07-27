@@ -12,8 +12,21 @@
       </button>
       <button ion-item (click)="logout()" style="font-size: 20px;">
         <ion-icon name="log-out"></ion-icon>
-        Afmelden
+        {{'Afmelden' | translate}}
       </button>
+      <ion-item>
+        <ion-row style="text-align: center">
+          <ion-col *ngIf="translator.lang.indexOf('en') < 0">
+            <button ion-button color="general" clear (click)="translator.switchLang('en')">EN</button>
+          </ion-col>
+          <ion-col *ngIf="translator.lang.indexOf('fr') < 0">
+            <button ion-button color="general" clear (click)="translator.switchLang('fr')">FR</button>
+          </ion-col>
+          <ion-col *ngIf="translator.lang.indexOf('nl') < 0">
+            <button ion-button color="general" clear (click)="translator.switchLang('nl')">NL</button>
+          </ion-col>
+        </ion-row>
+      </ion-item>
     </ion-list>
   </ion-content>
 

@@ -11,6 +11,7 @@ import {UtilService} from "../../providers/util-service";
 import {env} from "../../app/environment";
 import {StanizerService} from "../../providers/stanizer.service";
 import {StoryOptionsComponent} from "./story-options.component";
+import {TranslatorService} from "../../providers/translator.service";
 
 @Component({
   selector: 'page-storydetails',
@@ -24,11 +25,11 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   // TODO: get favorite in backend &
   // 1 like?
-  constructor(protected  authService: AuthService, public navCtrl: NavController, public navParams: NavParams,
+  constructor(protected  authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private nativePageTransitions: NativePageTransitions,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService,
               public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController) {
-    super(authService, navCtrl);
+    super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
   }

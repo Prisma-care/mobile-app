@@ -11,6 +11,7 @@ import {Camera} from "@ionic-native/camera";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
+import {TranslatorService} from "../../providers/translator.service";
 
 
 /* TEMPORARY IMPORT */
@@ -31,10 +32,10 @@ export class StoriesPage extends AuthGuard implements OnInit {
 
   albums: Album[];
 
-  constructor(protected  authService: AuthService, public navCtrl: NavController, public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
+  constructor(protected  authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
               protected stanizerService: StanizerService,
               protected userService: PatientService, protected storyService: StoryService) {
-    super(authService, navCtrl);
+    super(authService, navCtrl,translatorService);
     this.stanizedYoutubeUrl = this.stanizerService.sanitize(this.youtubeUrl);
   }
 
