@@ -229,7 +229,7 @@ export class StoryService extends PrismaService {
       /*let albums: Album[] = [];
        res.json().forEach(album => albums.push(new Album(album)));
        return albums;*/
-      return res.json() ? res.json() as Album[] : new Array<Album>();
+      return res.json() ? res.json() as Album[] : [];
     })
       .catch(error => this.handleError(error));
   }

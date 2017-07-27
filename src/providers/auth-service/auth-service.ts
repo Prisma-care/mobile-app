@@ -39,7 +39,7 @@ export class AuthService extends PrismaService {
       let userId: number = res.json().response.id || 1;
 
       return this.patientService.getPatient("1", this._head).toPromise().then(res => {
-        localStorage.setItem(env.temp.fakePatient, JSON.stringify(res))
+        localStorage.setItem(env.temp.fakePatient, JSON.stringify(res));
         if (userId)
           return this._http.get(`${this._urlToApi}/${url}/${userId}`, {
             headers: this._head

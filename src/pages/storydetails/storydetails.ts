@@ -204,7 +204,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
       if ((dismissData) == "delete") {
         this.navCtrl.pop(); // if the story was deleted, pop the story view
       }
-    })
+    });
     popover.present({
       ev: event
     });

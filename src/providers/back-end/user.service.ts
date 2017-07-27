@@ -19,7 +19,7 @@ export class PatientService extends PrismaService {
       headers: headers || this._head
     })
       .map(res => {
-        console.log("Got patient: " + JSON.stringify(res.json().response))
+        console.log("Got patient: " + JSON.stringify(res.json().response));
         return new Patient(res.json().response) as Patient;
       })
       .catch(err => this.handleError(err));

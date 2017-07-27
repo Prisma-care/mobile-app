@@ -158,7 +158,7 @@ export class NewStoryPage extends AuthGuard {
     console.log("Path : " + targetPath);
     // Use the FileTransfer to upload the image
     return fileTransfer.upload(targetPath, url, options).then(data => {
-      this.loading.dismissAll()
+      this.loading.dismissAll();
       this.utilService.presentToast('Image succesful uploaded. : ' + targetPath + "\n" + JSON.stringify(data));
     }, err => {
       this.loading.dismissAll()

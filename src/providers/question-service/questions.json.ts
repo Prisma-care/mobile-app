@@ -85,6 +85,6 @@ export const QUESTIONS = [
     ],
     "keywords": ["sport"]
   }
-]
+];
 
 // Todo: club, vereniging, ...
