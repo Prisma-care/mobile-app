@@ -50,7 +50,7 @@ export class NewStoryPage extends AuthGuard {
     this.dataUrl = navParams.get("dataUrl") as string;
     this.selectedAlbum = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
-
+    console.log("Method : " + this.method);
 
     this.oldStory = navParams.get("story") as UserStory;
     if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
@@ -89,7 +89,7 @@ export class NewStoryPage extends AuthGuard {
     if (this.description)
       newStory.description = this.description;
     else
-      newStory.description = "";
+      newStory.description = ".";
     newStory.creatorId = 1;
     this.storyService.addStory(+this.authService.getCurrentPatient().id, newStory).toPromise().then(addedStory => {
       if (this.dataUrl) {
@@ -111,7 +111,10 @@ export class NewStoryPage extends AuthGuard {
 
   updateDescription() {
     this.oldStory.description = this.description;
-    this.storyService.addStory(+this.authService.getCurrentPatient().id, this.oldStory).toPromise().then(addedStory => {
+    let updatedStory = new UserStory();
+    updatedStory.id = this.oldStory.id;
+    updatedStory.description = this.oldStory.description;
+    this.storyService.updateStory(+this.authService.getCurrentPatient().id , updatedStory).toPromise().then(addedStory => {
       this.navCtrl.popTo(StoryDetailsPage, {
         "album": this.selectedAlbum,
         "index": this.index

@@ -64,12 +64,13 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
               pictureAttempt.then(
                 (dataUrl) => {
-                  this.navCtrl.push(NewStoryPage,
-                    {
-                      "dataUrl": dataUrl,
-                      "album": this.album,
-                      "method": env.methods.addNewStory
-                    })
+                  if (dataUrl)
+                    this.navCtrl.push(NewStoryPage,
+                      {
+                        "dataUrl": dataUrl,
+                        "album": this.album,
+                        "method": env.methods.addNewStory
+                      })
                 });
             }
           },
@@ -82,12 +83,13 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
               fileChooseAttempt.then(
                 (dataUrl) => {
-                  this.navCtrl.push(NewStoryPage,
-                    {
-                      "dataUrl": dataUrl,
-                      "album": this.album,
-                      "method": env.methods.addNewStory
-                    })
+                  if (dataUrl)
+                    this.navCtrl.push(NewStoryPage,
+                      {
+                        "dataUrl": dataUrl,
+                        "album": this.album,
+                        "method": env.methods.addNewStory
+                      })
                 });
             }
           },
