@@ -38,8 +38,8 @@ export class AuthService extends PrismaService {
       this._head.set('Authorization', 'Bearer ' + localStorage.getItem(env.jwtToken));
       let userId: number = res.json().response.id || 1;
 
-      return this.patientService.getPatient("1",this._head).toPromise().then(res => {
-        localStorage.setItem(env.temp.fakePatient, JSON.stringify(res))
+      return this.patientService.getPatient("1", this._head).toPromise().then(res => {
+        localStorage.setItem(env.temp.fakePatient, JSON.stringify(res));
         if (userId)
           return this._http.get(`${this._urlToApi}/${url}/${userId}`, {
             headers: this._head
@@ -60,6 +60,7 @@ export class AuthService extends PrismaService {
   logout(): void {
     localStorage.removeItem(env.jwtToken);
     localStorage.removeItem(env.temp.fakeUser);
+    localStorage.removeItem(env.temp.fakePatient);
   }
 
   signUp(user: User): Observable<boolean> {
@@ -70,7 +71,8 @@ export class AuthService extends PrismaService {
       if (res.status < 200 || res.status >= 300) {
         return false;
       }
-      return this.login(user.email, user.password).toPromise().then(res2 => res2);
+      console.log("trying to login");
+      return this.login(user.email, user.password).toPromise();
     }).catch(err => this.handleError(err));
   }
 

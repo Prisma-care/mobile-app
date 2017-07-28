@@ -1,10 +1,11 @@
-import { Injectable } from "@angular/core";
-import { QUESTIONS } from "./questions.json";
+import {Injectable} from "@angular/core";
+import {QUESTIONS} from "./questions.json";
 
 @Injectable()
 export class QuestionService {
 
-  constructor() { }
+  constructor() {
+  }
 
   private questions = QUESTIONS;
 
@@ -12,7 +13,7 @@ export class QuestionService {
 
     let matchingCategories = this.questions.filter(category =>
       this.containsQuery(query, category.keywords)
-      );
+    );
 
     // return questions from matching categories
     if (matchingCategories.length > 0) {
@@ -27,19 +28,19 @@ export class QuestionService {
 
   /*  keywords ==> questions
 
-    if query name consists of any of the keywords, find the questions
+   if query name consists of any of the keywords, find the questions
 
-    => regex for each question-category - temp but easy solution*/
+   => regex for each question-category - temp but easy solution*/
 
   /*
-    A function that get a single query string,
-    and checks whether one of some given keywords can be found in it.
-    Note: not capital sensitive
-  */
+   A function that get a single query string,
+   and checks whether one of some given keywords can be found in it.
+   Note: not capital sensitive
+   */
 
   private containsQuery(query: string, keywords: string[]): boolean {
 
-    return Boolean(keywords.find( kw => {
+    return Boolean(keywords.find(kw => {
         let reg = new RegExp(kw.toLowerCase());
         return reg.test(query.toLowerCase());
       }

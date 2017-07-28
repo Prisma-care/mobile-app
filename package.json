@@ -33,6 +33,8 @@
         "@ionic-native/status-bar": "3.12.1",
         "@ionic-native/transfer": "^3.14.0",
         "@ionic/storage": "^2.0.1",
+        "@ngx-translate/core": "^7.1.0",
+        "@ngx-translate/http-loader": "^0.1.0",
         "com.telerik.plugins.nativepagetransitions": "^0.6.5",
         "cordova-android": "^6.2.3",
         "cordova-browser": "^4.1.0",

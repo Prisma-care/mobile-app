@@ -8,4 +8,4 @@ export const relationTypes = {
   "grandson": "grandson",
   "granddaughter": "granddaughter",
   "friend": "friend"
-}
+};

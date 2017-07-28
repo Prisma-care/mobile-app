@@ -1,6 +1,5 @@
 import {Component} from "@angular/core";
 import {Loading, LoadingController, NavController, NavParams} from "ionic-angular";
-import {Camera} from "@ionic-native/camera";
 import {Album} from "../../dto/album";
 import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
@@ -12,6 +11,7 @@ import {StoryDetailsPage} from "../storydetails/storydetails";
 import {StanizerService} from "../../providers/stanizer.service";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
+import {TranslatorService} from "../../providers/translator.service";
 
 @Component({
   selector: 'page-new-story',
@@ -27,7 +27,6 @@ export class NewStoryPage extends AuthGuard {
   } = env.methods;
   method: string = env.methods.addNewStory;
   dataUrl: string;
-  dataUploadTrigger: Promise<any>;
   description: string;
   placeHolder: string = "Schrijf het verhaal.\nHoe meer details hoe beter.";
 
@@ -41,21 +40,25 @@ export class NewStoryPage extends AuthGuard {
 //file Transfer
   loading: Loading;
 
-  constructor(protected authService: AuthService, public navCtrl: NavController, private camera: Camera, public navParams: NavParams,
+  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,public navParams: NavParams,
               private storyService: StoryService, private utilService: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
               public stanizer: StanizerService) {
-    super(authService);
+    super(authService, navCtrl,translatorService);
+    this.translatorService.translate.get(this.placeHolder).subscribe(value =>  this.placeHolder = value);
     this.method = navParams.get("method") as string;
     this.dataUrl = navParams.get("dataUrl") as string;
     this.selectedAlbum = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
-
+    console.log("Method : " + this.method);
 
     this.oldStory = navParams.get("story") as UserStory;
     if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
       this.description = this.oldStory.description;
-      this.dataUrl = this.oldStory.source;
+      if (this.oldStory.source.toLowerCase().indexOf("youtube.com") < 0)
+        this.dataUrl = this.oldStory.source;
+      else
+        this.dataUrl = null;
     }
 
     if (this.method.indexOf(env.methods.replaceImage) >= 0) {
@@ -83,7 +86,10 @@ export class NewStoryPage extends AuthGuard {
     }
     let newStory: UserStory = new UserStory();
     newStory.albumId = +this.selectedAlbum.id;
-    newStory.description = this.description;
+    if (this.description)
+      newStory.description = this.description;
+    else
+      newStory.description = ".";
     newStory.creatorId = 1;
     this.storyService.addStory(+this.authService.getCurrentPatient().id, newStory).toPromise().then(addedStory => {
       if (this.dataUrl) {
@@ -92,6 +98,7 @@ export class NewStoryPage extends AuthGuard {
             "album": this.selectedAlbum,
           });
         }).catch(err => {
+          console.log(err);
         });
       }
       else {
@@ -105,7 +112,10 @@ export class NewStoryPage extends AuthGuard {
 
   updateDescription() {
     this.oldStory.description = this.description;
-    this.storyService.addStory(+this.authService.getCurrentPatient().id, this.oldStory).toPromise().then(addedStory => {
+    let updatedStory = new UserStory();
+    updatedStory.id = this.oldStory.id;
+    updatedStory.description = this.oldStory.description;
+    this.storyService.updateStory(+this.authService.getCurrentPatient().id, updatedStory).toPromise().then(addedStory => {
       this.navCtrl.popTo(StoryDetailsPage, {
         "album": this.selectedAlbum,
         "index": this.index
@@ -117,8 +127,9 @@ export class NewStoryPage extends AuthGuard {
     console.log("trying to update");
     if (this.dataUrl) {
       this.uploadImage(this.authService.getCurrentPatient().id, this.oldStory.id, this.dataUrl + "").then(res => {
-        this.navCtrl.popTo(AlbumsPage, {
+        this.navCtrl.popTo(StoryDetailsPage, {
           "album": this.selectedAlbum,
+          "index": this.index
         });
       }).catch(err => {
         console.log("Upload eror :" + JSON.stringify(err));
@@ -130,9 +141,6 @@ export class NewStoryPage extends AuthGuard {
     // Destination URL
     var url = API_URL + '/' + env.api.getPatient + '/' + patientId + '/' + env.api.getStory + '/' + storyId + '/' + env.api.getAsset;
     // File for Upload
-    console.log("LastImage : " + lastImage);
-    console.log("Url: " + url);
-
 
     var options = {
       fileKey: "asset",
@@ -154,8 +162,8 @@ export class NewStoryPage extends AuthGuard {
     console.log("Path : " + targetPath);
     // Use the FileTransfer to upload the image
     return fileTransfer.upload(targetPath, url, options).then(data => {
-      this.loading.dismissAll()
-      this.utilService.presentToast('Image succesful uploaded. : ' + targetPath + "\n" + JSON.stringify(data));
+      this.loading.dismissAll();
+      //this.utilService.presentToast('Image succesful uploaded. : ' + targetPath + "\n" + JSON.stringify(data));
     }, err => {
       this.loading.dismissAll()
       // this.utilService.presentToast('Error while uploading file.' + '\n' + JSON.stringify(err));

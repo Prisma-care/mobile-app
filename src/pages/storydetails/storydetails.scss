@@ -1,4 +1,22 @@
 page-storydetails {
+
+  .story-options {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    float: right;
+    font-size: 2em;
+    color: #fff;
+    margin-right: 0.7em;
+
+    // TODO: make this consistent
+    // there is something with <button ion-button icon-only,
+    // but it messes up the vertical align of the title...
+  }
+
+  .detail-title {
+    float: left;
+  }
+
   .description {
     padding: 1em;
     color: #fff;
@@ -36,7 +54,6 @@ page-storydetails {
   .image-container {
     position: relative;
   }
-
 
   .star2 {
     font-size: 2em;

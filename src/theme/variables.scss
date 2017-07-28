@@ -43,10 +43,10 @@ $colors: (
   light-gray: #EDEDED,
   medium-gray: #ABAEB4,
   dark-gray: #545B6E,
-
   yellow: #FAD820,
   orange: #FF9F00,
   red: #F35A4B,
+  redTrans: rgba(255, 0, 0, 0.1),
   purple: #D95DB4,
   blue: #637DC8
 );
@@ -55,6 +55,7 @@ $sizes: (
   small: 16px,
   medium: 20px,
   large: 26px,
+  extra-large: 30px,
   text: 15px,
   icons: 30px
 );

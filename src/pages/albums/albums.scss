@@ -4,12 +4,30 @@ albums-page {
     padding: 0;
   }
 
+  .albums-menu {
+    position: absolute;
+    top: 0.2em;
+    left: 0.2em;
+    font-size: 1.7em;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+  }
+
+  .album-overlay {
+    // TODO: doesn't work, fix this
+    background: linear-gradient(180deg, rgba(84,91,110,0) 0%, rgba(84,91,110,0.7) 100%);
+  }
+
   .album-thumb {
     height: 50vw; // todo: dynamic - set to width of comonent?
     background-size: cover;
     background-position: center;
     background-color: color($colors, dark-gray);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     position: relative;
+    text-shadow: rgba(0,0,0,.6) 1px 1px 0;
   }
 
   .col, [col-6] {
@@ -17,6 +35,7 @@ albums-page {
   }
 
   .album-thumb h3 {
+    padding: 0 2em;
     display: inline-block;
     text-align: center;
     margin: auto;
@@ -26,5 +45,12 @@ albums-page {
     left: 0;
     width: 100%;
 
+  }
+
+  .movie-indicator {
+    color: white;
+    display: block;
+    margin: 0 auto;
+    font-size: 50px;
   }
 }

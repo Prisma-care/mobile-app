@@ -1,11 +1,13 @@
 // Isolated tests for the question service
 
-import { QuestionService } from "./question.service";
+import {QuestionService} from "./question.service";
 
 describe('Question service isolated unit tests: ', () => {
   let service: QuestionService;
 
-  beforeEach(() => { service = new QuestionService();});
+  beforeEach(() => {
+    service = new QuestionService();
+  });
 
   it('Exists', () => {
     expect(service).toBeDefined();
@@ -28,9 +30,8 @@ describe('Question service isolated unit tests: ', () => {
 
   it('Returns null when no fitting questions exist', () => {
     let answer = service.getQuestions("flapdrol");
-    expect(answer).toBeNull();  });
+    expect(answer).toBeNull();
+  });
 
 
-
-
-})
+});

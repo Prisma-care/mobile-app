@@ -1,11 +1,9 @@
 import {ErrorHandler, NgModule} from "@angular/core";
-import {BrowserModule } from "@angular/platform-browser";
+import {BrowserModule} from "@angular/platform-browser";
 import {IonicApp, IonicErrorHandler, IonicModule} from "ionic-angular";
 import {IonicStorageModule} from "@ionic/storage";
 import {MyApp} from "./app.component";
 
-import {StoriesPage} from "../pages/stories/stories";
-import {PatientProfilePage} from "../pages/patientprofile/patientprofile";
 
 import {StatusBar} from "@ionic-native/status-bar";
 import {SplashScreen} from "@ionic-native/splash-screen";
@@ -13,15 +11,13 @@ import {StanizerService} from "../providers/stanizer.service";
 import {StoryDetailsPage} from "../pages/storydetails/storydetails";
 import {PrismaService} from "../providers/back-end/prisma-api.service";
 import {PatientService} from "../providers/back-end/user.service";
-import {HttpModule} from "@angular/http";
+import {HttpModule, Http} from "@angular/http";
 import {StoryService} from "../providers/back-end/story.service";
-import {TutorialPage} from "../pages/tutorial/tutorial";
 import {Camera} from "@ionic-native/camera";
 import {NewStoryPage} from "../pages/new-story/new-story";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {UtilService} from "../providers/util-service";
 
-import {ApiTestingPage} from "../pages/api-testing/api-testing";
 
 import {FileTransfer} from "@ionic-native/file-transfer";
 import {File} from "@ionic-native/file";
@@ -30,47 +26,52 @@ import {FilePath} from "@ionic-native/file-path";
 
 import {AlbumsPage} from "../pages/albums/albums";
 import {AlbumDetailPage} from "../pages/album-detail/album-detail";
-import { AuthService } from '../providers/auth-service/auth-service';
-import { QuestionService } from "../providers/question-service/question.service";
-import { AlbumQuestions } from "../pages/album-detail/album-questions";
+import {AuthService} from "../providers/auth-service/auth-service";
+import {QuestionService} from "../providers/question-service/question.service";
+import {AlbumQuestions} from "../pages/album-detail/album-questions";
 import {LoginPage} from "../pages/login/login";
 import {AuthGuard} from "../pages/auth-guard";
 import {NativePageTransitions} from "@ionic-native/native-page-transitions";
+import {StoryOptionsComponent} from "../pages/storydetails/story-options.component";
+import {TranslateModule, TranslateLoader, TranslateService} from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import {TranslatorService} from "../providers/translator.service";
 
 
 @NgModule({
   declarations: [
     MyApp,
-    TutorialPage,
     LoginPage,
-    StoriesPage,
     AlbumsPage,
     AlbumDetailPage,
-    PatientProfilePage,
     StoryDetailsPage,
     NewStoryPage,
-    ApiTestingPage,
-    AlbumQuestions
+    AlbumQuestions,
+    StoryOptionsComponent
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [Http]
+      }
+    }),
     HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     LoginPage,
-    TutorialPage,
-    StoriesPage,
     AlbumsPage,
     AlbumDetailPage,
-    PatientProfilePage,
     StoryDetailsPage,
     NewStoryPage,
-    ApiTestingPage,
-    AlbumQuestions
+    AlbumQuestions,
+    StoryOptionsComponent
   ],
   providers: [
     StatusBar,
@@ -89,9 +90,15 @@ import {NativePageTransitions} from "@ionic-native/native-page-transitions";
     Transfer,
     FilePath,
     NativePageTransitions,
+    TranslatorService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService
   ]
 })
 export class AppModule {
+}
+
+
+export function createTranslateLoader(http: Http) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }

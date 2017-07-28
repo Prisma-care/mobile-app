@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {ActionSheetController, NavController, AlertController} from "ionic-angular";
+import {ActionSheetController, AlertController, MenuController, NavController} from "ionic-angular";
 import {StanizerService} from "../../providers/stanizer.service";
 import {PatientService} from "../../providers/back-end/user.service";
 import {StoryService} from "../../providers/back-end/story.service";
@@ -10,9 +10,10 @@ import {Camera} from "@ionic-native/camera";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {AlbumDetailPage} from "../album-detail/album-detail";
 import {env} from "../../app/environment";
-import { Patient } from "../../dto/patient";
+import {Patient} from "../../dto/patient";
 import {AuthGuard} from "../auth-guard";
 import {AuthService} from "../../providers/auth-service/auth-service";
+import {TranslatorService} from "../../providers/translator.service";
 
 
 /* TEMPORARY IMPORT */
@@ -29,35 +30,29 @@ export class AlbumsPage extends AuthGuard implements OnInit {
 
   albums: Album[];
 
-  constructor(public authService: AuthService, public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
-              public navCtrl: NavController, protected sanitizer: StanizerService,
+  constructor(public authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService, public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
+              protected sanitizer: StanizerService,
               protected patientService: PatientService, protected storyService: StoryService,
-              protected alertCtrl: AlertController) {
-    super(authService);
-    this.currentPatient =this.authService.getCurrentPatient();
-    console.log("");
+              protected alertCtrl: AlertController, menu: MenuController) {
+    super(authService, navCtrl, translatorService);
+    this.currentPatient = this.authService.getCurrentPatient();
+    menu.enable(true);
   }
 
   currentPatient: Patient;
 
   ngOnInit(): void {
     // TODO: replace with a service method
-    this.currentPatient =this.authService.getCurrentPatient();
+    this.currentPatient = this.authService.getCurrentPatient();
   }
 
   ionViewWillEnter(): void {
-   console.log("Test : " + JSON.stringify(this.authService.getCurrentPatient()));
+    console.log("Test : " + JSON.stringify(this.authService.getCurrentPatient()));
     this.storyService.getAlbums(this.authService.getCurrentPatient().id).toPromise().then(albums => {
       this.albums = albums as Album[];
     });
   }
 
-  getThumb(url: string, descripton?: string): string {
-    if (!url) return null;
-    if (url.startsWith("data:image/jpeg;base64") || url.startsWith("assets"))
-      return url;
-    return "assets/img/t/" + url;
-  }
 
   getStories(album: Album): UserStory[] {
     return album.stories;
@@ -69,24 +64,61 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     })
   }
 
-  getBackgroundImage(i: number): any {
+  /*
+   private colors: any = {
+   "yellow": "#FAD820",
+   "orange": "#FF9F00",
+   "red": "#F35A4B",
+   "purple": "#D95DB4",
+   "blue": "#637DC8"
+   };
+   */
+
+  private colorCodes: string[] = ["#FAD820", "#FF9F00", "#F35A4B", "#D95DB4", "#637DC8"];
+
+  getBackgroundColor(i: number): string {
     if (this.albums[i].isEmpty()) {
-      return ""
+      let currentColor: string = this.colorCodes[i % this.colorCodes.length];
+      return currentColor;
     }
     else {
-      /*
-       let imageSrc = this.albums[i].stories[0].source;
-       return "url('" + imageSrc + "')";
-       */
+      return "";
+    }
+  }
+
+  getBackgroundImage(i: number): any {
+    if (this.albums[i].isEmpty()) {
+      return "";
+    }
+    else {
       let index = this.albums[i].stories.findIndex(this.isRepresentativeOfTheAlbum);
       if (index === -1)
         index = this.albums[i].stories.findIndex(this.hasAnImage);
       if (index === -1)
         index = 0;
-      const style = `background-image: url(${this.albums[i].getBackgroundImage(index)})`;
-      if(!this.albums[i].getBackgroundImage(index))
+      let thumb: string = this.getThumb(this.albums[i].getBackgroundImage(index));
+      const style = `background-image: url(${thumb})`;
+      if (!this.albums[i].getBackgroundImage(index))
         return "";
       return this.sanitizer.sanitizeStyle(style);
+    }
+  }
+
+  isAVideoBackground(i: number): boolean {
+    if (this.albums[i].isEmpty()) {
+      return false;
+    }
+    else {
+      let index = this.albums[i].stories.findIndex(this.isRepresentativeOfTheAlbum);
+      if (index === -1)
+        index = this.albums[i].stories.findIndex(this.hasAnImage);
+      if (index === -1)
+        index = 0;
+      let thumb: string = this.getThumb(this.albums[i].getBackgroundImage(index));
+      const style = `background-image: url(${thumb})`;
+      if (!this.albums[i].getBackgroundImage(index))
+        return false;
+      return thumb.toLowerCase().indexOf("img.youtube") >= 0;
     }
   }
 
@@ -98,37 +130,45 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       buttons: ['Ok']
     });
 
-    this.alertCtrl.create( {
-      "title": 'Voeg album toe',
+    let text1:string = 'Voeg album toe';
+    let text2:string = 'Annuleer';
+    let text3:string = 'Voeg toe';
+    this.translatorService.translate.get(text1).subscribe(value => text1 = value);
+    this.translatorService.translate.get(text2).subscribe(value => text2 = value);
+    this.translatorService.translate.get(text3).subscribe(value => text3 = value);
+
+    this.alertCtrl.create({
+      "title": text1,
       "message": 'Hoe wil je het album noemen?',
-        inputs: [
-          {
-            name: 'title',
-            placeholder: 'bv. Kajakclub'
-          },
-        ],
-        buttons: [
-          {
-            text: 'Annuleer',
-            handler: data => { }
-          },
-          {
-            text: 'Voeg toe',
-            handler: data => {
-              this.storyService.addAlbum(this.currentPatient.id, data.title).toPromise()
-                .then(album => {
-
-                  //this.albums.push(album as Album);
-                  // TODO: this would spare us a whole refresh
-                  // but it gives errors
-
-                  // complete albums refresh
-                  this.ionViewWillEnter()
-                })
-                .catch(() => albumFailedAlert.present());
-            }
+      inputs: [
+        {
+          name: 'title',
+          placeholder: 'bv. Kajakclub'
+        },
+      ],
+      buttons: [
+        {
+          text: text2,
+          handler: data => {
           }
-        ]
+        },
+        {
+          text: text3,
+          handler: data => {
+            this.storyService.addAlbum(this.currentPatient.id, data.title).toPromise()
+              .then(album => {
+
+                //this.albums.push(album as Album);
+                // TODO: this would spare us a whole refresh
+                // but it gives errors
+
+                // complete albums refresh
+                this.ionViewWillEnter()
+              })
+              .catch(() => albumFailedAlert.present());
+          }
+        }
+      ]
     }).present();
   }
 
@@ -140,4 +180,15 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     return !!story.source;
   }
 
+
+  getThumb(url: string) {
+    if (url.toLowerCase().indexOf("youtube.com") >= 0) {
+      var reg = /embed\/(.+?)\?/;
+      let video = url.match(reg)[1];
+      let thumbailLink = "http://img.youtube.com/vi/" + video + "/0.jpg";
+      return thumbailLink;
+    } else {
+      return url;
+    }
+  }
 }

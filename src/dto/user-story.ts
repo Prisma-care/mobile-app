@@ -16,7 +16,7 @@ export class UserStory {
     this.creatorId = json.creatorId || 1;
     this.description = json.description;
     this.source = json.source || json.assetSource;
-    this.favorited = json.favorited  || false;
+    this.favorited = json.favorited || false;
     if (json.happened_at)
       this.happened_at = new Date(json.happened_at);
   }

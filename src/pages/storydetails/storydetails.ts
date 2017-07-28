@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {ActionSheetController, NavController, NavParams} from "ionic-angular";
+import {ActionSheetController, MenuController, NavController, NavParams, PopoverController} from "ionic-angular";
 import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
@@ -9,6 +9,9 @@ import {AuthGuard} from "../auth-guard";
 import {NativePageTransitions, NativeTransitionOptions} from "@ionic-native/native-page-transitions";
 import {UtilService} from "../../providers/util-service";
 import {env} from "../../app/environment";
+import {StanizerService} from "../../providers/stanizer.service";
+import {StoryOptionsComponent} from "./story-options.component";
+import {TranslatorService} from "../../providers/translator.service";
 
 @Component({
   selector: 'page-storydetails',
@@ -22,10 +25,11 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   // TODO: get favorite in backend &
   // 1 like?
-  constructor(protected  authService: AuthService, public navCtrl: NavController, public navParams: NavParams,
+  constructor(protected  authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private nativePageTransitions: NativePageTransitions,
-              public actionsheetCtrl:ActionSheetController, public utilService:UtilService) {
-    super(authService);
+              public actionsheetCtrl: ActionSheetController, public utilService: UtilService,
+              public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController) {
+    super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
   }
@@ -34,6 +38,16 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     if (this.navParams.get("slide")) {
       //this.navCtrl.remove(this.navCtrl.length()-2);
     }
+  }
+
+  ionViewWillEnter() {
+    if (this.album)
+      this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).toPromise().then(res => this.album = res);
+    this.menu.enable(false);
+  }
+
+  ionViewWillLeave() {
+    this.menu.enable(true);
   }
 
   getThumb(url: string): string {
@@ -180,5 +194,29 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
       })
     ;
     actionSheet.present();
+  }
+
+  showMore(event): void {
+
+    let popover = this.popoverCtrl.create(StoryOptionsComponent, {
+      story: this.getStory()
+    });
+    popover.onDidDismiss(dismissData => {
+      if ((dismissData) == "delete") {
+        this.navCtrl.pop(); // if the story was deleted, pop the story view
+      }
+    });
+    popover.present({
+      ev: event
+    });
+
+  }
+
+  stanize(url: string) {
+    return this.stanizer.sanitize(url);
+  }
+
+  stanizeVideo(url: string) {
+    return this.stanizer.sanitizeVideo(url);
   }
 }

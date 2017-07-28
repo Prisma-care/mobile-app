@@ -1,1 +1,35 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu [content]="content">
+
+  <ion-toolbar color="general">
+    <ion-title>Menu</ion-title>
+  </ion-toolbar>
+
+  <ion-content>
+    <ion-list>
+      <button ion-item>
+        <ion-icon name="log-out"></ion-icon>
+        Logout
+      </button>
+      <button ion-item (click)="logout()" style="font-size: 20px;">
+        <ion-icon name="log-out"></ion-icon>
+        {{'Afmelden' | translate}}
+      </button>
+      <ion-item>
+        <ion-row style="text-align: center">
+          <ion-col *ngIf="translator.lang.indexOf('en') < 0">
+            <button ion-button color="general" clear (click)="translator.switchLang('en')">EN</button>
+          </ion-col>
+          <ion-col *ngIf="translator.lang.indexOf('fr') < 0">
+            <button ion-button color="general" clear (click)="translator.switchLang('fr')">FR</button>
+          </ion-col>
+          <ion-col *ngIf="translator.lang.indexOf('nl') < 0">
+            <button ion-button color="general" clear (click)="translator.switchLang('nl')">NL</button>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+
+<ion-nav id="nav" #content [root]="rootPage" swipeBackEnabled="false"></ion-nav>
