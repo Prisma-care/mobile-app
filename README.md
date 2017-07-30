@@ -12,7 +12,7 @@ Project Prisma was part of [Open Knowledge Belgium](https://www.openknowledge.be
 - Michiel Leyman [(@MichielLeyman)](https://github.com/MichielLeyman) - backend & project management
 - Simon Westerlinck [(@siimonco)](https://github.com/siimonco) - backend & database modelling
 - Jean-Pacifique Mboynincungu [(@oxnoctisxo)](https://github.com/oxnoctisxo) - frontend system analysis
-- Thor Galle ([@th0rgall)](https://github.com/th0rgall) - frontend & product owner
+- Thor Galle [(@th0rgall)](https://github.com/th0rgall) - frontend & product owner
 
 ## Installation
 
