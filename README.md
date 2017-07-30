@@ -14,7 +14,7 @@ Project Prisma was part of [Open Knowledge Belgium](https://www.openknowledge.be
 - Jean-Pacifique Mboynincungu [(@oxnoctisxo)](https://github.com/oxnoctisxo) - frontend system analysis
 - Thor Galle [(@th0rgall)](https://github.com/th0rgall) - frontend & product owner
 
-The app was conceived in a one-month collaborative design project in a care home in Zonhoven, Belgium, in January 2017. Together with personel and dementia design researchers the team honed in on a static prototype that was later refined during the Open Summer of Code. More info about it in [http://www.frederikvincx.com/project-prisma-helping-people-with-dementia/](this blog post).
+The app was conceived in a one-month collaborative design project in a care home in Zonhoven, Belgium, in January 2017. Together with personel and dementia design researchers the team honed in on a static prototype that was later refined during the Open Summer of Code. More info about it in [this blog post](http://www.frederikvincx.com/project-prisma-helping-people-with-dementia/).
 
 ## Installation
 
