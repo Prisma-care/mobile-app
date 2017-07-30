@@ -21,7 +21,8 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
   public album: Album;
 
-  constructor(protected authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService, public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
+  constructor(protected authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService,
+              public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
               private storyService: StoryService, private sanitizer: StanizerService) {
     super(authService, navCtrl,translatorService);
     this.album = navParams.get("album") as Album;

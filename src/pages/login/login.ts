@@ -26,7 +26,7 @@ export class LoginPage implements OnInit {
   email: string = "";
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthService, public utilService: UtilService
+  constructor(public navCtrl: NavController, public authService: AuthService
     , public alertCtrl: AlertController,  public translatorService: TranslatorService) {
     translatorService.refresh();
     this.translate = translatorService.translate;
@@ -64,7 +64,8 @@ export class LoginPage implements OnInit {
       subTitle: "Bad login/password",
       buttons: ['Ok']
     });
-
+    //refreshes the password
+    this.password= "";
     return alert.present();
   }
 

@@ -41,7 +41,9 @@ export class PrismaService implements OnInit {
   public handleError(error: Response | any) {
     console.log("Error ! " + JSON.stringify(error));
     //logs out if no user token avaible when needed
-    if (JSON.stringify(error).toLocaleLowerCase().indexOf("token_invalid") >= 0 || JSON.stringify(error).toLocaleLowerCase().indexOf("token_not_provided") >= 0) {
+    let errorString: string = JSON.stringify(error).toLowerCase();
+    if (errorString.indexOf("token_invalid") >= 0 || errorString.indexOf("token_expired") >= 0 ||
+      errorString.indexOf("token_not_provided") >= 0) {
       localStorage.removeItem(env.jwtToken);
       localStorage.removeItem(env.temp.fakeUser);
       localStorage.removeItem(env.temp.fakePatient);
