@@ -1,4 +1,4 @@
-# Prisma.care App
+![color your memories](https://user-images.githubusercontent.com/11543641/28823809-acf0b10a-76bf-11e7-918e-ad34338b66c8.jpg)
 
 Prisma is an app that strengthens the relationship between people with memory loss and the people close to them. It does this by providing a living, collaborative digital photo album that can be populated with content of interest to these people.
 
