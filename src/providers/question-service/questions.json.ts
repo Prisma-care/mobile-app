@@ -93,7 +93,7 @@ export const QUESTIONS = [
   },
   {
     "questions": [
-      "lievelingsgerecht",
+      "Lievelingsgerecht",
       "Exotisch eten",
       "Italiaanse gerechten",
       "Vlaamse kost",
