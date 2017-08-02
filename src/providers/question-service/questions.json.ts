@@ -2,44 +2,44 @@ export const QUESTIONS = [
   // PERSONAL
   {
     "questions": [
-      "Wie was het oudste familielid dat je gekend hebt?",
-      "Van welk land komen je groutouders?",
-      "Kende je je overgrootouders?"
+      "Oude familielden",
+      "Land van herkomst",
+      "Overgrootouders?"
     ],
     "keywords": ["grootouders"]
   },
   {
     "questions": [
-      "In wat voor huis woonden jullie?",
-      "Welke namen heb je gekregen? Ben je vernoemd naar iemand?",
-      "Hebben jullie huisdieren?",
-      "Hebben jullie als gezin een speciale gewoonte of traditie?",
-      "Wat at je het liefst?",
-      "Welke kleding droeg je toen?"
+      "Huis",
+      "Huisdieren?",
+      "Gewoontes of tradities",
+      "Favoriet eten als kind",
+      "Kinderkleding"
     ],
     "keywords": ["kindertijd", "kind", "jeugd", "gezin"]
   },
   {
     "questions": [
-      "Welk beroep heb je het langst uitgeoefend?",
-      "Waar ging je voor het eerst werken?",
-      "Welke vakantiejobs heb je vroeger gedaan?",
-      "Herinner je je nog een leuke collega?"
+      "Beroep",
+      "Eerste werk",
+      "Vakantiejobs",
+      "Leuke collega's"
     ],
     "keywords": ["werk", "bureau"]
   },
   {
     "questions": [
-      "In welke basisschool zat je? Waarom daar?",
-      "Herinner je je nog een leerkracht van vroeger?"
+      "Basisschool",
+      "Leerkrachten"
     ],
     "keywords": ["school", "leerkracht", "klas", "kindertijd"]
   },
   {
     "questions": [
-      "Kan je je eerste verliedheid nog herinneren?",
-      "Hoe ging dat toen, een liefje hebben?",
-      "Wat kan je je nog herinneren van je trouwdag?"
+      "Eerste verliefdheid",
+      "Afspraakjes",
+      "Voorstellen aan familie",
+      "Trouwdag?"
     ],
     "keywords": ["trouw", "liefde"]
   },
