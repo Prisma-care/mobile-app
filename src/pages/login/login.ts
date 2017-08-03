@@ -1,9 +1,8 @@
 import {Component, OnInit} from "@angular/core";
-import {AlertController, NavController, NavParams} from "ionic-angular";
+import {AlertController, NavController} from "ionic-angular";
 import {User} from "../../dto/user";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {AlbumsPage} from "../albums/albums";
-import {UtilService} from "../../providers/util-service";
 import {TranslatorService} from "../../providers/translator.service";
 import {TranslateService} from "@ngx-translate/core";
 
