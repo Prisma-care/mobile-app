@@ -5,6 +5,7 @@ import {AuthService} from "../../providers/auth-service/auth-service";
 import {AlbumsPage} from "../albums/albums";
 import {TranslatorService} from "../../providers/translator.service";
 import {TranslateService} from "@ngx-translate/core";
+import {UtilService} from "../../providers/util-service";
 
 
 @Component({
@@ -13,7 +14,7 @@ import {TranslateService} from "@ngx-translate/core";
 })
 export class LoginPage implements OnInit {
   private translate: TranslateService;
-  private translator:TranslatorService;
+  private translator: TranslatorService;
 
   isSigningUp: boolean = false;
 
@@ -24,9 +25,12 @@ export class LoginPage implements OnInit {
   lastname: string = "";
   email: string = "";
 
+  loading: boolean = false;
+  type = "password";
+  show = false;
 
   constructor(public navCtrl: NavController, public authService: AuthService
-    , public alertCtrl: AlertController,  public translatorService: TranslatorService) {
+    , public alertCtrl: AlertController, public translatorService: TranslatorService, public util: UtilService) {
     translatorService.refresh();
     this.translate = translatorService.translate;
     this.translator = translatorService;
@@ -43,28 +47,40 @@ export class LoginPage implements OnInit {
     return true;
   }
 
+
+  toggleShow() {
+    this.show = !this.show;
+    this.type = this.show ? "text" : "password";
+  }
+
   signIn() {
+    if (this.loading)
+      return;
+    this.loading = true;
     if (!this.email || !this.password) {
       this.loginError("Geen login/password");
+      this.loading = false;
       return;
     }
     this.authService.login(this.email, this.password).toPromise().then(res => {
       if (this.authService.isLoggedIn()) {
+        this.loading = false;
         this.navCtrl.setRoot(AlbumsPage);
       } else {
         this.loginError();
       }
+      this.loading = false;
     })
   }
 
-  loginError(errorMessage?:string) {
+  loginError(errorMessage?: string) {
     let alert = this.alertCtrl.create({
       title: "Error",
       subTitle: "Bad login/password",
       buttons: ['Ok']
     });
     //refreshes the password
-    this.password= "";
+    this.password = "";
     return alert.present();
   }
 
@@ -77,7 +93,7 @@ export class LoginPage implements OnInit {
     this.authService.signUp(user).toPromise().then(res => {
       if (res) {
         this.navCtrl.setRoot(AlbumsPage);
-      }else {
+      } else {
         this.loginError("Invalid data");
       }
     })

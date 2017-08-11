@@ -1,7 +1,7 @@
 <ion-content padding no-bounce>
 
   <div class="prisma-header">
-    <img src="assets/icon/prisma-logo.png"/>
+    <img src="assets/img/homePage/banner.png"/>
   </div>
 
   <!--  Login case -->
@@ -13,16 +13,26 @@
       </ion-item>
 
       <ion-item>
-        <ion-label fixed>{{'Paswoord' | translate}}*</ion-label>
-        <ion-input type="password" [(ngModel)]="password" required></ion-input>
+        <ion-label fixed>{{'Paswoord' | translate}}*  </ion-label>
+        <ion-input type="{{type}}" #input [(ngModel)]="password" required></ion-input>
+
+        <button ion-button icon-only (click)="toggleShow()" clear  item-right>
+          <ion-icon *ngIf="!show" name="eye"></ion-icon>
+          <ion-icon *ngIf="show" name="eye-off"></ion-icon>
+        </button>
       </ion-item>
     </ion-list>
 
-    <button id="signin-button" ion-button color="general" (click)="signIn()">{{'Aanmelden' | translate}}</button>
+    <button full id="signin-button" ion-button color="general" (click)="signIn()">
+      <div *ngIf="!loading">{{'Aanmelden' | translate}}</div>
+      <div *ngIf="loading">
+        <ion-spinner item-start name="dots"></ion-spinner>
+      </div>
+    </button>
 
     <div class="signup-suggestion">
-      <p>{{'Of heb je nog geen account' | translate}}?</p>
-      <button ion-button color="general" (click)="isSigningUp=true">{{'Registreer' | translate}}</button>
+      <p>{{'Nog geen account' | translate}}?<a color="general" (click)="isSigningUp=true">{{'Maak account' | translate}}</a></p>
+
     </div>
 
   </div>

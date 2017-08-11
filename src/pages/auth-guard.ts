@@ -19,9 +19,7 @@ export class AuthGuard {
   }
 
   ionViewCanEnter(): boolean {
-    console.log("dajdajjda2");
     if (!this.authService.isLoggedIn()) {
-      console.log("trying");
       this.navCtrl.setRoot(LoginPage).then(res => {
         this.navCtrl.popToRoot();
         return false;

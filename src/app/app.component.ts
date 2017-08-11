@@ -39,4 +39,5 @@ export class MyApp {
     this.authService.logout();
     this.nav.setRoot(LoginPage);
   }
+
 }
