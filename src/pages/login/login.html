@@ -23,7 +23,7 @@
 
     </ion-list>
 
-    <button full id="signin-button" ion-button color="general" (click)="signIn()" [disabled]="canSignIn()">
+     <button ion-button solid block full large color="general" (click)="signIn()" [disabled]="canSignIn()">
       <div *ngIf="!loading">{{'Aanmelden' | translate}}</div>
       <div *ngIf="loading">
         <ion-spinner item-start name="dots" color="white"></ion-spinner>
@@ -64,8 +64,8 @@
       </ion-item>
     </ion-list>
 
-    <button ion-button color="general" (click)="isSigningUp=false">{{'Annuleer' | translate}}</button>
-    <button ion-button color="general" (click)="signUp()">{{'Registreer' | translate}}</button>
+    <button ion-button solid block full large  (click)="isSigningUp=false">{{'Annuleer' | translate}}</button>
+    <button ion-button solid block full large  (click)="signUp()">{{'Registreer' | translate}}</button>
   </div>
   <ion-item>
     <ion-row style="text-align: center">
