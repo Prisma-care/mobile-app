@@ -1,11 +1,11 @@
 import {Component, OnInit} from "@angular/core";
-import {AlertController, NavController, NavParams} from "ionic-angular";
+import {AlertController, NavController} from "ionic-angular";
 import {User} from "../../dto/user";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {AlbumsPage} from "../albums/albums";
-import {UtilService} from "../../providers/util-service";
 import {TranslatorService} from "../../providers/translator.service";
 import {TranslateService} from "@ngx-translate/core";
+import {UtilService} from "../../providers/util-service";
 
 
 @Component({
@@ -14,7 +14,7 @@ import {TranslateService} from "@ngx-translate/core";
 })
 export class LoginPage implements OnInit {
   private translate: TranslateService;
-  private translator:TranslatorService;
+  private translator: TranslatorService;
 
   isSigningUp: boolean = false;
 
@@ -25,12 +25,17 @@ export class LoginPage implements OnInit {
   lastname: string = "";
   email: string = "";
 
+  loading: boolean = false;
+  type = "password";
+  show = false;
+  util:UtilService;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authService: AuthService, public utilService: UtilService
-    , public alertCtrl: AlertController,  public translatorService: TranslatorService) {
+  constructor(public navCtrl: NavController, public authService: AuthService
+    , public alertCtrl: AlertController, public translatorService: TranslatorService, public utilService: UtilService) {
     translatorService.refresh();
     this.translate = translatorService.translate;
     this.translator = translatorService;
+    this.util = utilService;
   }
 
 
@@ -44,27 +49,45 @@ export class LoginPage implements OnInit {
     return true;
   }
 
+
+  toggleShow() {
+    this.show = !this.show;
+    this.type = this.show ? "text" : "password";
+  }
+
+
+  canSignIn():boolean {
+    return !(this.util.checkEmail(this.email) && this.util.checkPassword(this.password));
+  }
+
   signIn() {
+    if (this.loading)
+      return;
+    this.loading = true;
     if (!this.email || !this.password) {
       this.loginError("Geen login/password");
+      this.loading = false;
       return;
     }
     this.authService.login(this.email, this.password).toPromise().then(res => {
       if (this.authService.isLoggedIn()) {
-        this.navCtrl.setRoot(AlbumsPage);
+        this.navCtrl.setRoot(AlbumsPage).then(res => {this.loading = false;});
       } else {
         this.loginError();
+        this.loading = false;
       }
+
     })
   }
 
-  loginError(errorMessage?:string) {
+  loginError(errorMessage?: string) {
     let alert = this.alertCtrl.create({
       title: "Error",
       subTitle: "Bad login/password",
       buttons: ['Ok']
     });
-
+    //refreshes the password
+    //this.password = "";
     return alert.present();
   }
 
@@ -77,9 +100,15 @@ export class LoginPage implements OnInit {
     this.authService.signUp(user).toPromise().then(res => {
       if (res) {
         this.navCtrl.setRoot(AlbumsPage);
-      }else {
+      } else {
         this.loginError("Invalid data");
       }
     })
+  }
+
+  canSignUp():boolean {
+    return !(this.util.checkEmail(this.email)
+      && this.util.checkPassword(this.password)
+      && this.firstname && this.lastname);
   }
 }

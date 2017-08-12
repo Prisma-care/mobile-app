@@ -83,6 +83,7 @@ import {TranslatorService} from "../providers/translator.service";
     StoryService,
     PatientService,
     AuthGuard,
+    AuthService,
     Camera,
     File,
     FileTransfer,
@@ -91,8 +92,7 @@ import {TranslatorService} from "../providers/translator.service";
     FilePath,
     NativePageTransitions,
     TranslatorService,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthService
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
 export class AppModule {

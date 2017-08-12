@@ -123,6 +123,20 @@ $tab-button-md-inactive-color: $tab-button-md-active-color;
 $tabs-md-tab-color-active: $tab-button-md-active-color;
 $tabs-md-tab-color: $tab-button-md-inactive-color;
 
+
+// Place Holders color
+
+$text-input-placeholder-color : color($colors,medium-gray);
+$text-input-highlight-color-valid :color($colors,light-gray);
+$text-input-highlight-color-invalid :color($colors,red);
+$text-input-md-show-focus-highlight: false;
+$text-input-md-show-valid-highlight: true;
+$text-input-md-show-invalid-highlight: true;
+
+// Primary buttons
+
+$button-md-text-transform: none;
+
 // Change the color of the tabs text
 
 // Change the color of the segment button text
