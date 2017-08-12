@@ -1,11 +1,13 @@
 import {Component, OnInit} from "@angular/core";
-import {AlertController, MenuController, NavController} from "ionic-angular";
+import {ActionSheetController, AlertController, MenuController, NavController} from "ionic-angular";
 import {StanizerService} from "../../providers/stanizer.service";
+import {PatientService} from "../../providers/back-end/user.service";
 import {StoryService} from "../../providers/back-end/story.service";
 import {User} from "../../dto/user";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {Camera} from "@ionic-native/camera";
+import {FileChooser} from "@ionic-native/file-chooser";
 import {AlbumDetailPage} from "../album-detail/album-detail";
 import {env} from "../../app/environment";
 import {Patient} from "../../dto/patient";
@@ -14,21 +16,24 @@ import {AuthService} from "../../providers/auth-service/auth-service";
 import {TranslatorService} from "../../providers/translator.service";
 
 
+/* TEMPORARY IMPORT */
+
+
 @Component({
   selector: 'albums-page',
   templateUrl: 'albums.html'
 })
 export class AlbumsPage extends AuthGuard implements OnInit {
-  //backgrpind collors
-  private colorCodes: string[] = ["#FAD820", "#FF9F00", "#F35A4B", "#D95DB4", "#637DC8"];
+
 
   user: User = JSON.parse(localStorage.getItem(env.temp.fakeUser)) as User;
 
   albums: Album[];
 
-  constructor(public authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService,
-              public camera: Camera,public sanitizer: StanizerService, public storyService: StoryService,
-              public alertCtrl: AlertController,public menu: MenuController) {
+  constructor(public authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService, public actionsheetCtrl: ActionSheetController, protected camera: Camera, protected fileChooser: FileChooser,
+              protected sanitizer: StanizerService,
+              protected patientService: PatientService, protected storyService: StoryService,
+              protected alertCtrl: AlertController, menu: MenuController) {
     super(authService, navCtrl, translatorService);
     this.currentPatient = this.authService.getCurrentPatient();
     menu.enable(true);
@@ -42,22 +47,39 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   }
 
   ionViewWillEnter(): void {
+    console.log("Test : " + JSON.stringify(this.authService.getCurrentPatient()));
     this.storyService.getAlbums(this.authService.getCurrentPatient().id).toPromise().then(albums => {
       this.albums = albums as Album[];
     });
   }
 
 
-  showDetails(album: Album) {
-    this.navCtrl.push(AlbumDetailPage, {
-      "album": album,
-    });
+  getStories(album: Album): UserStory[] {
+    return album.stories;
   }
 
+  showDetails(album: Album, index: number) {
+    this.navCtrl.push(AlbumDetailPage, {
+      "album": album,
+    })
+  }
+
+  /*
+   private colors: any = {
+   "yellow": "#FAD820",
+   "orange": "#FF9F00",
+   "red": "#F35A4B",
+   "purple": "#D95DB4",
+   "blue": "#637DC8"
+   };
+   */
+
+  private colorCodes: string[] = ["#FAD820", "#FF9F00", "#F35A4B", "#D95DB4", "#637DC8"];
 
   getBackgroundColor(i: number): string {
     if (this.albums[i].isEmpty()) {
-      return this.colorCodes[i % this.colorCodes.length] as string;
+      let currentColor: string = this.colorCodes[i % this.colorCodes.length];
+      return currentColor;
     }
     else {
       return "";
@@ -93,6 +115,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       if (index === -1)
         index = 0;
       let thumb: string = this.getThumb(this.albums[i].getBackgroundImage(index));
+      const style = `background-image: url(${thumb})`;
       if (!this.albums[i].getBackgroundImage(index))
         return false;
       return thumb.toLowerCase().indexOf("img.youtube") >= 0;
@@ -125,16 +148,22 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       ],
       buttons: [
         {
-          text: text2
+          text: text2,
+          handler: data => {
+          }
         },
         {
           text: text3,
           handler: data => {
             this.storyService.addAlbum(this.currentPatient.id, data.title).toPromise()
               .then(album => {
-                //this.ionViewWillEnter();
-                //Trying to spare us a whole refresh;
-                this.albums.push(album);
+
+                //this.albums.push(album as Album);
+                // TODO: this would spare us a whole refresh
+                // but it gives errors
+
+                // complete albums refresh
+                this.ionViewWillEnter()
               })
               .catch(() => albumFailedAlert.present());
           }

@@ -31,7 +31,7 @@ export class PatientService extends PrismaService {
     return this._http.post(`${this._urlToApi}/${url}`, patient)
       .map(res => {
         // If request fails, throw an Error that will be caught
-        if (res.status < 100 || res.status >= 300) {
+        if (res.status < 200 || res.status >= 300) {
           return null;
         }
         return new Patient(res.json().response) as Patient;
@@ -55,24 +55,10 @@ export class PatientService extends PrismaService {
     return this._http.post(`${this._urlToApi}/${url}`, user)
       .map(res => {
         // If request fails, throw an Error that will be caught
-        if (res.status < 100 || res.status >= 300) {
+        if (res.status < 200 || res.status >= 300) {
           return null;
         }
         return new Patient(res.json().response) as Patient;
       }).catch(err => this.handleError(err));
-  }
-
-  inviteUser(invitationData:{"inviterId" : string , "firstName" :string, "lastName" : string , "email" : string, "patientId" : string}): Observable<boolean> {
-    let url: string = env.api.getUser;
-    invitationData.patientId = invitationData.patientId.toUpperCase();
-    return this._http.post(`${this._urlToApi}/${url}`, invitationData)
-      .map(res => {
-        // If request fails, throw an Error that will be caught
-        if (res.status < 100 || res.status >= 300) {
-          return false;
-        }
-        return true;
-      }).catch(err => this.handleError(err));
-
   }
 }

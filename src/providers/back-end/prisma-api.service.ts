@@ -1,14 +1,10 @@
-import {Component,Injectable, OnInit} from "@angular/core";
+import {Injectable, OnInit} from "@angular/core";
 import {Headers, Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/of";
 import {API_URL, env} from "../../app/environment";
 import {Storage} from "@ionic/storage";
 import {UtilService} from "../util-service";
-import {LoginPage} from "../../pages/login/login";
-import {MyApp} from "../../app/app.component";
-
-import { NavController} from "ionic-angular";
 
 
 @Injectable()
@@ -19,7 +15,6 @@ export class PrismaService implements OnInit {
   static storage: Storage;
 
   constructor(_httpSer: Http, storageSer: Storage, utilService: UtilService) {
-    
     this._http = _httpSer;
     PrismaService.storage = storageSer;
     // this._head.set('Accept', 'application/json,application/pdf,application/plain; charset=UTF-8');
@@ -46,14 +41,10 @@ export class PrismaService implements OnInit {
   public handleError(error: Response | any) {
     console.log("Error ! " + JSON.stringify(error));
     //logs out if no user token avaible when needed
-    let errorString: string = JSON.stringify(error).toLowerCase() + " token_expired";
-    if (errorString.indexOf("token_invalid") >= 0 || errorString.indexOf("token_expired") >= 0 ||
-      errorString.indexOf("token_not_provided") >= 0) {
-      console.log("Token expired or not provided");
+    if (JSON.stringify(error).toLocaleLowerCase().indexOf("token_invalid") >= 0 || JSON.stringify(error).toLocaleLowerCase().indexOf("token_not_provided") >= 0) {
       localStorage.removeItem(env.jwtToken);
       localStorage.removeItem(env.temp.fakeUser);
       localStorage.removeItem(env.temp.fakePatient);
-    //  MyApp.getNav().push(LoginPage);
     }
 
     return Observable.of(error) as Observable<any>;

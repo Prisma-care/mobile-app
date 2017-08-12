@@ -24,13 +24,6 @@
   font-family: Varela, 'Noto Sans';
 }
 
-
-// INPUT SIZE
-
-ion-input {
-  font-size: map-get($sizes, "medium");
-}
-
 // INPUT VALIDATION STYLE
 /*
 $text-input-highlight-color-valid:	color($colors, light-gray);
@@ -43,31 +36,17 @@ $text-input-placeholder-color: color($colors, light-gray);
 .list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child,
 .list-md .item-input.ng-valid.item-input-has-value.input-has-focus,
 .list-md .item-input.ng-valid.input-has-focus:not(.item-input-has-value),
-.list-md .item-input.ng-valid.input-has-value.input-has-focus {
+.list-md .item-input.ng-valid.input-has-value.input-has-focus,
+{
   //border-bottom: 2px solid map-get($colors, light-gray) !important;
-  //border-bottom: none !important;
-    box-shadow: none !important;
-}
-.list-md .item-input.ng-invalid:not(.input-has-focus){
-  color: color($colors, red);
-}
-
-.list-md .item-input{
-}
-$button-md-box-shadow: none;
-.list-md .ion-button{
+  border-bottom: none !important;
   box-shadow: none !important;
 }
+
 .list-md .item-input:last-child {
- // border: none !important;
+  border: none !important;
 }
 
-
-a[disabled], button[disabled], [ion-button][disabled]{
-  background-color: color($colors,medium-gray);
-  color: color($colors,white);
-  opacity: 1;
-}
 // PAGE HEADER
 
 .page-header {
