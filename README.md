@@ -4,7 +4,12 @@ Prisma is an app that strengthens the relationship between people with memory lo
 
 This repository hosts the frontend of the project: a mobile app based on the [Ionic framework](https://ionicframework.com/). The app communicates with a [RESTful API](https://github.com/Prisma/prisma-backend) to gather and save data.
 
-Be sure to check out our home page [prisma.care](https://prisma.care/) for more information!
+Be sure to check out our home page [prisma.care](https://prisma.care/) for more information.
+
+## Contributing
+
+Want to help out?
+First, peruse the [Prisma wiki](https://github.com/Prisma/documentation/wiki) to learn about the roadmap, milestones and approach to developing software for people with dementia.
 
 ## History
 
