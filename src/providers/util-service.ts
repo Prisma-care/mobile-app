@@ -97,21 +97,28 @@ export class UtilService {
       return cordova.file.dataDirectory + img;
     }
   }
+
+  public getEmailPattern():string{
+    //  return '^[a-z0-9!#$%&\'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$';
+    return '^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$';
+  }
   public checkEmail(email: string): boolean {
     if (!email)
       return false;
-    let emailRegex = '^[a-z0-9!#$%&\'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$';
+    let emailRegex = this.getEmailPattern();
     if (!email.toLowerCase().match(emailRegex)) {
       return false;
     }
     return true;
   }
-
+  public getPasswordPattern():string{
+    return '^.{3,8}$';
+  }
   public checkPassword(password: string): boolean {
     if (!password)
       return false;
     // let passwordRegex = '/^(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{4,20}$/';
-    let passwordRegex = '^.{3,8}$';
+    let passwordRegex = this.getPasswordPattern();
     if (!password.match(passwordRegex)) {
       return false;
     }

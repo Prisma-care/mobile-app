@@ -28,12 +28,14 @@ export class LoginPage implements OnInit {
   loading: boolean = false;
   type = "password";
   show = false;
+  util:UtilService;
 
   constructor(public navCtrl: NavController, public authService: AuthService
-    , public alertCtrl: AlertController, public translatorService: TranslatorService, public util: UtilService) {
+    , public alertCtrl: AlertController, public translatorService: TranslatorService, public utilService: UtilService) {
     translatorService.refresh();
     this.translate = translatorService.translate;
     this.translator = translatorService;
+    this.util = utilService;
   }
 
 
@@ -53,6 +55,10 @@ export class LoginPage implements OnInit {
     this.type = this.show ? "text" : "password";
   }
 
+
+  canSignIn():boolean {
+    return !(this.util.checkEmail(this.email) && this.util.checkPassword(this.password));
+  }
   signIn() {
     if (this.loading)
       return;
@@ -64,12 +70,12 @@ export class LoginPage implements OnInit {
     }
     this.authService.login(this.email, this.password).toPromise().then(res => {
       if (this.authService.isLoggedIn()) {
-        this.loading = false;
-        this.navCtrl.setRoot(AlbumsPage);
+        this.navCtrl.setRoot(AlbumsPage).then(res => {this.loading = false;});
       } else {
         this.loginError();
+        this.loading = false;
       }
-      this.loading = false;
+
     })
   }
 
@@ -80,7 +86,7 @@ export class LoginPage implements OnInit {
       buttons: ['Ok']
     });
     //refreshes the password
-    this.password = "";
+    //this.password = "";
     return alert.present();
   }
 
