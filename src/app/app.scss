@@ -55,6 +55,12 @@ $button-md-box-shadow: none;
  // border: none !important;
 }
 
+
+a[disabled], button[disabled], [ion-button][disabled]{
+  background-color: color($colors,medium-gray);
+  color: color($colors,white);
+  opacity: 1;
+}
 // PAGE HEADER
 
 .page-header {
