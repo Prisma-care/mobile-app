@@ -24,6 +24,13 @@
   font-family: Varela, 'Noto Sans';
 }
 
+
+// INPUT SIZE
+
+ion-input {
+  font-size: map-get($sizes, "medium");
+}
+
 // INPUT VALIDATION STYLE
 /*
 $text-input-highlight-color-valid:	color($colors, light-gray);

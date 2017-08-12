@@ -59,6 +59,7 @@ export class LoginPage implements OnInit {
   canSignIn():boolean {
     return !(this.util.checkEmail(this.email) && this.util.checkPassword(this.password));
   }
+
   signIn() {
     if (this.loading)
       return;
@@ -103,5 +104,11 @@ export class LoginPage implements OnInit {
         this.loginError("Invalid data");
       }
     })
+  }
+
+  canSignUp():boolean {
+    return !(this.util.checkEmail(this.email)
+      && this.util.checkPassword(this.password)
+      && this.firstname && this.lastname);
   }
 }

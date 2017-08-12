@@ -15,8 +15,8 @@ page-login {
     }
   }
 
-  #signin-button {
-    display: block;
-
+  .alternate-option {
+    color: color($colors, medium-gray);
   }
+
 }
