@@ -41,7 +41,7 @@ $text-input-placeholder-color: color($colors, light-gray);
   //border-bottom: none !important;
  // box-shadow: none !important;
 }
-.list-md .item-input.ng-invalid{
+.list-md .item-input.ng-invalid:not(.input-has-focus){
   color: color($colors, red);
 }
 

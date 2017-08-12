@@ -6,7 +6,7 @@
 
   <!--  Login case -->
   <div *ngIf="!isSigningUp">
-    <ion-list>
+    <ion-list inset>
       <ion-item>
         <ion-input type="text" [(ngModel)]="email" placeholder="{{'E-mail' | translate}}"
                    [pattern]="util.getEmailPattern()" clearOnEdit="false" required clearInput></ion-input>
