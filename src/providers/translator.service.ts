@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {TranslateService} from "@ngx-translate/core";
 import {env} from "../app/environment";
-
 @Injectable()
 export class TranslatorService {
   public translate: TranslateService;
@@ -10,15 +9,8 @@ export class TranslatorService {
   public constructor(private translateIn: TranslateService) {
     translateIn.addLangs(['en', 'fr', 'nl']);
     translateIn.setDefaultLang(this.lang);
-
+    translateIn.use(this.translateIn.getBrowserLang());
     this.translate = translateIn;
-    let browserLang: string = this.translateIn.getBrowserLang() || this.lang;
-    if (!localStorage.getItem(env.localstorage.LOCALSTORAGE_SELECTEDLANG))
-      if (browserLang.toLowerCase().indexOf('en') >= 0 || browserLang.toLowerCase().indexOf('fr') >= 0 || browserLang.toLowerCase().indexOf('nl') >= 0) {
-        translateIn.use(this.translateIn.getBrowserLang());
-        this.switchLang(this.translateIn.getBrowserLang().toLowerCase());
-      }
-
     this.refresh();
   }
 

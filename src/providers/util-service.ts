@@ -98,33 +98,6 @@ export class UtilService {
     }
   }
 
-  public getEmailPattern():string{
-    //  return '^[a-z0-9!#$%&\'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$';
-    return '^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$';
-  }
-  public checkEmail(email: string): boolean {
-    if (!email)
-      return false;
-    let emailRegex = this.getEmailPattern();
-    if (!email.toLowerCase().match(emailRegex)) {
-      return false;
-    }
-    return true;
-  }
-  public getPasswordPattern():string{
-    return '^.{3,8}$';
-  }
-  public checkPassword(password: string): boolean {
-    if (!password)
-      return false;
-    // let passwordRegex = '/^(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{4,20}$/';
-    let passwordRegex = this.getPasswordPattern();
-    if (!password.match(passwordRegex)) {
-      return false;
-    }
-    return true;
-  }
-
   showErrorMessage(errorMessage: string,alertController?:AlertController): Promise<any> {
     let aletCtrl = alertController || this.alertCtrl;
     let alert = aletCtrl.create({

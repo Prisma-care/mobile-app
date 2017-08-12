@@ -15,9 +15,10 @@
                       clearInput></ion-textarea>
       </ion-item>
     </ion-item>
-    <button ion-button solid block full large color="primary" (click)="commit()">
+    <button class="save-button" ion-button full medium icon-right color="general" (click)="commit()">
       <ion-icon name="checkmark"></ion-icon>
-      <p>&nbsp;{{'Opslaan' | translate}}<p>
+      <p>{{'Opslaan' | translate}}
+      <p>
     </button>
   </ion-item-group>
 </ion-content>

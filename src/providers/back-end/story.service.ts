@@ -94,7 +94,7 @@ export class StoryService extends PrismaService {
     })
       .map(res => {
         // If request fails, throw an Error that will be caught
-        if (res.status < 100 || res.status >= 300) {
+        if (res.status < 200 || res.status >= 300) {
           return null;
         }
         let albumContent = res.json();
@@ -112,7 +112,7 @@ export class StoryService extends PrismaService {
     })
       .map(res => {
         // If request fails, throw an Error that will be caught
-        if (res.status < 100 || res.status >= 300) {
+        if (res.status < 200 || res.status >= 300) {
           return null;
         }
         return new UserStory(res.json().response) as UserStory;
@@ -127,7 +127,7 @@ export class StoryService extends PrismaService {
     })
       .map(res => {
         // If request fails, throw an Error that will be caught
-        if (res.status < 100 || res.status >= 300) {
+        if (res.status < 200 || res.status >= 300) {
           return false;
         }
         return true;
@@ -142,7 +142,7 @@ export class StoryService extends PrismaService {
     })
       .map(res => {
         // If request fails, throw an Error that will be caught
-        if (res.status < 100 || res.status >= 300) {
+        if (res.status < 200 || res.status >= 300) {
           return null;
         }
         return new UserStory(res.json().response) as UserStory;
@@ -154,9 +154,6 @@ export class StoryService extends PrismaService {
 
 //For demo prupose !!!
   setYoutubeVideoExemple(al: Album): Album {
-    let fakeVideosOn:boolean = false;
-    if(!fakeVideosOn)
-      return al;
     if (al.title.toLowerCase().indexOf("vrije tijd") >= 0) {
       if (!StoryService.fakeStory1) {
         let fakeStory: UserStory = new UserStory();

@@ -10,8 +10,6 @@ import {UtilService} from "../util-service";
 import {Storage} from "@ionic/storage";
 import {Http} from "@angular/http";
 
-import { NavController} from "ionic-angular";
-
 @Injectable()
 export class AuthService extends PrismaService {
   patientService: PatientService;
