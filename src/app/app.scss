@@ -39,13 +39,17 @@ $text-input-placeholder-color: color($colors, light-gray);
 .list-md .item-input.ng-valid.input-has-value.input-has-focus {
   //border-bottom: 2px solid map-get($colors, light-gray) !important;
   //border-bottom: none !important;
- // box-shadow: none !important;
+    box-shadow: none !important;
 }
 .list-md .item-input.ng-invalid:not(.input-has-focus){
   color: color($colors, red);
 }
 
 .list-md .item-input{
+}
+$button-md-box-shadow: none;
+.list-md .ion-button{
+  box-shadow: none !important;
 }
 .list-md .item-input:last-child {
  // border: none !important;
