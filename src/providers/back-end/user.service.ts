@@ -26,9 +26,19 @@ export class PatientService extends PrismaService {
   }
 
 
-  addPatient(patient: Patient): Observable<Patient> {
+  addPatient(firstname: string, lastname: string,
+    careHome?: string, dateOfBirth?: Date, birthPlace?: string, location?: string): Observable<Patient> {
+    this.ngOnInit(); // try to refresh token
     let url: string = env.api.getPatient;
-    return this._http.post(`${this._urlToApi}/${url}`, patient)
+
+    console.log("creation token: " + localStorage.getItem(env.jwtToken))
+
+    // TODO: convert date to "yyyy-mm-dd"
+    var req = { firstName: firstname, lastName: lastname, dateOfBirth: dateOfBirth, birthPlace: birthPlace, location: location};
+
+    return this._http.post(`${this._urlToApi}/${url}`, req, {
+      headers: this._head
+    })
       .map(res => {
         // If request fails, throw an Error that will be caught
         if (res.status < 100 || res.status >= 300) {
@@ -52,7 +62,9 @@ export class PatientService extends PrismaService {
 
   addUser(user: User): Observable<User> {
     let url: string = env.api.getUser;
-    return this._http.post(`${this._urlToApi}/${url}`, user)
+    return this._http.post(`${this._urlToApi}/${url}`, user, {
+      headers: this._head
+    })
       .map(res => {
         // If request fails, throw an Error that will be caught
         if (res.status < 100 || res.status >= 300) {
@@ -65,7 +77,9 @@ export class PatientService extends PrismaService {
   inviteUser(invitationData:{"inviterId" : string , "firstName" :string, "lastName" : string , "email" : string, "patientId" : string}): Observable<boolean> {
     let url: string = env.api.getUser;
     invitationData.patientId = invitationData.patientId.toUpperCase();
-    return this._http.post(`${this._urlToApi}/${url}`, invitationData)
+    return this._http.post(`${this._urlToApi}/${url}`, invitationData, {
+      headers: this._head
+    })
       .map(res => {
         // If request fails, throw an Error that will be caught
         if (res.status < 100 || res.status >= 300) {

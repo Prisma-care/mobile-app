@@ -36,6 +36,8 @@ import {StoryOptionsComponent} from "../pages/storydetails/story-options.compone
 import {TranslateModule, TranslateLoader, TranslateService} from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {TranslatorService} from "../providers/translator.service";
+import { LoginHeaderComponent } from "../pages/login/login-header.component";
+import { NewLovedonePage } from "../pages/new-lovedone/new-lovedone";
 
 
 @NgModule({
@@ -47,7 +49,9 @@ import {TranslatorService} from "../providers/translator.service";
     StoryDetailsPage,
     NewStoryPage,
     AlbumQuestions,
-    StoryOptionsComponent
+    StoryOptionsComponent,
+    LoginHeaderComponent,
+    NewLovedonePage
   ],
   imports: [
     BrowserModule,
@@ -71,7 +75,8 @@ import {TranslatorService} from "../providers/translator.service";
     StoryDetailsPage,
     NewStoryPage,
     AlbumQuestions,
-    StoryOptionsComponent
+    StoryOptionsComponent,
+    NewLovedonePage
   ],
   providers: [
     StatusBar,

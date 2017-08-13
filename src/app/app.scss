@@ -68,6 +68,14 @@ a[disabled], button[disabled], [ion-button][disabled]{
   color: color($colors,white);
   opacity: 1;
 }
+
+// LOGIN HEADER
+
+.prisma-header img {
+  width: 100%;
+  display: block;
+}
+
 // PAGE HEADER
 
 .page-header {

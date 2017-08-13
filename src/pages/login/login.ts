@@ -6,6 +6,7 @@ import {AlbumsPage} from "../albums/albums";
 import {TranslatorService} from "../../providers/translator.service";
 import {TranslateService} from "@ngx-translate/core";
 import {UtilService} from "../../providers/util-service";
+import { NewLovedonePage } from "../new-lovedone/new-lovedone";
 
 
 @Component({
@@ -71,13 +72,18 @@ export class LoginPage implements OnInit {
     }
     this.authService.login(this.email, this.password).toPromise().then(res => {
       if (this.authService.isLoggedIn()) {
-        this.navCtrl.setRoot(AlbumsPage).then(res => {this.loading = false;});
+        this.start();
       } else {
         this.loginError();
         this.loading = false;
       }
 
     })
+  }
+
+  start(): void {
+    // TODO implement redirect to loved one creation if not yet connected to a loved one!
+    this.navCtrl.setRoot(AlbumsPage).then(res => {this.loading = false;});
   }
 
   loginError(errorMessage?: string) {
@@ -99,7 +105,7 @@ export class LoginPage implements OnInit {
     user.lastName = this.lastname;
     this.authService.signUp(user).toPromise().then(res => {
       if (res) {
-        this.navCtrl.setRoot(AlbumsPage);
+        this.navCtrl.setRoot(NewLovedonePage).then(res => {this.loading = false;});
       } else {
         this.loginError("Invalid data");
       }

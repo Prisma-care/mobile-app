@@ -19,10 +19,11 @@ export class PrismaService implements OnInit {
   static storage: Storage;
 
   constructor(_httpSer: Http, storageSer: Storage, utilService: UtilService) {
-    
+
     this._http = _httpSer;
     PrismaService.storage = storageSer;
-    // this._head.set('Accept', 'application/json,application/pdf,application/plain; charset=UTF-8');
+    //this._head.set('Accept', 'application/json,application/pdf,application/plain; charset=UTF-8');
+    this._head.set('Accept', 'application/json');
     // Domain you wish to allow
     this._head.set('Access-Control-Allow-Origin', API_URL);
     // Request methods you wish to allow
