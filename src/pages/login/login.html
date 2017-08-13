@@ -39,44 +39,32 @@
   </div>
   <!--  Sign up case -->
   <div *ngIf="isSigningUp">
-  <ion-list>
-    <ion-item>
-      <ion-input type="text" value="" [(ngModel)]="firstname" placeholder="{{ 'Voornaam' | translate }}"required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input type="text" value="" [(ngModel)]="lastname" placeholder="{{ 'Naam' | translate}}" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input type="email" value="" [(ngModel)]="email" placeholder="{{'E-mail' | translate}}" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input type="{{type}}" #input [(ngModel)]="password" placeholder="{{'Paswoord' | translate}}"
-                 [pattern]="util.getPasswordPattern()" clearOnEdit="false" required clearInput></ion-input>
-      <button ion-button icon-only (click)="toggleShow()" clear item-right>
-        <ion-icon *ngIf="!show" name="eye" color="medium-gray"></ion-icon>
-        <ion-icon *ngIf="show" name="eye-off" color="medium-gray"></ion-icon>
-      </button>
-    </ion-item>
-  </ion-list>
+    <ion-list>
+      <ion-item>
+        <ion-input type="text" value="" [(ngModel)]="firstname" placeholder="{{ 'Voornaam' | translate }}"required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input type="text" value="" [(ngModel)]="lastname" placeholder="{{ 'Naam' | translate}}" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input type="email" value="" [(ngModel)]="email" placeholder="{{'E-mail' | translate}}" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input type="{{type}}" #input [(ngModel)]="password" placeholder="{{'Paswoord' | translate}}"
+                   [pattern]="util.getPasswordPattern()" clearOnEdit="false" required clearInput></ion-input>
+        <button ion-button icon-only (click)="toggleShow()" clear item-right>
+          <ion-icon *ngIf="!show" name="eye" color="medium-gray"></ion-icon>
+          <ion-icon *ngIf="show" name="eye-off" color="medium-gray"></ion-icon>
+        </button>
+      </ion-item>
+    </ion-list>
 
-  <button ion-button solid block full large color="primary" (click)="signUp()" [disabled]="canSignUp()">{{'Maak account' | translate}}</button>
+    <button ion-button solid block full large color="primary" (click)="signUp()" [disabled]="canSignUp()">{{'Maak account' | translate}}</button>
 
-  <div class="signup-suggestion">
-    <p class="alternate-option">{{'Al een account' | translate}}? <a color="general" (click)="isSigningUp=false">{{ 'Aanmelden' | translate }}</a></p>
+    <div class="signup-suggestion">
+      <p class="alternate-option">{{'Al een account' | translate}}? <a color="general" (click)="isSigningUp=false">{{ 'Aanmelden' | translate }}</a></p>
+    </div>
+
   </div>
 
-  </div>
-  <ion-item>
-    <ion-row style="text-align: center">
-      <ion-col *ngIf="translator.lang.indexOf('en') < 0">
-        <button ion-button color="general" clear (click)="translator.switchLang('en')">EN</button>
-      </ion-col>
-      <ion-col *ngIf="translator.lang.indexOf('fr') < 0">
-        <button ion-button color="general" clear (click)="translator.switchLang('fr')">FR</button>
-      </ion-col>
-      <ion-col *ngIf="translator.lang.indexOf('nl') < 0">
-        <button ion-button color="general" clear (click)="translator.switchLang('nl')">NL</button>
-      </ion-col>
-    </ion-row>
-  </ion-item>
 </ion-content>
