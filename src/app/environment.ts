@@ -16,7 +16,8 @@ export const env = {
     getAlbum: 'album',
     getStory: 'story',
     getAsset: 'asset',
-    getUser: 'user'
+    getUser: 'user',
+    invite: 'invite'
   },
   temp: {
     albums: "albums",
