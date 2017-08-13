@@ -75,7 +75,7 @@ export class PatientService extends PrismaService {
   }
 
   inviteUser(invitationData:{"inviterId" : string , "firstName" :string, "lastName" : string , "email" : string, "patientId" : string}): Observable<boolean> {
-    let url: string = env.api.getUser;
+    let url: string = env.api.invite;
     invitationData.patientId = invitationData.patientId.toUpperCase();
     return this._http.post(`${this._urlToApi}/${url}`, invitationData, {
       headers: this._head
