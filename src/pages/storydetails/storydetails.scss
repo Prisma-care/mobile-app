@@ -24,6 +24,10 @@ page-storydetails {
     font-size: map-get($sizes, 'medium');
   }
 
+  .description-text {
+    margin: 0;
+  }
+
   .detail-button {
     width: 100%;
     font-size: map-get($sizes, 'medium');
