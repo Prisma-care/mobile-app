@@ -1,6 +1,12 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{'Nieuw verhaal' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="commit()">
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 </ion-header>
 

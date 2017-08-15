@@ -3,7 +3,12 @@
     <ion-title class="detail-title">
       {{ album.title || '?' }}
     </ion-title>
-    <ion-icon name="more" (click)="showMore($event)" class="story-options" end></ion-icon>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="showMore($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 </ion-header>
 

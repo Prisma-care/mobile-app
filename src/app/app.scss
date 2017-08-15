@@ -116,6 +116,13 @@ a[disabled], button[disabled], [ion-button][disabled]{
   background-color: map-get($colors, 'primary');
 }
 
+// NAVBAR ICONS
+
+ion-navbar ion-buttons[end] button {
+  margin-right: 0.8em;
+  font-size: 1.5rem;
+}
+
 //   STARS
 .star {
   display: block;
