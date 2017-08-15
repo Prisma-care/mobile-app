@@ -53,4 +53,8 @@ albums-page {
     margin: 0 auto;
     font-size: 50px;
   }
+
+  .img-loaded + ion-spinner {
+    display:none;
+  }
 }

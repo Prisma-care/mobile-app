@@ -124,6 +124,21 @@ export class UtilService {
     }
     return true;
   }
+  public getYoutubeLinkPattern():string{
+    return 'http(?:s?):\\/\\/(?:www\\.)?youtu(?:be\\.com\\/watch\\?v=|\\.be\\/)([\\w\\-\\_]*)(&(amp;)?‌​[\\w\\?‌​=]*)?';
+  }
+  public checkYoutubeLink(youtubeLink:string):boolean{
+    if (!youtubeLink)
+      return false;
+    // let passwordRegex = '/^(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{4,20}$/';
+    let youtubeLinkRegex = this.getYoutubeLinkPattern();
+    if (!youtubeLink.match(youtubeLinkRegex)) {
+      return false;
+    }
+    console.log("It's a youtube link!");
+    return true;
+  }
+
 
   showErrorMessage(errorMessage: string,alertController?:AlertController): Promise<any> {
     let aletCtrl = alertController || this.alertCtrl;

@@ -43,7 +43,8 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     let text1:string = 'Tekst schrijven';
     let text2:string = 'Maak foto';
     let text3:string = 'Kies foto van camerarol';
-    let text4:string = 'Annuleer';
+    let text4:string = 'Kies video van Youtube';
+    let text5:string = 'Annuleer';
     this.translatorService.translate.get(text1).subscribe(
       value => text1 = value
     );
@@ -54,7 +55,10 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
       value => text3 = value
     );
     this.translatorService.translate.get(text4).subscribe(
-      value => text4 = value
+      value => text4= value
+    );
+    this.translatorService.translate.get(text5).subscribe(
+      value => text5 = value
     );
 
     let actionSheet = this.actionsheetCtrl.create({
@@ -114,6 +118,18 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
           },
           {
             text: text4,
+            role: 'destructive',
+            icon: 'play',
+            handler: () => {
+              this.navCtrl.push(NewStoryPage,
+                {
+                  "album": this.album,
+                  "method": env.methods.addYoutubeStory
+                });
+            }
+          },
+          {
+            text: text5,
             role: 'cancel',
             icon: 'md-arrow-back',
             handler: () => {

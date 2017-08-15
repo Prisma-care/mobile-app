@@ -26,6 +26,7 @@ export const env = {
   },
   methods: {
     addNewStory: 'addNewStory',
+    addYoutubeStory: 'addYoutubeStory',
     replaceDescription: 'replaceDescription',
     replaceImage: 'replaceImage'
   }

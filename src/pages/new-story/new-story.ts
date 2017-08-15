@@ -25,17 +25,18 @@ export class NewStoryPage extends AuthGuard {
     replaceDescription: string,
     replaceImage: string
   } = env.methods;
+  title = 'Vul het verhaal aan';
   method: string = env.methods.addNewStory;
   dataUrl: string;
   description: string;
   placeHolder: string = "Schrijf het verhaal.\nHoe meer details hoe beter.";
-
+  youtubeLink:string;
   selectedAlbum: Album;
-  title: string;
 
 
   index: number = 0;
   oldStory: UserStory;
+  util:UtilService;
 
 //file Transfer
   loading: Loading;
@@ -50,7 +51,8 @@ export class NewStoryPage extends AuthGuard {
     this.dataUrl = navParams.get("dataUrl") as string;
     this.selectedAlbum = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
-    console.log("Method : " + this.method);
+    this.util = utilService;
+    this.title = 'Vul het verhaal aan';
 
     this.oldStory = navParams.get("story") as UserStory;
     if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
@@ -66,12 +68,17 @@ export class NewStoryPage extends AuthGuard {
       this.commit();
     }
 
+    if (this.method.indexOf(env.methods.addYoutubeStory) >= 0) {
+      this.title = "Kies video van Youtube";
+      this.description = "";
+    }
+
 
     // check if source is a question answer
-    if (navParams.get("questionAnswer")) {
+    /*if (navParams.get("questionAnswer")) {
       this.description = navParams.get("description");
       this.commit(); // skip to step 2 because we already have the description
-    }
+    }*/
 
   }
 
@@ -178,4 +185,5 @@ export class NewStoryPage extends AuthGuard {
       return this.utilService.pathForImage(this.dataUrl);
     }
   }
+
 }
