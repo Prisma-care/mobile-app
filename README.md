@@ -1,8 +1,9 @@
 ![color your memories](https://user-images.githubusercontent.com/11543641/28823809-acf0b10a-76bf-11e7-918e-ad34338b66c8.jpg)
 
-Prisma is an app that strengthens the relationship between people with memory loss and the people close to them. It does this by providing a living, collaborative digital photo album that can be populated with content of interest to these people.
+Prisma is an app that strengthens the relationship between people with memory loss and the people close to them. It does this by providing a living, collaborative digital photo album that can be populated with content of interest. 
+The content currently includes pictures & text added by family members, or relevant historical pictures and stories from heritage organizations.
 
-This repository hosts the frontend of the project: a mobile app based on the [Ionic framework](https://ionicframework.com/). The app communicates with a [RESTful API](https://github.com/Prisma/prisma-backend) to gather and save data.
+This repository hosts the frontend of the project: a mobile app based on the [Ionic framework](https://ionicframework.com/). The app communicates with a [RESTful API](https://github.com/Prisma/api) to gather and save data.
 
 Be sure to check out our home page [prisma.care](https://prisma.care/) for more information.
 
@@ -29,13 +30,13 @@ We aim to have the app available for download in the Play Store soon. However, i
 
 The easiest way is by downloading a binary release package and installing it on your device:
 
-1. Download the latest Android package (.apk) from our [releases page](https://github.com/Prisma/prisma-frontend/releases).
+1. Download the latest Android package (.apk) from our [releases page](https://github.com/Prisma/mobile-app/releases).
 2. In your Android device, look for the setting "Unknown sources" (probably in your security settings), and check/allow it.
 3. Transfer the .apk file to your Android device. Now you can install Prisma from there using your file manager of choice.
 
 ### 2. Using the development tools 
 
-If you have some command line & git experience, this is a more flexible way to get the latest version of the app.
+If you have some command line & git experience, this is a more flexible way to get the latest version of the app. 
 
 #### Setting up the development environment
 
@@ -47,17 +48,16 @@ If you have some command line & git experience, this is a more flexible way to g
 
 2. Install [npm](https://www.npmjs.com/) if you haven't already.
 
-3. On the command line inside the repository, install Cordova & Ionic. Then install the dependencies.
+3. On the command line inside the repository directory, install Cordova & Ionic. Then install the dependencies.
 
    ```bash
    npm install -g cordova ionic
    npm install
    ```
 
+Now you can run the app in various ways. Option a is used to test the app quickly in a web browser. Option b almost does the same, but adds in support for more features. Option c allows you to test the app on an Android device.
 
-Now you can run the app in various ways:
-
-#### a) Ionic web server
+#### Option a - Ionic web server
 
 Ionic comes with a local web server for development purposes that serves the application & recompiles on file changes. 
 
@@ -67,20 +67,22 @@ Because cordova.js is not included, phone-specific features will not work. Notab
 ionic serve
 ```
 
-#### b) Cordova Browser build
+#### Option b - Cordova Browser build
 
 Comparable to the previous method, but here a browser implementation of Cordova is included. Note that this implementation is not fully supported yet. 
 
 ```bash
 ionic cordova platform add browser
-ionic cordova run browser # starts a webserver
+ionic cordova run browser -lc # starts a webserver, -lc enables live reloading & console logging
 ```
 
-#### c) Android build
+#### Option c - Android live build
 
-In order to build for Android, you'll need to have the [Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html), [Android Studio](https://developer.android.com/studio/index.html) and the appropriate [Android SDK tools](https://developer.android.com/studio/intro/update.html) for your device installed. 
+This method will build, transfer & start the app on your Android device. You'll need to connect it to your PC with a USB cable beforehand. The device needs to be in developer mode with USB Debugging enabled (search on how to do this for you device if you don't know).
 
-Also, make sure that the necessary folders are in your `PATH` so that the build executables can be found.
+On your PC, you'll need to have the [Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html) and [Android Studio](https://developer.android.com/studio/index.html) installed. Additionally, check whether you have the right Android SDK Platform version & SDK Tools enabled/installed in the Android Studio settings. They have to match your device's Android version.
+
+Also, make sure that the necessary folders are in your `PATH` so that the build executables can be found in your CLI environment.
 
 On a Linux system with a default Android Studio install the following lines need to be added to the terminal configuration file. It might be different on your system.
 
