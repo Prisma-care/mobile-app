@@ -1,18 +1,5 @@
 page-storydetails {
 
-  .story-options {
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    float: right;
-    font-size: 2em;
-    color: #fff;
-    margin-right: 0.7em;
-
-    // TODO: make this consistent
-    // there is something with <button ion-button icon-only,
-    // but it messes up the vertical align of the title...
-  }
-
   .detail-title {
     float: left;
   }
@@ -22,6 +9,10 @@ page-storydetails {
     color: #fff;
     background-color: color($colors, general);
     font-size: map-get($sizes, 'medium');
+  }
+
+  .description-text {
+    margin: 0;
   }
 
   .detail-button {

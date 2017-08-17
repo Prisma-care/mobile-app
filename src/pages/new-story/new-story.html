@@ -1,6 +1,12 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{'Nieuw verhaal' | translate}}</ion-title>
+    <ion-title>{{title | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="commit()">
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 </ion-header>
 
@@ -10,15 +16,18 @@
       <ion-thumbnail *ngIf="dataUrl && method.indexOf(methods.replaceDescription) < 0" style="padding-left: 7%;">
         <img class="new-story-thumb" [src]="sanitizeUrl()">
       </ion-thumbnail>
-      <ion-item *ngIf="method.indexOf(methods.replaceImage) < 0">
+      <ion-item *ngIf="method.indexOf(methods.replaceImage) < 0 && method.indexOf(methods.addYoutubeStory) < 0">
         <ion-textarea autofocus class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="description" rows="7"
                       clearInput></ion-textarea>
       </ion-item>
+      <ion-item *ngIf="method.indexOf(methods.addYoutubeStory) >= 0">
+        <ion-textarea autofocus class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="description" rows="3"
+                      clearInput></ion-textarea>
+      </ion-item>
     </ion-item>
-    <button class="save-button" ion-button full medium icon-right color="general" (click)="commit()">
+    <button ion-button solid block full large color="primary" (click)="commit()" [disabled]="method.indexOf(methods.addYoutubeStory) >= 0 && !util.checkYoutubeLink(youtubeLink)">
       <ion-icon name="checkmark"></ion-icon>
-      <p>{{'Opslaan' | translate}}
-      <p>
+      <p>&nbsp;{{'Opslaan' | translate}}<p>
     </button>
   </ion-item-group>
 </ion-content>

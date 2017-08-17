@@ -16,7 +16,8 @@ export const env = {
     getAlbum: 'album',
     getStory: 'story',
     getAsset: 'asset',
-    getUser: 'user'
+    getUser: 'user',
+    invite: 'invite'
   },
   temp: {
     albums: "albums",
@@ -25,6 +26,7 @@ export const env = {
   },
   methods: {
     addNewStory: 'addNewStory',
+    addYoutubeStory: 'addYoutubeStory',
     replaceDescription: 'replaceDescription',
     replaceImage: 'replaceImage'
   }

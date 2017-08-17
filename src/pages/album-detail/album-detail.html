@@ -1,8 +1,12 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{album.title || "Album"}}</ion-title>
-    <ion-icon class="add-story-icon" end name="camera" color="white"
-              (click)="openActionSheet()"></ion-icon>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="openActionSheet()">
+        <ion-icon name="camera" color="white"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 </ion-header>
 

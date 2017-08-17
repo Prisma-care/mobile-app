@@ -10,6 +10,8 @@ import {UtilService} from "../util-service";
 import {Storage} from "@ionic/storage";
 import {Http} from "@angular/http";
 
+import { NavController} from "ionic-angular";
+
 @Injectable()
 export class AuthService extends PrismaService {
   patientService: PatientService;
@@ -90,5 +92,10 @@ export class AuthService extends PrismaService {
 
   getCurrentPatient(): Patient {
     return JSON.parse(localStorage.getItem(env.temp.fakePatient)) as Patient;
+  }
+
+  // temp method to set a patient to the local storage
+  setPatient(patient: Patient): void {
+    localStorage.setItem(env.temp.fakePatient, JSON.stringify(patient));
   }
 }
