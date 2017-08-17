@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit,ChangeDetectionStrategy,ChangeDetectorRef} from "@angular/core";
 import {ActionSheetController, NavController, NavParams} from "ionic-angular";
 import {StoryService} from "../../providers/back-end/story.service";
 import {Album} from "../../dto/album";
@@ -10,9 +10,11 @@ import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
 import {env} from "../../app/environment";
 import {TranslatorService} from "../../providers/translator.service";
+import {SecurePipe} from "../../providers/helpers/secure.pipe";
 
 @Component({
   selector: 'album-detail',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'album-detail.html'
 })
 
@@ -23,9 +25,10 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
   constructor(protected authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
-              private storyService: StoryService, private sanitizer: StanizerService) {
+              private storyService: StoryService, private sanitizer: StanizerService,private secure:SecurePipe,private ref: ChangeDetectorRef) {
     super(authService, navCtrl,translatorService);
     this.album = navParams.get("album") as Album;
+    this.secure._ref = this.ref;
   }
 
   ngOnInit(): void {
@@ -147,11 +150,12 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   sanitize(i: number): any {
     let url: string = this.album.getBackgroundImage(i);
     if (!url)
-      return "";
+      return null;
     url = this.getThumb(url);
     const style = `url(${url})`;
     //console.log("Made : " + style);
-    return this.sanitizer.sanitizeStyle(style);
+    console.log("trying");
+    return this.sanitizer.sanitizeStyle(style) ;//await this.storyService.getImage(style).toPromise(); //this.sanitizer.sanitizeStyle(style);////this.secure.transform(style);
   }
 
 

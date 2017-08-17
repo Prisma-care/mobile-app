@@ -149,13 +149,20 @@ export class StoryService extends PrismaService {
       }).catch(err => this.handleError(err));
   }
 
-
+  getImage(filename: string): Observable<void> {
+    return this._http.get(`${filename}`, {
+      headers: this._head
+    })
+      .map(res => res.blob())
+      .map(blob => URL.createObjectURL(blob))
+      .catch(err => this.handleError(err));
+  }
 
 
 //For demo prupose !!!
   setYoutubeVideoExemple(al: Album): Album {
-    let fakeVideosOn:boolean = false;
-    if(!fakeVideosOn)
+    let fakeVideosOn: boolean = false;
+    if (!fakeVideosOn)
       return al;
     if (al.title.toLowerCase().indexOf("vrije tijd") >= 0) {
       if (!StoryService.fakeStory1) {
