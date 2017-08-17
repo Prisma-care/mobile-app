@@ -38,6 +38,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {TranslatorService} from "../providers/translator.service";
 import { LoginHeaderComponent } from "../pages/login/login-header.component";
 import { NewLovedonePage } from "../pages/new-lovedone/new-lovedone";
+import {InvitePage} from "../pages/invite/invite";
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import { NewLovedonePage } from "../pages/new-lovedone/new-lovedone";
     AlbumQuestions,
     StoryOptionsComponent,
     LoginHeaderComponent,
+    InvitePage,
     NewLovedonePage
   ],
   imports: [
@@ -76,7 +78,8 @@ import { NewLovedonePage } from "../pages/new-lovedone/new-lovedone";
     NewStoryPage,
     AlbumQuestions,
     StoryOptionsComponent,
-    NewLovedonePage
+    NewLovedonePage,
+    InvitePage
   ],
   providers: [
     StatusBar,

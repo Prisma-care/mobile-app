@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
-import { PatientService } from "../../providers/back-end/user.service";
-import { AuthService } from "../../providers/auth-service/auth-service";
-import { Patient } from "../../dto/patient";
-import { AlbumsPage } from "../albums/albums";
+import {Component} from '@angular/core';
+import {IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
+import {PatientService} from "../../providers/back-end/user.service";
+import {AuthService} from "../../providers/auth-service/auth-service";
+import {Patient} from "../../dto/patient";
+import {AlbumsPage} from "../albums/albums";
 import {env} from "../../app/environment";
+import {AuthGuard} from "../auth-guard";
+import {TranslatorService} from "../../providers/translator.service";
 
 
 /**
@@ -17,16 +19,16 @@ import {env} from "../../app/environment";
   selector: 'page-new-lovedone',
   templateUrl: 'new-lovedone.html',
 })
-export class NewLovedonePage {
+export class NewLovedonePage extends AuthGuard {
 
-  private loading: boolean;
+  private loading: boolean = false;
 
   firstname: string = "";
   lastname: string = "";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    public lovedOnes: PatientService, public authService: AuthService,
-    public  alertCtrl: AlertController) {
+  constructor(public authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService
+    , public navParams: NavParams, public lovedOnes: PatientService, public  alertCtrl: AlertController) {
+    super(authService, navCtrl, translatorService);
   }
 
   canCreateLovedOne(): boolean {
@@ -38,40 +40,36 @@ export class NewLovedonePage {
     if (this.loading)
       return;
     this.loading = true;
-    this.createLovedOne().then( (patient) => {
+    this.createLovedOne().then((patient) => {
         this.authService.setPatient(patient);
-        this.navCtrl.setRoot(AlbumsPage).then(res => {this.loading = false;});
+        this.navCtrl.setRoot(AlbumsPage).then(res => {
+          this.loading = false;
+        });
       }
-    ).catch( () => {
-      this.loading = false;
-      this.creationError();
+    ).catch(() => {
+        this.loading = false;
+        this.creationError();
       }
     )
   }
 
   private createLovedOne(): Promise<Patient> {
-
-    if (this.authService.isLoggedIn()) {
-      return this.lovedOnes.addPatient(this.firstname, this.lastname).toPromise().then(
-        (lovedOne) => {
-          this.loading = false;
-          return lovedOne as Patient;
-        }
-      ).catch( () => {
-          this.creationError();
-        }
-      );
-    }
-    else {
-      throw "Not logged in.";
-    }
-
+    return this.lovedOnes.addPatient(this.firstname, this.lastname).toPromise().then(
+      (lovedOne) => {
+        this.loading = false;
+        return lovedOne as Patient;
+      }
+    ).catch(() => {
+        this.loading = false;
+        this.creationError();
+      }
+    );
   }
 
   private creationError(errorMessage?: string) {
     let alert = this.alertCtrl.create({
       title: "Oei!",
-      subTitle: "Er was een probleem bij het maken van je geliefde. Probeer het nog eens opnieuw.",
+      subTitle: errorMessage || "Er was een probleem bij het maken van je geliefde. Probeer het nog eens opnieuw.",
       buttons: ['Ok']
     });
     return alert.present();

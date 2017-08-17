@@ -12,7 +12,7 @@ export class TranslatorService {
     translateIn.setDefaultLang(this.lang);
 
     this.translate = translateIn;
-    let browserLang: string = this.translateIn.getBrowserLang() || this.lang;
+    let browserLang: string = /** this.translateIn.getBrowserLang() || */this.lang;
     if (!localStorage.getItem(env.localstorage.LOCALSTORAGE_SELECTEDLANG))
       if (browserLang.toLowerCase().indexOf('en') >= 0 || browserLang.toLowerCase().indexOf('fr') >= 0 || browserLang.toLowerCase().indexOf('nl') >= 0) {
         translateIn.use(this.translateIn.getBrowserLang());

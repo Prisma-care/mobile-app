@@ -21,7 +21,7 @@
 
     </ion-list>
 
-     <button ion-button solid block full large color="general" (click)="signIn()" [disabled]="canSignIn()">
+     <button ion-button solid block full large color="general" (click)="signIn()" [disabled]="!canSignIn()">
       <div *ngIf="!loading">{{'Aanmelden' | translate}}</div>
       <div *ngIf="loading">
         <ion-spinner item-start name="dots" color="white"></ion-spinner>

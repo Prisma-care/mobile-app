@@ -8,6 +8,7 @@ import {LoginPage} from "../pages/login/login";
 import {AuthService} from "../providers/auth-service/auth-service";
 import {TranslatorService} from "../providers/translator.service";
 import {TranslateService} from "@ngx-translate/core";
+import {InvitePage} from "../pages/invite/invite";
 
 @Component({
   templateUrl: 'app.html'
@@ -34,10 +35,14 @@ export class MyApp {
   }
 
   logout() {
-    console.log("login out");
     this.menu.close();
     this.authService.logout();
     this.nav.setRoot(LoginPage);
   }
-
+  invite(){
+    this.menu.close();
+    this.nav.push(InvitePage, {
+      "patientId": 1
+    });
+  }
 }

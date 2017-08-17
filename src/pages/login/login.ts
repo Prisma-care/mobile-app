@@ -58,7 +58,7 @@ export class LoginPage implements OnInit {
 
 
   canSignIn():boolean {
-    return !(this.util.checkEmail(this.email) && this.util.checkPassword(this.password));
+    return this.util.checkEmail(this.email) && this.util.checkPassword(this.password);
   }
 
   signIn() {
