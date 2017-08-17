@@ -8,6 +8,7 @@ import {LoginPage} from "../pages/login/login";
 import {AuthService} from "../providers/auth-service/auth-service";
 import {TranslatorService} from "../providers/translator.service";
 import {TranslateService} from "@ngx-translate/core";
+import { NewLovedonePage } from "../pages/new-lovedone/new-lovedone";
 
 @Component({
   templateUrl: 'app.html'
@@ -23,7 +24,7 @@ export class MyApp {
               public patientService: PatientService, public translatorService: TranslatorService,public authService: AuthService, public menu: MenuController) {
     //localStorage.clear();
     translatorService.refresh();
-    this.translate = translatorService.translate;
+    this.translate = translatorService.translateIn;
     this.translator = translatorService;
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -38,6 +39,10 @@ export class MyApp {
     this.menu.close();
     this.authService.logout();
     this.nav.setRoot(LoginPage);
+  }
+
+  newLovedOne() {
+    this.nav.setRoot(NewLovedonePage);
   }
 
 }

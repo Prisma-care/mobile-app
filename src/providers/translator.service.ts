@@ -4,14 +4,12 @@ import {env} from "../app/environment";
 
 @Injectable()
 export class TranslatorService {
-  public translate: TranslateService;
   public lang: string = 'nl';
 
-  public constructor(private translateIn: TranslateService) {
+  public constructor(public translateIn: TranslateService) {
     translateIn.addLangs(['en', 'fr', 'nl']);
     translateIn.setDefaultLang(this.lang);
 
-    this.translate = translateIn;
     let browserLang: string = this.translateIn.getBrowserLang() || this.lang;
     if (!localStorage.getItem(env.localstorage.LOCALSTORAGE_SELECTEDLANG))
       if (browserLang.toLowerCase().indexOf('en') >= 0 || browserLang.toLowerCase().indexOf('fr') >= 0 || browserLang.toLowerCase().indexOf('nl') >= 0) {
@@ -35,7 +33,7 @@ export class TranslatorService {
   }
 
   private refreshTranslation() {
-    this.translate.use(this.lang);
+    this.translateIn.use(this.lang);
   }
 
   public switchLang(lang?: string): void {
@@ -59,5 +57,20 @@ export class TranslatorService {
       return 'fr';
   }
 
-}
+  /**
+    Translates the given string (key). Translations are guarantueed to be loaded.
+    The callback will be called with the resulting translation (1 argument).
+  */
+  public translate(key: string, callback: (arg: string) => string ) : void {
+    this.translateIn.get(key).subscribe((val) => callback(val));
+  }
 
+/**
+  Translates the given string intantaneously.
+  The translation might not be loaded yet.
+*/
+  public translateInstant(key: string): string {
+    return this.translateIn.instant(key);
+  }
+
+}

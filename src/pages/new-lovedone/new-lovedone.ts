@@ -5,6 +5,8 @@ import { AuthService } from "../../providers/auth-service/auth-service";
 import { Patient } from "../../dto/patient";
 import { AlbumsPage } from "../albums/albums";
 import {env} from "../../app/environment";
+import { AuthGuard } from "../auth-guard";
+import { TranslatorService } from "../../providers/translator.service";
 
 
 /**
@@ -17,7 +19,7 @@ import {env} from "../../app/environment";
   selector: 'page-new-lovedone',
   templateUrl: 'new-lovedone.html',
 })
-export class NewLovedonePage {
+export class NewLovedonePage extends AuthGuard {
 
   private loading: boolean;
 
@@ -26,7 +28,8 @@ export class NewLovedonePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public lovedOnes: PatientService, public authService: AuthService,
-    public  alertCtrl: AlertController) {
+    public  alertCtrl: AlertController, translatorService: TranslatorService) {
+      super(authService, navCtrl, translatorService);
   }
 
   canCreateLovedOne(): boolean {
@@ -50,28 +53,22 @@ export class NewLovedonePage {
   }
 
   private createLovedOne(): Promise<Patient> {
-
-    if (this.authService.isLoggedIn()) {
-      return this.lovedOnes.addPatient(this.firstname, this.lastname).toPromise().then(
-        (lovedOne) => {
-          this.loading = false;
-          return lovedOne as Patient;
-        }
-      ).catch( () => {
-          this.creationError();
-        }
-      );
-    }
-    else {
-      throw "Not logged in.";
-    }
+    return this.lovedOnes.addPatient(this.firstname, this.lastname).toPromise().then(
+      (lovedOne) => {
+        this.loading = false;
+        return lovedOne as Patient;
+      }
+    ).catch( () => {
+        this.creationError();
+      }
+    );
 
   }
 
   private creationError(errorMessage?: string) {
     let alert = this.alertCtrl.create({
-      title: "Oei!",
-      subTitle: "Er was een probleem bij het maken van je geliefde. Probeer het nog eens opnieuw.",
+      title: this.translatorService.translateInstant("Oei!"),
+      subTitle: this.translatorService.translateInstant("Er was een probleem bij het maken van je geliefde. Probeer het nog eens opnieuw."),
       buttons: ['Ok']
     });
     return alert.present();
