@@ -45,21 +45,11 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     let text3:string = 'Kies foto van camerarol';
     let text4:string = 'Kies video van Youtube';
     let text5:string = 'Annuleer';
-    this.translatorService.translate.get(text1).subscribe(
-      value => text1 = value
-    );
-    this.translatorService.translate.get(text2).subscribe(
-      value => text2 = value
-    );
-    this.translatorService.translate.get(text3).subscribe(
-      value => text3 = value
-    );
-    this.translatorService.translate.get(text4).subscribe(
-      value => text4= value
-    );
-    this.translatorService.translate.get(text5).subscribe(
-      value => text5 = value
-    );
+    this.translatorService.translate(text1, value => text1 = value);
+    this.translatorService.translate(text2, value => text2 = value);
+    this.translatorService.translate(text3, value => text3 = value);
+    this.translatorService.translate(text4, value => text4= value);
+    this.translatorService.translate(text5, value => text5 = value);
 
     let actionSheet = this.actionsheetCtrl.create({
         title: 'Foto toevoegen',
