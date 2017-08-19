@@ -64,7 +64,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     }
   }
 
-  getBackgroundImage(i: number): any {
+   getBackgroundImage(i: number): Promise<any> | any{
     if (this.albums[i].isEmpty()) {
       return "";
     }
@@ -79,6 +79,22 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       if (!this.albums[i].getBackgroundImage(index))
         return "";
       return this.sanitizer.sanitizeStyle(style);
+      //Optimization
+      /**if (this.albums[i].getBlob(index)){
+        console.log("refreshed");
+        const style2 = `background-image: url(${this.albums[i].getBlob(index)})`;
+        return this.sanitizer.sanitizeStyle(style2);
+      }
+      this.albums[i].blobs[index] = "waiting";
+      if(this.albums[i].getBlob(index))
+        return "";
+      return  this.storyService.getImage(thumb).toPromise().then(blob => {
+        this.albums[i].blobs[index] = blob;
+        const style2 = `background-image: url(${blob})`;
+        console.log("Url "+ i+ " : " + style2);
+        return this.sanitizer.sanitizeStyle(style2);
+      });
+*/
     }
   }
 

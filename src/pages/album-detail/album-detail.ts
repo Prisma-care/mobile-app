@@ -1,4 +1,4 @@
-import {Component, OnInit,ChangeDetectionStrategy,ChangeDetectorRef} from "@angular/core";
+import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef} from "@angular/core";
 import {ActionSheetController, NavController, NavParams} from "ionic-angular";
 import {StoryService} from "../../providers/back-end/story.service";
 import {Album} from "../../dto/album";
@@ -11,6 +11,7 @@ import {AuthGuard} from "../auth-guard";
 import {env} from "../../app/environment";
 import {TranslatorService} from "../../providers/translator.service";
 import {SecurePipe} from "../../providers/helpers/secure.pipe";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'album-detail',
@@ -23,10 +24,10 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
   public album: Album;
 
-  constructor(protected authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService,
+  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
-              private storyService: StoryService, private sanitizer: StanizerService,private secure:SecurePipe,private ref: ChangeDetectorRef) {
-    super(authService, navCtrl,translatorService);
+              private storyService: StoryService, private sanitizer: StanizerService, private secure: SecurePipe, private ref: ChangeDetectorRef) {
+    super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
     this.secure._ref = this.ref;
   }
@@ -43,11 +44,11 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
 
   openActionSheet() {
-    let text1:string = 'Tekst schrijven';
-    let text2:string = 'Maak foto';
-    let text3:string = 'Kies foto van camerarol';
-    let text4:string = 'Kies video van Youtube';
-    let text5:string = 'Annuleer';
+    let text1: string = 'Tekst schrijven';
+    let text2: string = 'Maak foto';
+    let text3: string = 'Kies foto van camerarol';
+    let text4: string = 'Kies video van Youtube';
+    let text5: string = 'Annuleer';
     this.translatorService.translate.get(text1).subscribe(
       value => text1 = value
     );
@@ -58,7 +59,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
       value => text3 = value
     );
     this.translatorService.translate.get(text4).subscribe(
-      value => text4= value
+      value => text4 = value
     );
     this.translatorService.translate.get(text5).subscribe(
       value => text5 = value
@@ -147,7 +148,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   // DOM Sanitizer for image urls
-  sanitize(i: number): any {
+   sanitize(i: number): Promise<any> | any {
     let url: string = this.album.getBackgroundImage(i);
     if (!url)
       return null;
@@ -155,6 +156,13 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     const style = `url(${url})`;
     //console.log("Made : " + style);
     console.log("trying");
+
+   /** return await this.storyService.getImage(url).toPromise().then(blob => {
+      const style2 = `url(${blob})`;
+      console.log("Url "+ i+ " : " + style2);
+      return this.sanitizer.sanitizeStyle(style2);
+    });*/
+
     return this.sanitizer.sanitizeStyle(style) ;//await this.storyService.getImage(style).toPromise(); //this.sanitizer.sanitizeStyle(style);////this.secure.transform(style);
   }
 

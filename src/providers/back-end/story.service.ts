@@ -150,12 +150,16 @@ export class StoryService extends PrismaService {
   }
 
   getImage(filename: string): Observable<void> {
+    console.log("getting image : " + filename + " \n " + JSON.stringify(this._head));
     return this._http.get(`${filename}`, {
       headers: this._head
     })
-      .map(res => res.blob())
+      .map(res => {
+        console.log("Worked " + filename);
+        return res.blob()
+      })
       .map(blob => URL.createObjectURL(blob))
-      .catch(err => this.handleError(err));
+      .catch(err => this.printError(err)).share();
   }
 
 

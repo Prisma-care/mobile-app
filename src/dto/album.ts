@@ -7,6 +7,7 @@ export class Album {
   description: string;
   stories: UserStory[] = [];
 
+  blobs:any[];
   constructor(json?) {
     if (!json)
       return;
@@ -26,5 +27,10 @@ export class Album {
     }
     else return "";
   }
-
+  getBlob(i: number): string {
+    if (this.stories[i]) {
+      return this.blobs[i] || null;
+    }
+    else return null;
+  }
 }

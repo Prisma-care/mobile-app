@@ -54,9 +54,14 @@ export class PrismaService implements OnInit {
       localStorage.removeItem(env.jwtToken);
       localStorage.removeItem(env.temp.fakeUser);
       localStorage.removeItem(env.temp.fakePatient);
-    //  MyApp.getNav().push(LoginPage);
+      //  MyApp.getNav().push(LoginPage);
     }
 
+    return Observable.of(error) as Observable<any>;
+  }
+
+  public printError(error: Response | any) {
+    console.log("Error ! " + JSON.stringify(error));
     return Observable.of(error) as Observable<any>;
   }
 }
