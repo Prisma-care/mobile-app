@@ -41,8 +41,4 @@ export class MyApp {
     this.nav.setRoot(LoginPage);
   }
 
-  newLovedOne() {
-    this.nav.setRoot(NewLovedonePage);
-  }
-
 }
