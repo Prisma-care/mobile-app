@@ -24,6 +24,13 @@
   font-family: Varela, 'Noto Sans';
 }
 
+// Headers
+
+h1.prisma-title {
+  color: color($colors, dark-gray);
+  font-size: map-get($sizes, "medium");
+}
+
 
 // INPUT SIZE
 

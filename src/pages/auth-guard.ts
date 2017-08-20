@@ -14,7 +14,6 @@ export class AuthGuard {
 
   constructor(protected authService: AuthService, protected  navCtrl: NavController,public translatorService: TranslatorService) {
     translatorService.refresh();
-    this.translate = translatorService.translate;
     this.translator = translatorService;
   }
 
