@@ -9,7 +9,6 @@ import {TranslateService} from "@ngx-translate/core";
 @Injectable()
 export class AuthGuard {
   //General injection
-  private translate: TranslateService;
   private translator:TranslatorService;
 
   constructor(protected authService: AuthService, protected  navCtrl: NavController,public translatorService: TranslatorService) {

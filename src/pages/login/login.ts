@@ -14,7 +14,6 @@ import { NewLovedonePage } from "../new-lovedone/new-lovedone";
   templateUrl: 'login.html',
 })
 export class LoginPage implements OnInit {
-  private translate: TranslateService;
   private translator: TranslatorService;
 
   isSigningUp: boolean = false;

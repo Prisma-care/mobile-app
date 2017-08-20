@@ -8,7 +8,6 @@ import {LoginPage} from "../pages/login/login";
 import {AuthService} from "../providers/auth-service/auth-service";
 import {TranslatorService} from "../providers/translator.service";
 import {TranslateService} from "@ngx-translate/core";
-import { NewLovedonePage } from "../pages/new-lovedone/new-lovedone";
 
 @Component({
   templateUrl: 'app.html'
