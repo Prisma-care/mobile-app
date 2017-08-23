@@ -4,7 +4,6 @@ import {User} from "../../dto/user";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {AlbumsPage} from "../albums/albums";
 import {TranslatorService} from "../../providers/translator.service";
-import {TranslateService} from "@ngx-translate/core";
 import {UtilService} from "../../providers/util-service";
 import { NewLovedonePage } from "../new-lovedone/new-lovedone";
 
