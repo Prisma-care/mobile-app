@@ -25,10 +25,10 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   user: User = JSON.parse(localStorage.getItem(env.temp.fakeUser)) as User;
 
   albums: Album[];
-
-  constructor(public authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService,
-              public camera: Camera,public sanitizer: StanizerService, public storyService: StoryService,
-              public alertCtrl: AlertController,public menu: MenuController) {
+  backGrounds:any[] = [];
+  constructor(public authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
+              public camera: Camera, public sanitizer: StanizerService, public storyService: StoryService,
+              public alertCtrl: AlertController, public menu: MenuController) {
     super(authService, navCtrl, translatorService);
     this.currentPatient = this.authService.getCurrentPatient();
     menu.enable(true);
@@ -44,6 +44,13 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   ionViewWillEnter(): void {
     this.storyService.getAlbums(this.authService.getCurrentPatient().id).toPromise().then(albums => {
       this.albums = albums as Album[];
+      let i: number = 0;
+      this.albums.forEach(album => {
+        if (!album.isEmpty()) {
+          this.getBackgroundImage(i);
+          i++;
+        }
+      });
     });
   }
 
@@ -54,7 +61,10 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     });
   }
 
-
+  getBackgroundImg(i:number):any{
+    console.log("Image " + i + " : "+this.backGrounds[i] );
+    return this.backGrounds[i];
+  }
   getBackgroundColor(i: number): string {
     if (this.albums[i].isEmpty()) {
       return this.colorCodes[i % this.colorCodes.length] as string;
@@ -64,9 +74,10 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     }
   }
 
-   getBackgroundImage(i: number): Promise<any> | any{
+   async getBackgroundImage(i: number) {
     if (this.albums[i].isEmpty()) {
-      return "";
+      this.backGrounds[i] = "";
+      return ;
     }
     else {
       let index = this.albums[i].stories.findIndex(this.isRepresentativeOfTheAlbum);
@@ -75,26 +86,24 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       if (index === -1)
         index = 0;
       let thumb: string = this.getThumb(this.albums[i].getBackgroundImage(index));
-      const style = `background-image: url(${thumb})`;
-      if (!this.albums[i].getBackgroundImage(index))
-        return "";
-      return this.sanitizer.sanitizeStyle(style);
-      //Optimization
-      /**if (this.albums[i].getBlob(index)){
-        console.log("refreshed");
-        const style2 = `background-image: url(${this.albums[i].getBlob(index)})`;
-        return this.sanitizer.sanitizeStyle(style2);
+
+      if (!this.albums[i].getBackgroundImage(index)){
+        this.backGrounds[i] = "";
+        return;
       }
-      this.albums[i].blobs[index] = "waiting";
-      if(this.albums[i].getBlob(index))
-        return "";
-      return  this.storyService.getImage(thumb).toPromise().then(blob => {
-        this.albums[i].blobs[index] = blob;
+
+      //if not a private image
+      if(thumb.indexOf("/asset/") < 0){
+        const style = `background-image: url(${thumb})`;
+        this.backGrounds[i] = this.sanitizer.sanitizeStyle(style);
+        return;
+      }
+      await this.storyService.getImage(thumb).toPromise().then(blob => {
+        //this.albums[i].blobs[index] = blob;
         const style2 = `background-image: url(${blob})`;
-        console.log("Url "+ i+ " : " + style2);
-        return this.sanitizer.sanitizeStyle(style2);
+         this.backGrounds[i] = this.sanitizer.sanitizeStyle(style2);
+         return ;
       });
-*/
     }
   }
 
@@ -123,9 +132,9 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       buttons: ['Ok']
     });
 
-    let text1:string = 'Voeg album toe';
-    let text2:string = 'Annuleer';
-    let text3:string = 'Voeg toe';
+    let text1: string = 'Voeg album toe';
+    let text2: string = 'Annuleer';
+    let text3: string = 'Voeg toe';
     this.translatorService.translate.get(text1).subscribe(value => text1 = value);
     this.translatorService.translate.get(text2).subscribe(value => text2 = value);
     this.translatorService.translate.get(text3).subscribe(value => text3 = value);

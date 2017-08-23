@@ -1,4 +1,5 @@
 import {PrismaService} from "./prisma-api.service";
+import {Headers, ResponseContentType} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/map";
@@ -6,7 +7,7 @@ import "rxjs/Rx";
 import {Injectable} from "@angular/core";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
-import {env} from "../../app/environment";
+import {API_URL, env} from "../../app/environment";
 
 @Injectable()
 export class StoryService extends PrismaService {
@@ -137,6 +138,8 @@ export class StoryService extends PrismaService {
   updateStory(patientId: number, newStory: UserStory): Observable<UserStory> {
     let url: string = env.api.getPatient;
     let storyUrl: string = env.api.getStory;
+    var jwt = localStorage.getItem(env.jwtToken);
+    this._head.set('Authorization', 'Bearer ' + jwt);
     return this._http.patch(`${this._urlToApi}/${url}/${patientId}/${storyUrl}/${newStory.id}`, newStory, {
       headers: this._head
     })
@@ -149,17 +152,22 @@ export class StoryService extends PrismaService {
       }).catch(err => this.handleError(err));
   }
 
-  getImage(filename: string): Observable<void> {
+  getImage(filename: string): Observable<any> {
     console.log("getting image : " + filename + " \n " + JSON.stringify(this._head));
+    let header: Headers = new Headers({'Content-Type': 'image/jpg'});
+   // header.set('Accept', 'image/jpeg');
+  //  header.set('Access-Control-Allow-Origin', API_URL);
+    //header.set('Access-Control-Allow-Credentials', JSON.stringify(true));
     return this._http.get(`${filename}`, {
-      headers: this._head
+      headers: header,
+      responseType: ResponseContentType.Blob
     })
       .map(res => {
         console.log("Worked " + filename);
         return res.blob()
       })
       .map(blob => URL.createObjectURL(blob))
-      .catch(err => this.printError(err)).share();
+      .catch(err => this.printError(err));
   }
 
 

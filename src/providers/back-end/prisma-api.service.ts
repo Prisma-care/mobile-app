@@ -14,7 +14,7 @@ import { NavController} from "ionic-angular";
 @Injectable()
 export class PrismaService implements OnInit {
   protected _urlToApi: string = API_URL;
-  protected _head: Headers = new Headers({'Content-Type': 'application/json; charset=UTF-8; application/x-www-form-urlencoded'});
+  protected _head: Headers = new Headers({'Content-Type': 'application/json; charset=UTF-8'});
   _http: Http;
   static storage: Storage;
 
