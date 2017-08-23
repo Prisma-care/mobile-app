@@ -212,8 +212,13 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   }
 
-  stanize(url: string) {
-    return this.stanizer.sanitize(url);
+  async stanize(url: string) {
+    if(url.indexOf(env.privateImagesRegex) < 0)
+      return this.stanizer.sanitize(url);
+
+    return await this.storyService.getImage(url).toPromise().then(blob => {
+      return this.stanizer.sanitize(blob);
+    })
   }
 
   stanizeVideo(url: string) {

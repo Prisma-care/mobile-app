@@ -30,23 +30,23 @@ export class NewStoryPage extends AuthGuard {
   dataUrl: string;
   description: string;
   placeHolder: string = "Schrijf het verhaal.\nHoe meer details hoe beter.";
-  youtubeLink:string;
+  youtubeLink: string;
   selectedAlbum: Album;
 
 
   index: number = 0;
   oldStory: UserStory;
-  util:UtilService;
+  util: UtilService;
 
 //file Transfer
   loading: Loading;
 
-  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,public navParams: NavParams,
+  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private utilService: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
               public stanizer: StanizerService) {
-    super(authService, navCtrl,translatorService);
-    this.translatorService.translate.get(this.placeHolder).subscribe(value =>  this.placeHolder = value);
+    super(authService, navCtrl, translatorService);
+    this.translatorService.translate.get(this.placeHolder).subscribe(value => this.placeHolder = value);
     this.method = navParams.get("method") as string;
     this.dataUrl = navParams.get("dataUrl") as string;
     this.selectedAlbum = navParams.get("album") as Album;
@@ -178,9 +178,13 @@ export class NewStoryPage extends AuthGuard {
   }
 
 
-  sanitizeUrl() {
+  async sanitizeUrl() {
     if (this.oldStory) {
-      return this.stanizer.sanitize(this.dataUrl);
+      if (this.dataUrl.indexOf(env.privateImagesRegex) < 0)
+        return this.stanizer.sanitize(this.dataUrl);
+      return await this.storyService.getImage(this.dataUrl).toPromise().then(blob => {
+        return this.stanizer.sanitize(blob);
+      })
     } else {
       return this.utilService.pathForImage(this.dataUrl);
     }

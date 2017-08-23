@@ -10,6 +10,7 @@ export const env = {
   production: false,
   jwtToken: 'id_token',
   localstorage: {LOCALSTORAGE_SELECTEDLANG : "langs"},
+  privateImagesRegex: '/asset/',
   api: {
     getSignIn: 'signin',
     getPatient: 'patient',

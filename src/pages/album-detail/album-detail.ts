@@ -23,6 +23,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
 
   public album: Album;
+  backgroundImages: any[] = [];
 
   constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
@@ -39,6 +40,13 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     if (this.album)
       this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).subscribe(res => {
         this.album = res;
+        if (!this.album.isEmpty()) {
+          let i: number = 0;
+          this.album.stories.forEach(story => {
+            this.setBackgroundImages(i);
+            i++;
+          })
+        }
       });
   }
 
@@ -148,22 +156,23 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   // DOM Sanitizer for image urls
-   sanitize(i: number): Promise<any> | any {
+  async setBackgroundImages(i: number) {
     let url: string = this.album.getBackgroundImage(i);
-    if (!url)
-      return null;
-    url = this.getThumb(url);
-    const style = `url(${url})`;
-    //console.log("Made : " + style);
-    console.log("trying");
-
-   /** return await this.storyService.getImage(url).toPromise().then(blob => {
+    if (!url) {
+      this.backgroundImages[i] = "";
+      return;
+    }
+    let thumb = this.getThumb(url);
+    if(thumb.indexOf(env.privateImagesRegex) < 0){
+      const style = `url(${thumb})`;
+      this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style);
+      return;
+    }
+    await this.storyService.getImage(thumb).toPromise().then(blob => {
       const style2 = `url(${blob})`;
-      console.log("Url "+ i+ " : " + style2);
-      return this.sanitizer.sanitizeStyle(style2);
-    });*/
-
-    return this.sanitizer.sanitizeStyle(style) ;//await this.storyService.getImage(style).toPromise(); //this.sanitizer.sanitizeStyle(style);////this.secure.transform(style);
+      this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style2);
+      return;
+    });
   }
 
 
@@ -172,7 +181,6 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     if (!url)
       return false;
     url = this.getThumb(url);
-    //console.log("Made : " + style);
     return url.toLowerCase().indexOf("img.youtube") >= 0;
   }
 

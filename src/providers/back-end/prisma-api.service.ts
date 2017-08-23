@@ -31,13 +31,11 @@ export class PrismaService implements OnInit {
     // Set to true if you need the website to include cookies in  requests
     this._head.set('Access-Control-Allow-Credentials', JSON.stringify(true));
     this._head.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-    var jwt = localStorage.getItem(env.jwtToken);
-    this._head.set('Authorization', 'Bearer ' + jwt);
+    this._head.set('Authorization', 'Bearer ' + localStorage.getItem(env.jwtToken));
   }
 
   ngOnInit() {
-    var jwt = localStorage.getItem(env.jwtToken);
-    this._head.set('Authorization', 'Bearer ' + jwt);
+    this._head.set('Authorization', 'Bearer ' + localStorage.getItem(env.jwtToken));
   }
 
   ngOnDestroy() {

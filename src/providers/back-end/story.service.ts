@@ -138,8 +138,7 @@ export class StoryService extends PrismaService {
   updateStory(patientId: number, newStory: UserStory): Observable<UserStory> {
     let url: string = env.api.getPatient;
     let storyUrl: string = env.api.getStory;
-    var jwt = localStorage.getItem(env.jwtToken);
-    this._head.set('Authorization', 'Bearer ' + jwt);
+    this._head.set('Authorization', 'Bearer ' + localStorage.getItem(env.jwtToken));
     return this._http.patch(`${this._urlToApi}/${url}/${patientId}/${storyUrl}/${newStory.id}`, newStory, {
       headers: this._head
     })
@@ -155,9 +154,7 @@ export class StoryService extends PrismaService {
   getImage(filename: string): Observable<any> {
     console.log("getting image : " + filename + " \n " + JSON.stringify(this._head));
     let header: Headers = new Headers({'Content-Type': 'image/jpg'});
-   // header.set('Accept', 'image/jpeg');
-  //  header.set('Access-Control-Allow-Origin', API_URL);
-    //header.set('Access-Control-Allow-Credentials', JSON.stringify(true));
+    header.set('Authorization', 'Bearer ' + localStorage.getItem(env.jwtToken));
     return this._http.get(`${filename}`, {
       headers: header,
       responseType: ResponseContentType.Blob
