@@ -13,11 +13,6 @@ albums-page {
     -webkit-box-shadow: none;
   }
 
-  .album-overlay {
-    // TODO: doesn't work, fix this
-    background: linear-gradient(180deg, rgba(84,91,110,0) 0%, rgba(84,91,110,0.7) 100%);
-  }
-
   .album-thumb {
     height: 50vw; // todo: dynamic - set to width of comonent?
     background-size: cover;
