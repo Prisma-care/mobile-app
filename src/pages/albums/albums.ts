@@ -74,7 +74,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     }
   }
 
-   async setBackgroundImages(i: number) {
+  setBackgroundImages(i: number) {
     if (this.albums[i].isEmpty()) {
       this.backgroundImages[i] = "";
       return ;
@@ -98,7 +98,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
         this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style);
         return;
       }
-      await this.storyService.getImage(thumb).toPromise().then(blob => {
+      this.storyService.getImage(thumb).toPromise().then(blob => {
         //this.albums[i].blobs[index] = blob;
         const style2 = `background-image: url(${blob})`;
          this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style2);

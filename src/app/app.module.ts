@@ -41,9 +41,6 @@ import {TranslatorService} from "../providers/translator.service";
 import {LoginHeaderComponent} from "../pages/login/login-header.component";
 import {NewLovedonePage} from "../pages/new-lovedone/new-lovedone";
 import {InvitePage} from "../pages/invite/invite";
-import {UrlHelperService} from "../providers/helpers/url-helper.service";
-import {SecurePipe} from "../providers/helpers/secure.pipe";
-import {AsyncImageComponent} from "../providers/helpers/async-image";
 
 
 @NgModule({
@@ -58,8 +55,7 @@ import {AsyncImageComponent} from "../providers/helpers/async-image";
     StoryOptionsComponent,
     LoginHeaderComponent,
     InvitePage,
-    NewLovedonePage,
-    SecurePipe
+    NewLovedonePage
   ],
   imports: [
     BrowserModule,
@@ -106,8 +102,6 @@ import {AsyncImageComponent} from "../providers/helpers/async-image";
     FilePath,
     NativePageTransitions,
     TranslatorService,
-    UrlHelperService,
-    SecurePipe,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

@@ -57,10 +57,11 @@ export class NewStoryPage extends AuthGuard {
     this.oldStory = navParams.get("story") as UserStory;
     if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
       this.description = this.oldStory.description;
-      if (this.oldStory.source.toLowerCase().indexOf("youtube.com") < 0)
-        this.dataUrl = this.oldStory.source;
-      else
-        this.dataUrl = null;
+      if (this.oldStory.source)
+        if (this.oldStory.source.toLowerCase().indexOf("youtube.com") < 0)
+          this.dataUrl = this.oldStory.source;
+        else
+          this.dataUrl = null;
     }
 
     if (this.method.indexOf(env.methods.replaceImage) >= 0) {

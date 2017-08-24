@@ -220,6 +220,9 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   }
 
   async setStanizedUrl(url: string) {
+    if(!url){
+      return;
+    }
     if(url.indexOf(env.privateImagesRegex) < 0){
       this.stanizedUrl = this.stanizer.sanitize(url);
       return;

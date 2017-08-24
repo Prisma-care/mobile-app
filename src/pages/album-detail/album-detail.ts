@@ -10,7 +10,6 @@ import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
 import {env} from "../../app/environment";
 import {TranslatorService} from "../../providers/translator.service";
-import {SecurePipe} from "../../providers/helpers/secure.pipe";
 import {Observable} from "rxjs/Observable";
 
 @Component({
@@ -27,10 +26,9 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
   constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
-              private storyService: StoryService, private sanitizer: StanizerService, private secure: SecurePipe, private ref: ChangeDetectorRef) {
+              private storyService: StoryService, private sanitizer: StanizerService, private ref: ChangeDetectorRef) {
     super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
-    this.secure._ref = this.ref;
   }
 
   ngOnInit(): void {
@@ -155,7 +153,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   // DOM Sanitizer for image urls
-  async setBackgroundImages(i: number) {
+   setBackgroundImages(i: number) {
     let url: string = this.album.getBackgroundImage(i);
     if (!url) {
       this.backgroundImages[i] = "";
@@ -163,13 +161,15 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     }
     let thumb = this.getThumb(url);
     if(thumb.indexOf(env.privateImagesRegex) < 0){
-      const style = `url(${thumb})`;
+      const style = `background-image: url(${thumb})`;
       this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style);
+      this.ref.markForCheck();
       return;
     }
-    await this.storyService.getImage(thumb).toPromise().then(blob => {
-      const style2 = `url(${blob})`;
+     this.storyService.getImage(thumb).toPromise().then(blob => {
+      const style2 = `background-image: url(${blob})`;
       this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style2);
+      this.ref.markForCheck();
       return;
     });
   }
