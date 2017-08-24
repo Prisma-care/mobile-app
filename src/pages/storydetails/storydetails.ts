@@ -23,6 +23,8 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   public index: number;
   public story: UserStory;
 
+
+  public stanizedUrl;
   // TODO: get favorite in backend &
   // 1 like?
   constructor(protected  authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService, public navParams: NavParams,
@@ -42,7 +44,10 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   ionViewWillEnter() {
     if (this.album)
-      this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).toPromise().then(res => this.album = res);
+      this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).toPromise().then(res =>{
+        this.album = res;
+        this.setStanizedUrl(this.album.stories[this.index].source);
+      } );
     this.menu.enable(false);
   }
 
@@ -96,10 +101,12 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   next(): void {
     this.index = (this.index + 1) % this.album.stories.length;
+    this.setStanizedUrl(this.album.stories[this.index].source);
   }
 
   previous(): void {
     this.index = this.index === 0 ? this.album.stories.length - 1 : this.index - 1;
+    this.setStanizedUrl(this.album.stories[this.index].source);
 
   }
 
@@ -212,13 +219,21 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   }
 
-  async stanize(url: string) {
-    if(url.indexOf(env.privateImagesRegex) < 0)
-      return this.stanizer.sanitize(url);
+  async setStanizedUrl(url: string) {
+    if(url.indexOf(env.privateImagesRegex) < 0){
+      this.stanizedUrl = this.stanizer.sanitize(url);
+      return;
+    }
 
-    return await this.storyService.getImage(url).toPromise().then(blob => {
-      return this.stanizer.sanitize(blob);
+
+    await this.storyService.getImage(url).toPromise().then(blob => {
+      this.stanizedUrl =  this.stanizer.sanitize(blob);
+      return;
     })
+  }
+
+  getStanizedUrl(){
+    return this.stanizedUrl;
   }
 
   stanizeVideo(url: string) {

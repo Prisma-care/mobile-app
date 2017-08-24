@@ -37,7 +37,6 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   ionViewWillEnter(): void {
-    if (this.album)
       this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).subscribe(res => {
         this.album = res;
         if (!this.album.isEmpty()) {
@@ -195,6 +194,10 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     return this.album.stories[i].favorited;
   }
 
+  getBackgroundImages(i){
+    console.log("Image " + i + " : "+this.backgroundImages[i] );
+    return this.backgroundImages[i];
+  }
   getThumb(url: string) {
     if (url.toLowerCase().indexOf("youtube.com") >= 0) {
       var reg = /embed\/(.+?)\?/;
