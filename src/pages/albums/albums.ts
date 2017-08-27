@@ -48,7 +48,8 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       let i: number = 0;
       this.albums.forEach(album => {
         if (!album.isEmpty()) {
-          this.setBackgroundImages(i);
+          if(!this.imageLoaded(i))
+            this.setBackgroundImages(i);
           i++;
         }
       });
@@ -63,7 +64,6 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   }
 
   getBackgroundImg(i: number): any {
-    console.log("Image " + i + " : " + this.backgroundImages[i]);
     return this.backgroundImages[i];
   }
 
@@ -190,5 +190,9 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     } else {
       return url;
     }
+  }
+
+  imageLoaded(index: number):boolean {
+    return !!this.backgroundImages[index];
   }
 }
