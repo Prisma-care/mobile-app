@@ -30,18 +30,18 @@ export class NewStoryPage extends AuthGuard {
   dataUrl: string;
   description: string;
   placeHolder: string = "Schrijf het verhaal.\nHoe meer details hoe beter.";
-  youtubeLink:string;
+  youtubeLink: string;
   selectedAlbum: Album;
 
 
   index: number = 0;
   oldStory: UserStory;
-  util:UtilService;
+  util: UtilService;
 
 //file Transfer
   loading: Loading;
 
-  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,public navParams: NavParams,
+  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private utilService: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
               public stanizer: StanizerService) {
@@ -57,10 +57,11 @@ export class NewStoryPage extends AuthGuard {
     this.oldStory = navParams.get("story") as UserStory;
     if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
       this.description = this.oldStory.description;
-      if (this.oldStory.source.toLowerCase().indexOf("youtube.com") < 0)
-        this.dataUrl = this.oldStory.source;
-      else
-        this.dataUrl = null;
+      if (this.oldStory.source)
+        if (this.oldStory.source.toLowerCase().indexOf("youtube.com") < 0)
+          this.dataUrl = this.oldStory.source;
+        else
+          this.dataUrl = null;
     }
 
     if (this.method.indexOf(env.methods.replaceImage) >= 0) {
@@ -178,9 +179,13 @@ export class NewStoryPage extends AuthGuard {
   }
 
 
-  sanitizeUrl() {
+  async sanitizeUrl() {
     if (this.oldStory) {
-      return this.stanizer.sanitize(this.dataUrl);
+      if (this.dataUrl.indexOf(env.privateImagesRegex) < 0)
+        return this.stanizer.sanitize(this.dataUrl);
+      return await this.storyService.getImage(this.dataUrl).toPromise().then(blob => {
+        return this.stanizer.sanitize(blob);
+      })
     } else {
       return this.utilService.pathForImage(this.dataUrl);
     }

@@ -1,4 +1,6 @@
-import {ErrorHandler, NgModule} from "@angular/core";
+import {
+  ErrorHandler, NgModule, ChangeDetectorRef
+} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {IonicApp, IonicErrorHandler, IonicModule} from "ionic-angular";
 import {IonicStorageModule} from "@ionic/storage";
@@ -34,10 +36,11 @@ import {AuthGuard} from "../pages/auth-guard";
 import {NativePageTransitions} from "@ionic-native/native-page-transitions";
 import {StoryOptionsComponent} from "../pages/storydetails/story-options.component";
 import {TranslateModule, TranslateLoader, TranslateService} from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TranslatorService} from "../providers/translator.service";
-import { LoginHeaderComponent } from "../pages/login/login-header.component";
-import { NewLovedonePage } from "../pages/new-lovedone/new-lovedone";
+import {LoginHeaderComponent} from "../pages/login/login-header.component";
+import {NewLovedonePage} from "../pages/new-lovedone/new-lovedone";
+import {InvitePage} from "../pages/invite/invite";
 
 
 @NgModule({
@@ -51,6 +54,7 @@ import { NewLovedonePage } from "../pages/new-lovedone/new-lovedone";
     AlbumQuestions,
     StoryOptionsComponent,
     LoginHeaderComponent,
+    InvitePage,
     NewLovedonePage
   ],
   imports: [
@@ -76,7 +80,8 @@ import { NewLovedonePage } from "../pages/new-lovedone/new-lovedone";
     NewStoryPage,
     AlbumQuestions,
     StoryOptionsComponent,
-    NewLovedonePage
+    NewLovedonePage,
+    InvitePage
   ],
   providers: [
     StatusBar,

@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef} from "@angular/core";
 import {ActionSheetController, NavController, NavParams} from "ionic-angular";
 import {StoryService} from "../../providers/back-end/story.service";
 import {Album} from "../../dto/album";
@@ -10,9 +10,11 @@ import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
 import {env} from "../../app/environment";
 import {TranslatorService} from "../../providers/translator.service";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'album-detail',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'album-detail.html'
 })
 
@@ -20,11 +22,12 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
 
   public album: Album;
+  backgroundImages: any[] = [];
 
-  constructor(protected authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService,
+  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
-              private storyService: StoryService, private sanitizer: StanizerService) {
-    super(authService, navCtrl,translatorService);
+              private storyService: StoryService, private sanitizer: StanizerService, private ref: ChangeDetectorRef) {
+    super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
   }
 
@@ -32,9 +35,15 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   ionViewWillEnter(): void {
-    if (this.album)
       this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).subscribe(res => {
         this.album = res;
+        if (!this.album.isEmpty()) {
+          let i: number = 0;
+          this.album.stories.forEach(story => {
+            this.setBackgroundImages(i);
+            i++;
+          })
+        }
       });
   }
 
@@ -48,7 +57,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     this.translatorService.translate(text1, value => text1 = value);
     this.translatorService.translate(text2, value => text2 = value);
     this.translatorService.translate(text3, value => text3 = value);
-    this.translatorService.translate(text4, value => text4= value);
+    this.translatorService.translate(text4, value => text4 = value);
     this.translatorService.translate(text5, value => text5 = value);
 
     let actionSheet = this.actionsheetCtrl.create({
@@ -134,14 +143,25 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   // DOM Sanitizer for image urls
-  sanitize(i: number): any {
+   setBackgroundImages(i: number) {
     let url: string = this.album.getBackgroundImage(i);
-    if (!url)
-      return "";
-    url = this.getThumb(url);
-    const style = `url(${url})`;
-    //console.log("Made : " + style);
-    return this.sanitizer.sanitizeStyle(style);
+    if (!url) {
+      this.backgroundImages[i] = "";
+      return;
+    }
+    let thumb = this.getThumb(url);
+    if(thumb.indexOf(env.privateImagesRegex) < 0){
+      const style = `background-image: url(${thumb})`;
+      this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style);
+      this.ref.markForCheck();
+      return;
+    }
+     this.storyService.getImage(thumb).toPromise().then(blob => {
+      const style2 = `background-image: url(${blob})`;
+      this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style2);
+      this.ref.markForCheck();
+      return;
+    });
   }
 
 
@@ -150,7 +170,6 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     if (!url)
       return false;
     url = this.getThumb(url);
-    //console.log("Made : " + style);
     return url.toLowerCase().indexOf("img.youtube") >= 0;
   }
 
@@ -165,6 +184,10 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     return this.album.stories[i].favorited;
   }
 
+  getBackgroundImages(i){
+    console.log("Image " + i + " : "+this.backgroundImages[i] );
+    return this.backgroundImages[i];
+  }
   getThumb(url: string) {
     if (url.toLowerCase().indexOf("youtube.com") >= 0) {
       var reg = /embed\/(.+?)\?/;

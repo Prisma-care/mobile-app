@@ -25,10 +25,10 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   user: User = JSON.parse(localStorage.getItem(env.temp.fakeUser)) as User;
 
   albums: Album[];
-
-  constructor(public authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService,
-              public camera: Camera,public sanitizer: StanizerService, public storyService: StoryService,
-              public alertCtrl: AlertController,public menu: MenuController) {
+  backgroundImages:any[] = [];
+  constructor(public authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
+              public camera: Camera, public sanitizer: StanizerService, public storyService: StoryService,
+              public alertCtrl: AlertController, public menu: MenuController) {
     super(authService, navCtrl, translatorService);
     this.currentPatient = this.authService.getCurrentPatient();
     menu.enable(true);
@@ -44,6 +44,13 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   ionViewWillEnter(): void {
     this.storyService.getAlbums(this.authService.getCurrentPatient().id).toPromise().then(albums => {
       this.albums = albums as Album[];
+      let i: number = 0;
+      this.albums.forEach(album => {
+        if (!album.isEmpty()) {
+          this.setBackgroundImages(i);
+          i++;
+        }
+      });
     });
   }
 
@@ -54,6 +61,10 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     });
   }
 
+  getBackgroundImg(i:number):any{
+    console.log("Image " + i + " : "+this.backgroundImages[i] );
+    return this.backgroundImages[i];
+  }
 
   getBackgroundColor(i: number): string {
     if (this.albums[i].isEmpty()) {
@@ -64,9 +75,10 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     }
   }
 
-  getBackgroundImage(i: number): any {
+  setBackgroundImages(i: number) {
     if (this.albums[i].isEmpty()) {
-      return "";
+      this.backgroundImages[i] = "";
+      return ;
     }
     else {
       let index = this.albums[i].stories.findIndex(this.isRepresentativeOfTheAlbum);
@@ -75,10 +87,24 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       if (index === -1)
         index = 0;
       let thumb: string = this.getThumb(this.albums[i].getBackgroundImage(index));
-      const style = `background-image: url(${thumb})`;
-      if (!this.albums[i].getBackgroundImage(index))
-        return "";
-      return this.sanitizer.sanitizeStyle(style);
+
+      if (!this.albums[i].getBackgroundImage(index)){
+        this.backgroundImages[i] = "";
+        return;
+      }
+
+      //if not a private image
+      if(thumb.indexOf(env.privateImagesRegex) < 0){
+        const style = `background-image: url(${thumb})`;
+        this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style);
+        return;
+      }
+      this.storyService.getImage(thumb).toPromise().then(blob => {
+        //this.albums[i].blobs[index] = blob;
+        const style2 = `background-image: url(${blob})`;
+         this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style2);
+         return ;
+      });
     }
   }
 
