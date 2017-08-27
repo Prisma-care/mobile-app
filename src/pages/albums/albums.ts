@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ChangeDetectorRef} from "@angular/core";
 import {AlertController, MenuController, NavController} from "ionic-angular";
 import {StanizerService} from "../../providers/stanizer.service";
 import {StoryService} from "../../providers/back-end/story.service";
@@ -25,10 +25,11 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   user: User = JSON.parse(localStorage.getItem(env.temp.fakeUser)) as User;
 
   albums: Album[];
-  backgroundImages:any[] = [];
+  backgroundImages: any[] = [];
+
   constructor(public authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
               public camera: Camera, public sanitizer: StanizerService, public storyService: StoryService,
-              public alertCtrl: AlertController, public menu: MenuController) {
+              public alertCtrl: AlertController, public menu: MenuController, private ref: ChangeDetectorRef) {
     super(authService, navCtrl, translatorService);
     this.currentPatient = this.authService.getCurrentPatient();
     menu.enable(true);
@@ -61,10 +62,11 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     });
   }
 
-  getBackgroundImg(i:number):any{
-    console.log("Image " + i + " : "+this.backgroundImages[i] );
+  getBackgroundImg(i: number): any {
+    console.log("Image " + i + " : " + this.backgroundImages[i]);
     return this.backgroundImages[i];
   }
+
   getBackgroundColor(i: number): string {
     if (this.albums[i].isEmpty()) {
       return this.colorCodes[i % this.colorCodes.length] as string;
@@ -77,7 +79,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   setBackgroundImages(i: number) {
     if (this.albums[i].isEmpty()) {
       this.backgroundImages[i] = "";
-      return ;
+      return;
     }
     else {
       let index = this.albums[i].stories.findIndex(this.isRepresentativeOfTheAlbum);
@@ -87,22 +89,24 @@ export class AlbumsPage extends AuthGuard implements OnInit {
         index = 0;
       let thumb: string = this.getThumb(this.albums[i].getBackgroundImage(index));
 
-      if (!this.albums[i].getBackgroundImage(index)){
+      if (!this.albums[i].getBackgroundImage(index)) {
         this.backgroundImages[i] = "";
         return;
       }
 
       //if not a private image
-      if(thumb.indexOf(env.privateImagesRegex) < 0){
+      if (thumb.indexOf(env.privateImagesRegex) < 0) {
         const style = `background-image: url(${thumb})`;
         this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style);
+        this.ref.markForCheck();
         return;
       }
       this.storyService.getImage(thumb).toPromise().then(blob => {
         //this.albums[i].blobs[index] = blob;
         const style2 = `background-image: url(${blob})`;
-         this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style2);
-         return ;
+        this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style2);
+        this.ref.markForCheck();
+        return;
       });
     }
   }

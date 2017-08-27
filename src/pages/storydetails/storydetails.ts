@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit,ChangeDetectorRef} from "@angular/core";
 import {ActionSheetController, MenuController, NavController, NavParams, PopoverController} from "ionic-angular";
 import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
@@ -30,7 +30,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   constructor(protected  authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private nativePageTransitions: NativePageTransitions,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService,
-              public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController) {
+              public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController, private ref: ChangeDetectorRef) {
     super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
@@ -225,12 +225,14 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     }
     if(url.indexOf(env.privateImagesRegex) < 0){
       this.stanizedUrl = this.stanizer.sanitize(url);
+      this.ref.markForCheck();
       return;
     }
 
 
     await this.storyService.getImage(url).toPromise().then(blob => {
       this.stanizedUrl =  this.stanizer.sanitize(blob);
+      this.ref.markForCheck();
       return;
     })
   }
