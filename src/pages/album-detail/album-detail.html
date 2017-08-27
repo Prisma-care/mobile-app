@@ -10,30 +10,32 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <album-questions [query]="album.title"></album-questions>
-  <ion-grid>
-    <ion-row>
-      <ion-col col-6 col-md-4 *ngFor="let story of album.stories,let i=index"
-               (click)="showDetails(album, i)">
-        <div class="album-thumb"
-             [style.backgroundImage]="sanitize(i)">
-          <div class="description-wrapper" *ngIf="!story.source && story.description">
-            <p class="story-description">{{story.description}}</p>
+<ion-content no-bounce>
+  <ion-scroll scrollY="true">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-6 col-md-4 *ngFor="let story of album.stories,let i=index"
+                 (click)="showDetails(album, i)">
+          <div class="album-thumb"
+               [style.backgroundImage]="sanitize(i)">
+            <div class="description-wrapper" *ngIf="!story.source && story.description">
+              <p class="story-description">{{story.description}}</p>
+            </div>
           </div>
-        </div>
-        <ion-icon name="logo-youtube" color="white"
-                  style=" position: absolute;display: block;font-size: 50px;top: 35%;left: 35%;"
-                  *ngIf="isAVideoBackground(i)"></ion-icon>
-        <ion-icon *ngIf="isFavorited(i)" class="star" name="star"
-                  [class.favorited]="isFavorited(i)"></ion-icon>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  <div (click)="openActionSheet()" class="add-new-container">
-    <div class="add-new">
-      <ion-icon name="camera"></ion-icon>
-      <span>{{'Voeg verhaal toe' | translate}}</span>
+          <ion-icon name="logo-youtube" color="white"
+                    style=" position: absolute;display: block;font-size: 50px;top: 35%;left: 35%;"
+                    *ngIf="isAVideoBackground(i)"></ion-icon>
+          <ion-icon *ngIf="isFavorited(i)" class="star" name="star"
+                    [class.favorited]="isFavorited(i)"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div (click)="openActionSheet()" class="add-new-container">
+      <div class="add-new">
+        <ion-icon name="camera"></ion-icon>
+        <span>{{'Voeg verhaal toe' | translate}}</span>
+      </div>
     </div>
-  </div>
+  </ion-scroll>
+  <album-questions [query]="album.title"></album-questions>
 </ion-content>
