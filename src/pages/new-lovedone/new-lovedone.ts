@@ -8,7 +8,6 @@ import {env} from "../../app/environment";
 import {AuthGuard} from "../auth-guard";
 import {TranslatorService} from "../../providers/translator.service";
 
-
 /**
  * Generated class for the NewLovedonePage page.
  *
@@ -26,9 +25,10 @@ export class NewLovedonePage extends AuthGuard {
   firstname: string = "";
   lastname: string = "";
 
-  constructor(public authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService
-    , public navParams: NavParams, public lovedOnes: PatientService, public  alertCtrl: AlertController) {
-    super(authService, navCtrl, translatorService);
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public lovedOnes: PatientService, public authService: AuthService,
+    public  alertCtrl: AlertController, translatorService: TranslatorService) {
+      super(authService, navCtrl, translatorService);
   }
 
   canCreateLovedOne(): boolean {

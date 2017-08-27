@@ -136,12 +136,12 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       buttons: ['Ok']
     });
 
-    let text1: string = 'Voeg album toe';
-    let text2: string = 'Annuleer';
-    let text3: string = 'Voeg toe';
-    this.translatorService.translate.get(text1).subscribe(value => text1 = value);
-    this.translatorService.translate.get(text2).subscribe(value => text2 = value);
-    this.translatorService.translate.get(text3).subscribe(value => text3 = value);
+    let text1:string = 'Voeg album toe';
+    let text2:string = 'Annuleer';
+    let text3:string = 'Voeg toe';
+    this.translatorService.translate(text1, value => text1 = value);
+    this.translatorService.translate(text2, value => text2 = value);
+    this.translatorService.translate(text3, value => text3 = value);
 
     this.alertCtrl.create({
       "title": text1,

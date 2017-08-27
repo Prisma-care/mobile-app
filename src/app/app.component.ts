@@ -24,7 +24,7 @@ export class MyApp {
               public patientService: PatientService, public translatorService: TranslatorService,public authService: AuthService, public menu: MenuController) {
     //localStorage.clear();
     translatorService.refresh();
-    this.translate = translatorService.translate;
+    this.translate = translatorService.translateIn;
     this.translator = translatorService;
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.

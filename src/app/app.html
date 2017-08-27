@@ -5,11 +5,7 @@
   </ion-toolbar>
 
   <ion-content>
-    <ion-list >
-      <button ion-item color="white" style="	background-color: rgba(216,216,216,0);">
-        <ion-icon name="log-out"></ion-icon>
-        Logout
-      </button>
+    <ion-list>
       <button ion-item (click)="invite()" class="ion-menu-buttons">
         <ion-icon name="person-add" color="general"></ion-icon>
         {{'Nodig iemand uit' | translate}}
@@ -18,7 +14,7 @@
         <ion-icon name="exit" color="general"></ion-icon>
         {{'Afmelden' | translate}}
       </button>
-      <!--
+   <!--
       <ion-item>
         <ion-row style="text-align: center">
           <ion-col *ngIf="translator.lang.indexOf('en') < 0">

@@ -4,7 +4,6 @@ import {User} from "../../dto/user";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {AlbumsPage} from "../albums/albums";
 import {TranslatorService} from "../../providers/translator.service";
-import {TranslateService} from "@ngx-translate/core";
 import {UtilService} from "../../providers/util-service";
 import { NewLovedonePage } from "../new-lovedone/new-lovedone";
 
@@ -14,7 +13,6 @@ import { NewLovedonePage } from "../new-lovedone/new-lovedone";
   templateUrl: 'login.html',
 })
 export class LoginPage implements OnInit {
-  private translate: TranslateService;
   private translator: TranslatorService;
 
   isSigningUp: boolean = false;
@@ -34,7 +32,6 @@ export class LoginPage implements OnInit {
   constructor(public navCtrl: NavController, public authService: AuthService
     , public alertCtrl: AlertController, public translatorService: TranslatorService, public utilService: UtilService) {
     translatorService.refresh();
-    this.translate = translatorService.translate;
     this.translator = translatorService;
     this.util = utilService;
   }

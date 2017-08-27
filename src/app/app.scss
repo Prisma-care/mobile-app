@@ -24,6 +24,13 @@
   font-family: Varela, 'Noto Sans';
 }
 
+// Headers
+
+h1.prisma-title {
+  color: color($colors, dark-gray);
+  font-size: map-get($sizes, "medium");
+}
+
 // INPUT SIZE
 
 ion-input {
@@ -139,11 +146,7 @@ ion-navbar ion-buttons[end] button {
   bottom: 0.7em;
   font-size: 3em;
   color: color($colors, yellow);
-}
-
-// TODO: class may be redundant now
-.star.favorited {
-  color: color($colors, yellow);
+  text-shadow: 1px 2px 2px hsla(0, 0%, 15%, 0.4);
 }
 
 // ADD NEW STORY/ALBUM header
@@ -168,4 +171,14 @@ ion-navbar ion-buttons[end] button {
 }
 
 .add-new > span {
+}
+
+// ALBUM/STORY TILE OVERLAY GRADIENT
+.tile-overlay-gradient {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 37%, rgba(33, 33, 33, 0.3) 87%);
 }

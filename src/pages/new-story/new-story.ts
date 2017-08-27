@@ -45,8 +45,8 @@ export class NewStoryPage extends AuthGuard {
               private storyService: StoryService, private utilService: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
               public stanizer: StanizerService) {
-    super(authService, navCtrl, translatorService);
-    this.translatorService.translate.get(this.placeHolder).subscribe(value => this.placeHolder = value);
+    super(authService, navCtrl,translatorService);
+    this.translatorService.translate(this.placeHolder, value =>  this.placeHolder = value);
     this.method = navParams.get("method") as string;
     this.dataUrl = navParams.get("dataUrl") as string;
     this.selectedAlbum = navParams.get("album") as Album;
