@@ -58,11 +58,24 @@ export class TranslatorService {
   }
 
   /**
-    Translates the given string (key). Translations are guarantueed to be loaded.
-    The callback will be called with the resulting translation (1 argument).
+    Translates the given string or array of strings. Translations are guarantueed to be loaded.
+    The callback will be called with the resulting translation(s): 1 string value or a map of values if an array was given.
   */
-  public translate(key: string, callback: (arg: string) => string ) : void {
-    this.translateIn.get(key).subscribe((val) => callback(val));
+  public translate(key: string|Array<string>, callback: (arg: string|any) => any ) : void {
+    // multiple values to be translated
+    if (!(typeof key == "string") && key.length) { // not "string" ==> multiple values (or crap)
+      // filter crap
+      var argKeys: any[] = key as any[];
+      argKeys = argKeys.filter((val) => (val && typeof val == "string"));
+      
+      this.translateIn.get(argKeys).subscribe((vals) => {
+        callback(vals);
+      });
+    }
+    // single value
+    else {
+      this.translateIn.get(key).subscribe((val) => callback(val));
+    }
   }
 
 /**
