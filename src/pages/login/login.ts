@@ -84,14 +84,20 @@ export class LoginPage implements OnInit {
   }
 
   loginError(errorMessage?: string) {
-    let alert = this.alertCtrl.create({
-      title: "Error",
-      subTitle: "Bad login/password",
-      buttons: ['Ok']
+
+    var errorMsgDefault = "Je gebruikersnaam of wachtwoord klopt niet.";
+
+    this.translator.translate([errorMessage, errorMsgDefault], (translations) => {
+      console.log("translations: " + JSON.stringify(translations));
+      let alert = this.alertCtrl.create({
+        title: errorMessage ? translations[errorMessage] : translations[errorMsgDefault],
+        buttons: ['Ok']
+      });
+      //refreshes the password
+      //this.password = "";
+      alert.present();
     });
-    //refreshes the password
-    //this.password = "";
-    return alert.present();
+
   }
 
   signUp() {

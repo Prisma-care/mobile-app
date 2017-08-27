@@ -8,10 +8,14 @@ import {TranslatorService} from "../../providers/translator.service";
 @Component({
   selector: 'album-questions',
   template: `
-    <div class="page-header" *ngIf="currentQuestion">
-      <div (click)="nextQuestion()">
-        <h2>{{currentQuestion}}</h2>
-        <ion-icon name="refresh" class="question-refresh"></ion-icon>
+    <div class="topic-wrapper">
+      <div class="topic-container" *ngIf="currentQuestion">
+        <span class="topic-sub">{{ 'Onderwerp' | translate }}</span>
+        <span class="topic-title">{{currentQuestion}}</span>
+        <span (click)="nextQuestion()" class="topic-other">
+          <ion-icon name="refresh"></ion-icon>
+          &nbsp;{{ 'Ander onderwerp' | translate }}
+        </span>
       </div>
     </div>
   `
