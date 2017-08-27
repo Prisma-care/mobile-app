@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit,ChangeDetectorRef} from "@angular/core";
 import {ActionSheetController, MenuController, NavController, NavParams, PopoverController} from "ionic-angular";
 import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
@@ -23,14 +23,15 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   public index: number;
   public story: UserStory;
 
+  public loadingImageUrl:string = "assets/img/homePage/loading.gif"
 
-  public stanizedUrl;
+  public backgroundImages: any[]=[];
   // TODO: get favorite in backend &
   // 1 like?
   constructor(protected  authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private nativePageTransitions: NativePageTransitions,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService,
-              public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController) {
+              public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController, private ref: ChangeDetectorRef) {
     super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
@@ -46,7 +47,8 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     if (this.album)
       this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).toPromise().then(res =>{
         this.album = res;
-        this.setStanizedUrl(this.album.stories[this.index].source);
+        if(!this.imageLoaded(this.index))
+         this.setStanizedUrl(this.album.stories[this.index].source,this.index);
       } );
     this.menu.enable(false);
   }
@@ -101,12 +103,14 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   next(): void {
     this.index = (this.index + 1) % this.album.stories.length;
-    this.setStanizedUrl(this.album.stories[this.index].source);
+    if(!this.imageLoaded(this.index))
+    this.setStanizedUrl(this.album.stories[this.index].source,this.index);
   }
 
   previous(): void {
     this.index = this.index === 0 ? this.album.stories.length - 1 : this.index - 1;
-    this.setStanizedUrl(this.album.stories[this.index].source);
+    if(!this.imageLoaded(this.index))
+    this.setStanizedUrl(this.album.stories[this.index].source,this.index);
 
   }
 
@@ -219,27 +223,33 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   }
 
-  async setStanizedUrl(url: string) {
+  async setStanizedUrl(url: string,i:number) {
     if(!url){
       return;
     }
     if(url.indexOf(env.privateImagesRegex) < 0){
-      this.stanizedUrl = this.stanizer.sanitize(url);
+      this.backgroundImages[i] = this.stanizer.sanitize(url);
+      this.ref.markForCheck();
       return;
     }
 
 
     await this.storyService.getImage(url).toPromise().then(blob => {
-      this.stanizedUrl =  this.stanizer.sanitize(blob);
+      this.backgroundImages[i] =  this.stanizer.sanitize(blob);
+      this.ref.markForCheck();
       return;
     })
   }
 
   getStanizedUrl(){
-    return this.stanizedUrl;
+    return this.backgroundImages[this.index];
   }
 
   stanizeVideo(url: string) {
     return this.stanizer.sanitizeVideo(url);
+  }
+
+   imageLoaded(index: number):boolean {
+    return !!this.backgroundImages[index];
   }
 }

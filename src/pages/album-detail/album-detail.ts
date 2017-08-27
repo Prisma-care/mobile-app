@@ -40,7 +40,8 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
         if (!this.album.isEmpty()) {
           let i: number = 0;
           this.album.stories.forEach(story => {
-            this.setBackgroundImages(i);
+            if(!this.imageLoaded(i))
+              this.setBackgroundImages(i);
             i++;
           })
         }
@@ -197,5 +198,9 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     } else {
       return url;
     }
+  }
+
+  imageLoaded(index: number):boolean {
+    return !!this.backgroundImages[index];
   }
 }
