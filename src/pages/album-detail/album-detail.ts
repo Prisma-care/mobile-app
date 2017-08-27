@@ -14,7 +14,6 @@ import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'album-detail',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'album-detail.html'
 })
 
@@ -24,11 +23,13 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   public album: Album;
   backgroundImages: any[] = [];
 
+  public loadingImageStyle:any = `background-image: url(${env.loadingImage})`;
   constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
               private storyService: StoryService, private sanitizer: StanizerService, private ref: ChangeDetectorRef) {
     super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
+    this.loadingImageStyle = this.sanitizer.sanitizeStyle(this.loadingImageStyle);
   }
 
   ngOnInit(): void {
@@ -148,9 +149,11 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     let url: string = this.album.getBackgroundImage(i);
     if (!url) {
       this.backgroundImages[i] = "";
+      this.ref.markForCheck();
       return;
     }
     let thumb = this.getThumb(url);
+    this.backgroundImages[i] = this.loadingImageStyle;
     if(thumb.indexOf(env.privateImagesRegex) < 0){
       const style = `background-image: url(${thumb})`;
       this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style);
@@ -164,7 +167,9 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
       return;
     });
   }
-
+  getBackgroundImg(i: number): any {
+    return this.backgroundImages[i];
+  }
 
   isAVideoBackground(i: number): boolean {
     let url: string = this.album.getBackgroundImage(i);
@@ -185,10 +190,6 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     return this.album.stories[i].favorited;
   }
 
-  getBackgroundImages(i){
-    console.log("Image " + i + " : "+this.backgroundImages[i] );
-    return this.backgroundImages[i];
-  }
   getThumb(url: string) {
     if (url.toLowerCase().indexOf("youtube.com") >= 0) {
       var reg = /embed\/(.+?)\?/;
@@ -201,6 +202,6 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   imageLoaded(index: number):boolean {
-    return !!this.backgroundImages[index];
+    return !!this.backgroundImages[index] && this.backgroundImages[index] != this.loadingImageStyle;
   }
 }

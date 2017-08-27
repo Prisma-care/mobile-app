@@ -11,6 +11,7 @@ export const env = {
   jwtToken: 'id_token',
   localstorage: {LOCALSTORAGE_SELECTEDLANG : "langs"},
   privateImagesRegex: '/asset/',
+  loadingImage:"assets/img/homePage/loading.gif",
   api: {
     getSignIn: 'signin',
     getPatient: 'patient',

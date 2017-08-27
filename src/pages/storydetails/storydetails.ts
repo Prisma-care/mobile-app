@@ -1,4 +1,4 @@
-import {Component, OnInit,ChangeDetectorRef} from "@angular/core";
+import {Component, OnInit, ChangeDetectorRef} from "@angular/core";
 import {ActionSheetController, MenuController, NavController, NavParams, PopoverController} from "ionic-angular";
 import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
@@ -23,12 +23,12 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   public index: number;
   public story: UserStory;
 
-  public loadingImageUrl:string = "assets/img/homePage/loading.gif"
+  public loadingImageUrl: string = env.loadingImage;
 
-  public backgroundImages: any[]=[];
+  public backgroundImages: any[] = [];
   // TODO: get favorite in backend &
   // 1 like?
-  constructor(protected  authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService, public navParams: NavParams,
+  constructor(protected  authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private nativePageTransitions: NativePageTransitions,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService,
               public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController, private ref: ChangeDetectorRef) {
@@ -45,11 +45,11 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   ionViewWillEnter() {
     if (this.album)
-      this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).toPromise().then(res =>{
+      this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).toPromise().then(res => {
         this.album = res;
-        if(!this.imageLoaded(this.index))
-         this.setStanizedUrl(this.album.stories[this.index].source,this.index);
-      } );
+        if (!this.imageLoaded(this.index))
+          this.setStanizedUrl(this.album.stories[this.index].source, this.index);
+      });
     this.menu.enable(false);
   }
 
@@ -103,14 +103,14 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   next(): void {
     this.index = (this.index + 1) % this.album.stories.length;
-    if(!this.imageLoaded(this.index))
-    this.setStanizedUrl(this.album.stories[this.index].source,this.index);
+    if (!this.imageLoaded(this.index))
+      this.setStanizedUrl(this.album.stories[this.index].source, this.index);
   }
 
   previous(): void {
     this.index = this.index === 0 ? this.album.stories.length - 1 : this.index - 1;
-    if(!this.imageLoaded(this.index))
-    this.setStanizedUrl(this.album.stories[this.index].source,this.index);
+    if (!this.imageLoaded(this.index))
+      this.setStanizedUrl(this.album.stories[this.index].source, this.index);
 
   }
 
@@ -223,11 +223,11 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   }
 
-  async setStanizedUrl(url: string,i:number) {
-    if(!url){
+  async setStanizedUrl(url: string, i: number) {
+    if (!url) {
       return;
     }
-    if(url.indexOf(env.privateImagesRegex) < 0){
+    if (url.indexOf(env.privateImagesRegex) < 0) {
       this.backgroundImages[i] = this.stanizer.sanitize(url);
       this.ref.markForCheck();
       return;
@@ -235,13 +235,13 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
 
     await this.storyService.getImage(url).toPromise().then(blob => {
-      this.backgroundImages[i] =  this.stanizer.sanitize(blob);
+      this.backgroundImages[i] = this.stanizer.sanitize(blob);
       this.ref.markForCheck();
       return;
     })
   }
 
-  getStanizedUrl(){
+  getStanizedUrl() {
     return this.backgroundImages[this.index];
   }
 
@@ -249,7 +249,8 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     return this.stanizer.sanitizeVideo(url);
   }
 
-   imageLoaded(index: number):boolean {
-    return !!this.backgroundImages[index];
+
+  imageLoaded(index: number): boolean {
+    return !!this.backgroundImages[index] && this.backgroundImages[index] != this.loadingImageUrl;
   }
 }

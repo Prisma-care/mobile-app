@@ -27,12 +27,16 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   albums: Album[];
   backgroundImages: any[] = [];
 
+
+
+  public loadingImageStyle:any = `background-image: url(${env.loadingImage})`;
   constructor(public authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
               public camera: Camera, public sanitizer: StanizerService, public storyService: StoryService,
               public alertCtrl: AlertController, public menu: MenuController, private ref: ChangeDetectorRef) {
     super(authService, navCtrl, translatorService);
     this.currentPatient = this.authService.getCurrentPatient();
     menu.enable(true);
+    this.loadingImageStyle = this.sanitizer.sanitizeStyle(this.loadingImageStyle);
   }
 
   currentPatient: Patient;
@@ -47,11 +51,13 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       this.albums = albums as Album[];
       let i: number = 0;
       this.albums.forEach(album => {
+        this.albums[i] = album;
         if (!album.isEmpty()) {
           if(!this.imageLoaded(i))
             this.setBackgroundImages(i);
-          i++;
+
         }
+        i++;
       });
     });
   }
@@ -66,7 +72,6 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   getBackgroundImg(i: number): any {
     return this.backgroundImages[i];
   }
-
   getBackgroundColor(i: number): string {
     if (this.albums[i].isEmpty()) {
       return this.colorCodes[i % this.colorCodes.length] as string;
@@ -82,18 +87,17 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       return;
     }
     else {
-      let index = this.albums[i].stories.findIndex(this.isRepresentativeOfTheAlbum);
-      if (index === -1)
-        index = this.albums[i].stories.findIndex(this.hasAnImage);
-      if (index === -1)
-        index = 0;
+      let index = this.getRepresentativeImageStoryIndex(this.albums[i]);
+
+      console.log("Album : " + this.albums[i].title + " bg: " + index );
       let thumb: string = this.getThumb(this.albums[i].getBackgroundImage(index));
 
       if (!this.albums[i].getBackgroundImage(index)) {
         this.backgroundImages[i] = "";
+        this.ref.markForCheck();
         return;
       }
-
+      this.backgroundImages[i] = this.loadingImageStyle;
       //if not a private image
       if (thumb.indexOf(env.privateImagesRegex) < 0) {
         const style = `background-image: url(${thumb})`;
@@ -111,6 +115,15 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     }
   }
 
+  getRepresentativeImageStoryIndex(al:Album) :number{
+    let index = al.stories.findIndex(this.isRepresentativeOfTheAlbum);
+    if (index === -1)
+      index = al.stories.findIndex(this.hasAnImage);
+    if (index === -1)
+      index = 0;
+
+    return index;
+  }
   isAVideoBackground(i: number): boolean {
     if (this.albums[i].isEmpty()) {
       return false;
@@ -193,6 +206,6 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   }
 
   imageLoaded(index: number):boolean {
-    return !!this.backgroundImages[index];
+    return !!this.backgroundImages[index] && this.backgroundImages[index] != this.loadingImageStyle;
   }
 }
