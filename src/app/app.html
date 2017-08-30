@@ -6,6 +6,10 @@
 
   <ion-content>
     <ion-list>
+      <button ion-item (click)="logout()" class="ion-menu-buttons">
+        <ion-icon name="exit" color="general"></ion-icon>
+        {{'Afmelden' | translate}}
+      </button>
       <button ion-item (click)="invite()" class="ion-menu-buttons">
         <ion-icon name="person-add" color="general"></ion-icon>
         {{'Nodig iemand uit' | translate}}

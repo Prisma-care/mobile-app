@@ -88,7 +88,6 @@ export class LoginPage implements OnInit {
     var errorMsgDefault = "Je gebruikersnaam of wachtwoord klopt niet.";
 
     this.translator.translate([errorMessage, errorMsgDefault], (translations) => {
-      console.log("translations: " + JSON.stringify(translations));
       let alert = this.alertCtrl.create({
         title: errorMessage ? translations[errorMessage] : translations[errorMsgDefault],
         buttons: ['Ok']

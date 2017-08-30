@@ -45,7 +45,7 @@ export class PrismaService implements OnInit {
   public handleError(error: Response | any) {
     console.log("Error ! " + JSON.stringify(error));
     //logs out if no user token avaible when needed
-    let errorString: string = JSON.stringify(error).toLowerCase() + " token_expired";
+    let errorString: string = JSON.stringify(error).toLowerCase();
     if (errorString.indexOf("token_invalid") >= 0 || errorString.indexOf("token_expired") >= 0 ||
       errorString.indexOf("token_not_provided") >= 0) {
       console.log("Token expired or not provided");

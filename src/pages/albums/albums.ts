@@ -12,6 +12,7 @@ import {Patient} from "../../dto/patient";
 import {AuthGuard} from "../auth-guard";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {TranslatorService} from "../../providers/translator.service";
+import {LoginPage} from "../login/login";
 
 
 @Component({
@@ -49,6 +50,12 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   ionViewWillEnter(): void {
     this.storyService.getAlbums(this.authService.getCurrentPatient().id).toPromise().then(albums => {
       this.albums = albums as Album[];
+      if(!this.authService.isLoggedIn()){
+        this.navCtrl.setRoot(LoginPage).then(res => {
+          this.navCtrl.popToRoot();
+          return ;
+        });
+      }
       let i: number = 0;
       this.albums.forEach(album => {
         this.albums[i] = album;
