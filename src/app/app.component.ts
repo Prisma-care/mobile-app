@@ -9,6 +9,7 @@ import {AuthService} from "../providers/auth-service/auth-service";
 import {TranslatorService} from "../providers/translator.service";
 import {TranslateService} from "@ngx-translate/core";
 import {InvitePage} from "../pages/invite/invite";
+import {StoryService} from "../providers/back-end/story.service";
 
 @Component({
   templateUrl: 'app.html'
@@ -21,11 +22,18 @@ export class MyApp {
   rootPage: any = LoginPage;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
-              public patientService: PatientService, public translatorService: TranslatorService,public authService: AuthService, public menu: MenuController) {
+              public patientService: PatientService, public translatorService: TranslatorService,
+              public authService: AuthService, public menu: MenuController, public storyService: StoryService) {
     //localStorage.clear();
     translatorService.refresh();
     this.translate = translatorService.translateIn;
     this.translator = translatorService;
+    if(this.authService.isLoggedIn()){
+      this.storyService.getAlbums(this.authService.getCurrentPatient().id).toPromise().then( res => {
+        if(!this.authService.isLoggedIn())
+          this.logout();
+      });
+    }
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
