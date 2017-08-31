@@ -28,11 +28,16 @@
                       clearInput></ion-textarea>
       </ion-item>
     </ion-item>
-    <button ion-button solid block full large color="primary" (click)="commit()"
+
+    <button ion-button solid block full large color="primary" (click)="commitWithLoading()"
             [disabled]="method.indexOf(methods.addYoutubeStory) >= 0 && !util.checkYoutubeLink(youtubeLink)">
       <ion-icon name="checkmark"></ion-icon>
-      <p>&nbsp;{{'Opslaan' | translate}}
-      <p>
+      <div *ngIf="!isLoading" >&nbsp;{{'Opslaan' | translate}}
+      </div>
+      <div *ngIf="isLoading">
+        <ion-spinner item-start name="dots" color="white"></ion-spinner>
+      </div>
     </button>
+
   </ion-item-group>
 </ion-content>

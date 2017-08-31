@@ -40,6 +40,7 @@ export class NewStoryPage extends AuthGuard {
 
 //file Transfer
   loading: Loading;
+  isLoading: boolean= false;
 
   constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private utilService: UtilService,
@@ -66,7 +67,7 @@ export class NewStoryPage extends AuthGuard {
 
     if (this.method.indexOf(env.methods.replaceImage) >= 0) {
       this.description = this.oldStory.description;
-      this.commit();
+      this.commitWithLoading();
     }
 
     if (this.method.indexOf(env.methods.addYoutubeStory) >= 0) {
@@ -82,7 +83,17 @@ export class NewStoryPage extends AuthGuard {
     }*/
 
   }
+  commitWithLoading() {
+    if(this.isLoading)
+      return;
+    this.isLoading = true;
+    try{
 
+      this.commit();
+    }finally {
+      this.isLoading = false;
+    }
+  }
   commit() {
     if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
       this.updateDescription();

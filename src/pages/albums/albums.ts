@@ -49,7 +49,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
 
   ionViewWillEnter(): void {
     this.storyService.getAlbums(this.authService.getCurrentPatient().id).toPromise().then(albums => {
-      this.albums = albums as Album[];
+      this.albums = albums as Album[] || [];
       if(!this.authService.isLoggedIn()){
         this.navCtrl.setRoot(LoginPage).then(res => {
           this.navCtrl.popToRoot();

@@ -43,11 +43,11 @@ export class InvitePage extends AuthGuard {
     }
 
     this.patientService.inviteUser({
-      inviterID: 34+ "",
+      inviterId: 34+ "",
       lastName: this.lastname,
       firstName: this.firstname,
       email: this.email,
-      patientID: this.patientId + ""
+      patientId: this.patientId + ""
     }).toPromise().then(res => {
       if(res == true){
         this.inviteError("Invite Ok");
