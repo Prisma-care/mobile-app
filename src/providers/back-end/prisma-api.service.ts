@@ -50,8 +50,8 @@ export class PrismaService implements OnInit {
       errorString.indexOf("token_not_provided") >= 0  || errorString.indexOf("token is invalid")  >= 0) {
       console.log("Token expired or not provided");
       localStorage.removeItem(env.jwtToken);
-      localStorage.removeItem(env.temp.fakeUser);
-      localStorage.removeItem(env.temp.fakePatient);
+      localStorage.removeItem(env.temp.currentUser);
+      localStorage.removeItem(env.temp.currentPatient);
       //  MyApp.getNav().push(LoginPage);
     }
 

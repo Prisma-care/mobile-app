@@ -23,13 +23,13 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   //backgrpind collors
   private colorCodes: string[] = ["#FAD820", "#FF9F00", "#F35A4B", "#D95DB4", "#637DC8"];
 
-  user: User = JSON.parse(localStorage.getItem(env.temp.fakeUser)) as User;
+  user: User = JSON.parse(localStorage.getItem(env.temp.currentUser)) as User;
 
   albums: Album[];
   backgroundImages: any[] = [];
 
 
-
+  currentPatient: Patient;
   public loadingImageStyle:any = `background-image: url(${env.loadingImage})`;
   constructor(public authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
               public camera: Camera, public sanitizer: StanizerService, public storyService: StoryService,
@@ -40,7 +40,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     this.loadingImageStyle = this.sanitizer.sanitizeStyle(this.loadingImageStyle);
   }
 
-  currentPatient: Patient;
+
 
   ngOnInit(): void {
     // TODO: replace with a service method
@@ -48,7 +48,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   }
 
   ionViewWillEnter(): void {
-    this.storyService.getAlbums(this.authService.getCurrentPatient().id).toPromise().then(albums => {
+    this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(albums => {
       this.albums = albums as Album[] || [];
       if(!this.authService.isLoggedIn()){
         this.navCtrl.setRoot(LoginPage).then(res => {

@@ -23,8 +23,8 @@ export const env = {
   },
   temp: {
     albums: "albums",
-    fakeUser: "user",
-    fakePatient: "patient"
+    currentUser: "user",
+    currentPatient: "patient"
   },
   methods: {
     addNewStory: 'addNewStory',

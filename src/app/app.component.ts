@@ -29,7 +29,7 @@ export class MyApp {
     this.translate = translatorService.translateIn;
     this.translator = translatorService;
     if(this.authService.isLoggedIn()){
-      this.storyService.getAlbums(this.authService.getCurrentPatient().id).toPromise().then( res => {
+      this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then( res => {
         if(!this.authService.isLoggedIn())
           this.logout();
       });

@@ -45,7 +45,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   ionViewWillEnter() {
     if (this.album)
-      this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).toPromise().then(res => {
+      this.storyService.getAlbum(this.authService.getCurrentPatient().patient_id, this.album.id).toPromise().then(res => {
         this.album = res;
         if (!this.imageLoaded(this.index))
           this.setStanizedUrl(this.album.stories[this.index].source, this.index);
@@ -129,7 +129,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     let story: UserStory = new UserStory();
     this.album.stories[this.index].favorited = story.favorited = !this.album.stories[this.index].favorited;
     story.id = this.album.stories[this.index].id;
-    this.storyService.updateStory(+this.authService.getCurrentPatient().id, story).toPromise().then(addedStory => {
+    this.storyService.updateStory(+this.authService.getCurrentPatient().patient_id, story).toPromise().then(addedStory => {
 
     });
 

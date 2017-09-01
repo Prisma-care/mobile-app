@@ -36,7 +36,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   ionViewWillEnter(): void {
-      this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).subscribe(res => {
+      this.storyService.getAlbum(this.authService.getCurrentPatient().patient_id, this.album.id).subscribe(res => {
         this.album = res;
         if (!this.album.isEmpty()) {
           let i: number = 0;

@@ -110,9 +110,9 @@ export class NewStoryPage extends AuthGuard {
     else
       newStory.description = ".";
     newStory.creatorId = 1;
-    this.storyService.addStory(+this.authService.getCurrentPatient().id, newStory).toPromise().then(addedStory => {
+    this.storyService.addStory(+this.authService.getCurrentPatient().patient_id, newStory).toPromise().then(addedStory => {
       if (this.dataUrl) {
-        this.uploadImage(this.authService.getCurrentPatient().id, addedStory.id, this.dataUrl + "").then(res => {
+        this.uploadImage(this.authService.getCurrentPatient().patient_id, addedStory.id, this.dataUrl + "").then(res => {
           this.navCtrl.popTo(AlbumsPage, {
             "album": this.selectedAlbum,
           });
@@ -134,7 +134,7 @@ export class NewStoryPage extends AuthGuard {
     let updatedStory = new UserStory();
     updatedStory.id = this.oldStory.id;
     updatedStory.description = this.oldStory.description;
-    this.storyService.updateStory(+this.authService.getCurrentPatient().id, updatedStory).toPromise().then(addedStory => {
+    this.storyService.updateStory(+this.authService.getCurrentPatient().patient_id, updatedStory).toPromise().then(addedStory => {
       this.navCtrl.popTo(StoryDetailsPage, {
         "album": this.selectedAlbum,
         "index": this.index
@@ -145,7 +145,7 @@ export class NewStoryPage extends AuthGuard {
   updateImage() {
     console.log("trying to update");
     if (this.dataUrl) {
-      this.uploadImage(this.authService.getCurrentPatient().id, this.oldStory.id, this.dataUrl + "").then(res => {
+      this.uploadImage(this.authService.getCurrentPatient().patient_id, this.oldStory.id, this.dataUrl + "").then(res => {
         this.navCtrl.popTo(StoryDetailsPage, {
           "album": this.selectedAlbum,
           "index": this.index
