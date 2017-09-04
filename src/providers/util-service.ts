@@ -114,7 +114,7 @@ export class UtilService {
   }
 
   public getPasswordPattern(): string {
-    return '^.{3,8}$';
+    return '^.{6,40}$';
   }
 
   public checkPassword(password: string): boolean {
