@@ -30,47 +30,48 @@ export class NewStoryPage extends AuthGuard {
   dataUrl: string;
   description: string;
   placeHolder: string = "Schrijf het verhaal.\nHoe meer details hoe beter.";
-  youtubeLink:string;
+  youtubeLink: string;
   selectedAlbum: Album;
 
 
   index: number = 0;
   oldStory: UserStory;
-  util:UtilService;
+  util: UtilService;
 
 //file Transfer
   loading: Loading;
+  isLoading: boolean = false;
 
-  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,public navParams: NavParams,
+  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private utilService: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
               public stanizer: StanizerService) {
-    super(authService, navCtrl,translatorService);
-    this.translatorService.translate(this.placeHolder, value =>  this.placeHolder = value);
+    super(authService, navCtrl, translatorService);
+    this.translatorService.translate(this.placeHolder, value => this.placeHolder = value);
     this.method = navParams.get("method") as string;
     this.dataUrl = navParams.get("dataUrl") as string;
     this.selectedAlbum = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
     this.util = utilService;
     this.title = 'Vul het verhaal aan';
-
     this.oldStory = navParams.get("story") as UserStory;
     if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
       this.description = this.oldStory.description;
-      if (this.oldStory.source.toLowerCase().indexOf("youtube.com") < 0)
-        this.dataUrl = this.oldStory.source;
-      else
-        this.dataUrl = null;
+      if (this.oldStory.source)
+        if (this.oldStory.source.toLowerCase().indexOf("youtube.com") < 0)
+          this.dataUrl = this.oldStory.source;
+        else
+          this.dataUrl = null;
     }
 
     if (this.method.indexOf(env.methods.replaceImage) >= 0) {
       this.description = this.oldStory.description;
-      this.commit();
+      this.commitWithLoading();
     }
 
     if (this.method.indexOf(env.methods.addYoutubeStory) >= 0) {
       this.title = "Kies video van Youtube";
-      this.description = "";
+      this.description = "Video van Youtube";
     }
 
 
@@ -80,6 +81,18 @@ export class NewStoryPage extends AuthGuard {
       this.commit(); // skip to step 2 because we already have the description
     }*/
 
+  }
+
+  commitWithLoading() {
+    if (this.isLoading)
+      return;
+    this.isLoading = true;
+    try {
+
+      this.commit();
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   commit() {
@@ -93,14 +106,15 @@ export class NewStoryPage extends AuthGuard {
     }
     let newStory: UserStory = new UserStory();
     newStory.albumId = +this.selectedAlbum.id;
-    if (this.description)
-      newStory.description = this.description;
-    else
-      newStory.description = ".";
-    newStory.creatorId = 1;
-    this.storyService.addStory(+this.authService.getCurrentPatient().id, newStory).toPromise().then(addedStory => {
+    newStory.description = this.description || ".";
+    newStory.creatorId = +this.authService.getCurrentUser().id || 0;
+    if (this.method.indexOf(env.methods.addYoutubeStory) >= 0 && this.youtubeLink) {
+      newStory.assetType = "youtube";
+      newStory.source = this.youtubeLink;
+    }
+    this.storyService.addStory(+this.authService.getCurrentPatient().patient_id, newStory).toPromise().then(addedStory => {
       if (this.dataUrl) {
-        this.uploadImage(this.authService.getCurrentPatient().id, addedStory.id, this.dataUrl + "").then(res => {
+        this.uploadImage(this.authService.getCurrentPatient().patient_id, addedStory.id, this.dataUrl + "").then(res => {
           this.navCtrl.popTo(AlbumsPage, {
             "album": this.selectedAlbum,
           });
@@ -109,6 +123,15 @@ export class NewStoryPage extends AuthGuard {
         });
       }
       else {
+        if (this.method.indexOf(env.methods.addYoutubeStory) >= 0 && this.youtubeLink) {
+          this.storyService.addYoutubeLinkAsset(this.authService.getCurrentPatient().patient_id, addedStory.id, this.youtubeLink).toPromise().then(ret => {
+            this.navCtrl.popTo(AlbumsPage, {
+              "album": this.selectedAlbum,
+            });
+            return;
+          });
+
+        }
         this.navCtrl.popTo(AlbumsPage, {
           "album": this.selectedAlbum,
         });
@@ -122,7 +145,7 @@ export class NewStoryPage extends AuthGuard {
     let updatedStory = new UserStory();
     updatedStory.id = this.oldStory.id;
     updatedStory.description = this.oldStory.description;
-    this.storyService.updateStory(+this.authService.getCurrentPatient().id, updatedStory).toPromise().then(addedStory => {
+    this.storyService.updateStory(+this.authService.getCurrentPatient().patient_id, updatedStory).toPromise().then(addedStory => {
       this.navCtrl.popTo(StoryDetailsPage, {
         "album": this.selectedAlbum,
         "index": this.index
@@ -133,7 +156,7 @@ export class NewStoryPage extends AuthGuard {
   updateImage() {
     console.log("trying to update");
     if (this.dataUrl) {
-      this.uploadImage(this.authService.getCurrentPatient().id, this.oldStory.id, this.dataUrl + "").then(res => {
+      this.uploadImage(this.authService.getCurrentPatient().patient_id, this.oldStory.id, this.dataUrl + "").then(res => {
         this.navCtrl.popTo(StoryDetailsPage, {
           "album": this.selectedAlbum,
           "index": this.index
@@ -178,9 +201,13 @@ export class NewStoryPage extends AuthGuard {
   }
 
 
-  sanitizeUrl() {
+  async sanitizeUrl() {
     if (this.oldStory) {
-      return this.stanizer.sanitize(this.dataUrl);
+      if (this.dataUrl.indexOf(env.privateImagesRegex) < 0)
+        return this.stanizer.sanitize(this.dataUrl);
+      return await this.storyService.getImage(this.dataUrl).toPromise().then(blob => {
+        return this.stanizer.sanitize(blob);
+      })
     } else {
       return this.utilService.pathForImage(this.dataUrl);
     }

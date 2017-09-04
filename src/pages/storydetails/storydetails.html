@@ -18,7 +18,7 @@
       <div class="image-container"
            *ngIf="album.stories[index].source && album.stories[index].source.indexOf('youtube.com') < 0">
         <div *ngIf="album.stories[index].source">
-          <img id="{{album.stories[index].id}}" [src]="stanize(album.stories[index].source)"
+          <img id="{{album.stories[index].id}}" [src]="getStanizedUrl() || loadingImageUrl"
                style="width:100%; max-width:100%">
           <ion-icon class="star" name="{{isFavorited() ? 'star' : 'star-outline'}}"
                     [class.favorited]="isFavorited()" (click)="toggleFavorite()"></ion-icon>
@@ -40,7 +40,7 @@
       <div class="description" color="general" *ngIf="album.stories[index].description">
         <p class="description-text">{{album.stories[index].description}}</p>
         <p style="text-align: center; margin: 0.7em 0 0.3em 0;" *ngIf="!album.stories[index].source">
-          <ion-icon  class="star2"
+          <ion-icon class="star2"
                     name="{{isFavorited() ? 'star' : 'star-outline'}}"
                     [class.favorited]="isFavorited()" (click)="toggleFavorite()"></ion-icon>
         </p>

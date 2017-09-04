@@ -9,7 +9,9 @@ export const API_URL: string = BACKEND + '/v1';
 export const env = {
   production: false,
   jwtToken: 'id_token',
-  localstorage: {LOCALSTORAGE_SELECTEDLANG : "langs"},
+  localstorage: {LOCALSTORAGE_SELECTEDLANG: "langs"},
+  privateImagesRegex: '/asset/',
+  loadingImage: "assets/img/homePage/loading.gif",
   api: {
     getSignIn: 'signin',
     getPatient: 'patient',
@@ -21,8 +23,8 @@ export const env = {
   },
   temp: {
     albums: "albums",
-    fakeUser: "user",
-    fakePatient: "patient"
+    currentUser: "user",
+    currentPatient: "patient"
   },
   methods: {
     addNewStory: 'addNewStory',

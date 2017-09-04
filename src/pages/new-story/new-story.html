@@ -12,6 +12,9 @@
 
 <ion-content padding>
   <ion-item-group>
+    <h2 class="plak-een-youtube-lin" *ngIf="method.indexOf(methods.addYoutubeStory) >= 0">Plak een Youtube link om de
+      video toe te voegen.</h2>
+
     <ion-item>
       <ion-thumbnail *ngIf="dataUrl && method.indexOf(methods.replaceDescription) < 0" style="padding-left: 7%;">
         <img class="new-story-thumb" [src]="sanitizeUrl()">
@@ -21,13 +24,20 @@
                       clearInput></ion-textarea>
       </ion-item>
       <ion-item *ngIf="method.indexOf(methods.addYoutubeStory) >= 0">
-        <ion-textarea autofocus class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="description" rows="3"
+        <ion-textarea autofocus class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="youtubeLink" rows="3"
                       clearInput></ion-textarea>
       </ion-item>
     </ion-item>
-    <button ion-button solid block full large color="primary" (click)="commit()" [disabled]="method.indexOf(methods.addYoutubeStory) >= 0 && !util.checkYoutubeLink(youtubeLink)">
+
+    <button ion-button solid block full large color="primary" (click)="commitWithLoading()"
+            [disabled]="method.indexOf(methods.addYoutubeStory) >= 0 && !util.checkYoutubeLink(youtubeLink)">
       <ion-icon name="checkmark"></ion-icon>
-      <p>&nbsp;{{'Opslaan' | translate}}<p>
+      <div *ngIf="!isLoading">&nbsp;{{'Opslaan' | translate}}
+      </div>
+      <div *ngIf="isLoading">
+        <ion-spinner item-start name="dots" color="white"></ion-spinner>
+      </div>
     </button>
+
   </ion-item-group>
 </ion-content>

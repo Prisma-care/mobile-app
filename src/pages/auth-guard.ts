@@ -10,9 +10,9 @@ import {TranslateService} from "@ngx-translate/core";
 export class AuthGuard {
   //General injection
   private translate: TranslateService;
-  private translator:TranslatorService;
+  private translator: TranslatorService;
 
-  constructor(protected authService: AuthService, protected  navCtrl: NavController,public translatorService: TranslatorService) {
+  constructor(protected authService: AuthService, protected  navCtrl: NavController, public translatorService: TranslatorService) {
     translatorService.refresh();
     this.translator = translatorService;
   }

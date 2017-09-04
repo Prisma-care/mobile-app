@@ -1,4 +1,5 @@
 import {PrismaService} from "./prisma-api.service";
+import {Headers, ResponseContentType} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/map";
@@ -137,6 +138,7 @@ export class StoryService extends PrismaService {
   updateStory(patientId: number, newStory: UserStory): Observable<UserStory> {
     let url: string = env.api.getPatient;
     let storyUrl: string = env.api.getStory;
+    this._head.set('Authorization', 'Bearer ' + localStorage.getItem(env.jwtToken));
     return this._http.patch(`${this._urlToApi}/${url}/${patientId}/${storyUrl}/${newStory.id}`, newStory, {
       headers: this._head
     })
@@ -149,13 +151,25 @@ export class StoryService extends PrismaService {
       }).catch(err => this.handleError(err));
   }
 
-
+  getImage(filename: string): Observable<any> {
+    let header: Headers = new Headers({'Content-Type': 'image/jpg'});
+    header.set('Authorization', 'Bearer ' + localStorage.getItem(env.jwtToken));
+    return this._http.get(`${filename}`, {
+      headers: header,
+      responseType: ResponseContentType.Blob
+    })
+      .map(res => {
+        return res.blob()
+      })
+      .map(blob => URL.createObjectURL(blob))
+      .catch(err => this.printError(err));
+  }
 
 
 //For demo prupose !!!
   setYoutubeVideoExemple(al: Album): Album {
-    let fakeVideosOn:boolean = false;
-    if(!fakeVideosOn)
+    let fakeVideosOn: boolean = false;
+    if (!fakeVideosOn)
       return al;
     if (al.title.toLowerCase().indexOf("vrije tijd") >= 0) {
       if (!StoryService.fakeStory1) {
@@ -199,5 +213,25 @@ export class StoryService extends PrismaService {
       al.stories.push(StoryService.fakeStory3);
     }
     return al;
+  }
+
+  addYoutubeLinkAsset(patient_id: string, storyId: string, asset: string) {
+    let url: string = env.api.getAsset;
+    let patientUrl: string = env.api.getPatient;
+    let storyUrl: string = env.api.getStory;
+    return this._http.post(`${this._urlToApi}/${patientUrl}/${patient_id}/${storyUrl}/${storyId}/${url}`, {
+      "asset": asset,
+      "assetType": "youtube"
+    }, {
+      headers: this._head
+    })
+      .map(res => {
+        // If request fails, throw an Error that will be caught
+        if (res.status < 100 || res.status >= 300) {
+          return false;
+        }
+        return true;
+      }).catch(err => this.handleError(err));
+
   }
 }

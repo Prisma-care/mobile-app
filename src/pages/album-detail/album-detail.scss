@@ -1,5 +1,14 @@
 album-detail {
 
+  ion-scroll {
+    height: 70%;
+    white-space: nowrap;
+  }
+
+  album-questions .topic-wrapper {
+    height: 30%;
+  }
+
   ion-title {
     float: left;
   }
