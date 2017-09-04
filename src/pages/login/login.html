@@ -11,7 +11,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-input type="{{type}}" #input [(ngModel)]="password" placeholder="{{'Paswoord' | translate}}"
+        <ion-input type="{{type}}" #input [(ngModel)]="password" placeholder="{{'Wachtwoord' | translate}}"
                    [pattern]="util.getPasswordPattern()" clearOnEdit="false" required clearInput></ion-input>
         <button ion-button icon-only (click)="toggleShow()" clear item-right>
           <ion-icon *ngIf="!show" name="eye" color="medium-gray"></ion-icon>
@@ -52,7 +52,7 @@
                    required></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input type="{{type}}" #input [(ngModel)]="password" placeholder="{{'Paswoord' | translate}}"
+        <ion-input type="{{type}}" #input [(ngModel)]="password" placeholder="{{'Wachtwoord' | translate}}"
                    [pattern]="util.getPasswordPattern()" clearOnEdit="false" required clearInput></ion-input>
         <button ion-button icon-only (click)="toggleShow()" clear item-right>
           <ion-icon *ngIf="!show" name="eye" color="medium-gray"></ion-icon>
