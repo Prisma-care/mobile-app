@@ -42,7 +42,7 @@ export class InvitePage extends AuthGuard {
     }
 
     this.patientService.inviteUser({
-      inviterId: 34 + "",
+      inviterId: AuthService.getCurrentUser().id + "",
       lastName: this.lastname,
       firstName: this.firstname,
       email: this.email,
