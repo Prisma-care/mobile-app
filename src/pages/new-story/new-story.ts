@@ -40,21 +40,20 @@ export class NewStoryPage extends AuthGuard {
 
 //file Transfer
   loading: Loading;
-  isLoading: boolean= false;
+  isLoading: boolean = false;
 
   constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private utilService: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
               public stanizer: StanizerService) {
-    super(authService, navCtrl,translatorService);
-    this.translatorService.translate(this.placeHolder, value =>  this.placeHolder = value);
+    super(authService, navCtrl, translatorService);
+    this.translatorService.translate(this.placeHolder, value => this.placeHolder = value);
     this.method = navParams.get("method") as string;
     this.dataUrl = navParams.get("dataUrl") as string;
     this.selectedAlbum = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
     this.util = utilService;
     this.title = 'Vul het verhaal aan';
-
     this.oldStory = navParams.get("story") as UserStory;
     if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
       this.description = this.oldStory.description;
@@ -72,7 +71,7 @@ export class NewStoryPage extends AuthGuard {
 
     if (this.method.indexOf(env.methods.addYoutubeStory) >= 0) {
       this.title = "Kies video van Youtube";
-      this.description = "";
+      this.description = "Video van Youtube";
     }
 
 
@@ -83,17 +82,19 @@ export class NewStoryPage extends AuthGuard {
     }*/
 
   }
+
   commitWithLoading() {
-    if(this.isLoading)
+    if (this.isLoading)
       return;
     this.isLoading = true;
-    try{
+    try {
 
       this.commit();
-    }finally {
+    } finally {
       this.isLoading = false;
     }
   }
+
   commit() {
     if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
       this.updateDescription();
@@ -105,11 +106,12 @@ export class NewStoryPage extends AuthGuard {
     }
     let newStory: UserStory = new UserStory();
     newStory.albumId = +this.selectedAlbum.id;
-    if (this.description)
-      newStory.description = this.description;
-    else
-      newStory.description = ".";
-    newStory.creatorId = 1;
+    newStory.description = this.description || ".";
+    newStory.creatorId = +this.authService.getCurrentUser().id || 0;
+    if (this.method.indexOf(env.methods.addYoutubeStory) >= 0 && this.youtubeLink) {
+      newStory.assetType = "youtube";
+      newStory.source = this.youtubeLink;
+    }
     this.storyService.addStory(+this.authService.getCurrentPatient().patient_id, newStory).toPromise().then(addedStory => {
       if (this.dataUrl) {
         this.uploadImage(this.authService.getCurrentPatient().patient_id, addedStory.id, this.dataUrl + "").then(res => {
@@ -121,6 +123,15 @@ export class NewStoryPage extends AuthGuard {
         });
       }
       else {
+        if (this.method.indexOf(env.methods.addYoutubeStory) >= 0 && this.youtubeLink) {
+          this.storyService.addYoutubeLinkAsset(this.authService.getCurrentPatient().patient_id, addedStory.id, this.youtubeLink).toPromise().then(ret => {
+            this.navCtrl.popTo(AlbumsPage, {
+              "album": this.selectedAlbum,
+            });
+            return;
+          });
+
+        }
         this.navCtrl.popTo(AlbumsPage, {
           "album": this.selectedAlbum,
         });

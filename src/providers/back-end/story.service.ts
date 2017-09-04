@@ -7,7 +7,7 @@ import "rxjs/Rx";
 import {Injectable} from "@angular/core";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
-import {API_URL, env} from "../../app/environment";
+import {env} from "../../app/environment";
 
 @Injectable()
 export class StoryService extends PrismaService {
@@ -152,7 +152,6 @@ export class StoryService extends PrismaService {
   }
 
   getImage(filename: string): Observable<any> {
-    console.log("getting image : " + filename + " \n " + JSON.stringify(this._head));
     let header: Headers = new Headers({'Content-Type': 'image/jpg'});
     header.set('Authorization', 'Bearer ' + localStorage.getItem(env.jwtToken));
     return this._http.get(`${filename}`, {
@@ -160,7 +159,6 @@ export class StoryService extends PrismaService {
       responseType: ResponseContentType.Blob
     })
       .map(res => {
-        console.log("Worked " + filename);
         return res.blob()
       })
       .map(blob => URL.createObjectURL(blob))
@@ -215,5 +213,25 @@ export class StoryService extends PrismaService {
       al.stories.push(StoryService.fakeStory3);
     }
     return al;
+  }
+
+  addYoutubeLinkAsset(patient_id: string, storyId: string, asset: string) {
+    let url: string = env.api.getAsset;
+    let patientUrl: string = env.api.getPatient;
+    let storyUrl: string = env.api.getStory;
+    return this._http.post(`${this._urlToApi}/${patientUrl}/${patient_id}/${storyUrl}/${storyId}/${url}`, {
+      "asset": asset,
+      "assetType": "youtube"
+    }, {
+      headers: this._head
+    })
+      .map(res => {
+        // If request fails, throw an Error that will be caught
+        if (res.status < 100 || res.status >= 300) {
+          return false;
+        }
+        return true;
+      }).catch(err => this.handleError(err));
+
   }
 }

@@ -27,9 +27,10 @@ export class AlbumQuestions extends AuthGuard implements OnInit {
   questions: string[] = [];
 
   @Input() query: string;
+  private questionIndex: number = 0;
 
-  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,private questionService: QuestionService) {
-    super(authService, navCtrl,translatorService);
+  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService, private questionService: QuestionService) {
+    super(authService, navCtrl, translatorService);
   }
 
   ngOnInit(): void {
@@ -41,9 +42,6 @@ export class AlbumQuestions extends AuthGuard implements OnInit {
   ionViewWillEnter(): void {
     this.questions = this.shuffle(this.questions);
   }
-
-
-  private questionIndex: number = 0;
 
   nextQuestion() {
     // TODO: implement a random question that avoids repetition
@@ -64,9 +62,9 @@ export class AlbumQuestions extends AuthGuard implements OnInit {
       temporaryValue = array[currentIndex];
       array[currentIndex] = array[randomIndex];
       array[randomIndex] = temporaryValue;
-  }
+    }
 
-  return array;
-}
+    return array;
+  }
 
 }

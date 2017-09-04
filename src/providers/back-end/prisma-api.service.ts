@@ -1,22 +1,18 @@
-import {Component,Injectable, OnInit} from "@angular/core";
+import {Injectable, OnInit} from "@angular/core";
 import {Headers, Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/of";
 import {API_URL, env} from "../../app/environment";
 import {Storage} from "@ionic/storage";
 import {UtilService} from "../util-service";
-import {LoginPage} from "../../pages/login/login";
-import {MyApp} from "../../app/app.component";
-
-import { NavController} from "ionic-angular";
 
 
 @Injectable()
 export class PrismaService implements OnInit {
+  static storage: Storage;
+  _http: Http;
   protected _urlToApi: string = API_URL;
   protected _head: Headers = new Headers({'Content-Type': 'application/json; charset=UTF-8'});
-  _http: Http;
-  static storage: Storage;
 
   constructor(_httpSer: Http, storageSer: Storage, utilService: UtilService) {
 
@@ -47,7 +43,7 @@ export class PrismaService implements OnInit {
     //logs out if no user token avaible when needed
     let errorString: string = JSON.stringify(error).toLowerCase();
     if (errorString.indexOf("token_invalid") >= 0 || errorString.indexOf("token_expired") >= 0 ||
-      errorString.indexOf("token_not_provided") >= 0  || errorString.indexOf("token is invalid")  >= 0) {
+      errorString.indexOf("token_not_provided") >= 0 || errorString.indexOf("token is invalid") >= 0) {
       console.log("Token expired or not provided");
       localStorage.removeItem(env.jwtToken);
       localStorage.removeItem(env.temp.currentUser);

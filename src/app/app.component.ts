@@ -15,11 +15,10 @@ import {StoryService} from "../providers/back-end/story.service";
   templateUrl: 'app.html'
 })
 export class MyApp {
-  private translate: TranslateService;
-  private translator:TranslatorService;
-
   @ViewChild(Nav) nav: Nav;
   rootPage: any = LoginPage;
+  private translate: TranslateService;
+  private translator: TranslatorService;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
               public patientService: PatientService, public translatorService: TranslatorService,
@@ -28,9 +27,9 @@ export class MyApp {
     translatorService.refresh();
     this.translate = translatorService.translateIn;
     this.translator = translatorService;
-    if(this.authService.isLoggedIn()){
-      this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then( res => {
-        if(!this.authService.isLoggedIn())
+    if (this.authService.isLoggedIn()) {
+      this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(res => {
+        if (!this.authService.isLoggedIn())
           this.logout();
       });
     }
@@ -47,7 +46,8 @@ export class MyApp {
     this.authService.logout();
     this.nav.setRoot(LoginPage);
   }
-  invite(){
+
+  invite() {
     this.menu.close();
     this.nav.push(InvitePage, {
       "patientId": 1

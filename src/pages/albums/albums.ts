@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectorRef} from "@angular/core";
+import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
 import {AlertController, MenuController, NavController} from "ionic-angular";
 import {StanizerService} from "../../providers/stanizer.service";
 import {StoryService} from "../../providers/back-end/story.service";
@@ -13,6 +13,7 @@ import {AuthGuard} from "../auth-guard";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {TranslatorService} from "../../providers/translator.service";
 import {LoginPage} from "../login/login";
+import {UtilService} from "../../providers/util-service";
 
 
 @Component({
@@ -20,26 +21,22 @@ import {LoginPage} from "../login/login";
   templateUrl: 'albums.html'
 })
 export class AlbumsPage extends AuthGuard implements OnInit {
+  user: User = JSON.parse(localStorage.getItem(env.temp.currentUser)) as User;
+  albums: Album[];
+  backgroundImages: any[] = [];
+  currentPatient: Patient;
+  public loadingImageStyle: any = `background-image: url(${env.loadingImage})`;
   //backgrpind collors
   private colorCodes: string[] = ["#FAD820", "#FF9F00", "#F35A4B", "#D95DB4", "#637DC8"];
 
-  user: User = JSON.parse(localStorage.getItem(env.temp.currentUser)) as User;
-
-  albums: Album[];
-  backgroundImages: any[] = [];
-
-
-  currentPatient: Patient;
-  public loadingImageStyle:any = `background-image: url(${env.loadingImage})`;
   constructor(public authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
               public camera: Camera, public sanitizer: StanizerService, public storyService: StoryService,
-              public alertCtrl: AlertController, public menu: MenuController, private ref: ChangeDetectorRef) {
+              public alertCtrl: AlertController, public menu: MenuController, private ref: ChangeDetectorRef, public utilService: UtilService) {
     super(authService, navCtrl, translatorService);
     this.currentPatient = this.authService.getCurrentPatient();
     menu.enable(true);
     this.loadingImageStyle = this.sanitizer.sanitizeStyle(this.loadingImageStyle);
   }
-
 
 
   ngOnInit(): void {
@@ -50,17 +47,17 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   ionViewWillEnter(): void {
     this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(albums => {
       this.albums = albums as Album[] || [];
-      if(!this.authService.isLoggedIn()){
+      if (!this.authService.isLoggedIn()) {
         this.navCtrl.setRoot(LoginPage).then(res => {
           this.navCtrl.popToRoot();
-          return ;
+          return;
         });
       }
       let i: number = 0;
       this.albums.forEach(album => {
         this.albums[i] = album;
         if (!album.isEmpty()) {
-          if(!this.imageLoaded(i))
+          if (!this.imageLoaded(i))
             this.setBackgroundImages(i);
 
         }
@@ -79,6 +76,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   getBackgroundImg(i: number): any {
     return this.backgroundImages[i];
   }
+
   getBackgroundColor(i: number): string {
     if (this.albums[i].isEmpty()) {
       return this.colorCodes[i % this.colorCodes.length] as string;
@@ -95,8 +93,6 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     }
     else {
       let index = this.getRepresentativeImageStoryIndex(this.albums[i]);
-
-      console.log("Album : " + this.albums[i].title + " bg: " + index );
       let thumb: string = this.getThumb(this.albums[i].getBackgroundImage(index));
 
       if (!this.albums[i].getBackgroundImage(index)) {
@@ -122,7 +118,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     }
   }
 
-  getRepresentativeImageStoryIndex(al:Album) :number{
+  getRepresentativeImageStoryIndex(al: Album): number {
     let index = al.stories.findIndex(this.isRepresentativeOfTheAlbum);
     if (index === -1)
       index = al.stories.findIndex(this.hasAnImage);
@@ -131,6 +127,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
 
     return index;
   }
+
   isAVideoBackground(i: number): boolean {
     if (this.albums[i].isEmpty()) {
       return false;
@@ -156,9 +153,9 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       buttons: ['Ok']
     });
 
-    let text1:string = 'Voeg album toe';
-    let text2:string = 'Annuleer';
-    let text3:string = 'Voeg toe';
+    let text1: string = 'Voeg album toe';
+    let text2: string = 'Annuleer';
+    let text3: string = 'Voeg toe';
     this.translatorService.translate(text1, value => text1 = value);
     this.translatorService.translate(text2, value => text2 = value);
     this.translatorService.translate(text3, value => text3 = value);
@@ -202,17 +199,10 @@ export class AlbumsPage extends AuthGuard implements OnInit {
 
 
   getThumb(url: string) {
-    if (url.toLowerCase().indexOf("youtube.com") >= 0) {
-      var reg = /embed\/(.+?)\?/;
-      let video = url.match(reg)[1];
-      let thumbailLink = "http://img.youtube.com/vi/" + video + "/0.jpg";
-      return thumbailLink;
-    } else {
-      return url;
-    }
+    return this.utilService.getThumb(url);
   }
 
-  imageLoaded(index: number):boolean {
+  imageLoaded(index: number): boolean {
     return !!this.backgroundImages[index] && this.backgroundImages[index] != this.loadingImageStyle;
   }
 }

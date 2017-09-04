@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
+import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {PatientService} from "../../providers/back-end/user.service";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {Patient} from "../../dto/patient";
 import {AlbumsPage} from "../albums/albums";
-import {env} from "../../app/environment";
 import {AuthGuard} from "../auth-guard";
 import {TranslatorService} from "../../providers/translator.service";
 
@@ -20,15 +19,14 @@ import {TranslatorService} from "../../providers/translator.service";
 })
 export class NewLovedonePage extends AuthGuard {
 
-  private loading: boolean = false;
-
   firstname: string = "";
   lastname: string = "";
+  private loading: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public lovedOnes: PatientService, public authService: AuthService,
-    public  alertCtrl: AlertController, translatorService: TranslatorService) {
-      super(authService, navCtrl, translatorService);
+              public lovedOnes: PatientService, public authService: AuthService,
+              public  alertCtrl: AlertController, translatorService: TranslatorService) {
+    super(authService, navCtrl, translatorService);
   }
 
   canCreateLovedOne(): boolean {

@@ -27,14 +27,20 @@ export class PatientService extends PrismaService {
 
 
   addPatient(firstname: string, lastname: string,
-    careHome?: string, dateOfBirth?: Date, birthPlace?: string, location?: string): Observable<Patient> {
+             careHome?: string, dateOfBirth?: Date, birthPlace?: string, location?: string): Observable<Patient> {
     this.ngOnInit(); // try to refresh token
     let url: string = env.api.getPatient;
 
     console.log("creation token: " + localStorage.getItem(env.jwtToken))
 
     // TODO: convert date to "yyyy-mm-dd"
-    var req = { firstName: firstname, lastName: lastname, dateOfBirth: dateOfBirth, birthPlace: birthPlace, location: location};
+    var req = {
+      firstName: firstname,
+      lastName: lastname,
+      dateOfBirth: dateOfBirth,
+      birthPlace: birthPlace,
+      location: location
+    };
 
     return this._http.post(`${this._urlToApi}/${url}`, req, {
       headers: this._head
@@ -74,7 +80,7 @@ export class PatientService extends PrismaService {
       }).catch(err => this.handleError(err));
   }
 
-  inviteUser(invitationData:{inviterId : string , "firstName" :string, "lastName" : string , "email" : string, patientId : string}): Observable<boolean> {
+  inviteUser(invitationData: { inviterId: string, "firstName": string, "lastName": string, "email": string, patientId: string }): Observable<boolean> {
     let url: string = env.api.invite;
     invitationData.patientId = invitationData.patientId.toUpperCase();
     return this._http.post(`${this._urlToApi}/${url}`, invitationData, {

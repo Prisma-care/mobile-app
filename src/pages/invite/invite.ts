@@ -13,13 +13,12 @@ import {AlbumsPage} from "../albums/albums";
 })
 export class InvitePage extends AuthGuard {
 
-  private loading: boolean = false;
-
   firstname: string = "";
   lastname: string = "";
   email: string = "";
   patientId: number;
   util: UtilService;
+  private loading: boolean = false;
 
   constructor(public authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
               public alertCtrl: AlertController, public navParams: NavParams, public utilService: UtilService, public patientService: PatientService) {
@@ -43,16 +42,18 @@ export class InvitePage extends AuthGuard {
     }
 
     this.patientService.inviteUser({
-      inviterId: 34+ "",
+      inviterId: 34 + "",
       lastName: this.lastname,
       firstName: this.firstname,
       email: this.email,
       patientId: this.patientId + ""
     }).toPromise().then(res => {
-      if(res == true){
+      if (res == true) {
         this.inviteError("Invite Ok");
-        this.navCtrl.setRoot(AlbumsPage).then(res => {this.loading = false;});
-      }else{
+        this.navCtrl.setRoot(AlbumsPage).then(res => {
+          this.loading = false;
+        });
+      } else {
         this.inviteError("Can't invite");
         this.loading = false;
       }
@@ -71,7 +72,7 @@ export class InvitePage extends AuthGuard {
     });
   }
 
-  inviteDone(){
+  inviteDone() {
     var message = "Invite Ok";
     this.translatorService.translate([message], (translations) => {
       let alert = this.alertCtrl.create({

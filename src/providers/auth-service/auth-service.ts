@@ -10,8 +10,6 @@ import {UtilService} from "../util-service";
 import {Storage} from "@ionic/storage";
 import {Http} from "@angular/http";
 
-import {NavController} from "ionic-angular";
-
 @Injectable()
 export class AuthService extends PrismaService {
   patientService: PatientService;
@@ -28,6 +26,7 @@ export class AuthService extends PrismaService {
   login(login: string, password: string): Observable<boolean> {
     let url: string = env.api.getSignIn;
     let userUrl: string = env.api.getUser;
+    this.logout();
     return this._http.post(`${this._urlToApi}/${userUrl}/${url}`, {"email": login, "password": password}, {
       headers: this._head,
     }).map(res => {
@@ -38,18 +37,12 @@ export class AuthService extends PrismaService {
         return false;
       localStorage.setItem(env.jwtToken, res.json().response.token);
       this._head.set('Authorization', 'Bearer ' + localStorage.getItem(env.jwtToken));
-      let userId: number = res.json().response.id || 1;
+      let userId: number = res.json().response.id || 0;
       localStorage.setItem(env.temp.currentPatient, JSON.stringify(res.json().response.patients[0]));
-
-      return this._http.get(`${this._urlToApi}/${url}/${userId}`, {
-          headers: this._head
-        })
-          .map(res2 => {
-            let user: User = res2.json().response;
-            localStorage.setItem(env.temp.currentUser, JSON.stringify(user));
-            return true;
-          });
-
+      let user: User = new User();
+      user.id = "" + userId;
+      localStorage.setItem(env.temp.currentUser, JSON.stringify(user));
+      return true;
     })
       .catch(err => this.handleError(err));
   }

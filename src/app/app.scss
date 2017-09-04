@@ -40,10 +40,12 @@ ion-input {
 .ion-menu > .ion-toolbar > ion-title {
   color: color($colors, medium-gray);
 }
-.ion-menu-buttons{
+
+.ion-menu-buttons {
   font-size: 16px;
   color: color($colors, general);
 }
+
 // INPUT VALIDATION STYLE
 /*
 $text-input-highlight-color-valid:	color($colors, light-gray);

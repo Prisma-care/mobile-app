@@ -22,7 +22,7 @@ albums-page {
     flex-direction: column;
     justify-content: center;
     position: relative;
-    text-shadow: rgba(0,0,0,.6) 1px 1px 0;
+    text-shadow: rgba(0, 0, 0, .6) 1px 1px 0;
   }
 
   .col, [col-6] {
@@ -50,6 +50,6 @@ albums-page {
   }
 
   .img-loaded + ion-spinner {
-    display:none;
+    display: none;
   }
 }

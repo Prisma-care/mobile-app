@@ -24,7 +24,7 @@
                       clearInput></ion-textarea>
       </ion-item>
       <ion-item *ngIf="method.indexOf(methods.addYoutubeStory) >= 0">
-        <ion-textarea autofocus class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="description" rows="3"
+        <ion-textarea autofocus class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="youtubeLink" rows="3"
                       clearInput></ion-textarea>
       </ion-item>
     </ion-item>
@@ -32,7 +32,7 @@
     <button ion-button solid block full large color="primary" (click)="commitWithLoading()"
             [disabled]="method.indexOf(methods.addYoutubeStory) >= 0 && !util.checkYoutubeLink(youtubeLink)">
       <ion-icon name="checkmark"></ion-icon>
-      <div *ngIf="!isLoading" >&nbsp;{{'Opslaan' | translate}}
+      <div *ngIf="!isLoading">&nbsp;{{'Opslaan' | translate}}
       </div>
       <div *ngIf="isLoading">
         <ion-spinner item-start name="dots" color="white"></ion-spinner>

@@ -12,7 +12,8 @@
   <h1 class="prisma-title">{{ 'Voor welke geliefde is het?' | translate }}</h1>
   <ion-list>
     <ion-item>
-      <ion-input type="text" value="" [(ngModel)]="firstname" placeholder="{{ 'Voornaam' | translate }}"required></ion-input>
+      <ion-input type="text" value="" [(ngModel)]="firstname" placeholder="{{ 'Voornaam' | translate }}"
+                 required></ion-input>
     </ion-item>
     <ion-item>
       <ion-input type="text" value="" [(ngModel)]="lastname" placeholder="{{ 'Naam' | translate}}" required></ion-input>
@@ -20,10 +21,10 @@
   </ion-list>
 
   <button ion-button solid block full large color="general" (click)="start()" [disabled]="!canCreateLovedOne()">
-   <div *ngIf="!loading">{{'Start' | translate}}</div>
-   <div *ngIf="loading">
-     <ion-spinner item-start name="dots" color="white"></ion-spinner>
-   </div>
- </button>
+    <div *ngIf="!loading">{{'Start' | translate}}</div>
+    <div *ngIf="loading">
+      <ion-spinner item-start name="dots" color="white"></ion-spinner>
+    </div>
+  </button>
 
 </ion-content>

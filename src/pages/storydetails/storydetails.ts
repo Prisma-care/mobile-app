@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectorRef} from "@angular/core";
+import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
 import {ActionSheetController, MenuController, NavController, NavParams, PopoverController} from "ionic-angular";
 import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
@@ -114,10 +114,6 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   }
 
-  private getStory(): UserStory {
-    return this.album.stories[this.index];
-  }
-
   isFavorited(): boolean {
     return this.getStory().favorited;
   }
@@ -144,7 +140,6 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
       "method": env.methods.replaceDescription
     })
   }
-
 
   replaceOrAddImage() {
     let story: UserStory = this.getStory();
@@ -246,11 +241,14 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   }
 
   stanizeVideo(url: string) {
-    return this.stanizer.sanitizeVideo(url);
+    return this.stanizer.sanitizeVideo("https://www.youtube.com/embed/" + this.utilService.getYoutubeId(url));
   }
-
 
   imageLoaded(index: number): boolean {
     return !!this.backgroundImages[index] && this.backgroundImages[index] != this.loadingImageUrl;
+  }
+
+  private getStory(): UserStory {
+    return this.album.stories[this.index];
   }
 }
