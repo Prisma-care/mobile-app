@@ -35,9 +35,9 @@ export class MyApp {
 
       if(lastestUsedVersion) {
         if (lastestUsedVersion.indexOf(currentVersion) != 0 || lastestUsedVersion.length != currentVersion.length)
-          this.authService.logout();
+          this.logout();
       }else{
-        this.authService.logout();
+        this.logout();
       }
       /*this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(res => {
         if (!this.authService.isLoggedIn())
