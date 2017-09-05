@@ -4,11 +4,12 @@
 
 export const BACKEND: string = 'https://api.prisma.care';
 export const API_URL: string = BACKEND + '/v1';
-
+export const CURENT_VERSION: string = '0.3.2';
 
 export const env = {
   production: false,
   jwtToken: 'id_token',
+  lastestUsedVersion: 'version',
   localstorage: {LOCALSTORAGE_SELECTEDLANG: "langs"},
   privateImagesRegex: '/asset/',
   loadingImage: "assets/img/homePage/loading.gif",
