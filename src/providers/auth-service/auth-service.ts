@@ -37,10 +37,13 @@ export class AuthService extends PrismaService {
         return false;
       localStorage.setItem(env.jwtToken, res.json().response.token);
       this._head.set('Authorization', 'Bearer ' + localStorage.getItem(env.jwtToken));
-      let userId: number = res.json().response.id || 0;
-      localStorage.setItem(env.temp.currentPatient, JSON.stringify(res.json().response.patients[0]));
+      let userId: number = res.json().response.id;
+      if(!userId || !res.json().response.patients[0] || !res.json().response.token)
+        return false;
+
       let user: User = new User();
       user.id = "" + userId;
+      localStorage.setItem(env.temp.currentPatient, JSON.stringify(res.json().response.patients[0] || ""));
       localStorage.setItem(env.temp.currentUser, JSON.stringify(user));
       return true;
     })
@@ -73,7 +76,7 @@ export class AuthService extends PrismaService {
   // Checks if current token is still valid
   // the pages can sue this:  ionViewCanEnter() { return this.authService.isLoggedIn();} to secure the routes
   isLoggedIn(): boolean {
-    return /** !!localStorage.getItem(env.temp.currentUser) && */ !!localStorage.getItem(env.jwtToken);
+    return  !!localStorage.getItem(env.temp.currentPatient) &&   !!localStorage.getItem(env.jwtToken);
   }
 
   getCurrentUser(): User {

@@ -101,10 +101,14 @@ export class LoginPage implements OnInit {
       //this.password = "";
       alert.present();
     });
+    this.authService.logout();
 
   }
 
   signUp() {
+    if (this.loading)
+      return;
+    this.loading = true;
     let user: User = new User();
     user.email = this.email;
     user.password = this.password;
@@ -117,6 +121,8 @@ export class LoginPage implements OnInit {
         });
       } else {
         this.loginError("Invalid data");
+        this.loading = false;
+        return;
       }
     })
   }

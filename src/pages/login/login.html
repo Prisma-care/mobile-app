@@ -61,8 +61,11 @@
       </ion-item>
     </ion-list>
 
-    <button ion-button solid block full large color="primary" (click)="signUp()" [disabled]="canSignUp()">{{'Maak
-      account' | translate}}
+    <button ion-button solid block full large color="primary" (click)="signUp()" [disabled]="canSignUp()">
+      <div *ngIf="!loading">{{'Maak account' | translate}}</div>
+      <div *ngIf="loading">
+        <ion-spinner item-start name="dots" color="white"></ion-spinner>
+      </div>
     </button>
 
     <div class="signup-suggestion">
