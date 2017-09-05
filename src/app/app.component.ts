@@ -33,9 +33,12 @@ export class MyApp {
       let lastestUsedVersion : string = localStorage.getItem(env.lastestUsedVersion);
       let currentVersion: string = CURENT_VERSION;
 
-      if(lastestUsedVersion)
-        if(lastestUsedVersion.indexOf(currentVersion) != 0  || lastestUsedVersion.length != currentVersion.length )
-          this.logout();
+      if(lastestUsedVersion) {
+        if (lastestUsedVersion.indexOf(currentVersion) != 0 || lastestUsedVersion.length != currentVersion.length)
+          this.authService.logout();
+      }else{
+        this.authService.logout();
+      }
       /*this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(res => {
         if (!this.authService.isLoggedIn())
           this.logout();
