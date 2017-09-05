@@ -51,6 +51,7 @@ export class StoryService extends PrismaService {
 
     let url: string = env.api.getPatient;
     let albumUrl: string = env.api.getAlbum;
+    this.ngOnInit();
     return this._http.get(`${this._urlToApi}/${url}/${patientId}/${albumUrl}`, {
       headers: this._head
     })
@@ -77,6 +78,7 @@ export class StoryService extends PrismaService {
   getAlbum(patientId: string | number, albumId: string | number): Observable<Album> {
     let url: string = env.api.getPatient;
     let albumUrl: string = env.api.getAlbum;
+    this.ngOnInit();
     return this._http.get(`${this._urlToApi}/${url}/${patientId}/${albumUrl}/${albumId}`, {
       headers: this._head
     })

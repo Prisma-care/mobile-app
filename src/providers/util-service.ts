@@ -57,7 +57,7 @@ export class UtilService {
         });
       }
     }, (err) => {
-      this.presentToast('Error while selecting image.');
+     console.log('Error while selecting image.');
     });
   }
 

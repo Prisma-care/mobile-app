@@ -107,6 +107,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
               fileChooseAttempt.then(
                 (dataUrl) => {
+                  console.log("Data Url : " + dataUrl)
                   if (dataUrl)
                     this.navCtrl.push(NewStoryPage,
                       {

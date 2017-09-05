@@ -4,7 +4,7 @@ import {Component} from '@angular/core';
   selector: 'login-header', // Attribute selector
   template: `
     <div class="prisma-header">
-      <img src="assets/img/homePage/banner.png"/>
+      <img src="http://i.imgur.com/n90n0Kz.png"/>
     </div>
   `
 })

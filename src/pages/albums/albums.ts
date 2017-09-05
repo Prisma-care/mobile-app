@@ -185,7 +185,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
               .then(album => {
                 //this.ionViewWillEnter();
                 //Trying to spare us a whole refresh;
-                this.albums.push(album);
+                this.ionViewWillEnter();
               })
               .catch(() => albumFailedAlert.present());
           }

@@ -62,7 +62,7 @@ export class MyApp {
   invite() {
     this.menu.close();
     this.nav.push(InvitePage, {
-      "patientId": 1
+      "patientId": this.authService.getCurrentPatient().patient_id
     });
   }
 }
