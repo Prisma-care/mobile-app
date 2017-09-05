@@ -25,7 +25,7 @@ export class TranslatorService {
    */
   public refresh() {
     if (localStorage.getItem(env.localstorage.LOCALSTORAGE_SELECTEDLANG)) {
-      this.lang = '' + localStorage.getItem(env.localstorage.LOCALSTORAGE_SELECTEDLANG);
+      this.lang = '' + this.lang; ; //localStorage.getItem(env.localstorage.LOCALSTORAGE_SELECTEDLANG);
       this.refreshTranslation();
       return;
     }
