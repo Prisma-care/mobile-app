@@ -38,7 +38,7 @@ export class AuthService extends PrismaService {
       localStorage.setItem(env.jwtToken, res.json().response.token);
       this._head.set('Authorization', 'Bearer ' + localStorage.getItem(env.jwtToken));
       let userId: number = res.json().response.id;
-      if(!userId || !res.json().response.patients[0] || !res.json().response.token)
+      if(!userId || !res.json().response.token)
         return false;
 
       let user: User = new User();

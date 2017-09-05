@@ -39,6 +39,7 @@ export class NewLovedonePage extends AuthGuard {
       return;
     this.loading = true;
     this.createLovedOne().then((patient) => {
+      patient.patient_id = patient.id;
         this.authService.setPatient(patient);
         this.navCtrl.setRoot(AlbumsPage).then(res => {
           this.loading = false;

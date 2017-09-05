@@ -28,10 +28,10 @@ export class MyApp {
     this.translate = translatorService.translateIn;
     this.translator = translatorService;
     if (this.authService.isLoggedIn()) {
-      this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(res => {
+      /*this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(res => {
         if (!this.authService.isLoggedIn())
           this.logout();
-      });
+      });**/
     }
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.

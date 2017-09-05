@@ -16,7 +16,7 @@ export class Patient extends AbstractUser {
     super(json);
     if (!json)
       return;
-    this.patient_id = json.patient_id;
+    this.patient_id = json.patient_id || json.id;
     this.firstName = json.first_name;
     this.lastName = json.last_name;
     this.careHome = json.carehome;

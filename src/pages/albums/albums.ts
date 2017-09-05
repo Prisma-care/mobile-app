@@ -14,6 +14,7 @@ import {AuthService} from "../../providers/auth-service/auth-service";
 import {TranslatorService} from "../../providers/translator.service";
 import {LoginPage} from "../login/login";
 import {UtilService} from "../../providers/util-service";
+import {NewLovedonePage} from "../new-lovedone/new-lovedone";
 
 
 @Component({
@@ -45,6 +46,10 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   }
 
   ionViewWillEnter(): void {
+    if(!this.currentPatient){
+      this.navCtrl.setRoot(NewLovedonePage);
+      return;
+    }
     this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(albums => {
       this.albums = albums as Album[] || [];
       if (!this.authService.isLoggedIn()) {
