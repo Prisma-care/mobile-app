@@ -23,7 +23,7 @@ import {NewLovedonePage} from "../new-lovedone/new-lovedone";
 })
 export class AlbumsPage extends AuthGuard implements OnInit {
   user: User = JSON.parse(localStorage.getItem(env.temp.currentUser)) as User;
-  albums: Album[] = [new Album()];
+  albums: Album[] = [];
   backgroundImages: any[] = [];
   currentPatient: Patient;
   public loadingImageStyle: any = `background-image: url(${env.loadingImage})`;
@@ -52,7 +52,6 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     }
     this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(albums => {
       this.albums = albums as Album[] || [];
-      console.log("Albums : \n" + JSON.stringify(this.albums));
       if (!this.authService.isLoggedIn()) {
         this.navCtrl.setRoot(LoginPage).then(res => {
           this.navCtrl.popToRoot();
