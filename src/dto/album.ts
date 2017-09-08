@@ -12,7 +12,7 @@ export class Album {
   constructor(json?) {
     if (!json)
       return;
-    this.id = json.id;
+    this.id = ""+json.id;
     this.title = json.title;
     this.description = json.description;
     json.stories.forEach((story) => this.stories.push(new UserStory(story)));

@@ -109,7 +109,7 @@ export class NewStoryPage extends AuthGuard {
     newStory.description = this.description || ".";
     newStory.creatorId = +this.authService.getCurrentUser().id || 0;
     if (this.method.indexOf(env.methods.addYoutubeStory) >= 0 && this.youtubeLink) {
-      newStory.assetType = "youtube";
+      newStory.type = "youtube";
       newStory.source = this.youtubeLink;
     }
     this.storyService.addStory(+this.authService.getCurrentPatient().patient_id, newStory).toPromise().then(addedStory => {

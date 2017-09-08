@@ -7,7 +7,7 @@ export class UserStory {
   creatorId: number; // heritage origin story
   favorited: boolean;
   source: string;
-  assetType: string;
+  type: string;
 
   constructor(json?) {
     if (!json)
@@ -23,6 +23,6 @@ export class UserStory {
     this.favorited = json.favorited || false;
     if (json.happened_at)
       this.happened_at = new Date(json.happened_at);
-    this.assetType = json.assetType;
+    this.type = json.type;
   }
 }

@@ -57,19 +57,13 @@ export class StoryService extends PrismaService {
     })
       .map(res => {
         let albums: Album[] = [];
+       // console.log(JSON.stringify(res.json().response));
         res.json().response.forEach(album => {
-            /* probably not needed
-             // fill in the stories
-             album.stories.forEach(
-             (story) => {
-             this.getUserStory()
-             }
-             );
-             */
             let al: Album = new Album(album);
             albums.push(this.setYoutubeVideoExemple(al));
           }
         );
+        console.log("After : " + albums);
         return albums;
       })
       .catch(err => this.handleError(err));
