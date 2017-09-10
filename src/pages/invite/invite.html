@@ -21,7 +21,7 @@
     </ion-item>
 
     <ion-item>
-      <ion-input type="text" [(ngModel)]="email" placeholder="{{'E-mail' | translate}}"
+      <ion-input type="email" [(ngModel)]="email" placeholder="{{'E-mail' | translate}}"
                  [pattern]="util.getEmailPattern()" clearOnEdit="false" required clearInput></ion-input>
     </ion-item>
 
