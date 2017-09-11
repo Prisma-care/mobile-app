@@ -94,6 +94,7 @@ export class UtilService {
     if (img === null) {
       return '';
     } else {
+      console.log("Fund path : " + cordova.file.dataDirectory + img);
       return cordova.file.dataDirectory + img;
     }
   }

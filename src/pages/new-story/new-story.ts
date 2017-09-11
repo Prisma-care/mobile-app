@@ -13,10 +13,14 @@ import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
 import {TranslatorService} from "../../providers/translator.service";
 
+declare var cordova: any;
+
 @Component({
   selector: 'page-new-story',
   templateUrl: 'new-story.html',
 })
+
+
 export class NewStoryPage extends AuthGuard {
 
 
@@ -32,6 +36,8 @@ export class NewStoryPage extends AuthGuard {
   placeHolder: string = "Schrijf het verhaal.\nHoe meer details hoe beter.";
   youtubeLink: string;
   selectedAlbum: Album;
+
+  stanizedUrl: any;
 
 
   index: number = 0;
@@ -55,7 +61,7 @@ export class NewStoryPage extends AuthGuard {
     this.util = utilService;
     this.title = 'Vul het verhaal aan';
     this.oldStory = navParams.get("story") as UserStory;
-    console.log("Data url : " + this.dataUrl);
+
     if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
       this.description = this.oldStory.description;
       if (this.oldStory.source)
@@ -64,7 +70,7 @@ export class NewStoryPage extends AuthGuard {
         else
           this.dataUrl = null;
     }
-
+    this.sanitizeUrl();
     if (this.method.indexOf(env.methods.replaceImage) >= 0) {
       this.description = this.oldStory.description;
       this.commitWithLoading();
@@ -201,15 +207,19 @@ export class NewStoryPage extends AuthGuard {
   }
 
 
-  async sanitizeUrl() {
+  sanitizeUrl() {
     if (this.oldStory) {
-      if (this.dataUrl.indexOf(env.privateImagesRegex) < 0)
-        return this.stanizer.sanitize(this.dataUrl);
-      return await this.storyService.getImage(this.dataUrl).toPromise().then(blob => {
-        return this.stanizer.sanitize(blob);
+      if (this.dataUrl.indexOf(env.privateImagesRegex) < 0) {
+        this.stanizedUrl = this.stanizer.sanitize(this.dataUrl);
+        return;
+      }
+      this.storyService.getImage(this.dataUrl).toPromise().then(blob => {
+        this.stanizedUrl = this.stanizer.sanitize(blob);
+        return;
       })
     } else {
-      return this.utilService.pathForImage(this.dataUrl);
+      this.stanizedUrl = this.util.pathForImage(this.dataUrl);
+      return;
     }
   }
 
