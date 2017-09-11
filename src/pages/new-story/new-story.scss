@@ -33,7 +33,8 @@ page-new-story {
     font-family: Varela;
     font-size: map-get($sizes, 'medium');
     line-height: 26px;
-    margin-left: auto;
+    margin-left: 0;
+    padding-left: 0;
   }
 
 }

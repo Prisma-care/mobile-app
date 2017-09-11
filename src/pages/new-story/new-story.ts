@@ -55,6 +55,7 @@ export class NewStoryPage extends AuthGuard {
     this.util = utilService;
     this.title = 'Vul het verhaal aan';
     this.oldStory = navParams.get("story") as UserStory;
+    console.log("Data url : " + this.dataUrl);
     if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
       this.description = this.oldStory.description;
       if (this.oldStory.source)
@@ -154,7 +155,6 @@ export class NewStoryPage extends AuthGuard {
   }
 
   updateImage() {
-    console.log("trying to update");
     if (this.dataUrl) {
       this.uploadImage(this.authService.getCurrentPatient().patient_id, this.oldStory.id, this.dataUrl + "").then(res => {
         this.navCtrl.popTo(StoryDetailsPage, {
