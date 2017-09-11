@@ -6,6 +6,7 @@ import {AlbumsPage} from "../albums/albums";
 import {TranslatorService} from "../../providers/translator.service";
 import {UtilService} from "../../providers/util-service";
 import {NewLovedonePage} from "../new-lovedone/new-lovedone";
+import {Subscription} from "rxjs/Subscription";
 
 
 @Component({
@@ -70,15 +71,22 @@ export class LoginPage implements OnInit {
       this.loading = false;
       return;
     }
-    this.authService.login(this.email, this.password).toPromise().then(res => {
+
+
+    let sub: Subscription = this.authService.login(this.email, this.password).subscribe(res => {
       if (this.authService.isLoggedIn()) {
         this.start();
       } else {
         this.loginError();
         this.loading = false;
       }
-
     })
+    setTimeout(function() {
+      sub.unsubscribe();
+      this.loginError("Timeout");
+      this.loading = false;
+      return;
+    }, 5000);
   }
 
   start(): void {
