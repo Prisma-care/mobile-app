@@ -138,7 +138,7 @@ export class UtilService {
     if (!youtubeLink)
       return false;
     let youtubeLinkRegex = this.getYoutubeLinkPattern();
-    if (!youtubeLink.match(youtubeLinkRegex)) {
+    if (!youtubeLink.toLowerCase().match(youtubeLinkRegex)) {
       return false;
     }
     return true;

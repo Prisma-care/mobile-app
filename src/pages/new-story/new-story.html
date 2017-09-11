@@ -16,7 +16,7 @@
     <h2 class="plak-een-youtube-lin" *ngIf="method.indexOf(methods.addYoutubeStory) >= 0">Plak een Youtube link om de
       video toe te voegen.</h2>
 
-    <ion-item>
+    <ion-item style="padding-left: 0">
       <ion-thumbnail *ngIf="dataUrl && method.indexOf(methods.replaceDescription) < 0" style="padding-left: 7%;">
         <img class="new-story-thumb" [src]="sanitizeUrl()">
       </ion-thumbnail>
@@ -24,8 +24,8 @@
         <ion-textarea autofocus class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="description" rows="7"
                       clearInput></ion-textarea>
       </ion-item>
-      <ion-item *ngIf="method.indexOf(methods.addYoutubeStory) >= 0">
-        <ion-textarea autofocus class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="youtubeLink" rows="3"
+      <ion-item *ngIf="method.indexOf(methods.addYoutubeStory) >= 0" style="padding-left: 0">
+        <ion-textarea autofocus class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="youtubeLink" rows="3" style="padding-left: 0"
                       clearInput></ion-textarea>
       </ion-item>
     </ion-item>
