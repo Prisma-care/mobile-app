@@ -241,9 +241,9 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   }
 
   stanizeVideo(url: string) {
-    return this.stanizer.sanitizeVideo("https://www.youtube.com/embed/" + this.utilService.getYoutubeId(url) + "?autoplay=1" +
-      "&rel=0" +
-      "&showinfo=0");
+    return this.stanizer.sanitizeVideo("https://www.youtube.com/embed/" + this.utilService.getYoutubeId(url) + "?rel=0" +
+      "&amp;autoplay=1" +
+      "&amp;showinfo=0");
   }
 
   imageLoaded(index: number): boolean {
