@@ -72,9 +72,10 @@ export class LoginPage implements OnInit {
       return;
     }
 
-
+    let loggedIn:boolean = false;
     let sub: Subscription = this.authService.login(this.email, this.password).subscribe(res => {
       if (this.authService.isLoggedIn()) {
+        loggedIn = true;
         this.start();
       } else {
         this.loginError();
@@ -82,6 +83,8 @@ export class LoginPage implements OnInit {
       }
     })
     setTimeout(function() {
+      if(loggedIn)
+        return;
       sub.unsubscribe();
       this.loginError("Timeout");
       this.loading = false;
