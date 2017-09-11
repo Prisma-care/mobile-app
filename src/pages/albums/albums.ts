@@ -181,7 +181,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
         {
           text: text3,
           handler: data => {
-            this.storyService.addAlbum(this.currentPatient.id, data.title).toPromise()
+            this.storyService.addAlbum(this.authService.getCurrentPatient().patient_id, data.title).toPromise()
               .then(album => {
                 //this.ionViewWillEnter();
                 //Trying to spare us a whole refresh;

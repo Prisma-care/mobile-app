@@ -13,7 +13,6 @@ import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
 import {TranslatorService} from "../../providers/translator.service";
 
-declare var cordova: any;
 
 @Component({
   selector: 'page-new-story',
