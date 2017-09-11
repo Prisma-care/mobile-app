@@ -7,7 +7,7 @@ export class TranslatorService {
   public lang: string = 'nl';
 
   public constructor(public translateIn: TranslateService) {
-    translateIn.addLangs(['en', 'fr', 'nl']);
+    translateIn.addLangs(['nl']);
     translateIn.setDefaultLang(this.lang);
 
     let browserLang: string = /** this.translateIn.getBrowserLang() || */this.lang;
