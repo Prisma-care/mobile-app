@@ -86,7 +86,16 @@ export class LoginPage implements OnInit {
       if(loggedIn)
         return;
       sub.unsubscribe();
-      this.loginError("Timeout");
+      this.translator.translate(["Timeout"], (translations) => {
+        let alert = this.alertCtrl.create({
+          title: translations["Timeout"],
+          buttons: ['Ok']
+        });
+        //refreshes the password
+        //this.password = "";
+        alert.present();
+      });
+      this.authService.logout();
       this.loading = false;
       return;
     }, 5000);
