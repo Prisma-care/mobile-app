@@ -94,7 +94,7 @@ export class LoginPage implements OnInit {
       that.authService.logout();
       that.loading = false;
       return;
-    }, this.TIMEOUTTIME);
+    }, LoginPage.TIMEOUTTIME);
   }
 
   start(): void {
