@@ -39,10 +39,10 @@ export class MyApp {
       }else{
         this.logout();
       }
-      /*this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(res => {
+      this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(res => {
         if (!this.authService.isLoggedIn())
           this.logout();
-      });**/
+      });
     }
     localStorage.setItem(env.lastestUsedVersion, CURENT_VERSION);
     platform.ready().then(() => {
