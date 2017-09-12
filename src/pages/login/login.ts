@@ -14,6 +14,8 @@ import {Subscription} from "rxjs/Subscription";
   templateUrl: 'login.html',
 })
 export class LoginPage implements OnInit {
+
+  public static TIMEOUTTIME = 5000;
   isSigningUp: boolean = false;
   password: string = "";
   passwordConfirm: string = "";
@@ -82,23 +84,17 @@ export class LoginPage implements OnInit {
         this.loading = false;
       }
     })
+
+    var that = this;
     setTimeout(function() {
       if(loggedIn)
         return;
       sub.unsubscribe();
-      this.translator.translate(["Timeout"], (translations) => {
-        let alert = this.alertCtrl.create({
-          title: translations["Timeout"],
-          buttons: ['Ok']
-        });
-        //refreshes the password
-        //this.password = "";
-        alert.present();
-      });
-      this.authService.logout();
-      this.loading = false;
+      that.loginError("Timeout");
+      that.authService.logout();
+      that.loading = false;
       return;
-    }, 5000);
+    }, this.TIMEOUTTIME);
   }
 
   start(): void {
