@@ -36,3 +36,7 @@ UserInterfaceState.xcuserstate
 ionic.config.json
 src/assets/img/heritage/
 ionic.config.json
+PrismaFamilyApp.apk
+android-debug.apk.sig
+android-release-unsigned.apk
+my-release-key.jks
