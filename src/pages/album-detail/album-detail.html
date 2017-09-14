@@ -30,12 +30,12 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <div (click)="openActionSheet()" class="add-new-container">
+  <ion-footer (click)="openActionSheet()" class="add-new-container">
     <div class="add-new">
       <ion-icon name="camera"></ion-icon>
       <span>{{'Voeg verhaal toe' | translate}}</span>
     </div>
-  </div>
+  </ion-footer>
   <!-- </ion-scroll> -->
   <album-questions [query]="album.title"></album-questions>
 </ion-content>

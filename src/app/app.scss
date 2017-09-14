@@ -161,6 +161,7 @@ ion-navbar ion-buttons[end] button {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: fixed;
 }
 
 .add-new > * {
