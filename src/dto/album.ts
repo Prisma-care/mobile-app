@@ -7,10 +7,12 @@ export class Album {
   description: string;
   stories: UserStory[] = [];
 
+  blobs: any[];
+
   constructor(json?) {
     if (!json)
       return;
-    this.id = json.id;
+    this.id = ""+json.id;
     this.title = json.title;
     this.description = json.description;
     json.stories.forEach((story) => this.stories.push(new UserStory(story)));
@@ -27,4 +29,10 @@ export class Album {
     else return "";
   }
 
+  getBlob(i: number): string {
+    if (this.stories[i]) {
+      return this.blobs[i] || null;
+    }
+    else return null;
+  }
 }

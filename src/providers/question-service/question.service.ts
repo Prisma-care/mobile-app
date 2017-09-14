@@ -4,10 +4,10 @@ import {QUESTIONS} from "./questions.json";
 @Injectable()
 export class QuestionService {
 
+  private questions = QUESTIONS;
+
   constructor() {
   }
-
-  private questions = QUESTIONS;
 
   getQuestions(query: string): string[] {
 

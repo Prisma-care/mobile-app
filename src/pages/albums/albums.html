@@ -5,13 +5,14 @@
     </button>
     <h2>{{'Waarover babbelen we vandaag' | translate }}?</h2>
   </div>
-  <ion-grid>
+  <ion-grid *ngIf="albums">
     <ion-row>
-      <ion-col col-6 col-md-4 *ngFor="let album of albums,let i=index" class="album-overlay">
-        <div class="album-thumb"
-             [style]="getBackgroundImage(i)"
+      <ion-col col-6 col-md-4 *ngFor="let album of albums,let i=index">
+        <div class="album-thumb" id="image{{i}}"
+             [style]="backgroundImages[i]"
              [style.background-color]="getBackgroundColor(i)"
              (click)="showDetails(album)">
+          <div class="tile-overlay-gradient"></div>
           <h3 class="hist-title">{{album.title ? album.title : '?'}}</h3>
           <ion-icon name="logo-youtube" color="white"
                     class="movie-indicator"

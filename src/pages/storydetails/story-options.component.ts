@@ -19,7 +19,7 @@ export class StoryOptionsComponent {
 
   deleteStory(): void {
     let story = this.navParams.data.story;
-    this.storyService.deleteStory(+this.authService.getCurrentPatient().id, +story.id).toPromise().then(
+    this.storyService.deleteStory(+this.authService.getCurrentPatient().patient_id, +story.id).toPromise().then(
       res => console.log(`Story with id ${story.id} deleted`)
       // TODO: give a more meanngful toast message? & handle erro
     );

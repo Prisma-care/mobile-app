@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
 import {ActionSheetController, MenuController, NavController, NavParams, PopoverController} from "ionic-angular";
 import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
@@ -23,12 +23,15 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   public index: number;
   public story: UserStory;
 
+  public loadingImageUrl: string = env.loadingImage;
+
+  public backgroundImages: any[] = [];
   // TODO: get favorite in backend &
   // 1 like?
-  constructor(protected  authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService, public navParams: NavParams,
+  constructor(protected  authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private nativePageTransitions: NativePageTransitions,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService,
-              public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController) {
+              public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController, private ref: ChangeDetectorRef) {
     super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
     this.index = navParams.get("index") as number;
@@ -42,7 +45,11 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   ionViewWillEnter() {
     if (this.album)
-      this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).toPromise().then(res => this.album = res);
+      this.storyService.getAlbum(this.authService.getCurrentPatient().patient_id, this.album.id).toPromise().then(res => {
+        this.album = res;
+        if (!this.imageLoaded(this.index))
+          this.setStanizedUrl(this.album.stories[this.index].source, this.index);
+      });
     this.menu.enable(false);
   }
 
@@ -96,15 +103,15 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   next(): void {
     this.index = (this.index + 1) % this.album.stories.length;
+    if (!this.imageLoaded(this.index))
+      this.setStanizedUrl(this.album.stories[this.index].source, this.index);
   }
 
   previous(): void {
     this.index = this.index === 0 ? this.album.stories.length - 1 : this.index - 1;
+    if (!this.imageLoaded(this.index))
+      this.setStanizedUrl(this.album.stories[this.index].source, this.index);
 
-  }
-
-  private getStory(): UserStory {
-    return this.album.stories[this.index];
   }
 
   isFavorited(): boolean {
@@ -118,7 +125,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     let story: UserStory = new UserStory();
     this.album.stories[this.index].favorited = story.favorited = !this.album.stories[this.index].favorited;
     story.id = this.album.stories[this.index].id;
-    this.storyService.updateStory(+this.authService.getCurrentPatient().id, story).toPromise().then(addedStory => {
+    this.storyService.updateStory(+this.authService.getCurrentPatient().patient_id, story).toPromise().then(addedStory => {
 
     });
 
@@ -133,7 +140,6 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
       "method": env.methods.replaceDescription
     })
   }
-
 
   replaceOrAddImage() {
     let story: UserStory = this.getStory();
@@ -212,11 +218,39 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   }
 
-  stanize(url: string) {
-    return this.stanizer.sanitize(url);
+  async setStanizedUrl(url: string, i: number) {
+    if (!url) {
+      return;
+    }
+    if (url.indexOf(env.privateImagesRegex) < 0) {
+      this.backgroundImages[i] = this.stanizer.sanitize(url);
+      this.ref.markForCheck();
+      return;
+    }
+
+
+    await this.storyService.getImage(url).toPromise().then(blob => {
+      this.backgroundImages[i] = this.stanizer.sanitize(blob);
+      this.ref.markForCheck();
+      return;
+    })
+  }
+
+  getStanizedUrl() {
+    return this.backgroundImages[this.index];
   }
 
   stanizeVideo(url: string) {
-    return this.stanizer.sanitizeVideo(url);
+    return this.stanizer.sanitizeVideo("https://www.youtube.com/embed/" + this.utilService.getYoutubeId(url) + "?rel=0" +
+      "&amp;autoplay=1" +
+      "&amp;showinfo=0");
+  }
+
+  imageLoaded(index: number): boolean {
+    return !!this.backgroundImages[index] && this.backgroundImages[index] != this.loadingImageUrl;
+  }
+
+  private getStory(): UserStory {
+    return this.album.stories[this.index];
   }
 }

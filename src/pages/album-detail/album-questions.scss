@@ -1,20 +1,32 @@
 album-questions {
 
-  .page-header {
-
+  .topic-container {
+    height: 100%;
     background-color: #fff;
+    $topic-padding: 2rem;
+    padding: $topic-padding;
+    position: relative;
 
-    h2 {
+    span {
+      display: block;
+    }
+
+    .topic-sub {
+      font-size: map-get($sizes, 'medium');
+      color: color($colors, medium-gray);
+    }
+
+    .topic-title {
+      font-size: map-get($sizes, 'extra-large');
       color: color($colors, dark-gray);
     }
 
-    .question-refresh {
-      margin: auto;
-      font-size: map-get($sizes, 'extra-large');
-      text-align: center;
-      color: map-get($colors, 'primary');
-      width: 100%;
-      margin-top: 0.4em;
+    .topic-other {
+      position: absolute;
+      margin-bottom: $topic-padding + 0.4rem;
+      bottom: 0;
+      font-size: map-get($sizes, 'medium');
+      color: color($colors, blue);
     }
 
   }

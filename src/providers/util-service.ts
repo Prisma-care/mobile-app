@@ -1,17 +1,17 @@
 import {Injectable} from "@angular/core";
 import {Camera} from "@ionic-native/camera";
-import {FileChooser} from "@ionic-native/file-chooser";
 import {AlertController, LoadingController, Platform, ToastController} from "ionic-angular";
 import {File} from "@ionic-native/file";
 import {FilePath} from "@ionic-native/file-path";
 
 
 declare var cordova: any;
+
 @Injectable()
 export class UtilService {
 
   constructor(public alertCtrl: AlertController, private camera: Camera, private file: File,
-              private fileChooser: FileChooser, private filePath: FilePath, public toastCtrl: ToastController, public platform: Platform, public loadingCtrl: LoadingController,) {
+              private filePath: FilePath, public toastCtrl: ToastController, public platform: Platform, public loadingCtrl: LoadingController,) {
 
   }
 
@@ -57,7 +57,7 @@ export class UtilService {
         });
       }
     }, (err) => {
-      this.presentToast('Error while selecting image.');
+     console.log('Error while selecting image.');
     });
   }
 
@@ -94,14 +94,16 @@ export class UtilService {
     if (img === null) {
       return '';
     } else {
+      console.log("Fund path : " + cordova.file.dataDirectory + img);
       return cordova.file.dataDirectory + img;
     }
   }
 
-  public getEmailPattern():string{
+  public getEmailPattern(): string {
     //  return '^[a-z0-9!#$%&\'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$';
     return '^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$';
   }
+
   public checkEmail(email: string): boolean {
     if (!email)
       return false;
@@ -111,9 +113,11 @@ export class UtilService {
     }
     return true;
   }
-  public getPasswordPattern():string{
-    return '^.{3,8}$';
+
+  public getPasswordPattern(): string {
+    return '^.{6,40}$';
   }
+
   public checkPassword(password: string): boolean {
     if (!password)
       return false;
@@ -124,23 +128,49 @@ export class UtilService {
     }
     return true;
   }
-  public getYoutubeLinkPattern():string{
+
+  // Youtube related
+
+  public getYoutubeLinkPattern(): string {
     return 'http(?:s?):\\/\\/(?:www\\.)?youtu(?:be\\.com\\/watch\\?v=|\\.be\\/)([\\w\\-\\_]*)(&(amp;)?‌​[\\w\\?‌​=]*)?';
   }
-  public checkYoutubeLink(youtubeLink:string):boolean{
+
+  public checkYoutubeLink(youtubeLink: string): boolean {
     if (!youtubeLink)
       return false;
-    // let passwordRegex = '/^(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{4,20}$/';
     let youtubeLinkRegex = this.getYoutubeLinkPattern();
-    if (!youtubeLink.match(youtubeLinkRegex)) {
+    if (!youtubeLink.toLowerCase().match(youtubeLinkRegex)) {
       return false;
     }
-    console.log("It's a youtube link!");
     return true;
   }
 
+  public getYoutubeId(url: string): string {
+    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    var match = url.match(regExp);
 
-  showErrorMessage(errorMessage: string,alertController?:AlertController): Promise<any> {
+    if (match && match[2].length == 11) {
+      return match[2];
+    } else {
+      return '';
+    }
+  }
+
+  getThumb(url: string) {
+    if (!url)
+      return url;
+    if (url.toLowerCase().indexOf("youtube.com") >= 0) {
+      let videoId = this.getYoutubeId(url);
+      if (!videoId)
+        return url;
+      let thumbailLink = "http://img.youtube.com/vi/" + videoId + "/0.jpg";
+      return thumbailLink;
+    } else {
+      return url;
+    }
+  }
+
+  showErrorMessage(errorMessage: string, alertController?: AlertController): Promise<any> {
     let aletCtrl = alertController || this.alertCtrl;
     let alert = aletCtrl.create({
       title: "Error",

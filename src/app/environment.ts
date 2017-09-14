@@ -4,12 +4,15 @@
 
 export const BACKEND: string = 'https://api.prisma.care';
 export const API_URL: string = BACKEND + '/v1';
-
+export const CURENT_VERSION: string = '0.3.2';
 
 export const env = {
   production: false,
   jwtToken: 'id_token',
-  localstorage: {LOCALSTORAGE_SELECTEDLANG : "langs"},
+  lastestUsedVersion: 'version',
+  localstorage: {LOCALSTORAGE_SELECTEDLANG: "langs"},
+  privateImagesRegex: '/asset/',
+  loadingImage: "assets/img/homePage/loading.gif",
   api: {
     getSignIn: 'signin',
     getPatient: 'patient',
@@ -21,8 +24,8 @@ export const env = {
   },
   temp: {
     albums: "albums",
-    fakeUser: "user",
-    fakePatient: "patient"
+    currentUser: "user",
+    currentPatient: "patient"
   },
   methods: {
     addNewStory: 'addNewStory',
