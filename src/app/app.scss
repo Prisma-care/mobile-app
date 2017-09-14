@@ -1,6 +1,5 @@
 // http://ionicframework.com/docs/v2/theming/
 
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -14,3 +13,174 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+@font-face {
+  font-family: Varela;
+  src: url('../assets/fonts/varela.woff2') format('woff2');
+}
+
+//h1, h2, h3, .toolbar-title, ion-list-header .label, .tab-button-text, p {
+* {
+  font-family: Varela, 'Noto Sans';
+}
+
+// Headers
+
+h1.prisma-title {
+  color: color($colors, dark-gray);
+  font-size: map-get($sizes, "medium");
+}
+
+// INPUT SIZE
+
+ion-input {
+  font-size: map-get($sizes, "medium");
+}
+
+.ion-menu > .ion-toolbar > ion-title {
+  color: color($colors, medium-gray);
+}
+
+.ion-menu-buttons {
+  font-size: 16px;
+  color: color($colors, general);
+}
+
+// INPUT VALIDATION STYLE
+/*
+$text-input-highlight-color-valid:	color($colors, light-gray);
+$text-input-highlight-color-invalid:	color($colors, light-gray);
+$text-input-placeholder-color: color($colors, light-gray);
+*/
+
+.item-input .item-inner,
+.list-md .item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child,
+.list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child,
+.list-md .item-input.ng-valid.item-input-has-value.input-has-focus,
+.list-md .item-input.ng-valid.input-has-focus:not(.item-input-has-value),
+.list-md .item-input.ng-valid.input-has-value.input-has-focus {
+  //border-bottom: 2px solid map-get($colors, light-gray) !important;
+  //border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.list-md .item-input.ng-invalid:not(.input-has-focus) {
+  color: color($colors, red);
+}
+
+.list-md .item-input {
+}
+
+$button-md-box-shadow: none;
+.list-md .ion-button {
+  box-shadow: none !important;
+}
+
+.list-md .item-input:last-child {
+  // border: none !important;
+}
+
+a[disabled], button[disabled], [ion-button][disabled] {
+  background-color: color($colors, medium-gray);
+  color: color($colors, white);
+  opacity: 1;
+}
+
+// LOGIN HEADER
+
+.prisma-header img {
+  width: 100%;
+  display: block;
+}
+
+// PAGE HEADER
+
+.page-header {
+  padding: 2em 3em;
+  //background-color: map-get($colors, 'primary');
+  height: 50vw;
+  background-color: color($colors, primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.page-header h2 {
+  font-size: map-get($sizes, 'extra-large');
+  margin: 0;
+  //line-height: 33px;
+  text-align: center;
+  font-family: $prisma-ff;
+  // color: map-get($colors, 'dark-gray');
+  color: #fff;
+}
+
+// TOOLBAR
+
+.header .toolbar {
+
+  .toolbar-content .title .toolbar-title {
+    color: #fff;
+  }
+
+  .bar-button .button-inner {
+    color: #fff;
+  }
+}
+
+.toolbar-background-md {
+  background-color: map-get($colors, 'primary');
+}
+
+// NAVBAR ICONS
+
+ion-navbar ion-buttons[end] button {
+  margin-right: 0.8em;
+  font-size: 1.5rem;
+}
+
+//   STARS
+.star {
+  display: block;
+  position: absolute;
+  right: 0.7em;
+  bottom: 0.7em;
+  font-size: 3em;
+  color: color($colors, yellow);
+  text-shadow: 1px 2px 2px hsla(0, 0%, 15%, 0.4);
+}
+
+// ADD NEW STORY/ALBUM header
+
+.add-new-container {
+  background-color: map-get($colors, 'primary');
+  color: #fff;
+  width: 100%;
+  height: 50vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-new > * {
+  display: block;
+}
+
+.add-new > ion-icon {
+  font-size: 3em;
+  text-align: center;
+}
+
+.add-new > span {
+}
+
+// ALBUM/STORY TILE OVERLAY GRADIENT
+.tile-overlay-gradient {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 37%, rgba(33, 33, 33, 0.3) 87%);
+}

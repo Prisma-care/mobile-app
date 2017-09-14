@@ -5,15 +5,12 @@
 // roboto, and noto sans fonts
 $font-path: "../assets/fonts";
 
-
 // The app direction is used to include
 // rtl styles in your app. For more info, please see:
 // http://ionicframework.com/docs/theming/rtl-support/
 $app-direction: ltr;
 
-
 @import "ionic.globals";
-
 
 // Shared Variables
 // --------------------------------------------------
@@ -22,8 +19,7 @@ $app-direction: ltr;
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
-
-
+$content-padding: 0;
 
 // Named Color Variables
 // --------------------------------------------------
@@ -34,34 +30,50 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #488aff,
-  secondary:  #32db64,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
-  dark:       #222
+  // primary:    #488aff,
+  primary: #637DC8,
+  secondary: #33b5e5,
+  danger: #ffbb33,
+  light: #ABAEB4,
+  transparent: rgba(216, 216, 216, 0),
+  dark: #1f5760,
+  general: #647FC6,
+  // prisma added
+  white: #FFFFFF,
+  light-gray: #EDEDED,
+  medium-gray: #ABAEB4,
+  dark-gray: #545B6E,
+  yellow: #FAD820,
+  orange: #FF9F00,
+  red: #F35A4B,
+  redTrans: rgba(255, 0, 0, 0.1),
+  purple: #D95DB4,
+  blue: #637DC8
 );
 
+$sizes: (
+  small: 16px,
+  medium: 20px,
+  large: 26px,
+  extra-large: 30px,
+  text: 15px,
+  icons: 30px
+);
+
+// default font family
+$prisma-ff: 'Varela';
 
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
-
-
-
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-
-
-
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
-
-
-
 
 // App Theme
 // --------------------------------------------------
@@ -72,7 +84,6 @@ $colors: (
 
 @import "ionic.theme.default";
 
-
 // Ionicons
 // --------------------------------------------------
 // The premium icon font for Ionic. For more info, please see:
@@ -80,9 +91,57 @@ $colors: (
 
 @import "ionic.ionicons";
 
-
 // Fonts
 // --------------------------------------------------
 
 @import "roboto";
 @import "noto-sans";
+
+//Custom schemas
+$tabs-md-tab-font-size: map_get($sizes, medium);
+$tabs-ios-tab-font-size: $tabs-md-tab-font-size;
+
+$tabs-md-tab-icon-size: map_get($sizes, icons);
+$tabs-ios-tab-icon-size: $tabs-md-tab-icon-size;
+
+$tabs-ios-tab-text-color: color($colors, light);
+$tabs-md-tab-text-color: $tabs-ios-tab-text-color;
+
+$tabs-md-tab-icon-color: color($colors, light);
+$tabs-md-tab-icon-color-active: color($colors, general);
+// Use the primary color as the background for the toolbar-md-background
+$toolbar-md-background: color($colors, transparent);
+
+// Use the default background for the tabbar since it inherits from toolbar
+$tabs-md-background: color($colors, transparent);
+
+// Change the color of the tabs text
+$tab-button-md-active-color: $tabs-md-tab-icon-color-active;
+$tab-button-md-inactive-color: $tab-button-md-active-color;
+
+// Change the color of the tabs text
+$tabs-md-tab-color-active: $tab-button-md-active-color;
+$tabs-md-tab-color: $tab-button-md-inactive-color;
+
+// Place Holders color
+
+$text-input-placeholder-color: color($colors, medium-gray);
+$text-input-highlight-color-valid: color($colors, light-gray);
+$text-input-highlight-color-invalid: color($colors, red);
+$text-input-md-show-focus-highlight: false;
+$text-input-md-show-valid-highlight: true;
+$text-input-md-show-invalid-highlight: true;
+
+//Ion menu
+$menu-md-background: color($colors, white);
+
+// Primary buttons
+
+$button-md-text-transform: none;
+
+// Change the color of the tabs text
+
+// Change the color of the segment button text
+//$toolbar-md-active-color:                 #fff;
+//$toolbar-md-inactive-color:               #fff;
+//$segment-button-md-text-color-activated:  #fff;

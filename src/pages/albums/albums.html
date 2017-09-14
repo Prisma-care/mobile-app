@@ -1,0 +1,30 @@
+<ion-content>
+  <div class="page-header">
+    <button ion-button menuToggle class="albums-menu">
+      <ion-icon color="black" name='menu'></ion-icon>
+    </button>
+    <h2>{{'Waarover babbelen we vandaag' | translate }}?</h2>
+  </div>
+  <ion-grid *ngIf="albums">
+    <ion-row>
+      <ion-col col-6 col-md-4 *ngFor="let album of albums,let i=index">
+        <div class="album-thumb" id="image{{i}}"
+             [style]="backgroundImages[i]"
+             [style.background-color]="getBackgroundColor(i)"
+             (click)="showDetails(album)">
+          <div class="tile-overlay-gradient"></div>
+          <h3 class="hist-title">{{album.title ? album.title : '?'}}</h3>
+          <ion-icon name="logo-youtube" color="white"
+                    class="movie-indicator"
+                    *ngIf="isAVideoBackground(i)"></ion-icon>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div class="add-new-container">
+    <div class="add-new" (click)="addAlbum()">
+      <ion-icon name="camera"></ion-icon>
+      <span>{{'Voeg album toe' | translate }}</span>
+    </div>
+  </div>
+</ion-content>

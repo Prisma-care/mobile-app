@@ -1,5 +1,8 @@
 {
   "name": "prisma-frontend",
-  "app_id": "",
-  "type": "ionic-angular"
+  "app_id": "e0fc6bde",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

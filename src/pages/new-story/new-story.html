@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{title | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="commit()">
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item-group>
+    <br>
+    <h2 class="plak-een-youtube-lin" *ngIf="method.indexOf(methods.addYoutubeStory) >= 0">Plak een Youtube link om de
+      video toe te voegen.</h2>
+
+    <ion-item style="padding-left: 0">
+      <ion-thumbnail *ngIf="dataUrl && method.indexOf(methods.replaceDescription) < 0" style="padding-left: 7%;">
+        <img class="new-story-thumb" [src]="stanizedUrl">
+      </ion-thumbnail>
+      <ion-item *ngIf="method.indexOf(methods.replaceImage) < 0 && method.indexOf(methods.addYoutubeStory) < 0">
+        <ion-textarea autofocus class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="description" rows="7"
+                      clearInput></ion-textarea>
+      </ion-item>
+      <ion-item *ngIf="method.indexOf(methods.addYoutubeStory) >= 0" style="padding-left: 0">
+        <ion-textarea autofocus class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="youtubeLink" rows="3" style="padding-left: 0"
+                      clearInput></ion-textarea>
+      </ion-item>
+    </ion-item>
+
+    <button ion-button solid block full large color="primary" (click)="commitWithLoading()"
+            [disabled]="method.indexOf(methods.addYoutubeStory) >= 0 && !util.checkYoutubeLink(youtubeLink)">
+      <ion-icon name="checkmark"></ion-icon>
+      <div *ngIf="!isLoading">&nbsp;{{'Opslaan' | translate}}
+      </div>
+      <div *ngIf="isLoading">
+        <ion-spinner item-start name="dots" color="white"></ion-spinner>
+      </div>
+    </button>
+
+  </ion-item-group>
+</ion-content>

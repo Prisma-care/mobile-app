@@ -1,22 +1,68 @@
-import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import {Component, ViewChild} from "@angular/core";
+import {MenuController, Nav, Platform} from "ionic-angular";
+import {StatusBar} from "@ionic-native/status-bar";
+import {SplashScreen} from "@ionic-native/splash-screen";
 
-import { TabsPage } from '../pages/tabs/tabs';
+import {PatientService} from "../providers/back-end/user.service";
+import {LoginPage} from "../pages/login/login";
+import {AuthService} from "../providers/auth-service/auth-service";
+import {TranslatorService} from "../providers/translator.service";
+import {TranslateService} from "@ngx-translate/core";
+import {InvitePage} from "../pages/invite/invite";
+import {StoryService} from "../providers/back-end/story.service";
+import {CURENT_VERSION, env} from "./environment";
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = TabsPage;
+  @ViewChild(Nav) nav: Nav;
+  rootPage: any = LoginPage;
+  private translate: TranslateService;
+  private translator: TranslatorService;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
+              public patientService: PatientService, public translatorService: TranslatorService,
+              public authService: AuthService, public menu: MenuController, public storyService: StoryService) {
+    //localStorage.clear();
+    translatorService.refresh();
+    this.translate = translatorService.translateIn;
+    this.translator = translatorService;
+    if (this.authService.isLoggedIn()) {
+      let lastestUsedVersion : string = localStorage.getItem(env.lastestUsedVersion);
+      let currentVersion: string = CURENT_VERSION;
+
+      if(lastestUsedVersion) {
+        if (lastestUsedVersion.indexOf(currentVersion) != 0 || lastestUsedVersion.length != currentVersion.length)
+          this.logout();
+      }else{
+        this.logout();
+      }
+      this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(res => {
+        if (!this.authService.isLoggedIn())
+          this.logout();
+      });
+    }
+    localStorage.setItem(env.lastestUsedVersion, CURENT_VERSION);
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+    });
+  }
+
+  logout() {
+    this.menu.close();
+    this.authService.logout();
+    this.nav.setRoot(LoginPage);
+  }
+
+  invite() {
+    this.menu.close();
+    this.nav.push(InvitePage, {
+      "patientId": this.authService.getCurrentPatient().patient_id
     });
   }
 }

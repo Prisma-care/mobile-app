@@ -26,9 +26,13 @@ platforms/
 plugins/
 plugins/android.json
 plugins/ios.json
-www/
+www/*
+!www/mock-api
 $RECYCLE.BIN/
 
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
+ionic.config.json
+src/assets/img/heritage/
+ionic.config.json

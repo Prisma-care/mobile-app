@@ -1,0 +1,34 @@
+album-questions {
+
+  .topic-container {
+    height: 100%;
+    background-color: #fff;
+    $topic-padding: 2rem;
+    padding: $topic-padding;
+    position: relative;
+
+    span {
+      display: block;
+    }
+
+    .topic-sub {
+      font-size: map-get($sizes, 'medium');
+      color: color($colors, medium-gray);
+    }
+
+    .topic-title {
+      font-size: map-get($sizes, 'extra-large');
+      color: color($colors, dark-gray);
+    }
+
+    .topic-other {
+      position: absolute;
+      margin-bottom: $topic-padding + 0.4rem;
+      bottom: 0;
+      font-size: map-get($sizes, 'medium');
+      color: color($colors, blue);
+    }
+
+  }
+
+}
