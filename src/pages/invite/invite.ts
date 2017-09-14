@@ -36,7 +36,7 @@ export class InvitePage extends AuthGuard {
       return;
     this.loading = true;
     if (!this.canInvite()) {
-      this.inviteError("Can't invite");
+      this.inviteError();
       this.loading = false;
       return;
     }
@@ -49,12 +49,12 @@ export class InvitePage extends AuthGuard {
       patientId: this.patientId + ""
     }).toPromise().then(res => {
       if (res == true) {
-        this.inviteError("Invite Ok");
+        this.inviteError();
         this.navCtrl.setRoot(AlbumsPage).then(res => {
           this.loading = false;
         });
       } else {
-        this.inviteError("Can't invite");
+        this.inviteError();
         this.loading = false;
       }
 
