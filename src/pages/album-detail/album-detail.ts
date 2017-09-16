@@ -198,9 +198,14 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   showDetails(album: Album, story: UserStory) {
+    const storyWithoutBackgourndImage={
+      ...story,
+      backgroundImage:null
+    };
+
     this.navCtrl.push(StoryDetailsPage, {
       "album": album,
-      "story":story
+      "story":storyWithoutBackgourndImage
     })
   }
 

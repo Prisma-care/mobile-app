@@ -36,6 +36,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     this.album = navParams.get("album") as Album;
     this.story = navParams.get("story") as UserStory;
     this.index = navParams.get("index") as number;
+
   }
 
   ngOnInit(): void {
