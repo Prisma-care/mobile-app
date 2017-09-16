@@ -10,6 +10,7 @@ import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
 import {env} from "../../app/environment";
 import {TranslatorService} from "../../providers/translator.service";
+import {UserStory} from "../../dto/user-story";
 
 @Component({
   selector: 'album-detail',
@@ -29,6 +30,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
               private storyService: StoryService, private sanitizer: StanizerService, private ref: ChangeDetectorRef) {
     super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
+    this.orderByFavorited();
     this.loadingImageStyle = this.sanitizer.sanitizeStyle(this.loadingImageStyle);
   }
 
@@ -38,6 +40,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   ionViewWillEnter(): void {
     this.storyService.getAlbum(this.authService.getCurrentPatient().patient_id, this.album.id).subscribe(res => {
       this.album = res;
+      this.orderByFavorited();
       if (!this.album.isEmpty()) {
         let i: number = 0;
         this.album.stories.forEach(story => {
@@ -49,6 +52,16 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     });
   }
 
+  orderByFavorited() {
+    if(!this.album)
+      return;
+    if(this.album.isEmpty())
+      return;
+
+    const favorites= this.album.stories.filter((storie:UserStory)=>storie.favorited);
+    const notFavorites= this.album.stories.filter((storie:UserStory)=>!storie.favorited);
+    this.album.stories = favorites.concat(notFavorites);
+  }
 
   openActionSheet() {
     let text1: string = 'Tekst schrijven';

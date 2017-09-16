@@ -33,6 +33,7 @@ export class NewStoryPage extends AuthGuard {
   dataUrl: string;
   description: string;
   placeHolder: string = "Schrijf het verhaal.\nHoe meer details hoe beter.";
+  youtubeLinkPlaceHolder : string = "https://www.youtube.com/watch?v=ffSnk4v3aeg";
   youtubeLink: string;
   selectedAlbum: Album;
 
@@ -217,7 +218,8 @@ export class NewStoryPage extends AuthGuard {
         return;
       })
     } else {
-      this.stanizedUrl = this.util.pathForImage(this.dataUrl);
+      if (this.method.indexOf(env.methods.addYoutubeStory) < 0)
+        this.stanizedUrl = this.util.pathForImage(this.dataUrl);
       return;
     }
   }
