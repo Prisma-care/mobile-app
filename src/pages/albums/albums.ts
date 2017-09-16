@@ -43,6 +43,8 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   ngOnInit(): void {
     // TODO: replace with a service method
     this.currentPatient = this.authService.getCurrentPatient();
+
+    console.log('OnInit album');
   }
 
   ionViewWillEnter(): void {

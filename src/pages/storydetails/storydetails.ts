@@ -34,6 +34,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
               public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController, private ref: ChangeDetectorRef) {
     super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
+    this.story = navParams.get("story") as UserStory;
     this.index = navParams.get("index") as number;
   }
 
@@ -47,8 +48,8 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     if (this.album)
       this.storyService.getAlbum(this.authService.getCurrentPatient().patient_id, this.album.id).toPromise().then(res => {
         this.album = res;
-        if (!this.imageLoaded(this.index))
-          this.setStanizedUrl(this.album.stories[this.index].source, this.index);
+        if (!this.imageLoaded(this.findIndexStory(this.story)))
+          this.setStanizedUrl(this.story.source, this.index);
       });
     this.menu.enable(false);
   }
@@ -78,11 +79,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     //swipes left
     if (e.direction == 4) {
       options.direction = 'rigth';
-      this.nativePageTransitions.fade(options)
-        .then(onSucess => {
-        })
-        .catch(err => {
-        });
+
       this.previous();
 
     }
@@ -90,11 +87,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     //swipes rigth
     if (e.direction == 2) {
       options.direction = 'left';
-      this.nativePageTransitions.fade(options)
-        .then(onSucess => {
-        })
-        .catch(err => {
-        });
+
       this.next();
     }
 
@@ -102,16 +95,25 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   }
 
   next(): void {
-    this.index = (this.index + 1) % this.album.stories.length;
+    this.index = (this.findIndexStory(this.story) + 1) % this.album.stories.length;
+    this.story= this.album.stories[this.index];
+
     if (!this.imageLoaded(this.index))
-      this.setStanizedUrl(this.album.stories[this.index].source, this.index);
+      this.setStanizedUrl(this.story.source, this.index);
   }
 
+  findIndexStory(story:UserStory):number{
+    return this.album.stories.findIndex((s:UserStory)=>{
+      return s.id===story.id;
+    });
+  }
   previous(): void {
-    this.index = this.index === 0 ? this.album.stories.length - 1 : this.index - 1;
-    if (!this.imageLoaded(this.index))
-      this.setStanizedUrl(this.album.stories[this.index].source, this.index);
 
+    this.index =this.findIndexStory(this.story) === 0 ? this.album.stories.length - 1 : this.index - 1;
+    this.story= this.album.stories[this.index];
+
+    if (!this.imageLoaded(this.index))
+      this.setStanizedUrl(this.story.source, this.index);
   }
 
   isFavorited(): boolean {
@@ -120,12 +122,10 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   toggleFavorite(): void {
     // this.getStory().favorited = this.getStory().favorited ? false : true;
-    //this.album.stories[this.index].user
+    //this.story.user
 
-    let story: UserStory = new UserStory();
-    this.album.stories[this.index].favorited = story.favorited = !this.album.stories[this.index].favorited;
-    story.id = this.album.stories[this.index].id;
-    this.storyService.updateStory(+this.authService.getCurrentPatient().patient_id, story).toPromise().then(addedStory => {
+    this.story.favorited= !this.story.favorited;
+    this.storyService.updateStory(+this.authService.getCurrentPatient().patient_id,this.story).toPromise().then(addedStory => {
 
     });
 
@@ -223,21 +223,23 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
       return;
     }
     if (url.indexOf(env.privateImagesRegex) < 0) {
-      this.backgroundImages[i] = this.stanizer.sanitize(url);
+      this.story.backgroundImage = this.stanizer.sanitize(url);
+      this.album.stories[i]=this.story;
       this.ref.markForCheck();
       return;
     }
 
 
     await this.storyService.getImage(url).toPromise().then(blob => {
-      this.backgroundImages[i] = this.stanizer.sanitize(blob);
+      this.story.backgroundImage = this.stanizer.sanitize(blob);
+      this.album.stories[i]=this.story;
       this.ref.markForCheck();
       return;
     })
   }
 
   getStanizedUrl() {
-    return this.backgroundImages[this.index];
+    return this.story.backgroundImage;
   }
 
   stanizeVideo(url: string) {
@@ -247,10 +249,10 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   }
 
   imageLoaded(index: number): boolean {
-    return !!this.backgroundImages[index] && this.backgroundImages[index] != this.loadingImageUrl;
+    return !!this.story.backgroundImage && this.story.backgroundImage != this.loadingImageUrl;
   }
 
   private getStory(): UserStory {
-    return this.album.stories[this.index];
+    return this.story;
   }
 }
