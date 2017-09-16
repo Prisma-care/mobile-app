@@ -218,7 +218,6 @@ export class NewStoryPage extends AuthGuard {
         return;
       })
     } else {
-      debugger;
       if (!this.method.includes(env.methods.addYoutubeStory) && (this.method.includes(env.methods.addNewStory) && this.dataUrl))
         this.stanizedUrl = this.util.pathForImage(this.dataUrl);
       return;
