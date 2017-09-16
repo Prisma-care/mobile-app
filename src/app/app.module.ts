@@ -3,6 +3,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {IonicApp, IonicErrorHandler, IonicModule} from "ionic-angular";
 import {IonicStorageModule} from "@ionic/storage";
 import {MyApp} from "./app.component";
+import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
 
 
 import {StatusBar} from "@ionic-native/status-bar";
@@ -98,6 +99,7 @@ import {InvitePage} from "../pages/invite/invite";
     FilePath,
     NativePageTransitions,
     TranslatorService,
+    YoutubeVideoPlayer,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

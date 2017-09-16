@@ -27,10 +27,11 @@
       <div class="image-container"
            *ngIf="story.source && story.source.indexOf('youtube.com') >= 0">
         <div *ngIf="story.source">
-          <iframe target="_parent" id="Video{{story.id}}" width="100%" height="315"
-                  [src]="stanizeVideo(story.source)" frameborder="0" allowfullscreen
-                  style="width:100%; max-width:100%">>
-          </iframe>
+          <img id="{{'video-'+story.id}}" [src]="getYoutubeThumb(story.source)"
+               (click)="openYoutubeVideo(story.source)"
+               style="width:100%; max-width:100%">
+          <ion-icon name="logo-youtube" color="white"
+                    class="movie-indicator"></ion-icon>
           <ion-icon class="star" name="{{isFavorited() ? 'star' : 'star-outline'}}"
                     [class.favorited]="isFavorited()" (click)="toggleFavorite()"></ion-icon>
         </div>

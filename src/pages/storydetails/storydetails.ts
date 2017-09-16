@@ -12,6 +12,7 @@ import {env} from "../../app/environment";
 import {StanizerService} from "../../providers/stanizer.service";
 import {StoryOptionsComponent} from "./story-options.component";
 import {TranslatorService} from "../../providers/translator.service";
+import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
 
 @Component({
   selector: 'page-storydetails',
@@ -31,7 +32,8 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   constructor(protected  authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private nativePageTransitions: NativePageTransitions,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService,
-              public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController, private ref: ChangeDetectorRef) {
+              public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController, private ref: ChangeDetectorRef,
+              private youtube: YoutubeVideoPlayer) {
     super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
     this.story = navParams.get("story") as UserStory;
@@ -43,6 +45,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     if (this.navParams.get("slide")) {
       //this.navCtrl.remove(this.navCtrl.length()-2);
     }
+
   }
 
   ionViewWillEnter() {
@@ -62,6 +65,14 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   getThumb(url: string): string {
     return "assets/img/t/" + url;
   }
+
+  getYoutubeThumb(url:string){
+    return this.stanizer.sanitize(this.utilService.getThumb(url));
+  }
+  openYoutubeVideo(url:string){
+    this.youtube.openVideo(this.utilService.getYoutubeId(url));
+  }
+
 
   isValidIndex(index: number): boolean {
     return index >= 0 && index < this.album.stories.length;
