@@ -23,7 +23,7 @@ export class AuthService extends PrismaService {
   // Login a user
   // Normally make a server request and store
   // e.g. the auth token
-  login(login: string, password: string): Observable<boolean> {
+  login(login: string, password: string): Observable<boolean | any > {
     let url: string = env.api.getSignIn;
     let userUrl: string = env.api.getUser;
     this.logout();
@@ -58,7 +58,7 @@ export class AuthService extends PrismaService {
     localStorage.removeItem(env.temp.currentPatient);
   }
 
-  signUp(user: User): Observable<boolean> {
+  signUp(user: User): Observable<boolean| any >  {
     let url: string = env.api.getUser;
     return this._http.post(`${this._urlToApi}/${url}`, user, {
       headers: this._head,
