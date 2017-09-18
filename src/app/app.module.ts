@@ -36,6 +36,7 @@ import {TranslatorService} from "../providers/translator.service";
 import {LoginHeaderComponent} from "../pages/login/login-header.component";
 import {NewLovedonePage} from "../pages/new-lovedone/new-lovedone";
 import {InvitePage} from "../pages/invite/invite";
+import {createTranslateLoader} from './translateLoader';
 
 
 @NgModule({
@@ -103,6 +104,4 @@ export class AppModule {
 }
 
 
-export function createTranslateLoader(http: Http) {
-  return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
-}
+
