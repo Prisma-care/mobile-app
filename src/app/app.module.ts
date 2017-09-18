@@ -56,6 +56,7 @@ import {InvitePage} from "../pages/invite/invite";
     BrowserModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
+    HttpModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -63,7 +64,6 @@ import {InvitePage} from "../pages/invite/invite";
         deps: [Http]
       }
     }),
-    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -104,5 +104,5 @@ export class AppModule {
 
 
 export function createTranslateLoader(http: Http) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
