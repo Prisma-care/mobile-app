@@ -3,7 +3,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {IonicApp, IonicErrorHandler, IonicModule} from "ionic-angular";
 import {IonicStorageModule} from "@ionic/storage";
 import {MyApp} from "./app.component";
-import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
+import {YoutubeVideoPlayer} from '@ionic-native/youtube-video-player';
 
 
 import {StatusBar} from "@ionic-native/status-bar";
@@ -17,9 +17,6 @@ import {StoryService} from "../providers/back-end/story.service";
 import {Camera} from "@ionic-native/camera";
 import {NewStoryPage} from "../pages/new-story/new-story";
 import {UtilService} from "../providers/util-service";
-
-
-import {FileTransfer} from "@ionic-native/file-transfer";
 import {File} from "@ionic-native/file";
 import {Transfer} from "@ionic-native/transfer";
 import {FilePath} from "@ionic-native/file-path";
@@ -94,13 +91,12 @@ import {InvitePage} from "../pages/invite/invite";
     AuthService,
     Camera,
     File,
-    FileTransfer,
     Transfer,
     FilePath,
     NativePageTransitions,
     TranslatorService,
     YoutubeVideoPlayer,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
 export class AppModule {
