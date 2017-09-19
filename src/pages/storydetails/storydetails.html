@@ -20,17 +20,18 @@
         <div *ngIf="story.source">
           <img id="{{story.id}}" [src]="getStanizedUrl() || loadingImageUrl"
                style="width:100%; max-width:100%">
-          <ion-icon class="star" name="{{isFavorited() ? 'star' : 'star-outline'}}"
+              <ion-icon class="star" name="{{isFavorited() ? 'star' : 'star-outline'}}"
                     [class.favorited]="isFavorited()" (click)="toggleFavorite()"></ion-icon>
         </div>
       </div>
       <div class="image-container"
            *ngIf="story.source && story.source.indexOf('youtube.com') >= 0">
-        <div *ngIf="story.source">
+        <div *ngIf="story.source"  (click)="openYoutubeVideo(story.source)">
           <img id="{{'video-'+story.id}}" [src]="getYoutubeThumb(story.source)"
-               (click)="openYoutubeVideo(story.source)"
+
                style="width:100%; max-width:100%">
           <ion-icon name="logo-youtube" color="white"
+                    style=" position: absolute;display: block;font-size: 50px;top: 35%;left: 35%;"
                     class="movie-indicator"></ion-icon>
           <ion-icon class="star" name="{{isFavorited() ? 'star' : 'star-outline'}}"
                     [class.favorited]="isFavorited()" (click)="toggleFavorite()"></ion-icon>
