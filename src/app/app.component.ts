@@ -11,6 +11,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {InvitePage} from "../pages/invite/invite";
 import {StoryService} from "../providers/back-end/story.service";
 import {CURENT_VERSION, env} from "./environment";
+import {Mixpanel} from '@ionic-native/mixpanel';
 
 @Component({
   templateUrl: 'app.html'
@@ -24,19 +25,21 @@ export class MyApp {
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
               public patientService: PatientService, public translatorService: TranslatorService,
-              public authService: AuthService, public menu: MenuController, public storyService: StoryService) {
+              public authService: AuthService, public menu: MenuController,
+              public storyService: StoryService,
+              private mixpanel: Mixpanel) {
     //localStorage.clear();
     translatorService.refresh();
     this.translate = translatorService.translateIn;
     this.translator = translatorService;
     if (this.authService.isLoggedIn()) {
-      let lastestUsedVersion : string = localStorage.getItem(env.lastestUsedVersion);
+      let lastestUsedVersion: string = localStorage.getItem(env.lastestUsedVersion);
       let currentVersion: string = CURENT_VERSION;
 
-      if(lastestUsedVersion) {
+      if (lastestUsedVersion) {
         if (lastestUsedVersion.indexOf(currentVersion) != 0 || lastestUsedVersion.length != currentVersion.length)
           this.logout();
-      }else{
+      } else {
         this.logout();
       }
       this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(res => {
@@ -51,6 +54,15 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
     });
+
+
+    this.mixpanel.init('7cfdbb200c3ee86ff8b5c1deda4b7b24')
+      .then((success) => {
+        this.mixpanel.track("Prisma launched");
+      })
+      .catch((err) => {
+        console.log('Error mixpanel.init', err)
+      });
   }
 
   logout() {

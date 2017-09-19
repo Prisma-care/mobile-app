@@ -37,6 +37,8 @@ import {LoginHeaderComponent} from "../pages/login/login-header.component";
 import {NewLovedonePage} from "../pages/new-lovedone/new-lovedone";
 import {InvitePage} from "../pages/invite/invite";
 
+import {Mixpanel} from '@ionic-native/mixpanel';
+
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
@@ -100,7 +102,8 @@ export function createTranslateLoader(http: Http) {
     NativePageTransitions,
     TranslatorService,
     YoutubeVideoPlayer,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    Mixpanel,
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })
 export class AppModule {
