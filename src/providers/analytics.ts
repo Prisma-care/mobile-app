@@ -7,7 +7,7 @@ declare var cordova: any;
 @Injectable()
 export class Analytics {
   isInit = false;
-  private token = '7cfdbb200c3ee86ff8b5c1deda4b7b24';
+  private token = '0c69ebeb92fc86a0b9d813b5fb6215e7';
 
   constructor(private mixpanel: Mixpanel) {
     this.init();
