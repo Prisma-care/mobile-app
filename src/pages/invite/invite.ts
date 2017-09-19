@@ -6,6 +6,7 @@ import {TranslatorService} from "../../providers/translator.service";
 import {UtilService} from "../../providers/util-service";
 import {PatientService} from "../../providers/back-end/user.service";
 import {AlbumsPage} from "../albums/albums";
+import {Analytics} from '../../providers/analytics';
 
 @Component({
   selector: 'page-invite',
@@ -21,7 +22,9 @@ export class InvitePage extends AuthGuard {
   private loading: boolean = false;
 
   constructor(public authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
-              public alertCtrl: AlertController, public navParams: NavParams, public utilService: UtilService, public patientService: PatientService) {
+              public alertCtrl: AlertController, public navParams: NavParams, public utilService: UtilService,
+              public patientService: PatientService,
+              private analytics: Analytics) {
     super(authService, navCtrl, translatorService);
     this.patientId = navParams.get("patientId") as number;
     this.util = utilService;
@@ -32,6 +35,8 @@ export class InvitePage extends AuthGuard {
   }
 
   invite() {
+    this.analytics.track('InviteComponent::invite started');
+
     if (this.loading)
       return;
     this.loading = true;
@@ -40,20 +45,25 @@ export class InvitePage extends AuthGuard {
       this.loading = false;
       return;
     }
-
-    this.patientService.inviteUser({
+    const data={
       inviterId: this.authService.getCurrentUser().id + "",
       lastName: this.lastname,
       firstName: this.firstname,
       email: this.email,
       patientId: this.patientId + ""
-    }).toPromise().then(res => {
+    };
+    this.patientService.inviteUser(data).toPromise().then(res => {
       if (res == true) {
-        this.inviteError();
+
+        this.analytics.track('InviteComponent::invite success', data);
+
+        this.inviteDone();
         this.navCtrl.setRoot(AlbumsPage).then(res => {
           this.loading = false;
         });
       } else {
+        this.analytics.track('InviteComponent::invite error', data);
+
         this.inviteError();
         this.loading = false;
       }

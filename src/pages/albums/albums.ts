@@ -15,6 +15,7 @@ import {TranslatorService} from "../../providers/translator.service";
 import {LoginPage} from "../login/login";
 import {UtilService} from "../../providers/util-service";
 import {NewLovedonePage} from "../new-lovedone/new-lovedone";
+import {Analytics} from '../../providers/analytics';
 
 
 @Component({
@@ -32,7 +33,9 @@ export class AlbumsPage extends AuthGuard implements OnInit {
 
   constructor(public authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
               public camera: Camera, public sanitizer: StanizerService, public storyService: StoryService,
-              public alertCtrl: AlertController, public menu: MenuController, private ref: ChangeDetectorRef, public utilService: UtilService) {
+              public alertCtrl: AlertController, public menu: MenuController, private ref: ChangeDetectorRef,
+              public utilService: UtilService,
+              private analytics: Analytics) {
     super(authService, navCtrl, translatorService);
     this.currentPatient = this.authService.getCurrentPatient();
     menu.enable(true);
@@ -48,7 +51,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   }
 
   ionViewWillEnter(): void {
-    if(!this.currentPatient){
+    if (!this.currentPatient) {
       this.navCtrl.setRoot(NewLovedonePage);
       return;
     }
@@ -185,11 +188,25 @@ export class AlbumsPage extends AuthGuard implements OnInit {
           handler: data => {
             this.storyService.addAlbum(this.authService.getCurrentPatient().patient_id, data.title).toPromise()
               .then(album => {
+
+                this.analytics.track('AlbumsComponent::add album success', {
+                  patient_id: this.authService.getCurrentPatient().patient_id,
+                  title: data.title
+                });
+
                 //this.ionViewWillEnter();
                 //Trying to spare us a whole refresh;
                 this.ionViewWillEnter();
               })
-              .catch(() => albumFailedAlert.present());
+              .catch(() => {
+
+                this.analytics.track('AlbumsComponent::add album error', {
+                  patient_id: this.authService.getCurrentPatient().patient_id,
+                  title: data.title
+                });
+
+                albumFailedAlert.present()
+              });
           }
         }
       ]

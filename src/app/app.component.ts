@@ -12,6 +12,7 @@ import {InvitePage} from "../pages/invite/invite";
 import {StoryService} from "../providers/back-end/story.service";
 import {CURENT_VERSION, env} from "./environment";
 import {Mixpanel} from '@ionic-native/mixpanel';
+import {Analytics} from '../providers/analytics';
 
 @Component({
   templateUrl: 'app.html'
@@ -27,7 +28,7 @@ export class MyApp {
               public patientService: PatientService, public translatorService: TranslatorService,
               public authService: AuthService, public menu: MenuController,
               public storyService: StoryService,
-              private mixpanel: Mixpanel) {
+              private analytics: Analytics) {
     //localStorage.clear();
     translatorService.refresh();
     this.translate = translatorService.translateIn;
@@ -55,14 +56,8 @@ export class MyApp {
       splashScreen.hide();
     });
 
+    this.analytics.track('AppComponent::Prisma launched');
 
-    this.mixpanel.init('7cfdbb200c3ee86ff8b5c1deda4b7b24')
-      .then((success) => {
-        this.mixpanel.track("Prisma launched");
-      })
-      .catch((err) => {
-        console.log('Error mixpanel.init', err)
-      });
   }
 
   logout() {
