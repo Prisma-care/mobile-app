@@ -38,6 +38,7 @@ import {NewLovedonePage} from "../pages/new-lovedone/new-lovedone";
 import {InvitePage} from "../pages/invite/invite";
 
 import {Mixpanel} from '@ionic-native/mixpanel';
+import {Analytics} from '../providers/analytics';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -103,6 +104,7 @@ export function createTranslateLoader(http: Http) {
     TranslatorService,
     YoutubeVideoPlayer,
     Mixpanel,
+    Analytics,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })
