@@ -89,6 +89,8 @@ export class LoginPage implements OnInit {
     setTimeout(function() {
       if(loggedIn)
         return;
+      if(that.loading)
+        return;
       sub.unsubscribe();
       that.loginError("Timeout");
       that.authService.logout();
