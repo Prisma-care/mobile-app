@@ -7,6 +7,7 @@ import {TranslatorService} from "../../providers/translator.service";
 import {UtilService} from "../../providers/util-service";
 import {NewLovedonePage} from "../new-lovedone/new-lovedone";
 import {Subscription} from "rxjs/Subscription";
+import {Analytics} from '../../providers/analytics';
 
 
 @Component({
@@ -29,7 +30,9 @@ export class LoginPage implements OnInit {
   private translator: TranslatorService;
 
   constructor(public navCtrl: NavController, public authService: AuthService
-    , public alertCtrl: AlertController, public translatorService: TranslatorService, public utilService: UtilService, public menu: MenuController) {
+    , public alertCtrl: AlertController, public translatorService: TranslatorService,
+              public utilService: UtilService, public menu: MenuController,
+              private analytics: Analytics) {
     translatorService.refresh();
     this.translator = translatorService;
     this.util = utilService;
@@ -74,24 +77,27 @@ export class LoginPage implements OnInit {
       return;
     }
 
-    let loggedIn:boolean = false;
+    let loggedIn: boolean = false;
     let sub: Subscription = this.authService.login(this.email, this.password).subscribe(res => {
       if (this.authService.isLoggedIn()) {
+        this.analytics.track('LoginComponent::Login success', this.authService.getCurrentUser().email);
         loggedIn = true;
         this.start();
       } else {
+        this.analytics.track('LoginComponent::Login error', this.authService.getCurrentUser().email);
         this.loginError();
         this.loading = false;
       }
     })
 
     var that = this;
-    setTimeout(function() {
-      if(loggedIn)
+    setTimeout(function () {
+      if (loggedIn)
         return;
       if(that.loading)
         return;
       sub.unsubscribe();
+      this.analytics.track('LoginComponent::Logout-Timeout', this.authService.getCurrentUser().email);
       that.loginError("Timeout");
       that.authService.logout();
       that.loading = false;
@@ -134,10 +140,20 @@ export class LoginPage implements OnInit {
     user.lastName = this.lastname;
     this.authService.signUp(user).toPromise().then(res => {
       if (res) {
+        this.analytics.track('LoginComponent::Register success', {
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName
+        });
         this.navCtrl.setRoot(NewLovedonePage).then(res => {
           this.loading = false;
         });
       } else {
+        this.analytics.track('LoginComponent::Register error', {
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName
+        });
         this.loginError("Invalid data");
         this.loading = false;
         return;

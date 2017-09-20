@@ -3,7 +3,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {IonicApp, IonicErrorHandler, IonicModule} from "ionic-angular";
 import {IonicStorageModule} from "@ionic/storage";
 import {MyApp} from "./app.component";
-import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
+import {YoutubeVideoPlayer} from '@ionic-native/youtube-video-player';
 
 
 import {StatusBar} from "@ionic-native/status-bar";
@@ -17,9 +17,6 @@ import {StoryService} from "../providers/back-end/story.service";
 import {Camera} from "@ionic-native/camera";
 import {NewStoryPage} from "../pages/new-story/new-story";
 import {UtilService} from "../providers/util-service";
-
-
-import {FileTransfer} from "@ionic-native/file-transfer";
 import {File} from "@ionic-native/file";
 import {Transfer} from "@ionic-native/transfer";
 import {FilePath} from "@ionic-native/file-path";
@@ -40,6 +37,13 @@ import {LoginHeaderComponent} from "../pages/login/login-header.component";
 import {NewLovedonePage} from "../pages/new-lovedone/new-lovedone";
 import {InvitePage} from "../pages/invite/invite";
 
+import {Mixpanel} from '@ionic-native/mixpanel';
+import {Analytics} from '../providers/analytics';
+
+export function createTranslateLoader(http: Http) {
+  return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
+}
+
 
 @NgModule({
   declarations: [
@@ -59,6 +63,7 @@ import {InvitePage} from "../pages/invite/invite";
     BrowserModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
+    HttpModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -66,7 +71,6 @@ import {InvitePage} from "../pages/invite/invite";
         deps: [Http]
       }
     }),
-    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -94,19 +98,21 @@ import {InvitePage} from "../pages/invite/invite";
     AuthService,
     Camera,
     File,
-    FileTransfer,
     Transfer,
     FilePath,
     NativePageTransitions,
     TranslatorService,
     YoutubeVideoPlayer,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    Mixpanel,
+    Analytics,
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })
 export class AppModule {
 }
 
 
-export function createTranslateLoader(http: Http) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
+
+
+
+

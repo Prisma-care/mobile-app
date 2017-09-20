@@ -12,7 +12,8 @@ import {env} from "../../app/environment";
 import {StanizerService} from "../../providers/stanizer.service";
 import {StoryOptionsComponent} from "./story-options.component";
 import {TranslatorService} from "../../providers/translator.service";
-import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
+import {YoutubeVideoPlayer} from '@ionic-native/youtube-video-player';
+import {Analytics} from '../../providers/analytics';
 
 @Component({
   selector: 'page-storydetails',
@@ -33,7 +34,8 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
               private storyService: StoryService, private nativePageTransitions: NativePageTransitions,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService,
               public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController, private ref: ChangeDetectorRef,
-              private youtube: YoutubeVideoPlayer) {
+              private youtube: YoutubeVideoPlayer,
+              private analytics: Analytics) {
     super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
     this.story = navParams.get("story") as UserStory;
@@ -46,6 +48,9 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
       //this.navCtrl.remove(this.navCtrl.length()-2);
     }
 
+    this.analytics.track('StoryDetailsPage::view', {
+      story: this.story,
+    });
   }
 
   ionViewWillEnter() {
@@ -66,10 +71,11 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     return "assets/img/t/" + url;
   }
 
-  getYoutubeThumb(url:string){
+  getYoutubeThumb(url: string) {
     return this.stanizer.sanitize(this.utilService.getThumb(url));
   }
-  openYoutubeVideo(url:string){
+
+  openYoutubeVideo(url: string) {
     this.youtube.openVideo(this.utilService.getYoutubeId(url));
   }
 
@@ -108,21 +114,22 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   next(): void {
     this.index = (this.findIndexStory(this.story) + 1) % this.album.stories.length;
-    this.story= this.album.stories[this.index];
+    this.story = this.album.stories[this.index];
 
     if (!this.imageLoaded(this.index))
       this.setStanizedUrl(this.story.source, this.index);
   }
 
-  findIndexStory(story:UserStory):number{
-    return this.album.stories.findIndex((s:UserStory)=>{
-      return s.id===story.id;
+  findIndexStory(story: UserStory): number {
+    return this.album.stories.findIndex((s: UserStory) => {
+      return s.id === story.id;
     });
   }
+
   previous(): void {
 
-    this.index =this.findIndexStory(this.story) === 0 ? this.album.stories.length - 1 : this.index - 1;
-    this.story= this.album.stories[this.index];
+    this.index = this.findIndexStory(this.story) === 0 ? this.album.stories.length - 1 : this.index - 1;
+    this.story = this.album.stories[this.index];
 
     if (!this.imageLoaded(this.index))
       this.setStanizedUrl(this.story.source, this.index);
@@ -136,15 +143,21 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     // this.getStory().favorited = this.getStory().favorited ? false : true;
     //this.story.user
 
-    this.story.favorited= !this.story.favorited;
-    this.storyService.updateStory(+this.authService.getCurrentPatient().patient_id,this.story).toPromise().then(addedStory => {
+    this.story.favorited = !this.story.favorited;
+    this.storyService.updateStory(+this.authService.getCurrentPatient().patient_id, this.story).toPromise().then(addedStory => {
 
     });
 
   }
 
   editDescription() {
+
     let story: UserStory = this.getStory();
+
+    this.analytics.track('StoryDetailsPage::editDescription', {
+      story,
+    });
+    
     this.navCtrl.push(NewStoryPage, {
       "album": this.album,
       "story": story,
@@ -236,7 +249,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     }
     if (url.indexOf(env.privateImagesRegex) < 0) {
       this.story.backgroundImage = this.stanizer.sanitize(url);
-      this.album.stories[i]=this.story;
+      this.album.stories[i] = this.story;
       this.ref.markForCheck();
       return;
     }
@@ -244,7 +257,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
     await this.storyService.getImage(url).toPromise().then(blob => {
       this.story.backgroundImage = this.stanizer.sanitize(blob);
-      this.album.stories[i]=this.story;
+      this.album.stories[i] = this.story;
       this.ref.markForCheck();
       return;
     })

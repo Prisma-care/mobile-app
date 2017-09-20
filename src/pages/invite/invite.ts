@@ -6,6 +6,7 @@ import {TranslatorService} from "../../providers/translator.service";
 import {UtilService} from "../../providers/util-service";
 import {PatientService} from "../../providers/back-end/user.service";
 import {AlbumsPage} from "../albums/albums";
+import {Analytics} from '../../providers/analytics';
 
 @Component({
   selector: 'page-invite',
@@ -21,7 +22,9 @@ export class InvitePage extends AuthGuard {
   private loading: boolean = false;
 
   constructor(public authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
-              public alertCtrl: AlertController, public navParams: NavParams, public utilService: UtilService, public patientService: PatientService) {
+              public alertCtrl: AlertController, public navParams: NavParams, public utilService: UtilService,
+              public patientService: PatientService,
+              private analytics: Analytics) {
     super(authService, navCtrl, translatorService);
     this.patientId = navParams.get("patientId") as number;
     this.util = utilService;
@@ -32,44 +35,51 @@ export class InvitePage extends AuthGuard {
   }
 
   invite() {
+    this.analytics.track('InviteComponent::invite started');
+
     if (this.loading)
       return;
     this.loading = true;
     if (!this.canInvite()) {
-      this.inviteError();
+      this.inviteError('Voer een voornaam, naam en email adres in.');
       this.loading = false;
       return;
     }
-
-    this.patientService.inviteUser({
+    const data = {
       inviterId: this.authService.getCurrentUser().id + "",
       lastName: this.lastname,
       firstName: this.firstname,
       email: this.email,
       patientId: this.patientId + ""
-    }).toPromise().then(res => {
+    };
+    this.patientService.inviteUser(data).toPromise().then(res => {
       if (res == true) {
-        this.inviteError();
+
+        this.analytics.track('InviteComponent::invite success', data);
+
+        this.inviteDone();
         this.navCtrl.setRoot(AlbumsPage).then(res => {
           this.loading = false;
         });
       } else {
-        this.inviteError();
+        this.analytics.track('InviteComponent::invite error', data);
+        const error= res.json();
+        console.log('error:invitation', error);
+        this.inviteError(error.meta  ? error.meta.message.email.join('\n') : '');
         this.loading = false;
       }
-
-    })
+    });
   }
 
-  inviteError(errorMessage?: string) {
-    var errorMsgDefault = this.firstname + " kon niet uitgenodigd worden.";
-    this.translatorService.translate([errorMessage, errorMsgDefault], (translations) => {
-      let alert = this.alertCtrl.create({
-        title: errorMessage,
-        buttons: ['Ok']
-      });
-      alert.present();
+  inviteError(errorMessage: string) {
+    const errorMsgDefault = `${this.firstname} kon niet uitgenodigd worden.
+    ${errorMessage}`;
+    let alert = this.alertCtrl.create({
+      title: errorMsgDefault,
+      buttons: ['Ok']
     });
+    alert.present();
+
   }
 
   inviteDone() {
