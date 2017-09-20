@@ -65,7 +65,7 @@ export class InvitePage extends AuthGuard {
     var errorMsgDefault = this.firstname + " kon niet uitgenodigd worden.";
     this.translatorService.translate([errorMessage, errorMsgDefault], (translations) => {
       let alert = this.alertCtrl.create({
-        title: errorMessage ? translations[errorMessage] : translations[errorMsgDefault],
+        title: errorMessage,
         buttons: ['Ok']
       });
       alert.present();
@@ -76,7 +76,7 @@ export class InvitePage extends AuthGuard {
     var message = this.firstname + " ontvangt een e-mail met je uitnodiging.";
     this.translatorService.translate([message], (translations) => {
       let alert = this.alertCtrl.create({
-        title: translations[message],
+        title: message,
         buttons: ['Ok']
       });
       alert.present();

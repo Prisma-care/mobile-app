@@ -8,6 +8,7 @@ import {TranslatorService} from "../../providers/translator.service";
 @Component({
   selector: 'album-questions',
   template: `
+    <div class="clear"></div>
     <div class="topic-wrapper">
       <div class="topic-container" *ngIf="currentQuestion">
         <span class="topic-sub">{{ 'Onderwerp' | translate }}</span>
