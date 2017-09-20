@@ -84,15 +84,15 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   }
 
   getBackgroundImg(i: number): any {
-    return { 'background-image': this.backgroundImages[i] };
+    return this.backgroundImages[i];
   }
 
-  getBackgroundColor(i: number) {
+  getBackgroundColor(i: number): string {
     if (this.albums[i].isEmpty()) {
-      return { 'background-color': this.colorCodes[i % this.colorCodes.length] };
+      return this.colorCodes[i % this.colorCodes.length] as string;
     }
     else {
-      return {};
+      return "";
     }
   }
 
