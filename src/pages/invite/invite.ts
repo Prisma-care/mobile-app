@@ -41,11 +41,11 @@ export class InvitePage extends AuthGuard {
       return;
     this.loading = true;
     if (!this.canInvite()) {
-      this.inviteError();
+      this.inviteError('Voer een voornaam, naam en email adres in.');
       this.loading = false;
       return;
     }
-    const data={
+    const data = {
       inviterId: this.authService.getCurrentUser().id + "",
       lastName: this.lastname,
       firstName: this.firstname,
@@ -63,23 +63,23 @@ export class InvitePage extends AuthGuard {
         });
       } else {
         this.analytics.track('InviteComponent::invite error', data);
-
-        this.inviteError();
+        const error= res.json();
+        console.log('error:invitation', error);
+        this.inviteError(error.meta  ? error.meta.message.email.join('\n') : '');
         this.loading = false;
       }
-
-    })
+    });
   }
 
-  inviteError(errorMessage?: string) {
-    var errorMsgDefault = this.firstname + " kon niet uitgenodigd worden.";
-    this.translatorService.translate([errorMessage, errorMsgDefault], (translations) => {
-      let alert = this.alertCtrl.create({
-        title: errorMessage ? translations[errorMessage] : translations[errorMsgDefault],
-        buttons: ['Ok']
-      });
-      alert.present();
+  inviteError(errorMessage: string) {
+    const errorMsgDefault = `${this.firstname} kon niet uitgenodigd worden.
+    ${errorMessage}`;
+    let alert = this.alertCtrl.create({
+      title: errorMsgDefault,
+      buttons: ['Ok']
     });
+    alert.present();
+
   }
 
   inviteDone() {
