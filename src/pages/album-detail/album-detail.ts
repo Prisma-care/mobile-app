@@ -41,7 +41,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     this.storyService.getAlbum(this.authService.getCurrentPatient().patient_id, this.album.id).subscribe(res => {
       this.album = res;
       this.orderByFavorited();
-      console.log('album', this.album);
+      console.log('album',this.album);
       if (!this.album.isEmpty()) {
         let i: number = 0;
         this.album.stories.forEach(story => {
@@ -50,19 +50,19 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
           i++;
         })
 
-        console.log('backgroundImages', this.backgroundImages)
+        console.log('backgroundImages',this.backgroundImages)
       }
     });
   }
 
   orderByFavorited() {
-    if (!this.album)
+    if(!this.album)
       return;
-    if (this.album.isEmpty())
+    if(this.album.isEmpty())
       return;
 
-    const favorites = this.album.stories.filter((storie: UserStory) => storie.favorited);
-    const notFavorites = this.album.stories.filter((storie: UserStory) => !storie.favorited);
+    const favorites= this.album.stories.filter((storie:UserStory)=>storie.favorited);
+    const notFavorites= this.album.stories.filter((storie:UserStory)=>!storie.favorited);
     this.album.stories = favorites.concat(notFavorites);
   }
 
@@ -186,7 +186,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   getBackgroundImg(i: number): any {
-    return { 'background-image': this.album.stories[i].backgroundImage };
+    return this.album.stories[i].backgroundImage;
   }
 
   isAVideoBackground(i: number): boolean {
@@ -198,14 +198,14 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   showDetails(album: Album, story: UserStory) {
-    const storyWithoutBackgourndImage = {
+    const storyWithoutBackgourndImage={
       ...story,
-      backgroundImage: null
+      backgroundImage:null
     };
 
     this.navCtrl.push(StoryDetailsPage, {
       "album": album,
-      "story": storyWithoutBackgourndImage
+      "story":storyWithoutBackgourndImage
     })
   }
 
