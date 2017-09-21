@@ -1,5 +1,12 @@
 import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
-import {ActionSheetController, MenuController, NavController, NavParams, PopoverController} from "ionic-angular";
+import {
+  ActionSheetController,
+  MenuController,
+  NavController,
+  NavParams,
+  Platform,
+  PopoverController
+} from "ionic-angular";
 import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
@@ -35,7 +42,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService,
               public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController, private ref: ChangeDetectorRef,
               private youtube: YoutubeVideoPlayer,
-              private analytics: Analytics) {
+              private analytics: Analytics, private plateform: Platform) {
     super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
     this.story = navParams.get("story") as UserStory;
@@ -51,6 +58,12 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     this.analytics.track('StoryDetailsPage::view', {
       story: this.story,
     });
+
+    console.log('plateform', this.plateform.platforms(), 'is in browser', this.plateform.is('mobileweb'));
+  }
+
+  isRunningInBrowser() {
+    return this.plateform.is('mobileweb') || this.plateform.is('core');
   }
 
   ionViewWillEnter() {
@@ -157,7 +170,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     this.analytics.track('StoryDetailsPage::editDescription', {
       story,
     });
-    
+
     this.navCtrl.push(NewStoryPage, {
       "album": this.album,
       "story": story,
@@ -269,7 +282,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   stanizeVideo(url: string) {
     return this.stanizer.sanitizeVideo("https://www.youtube.com/embed/" + this.utilService.getYoutubeId(url) + "?rel=0" +
-      "&amp;autoplay=1" +
+      "&amp;autoplay=0" +
       "&amp;showinfo=0");
   }
 
