@@ -43,10 +43,10 @@ If you have some command line & git experience, this is a more flexible way to g
 1. Clone the repository
 
    ```bash 
-   git clone https://github.com/Prisma/prisma-frontend.git
+   git clone https://github.com/Prisma/mobile-app.git
    ```
 
-2. Install [npm](https://www.npmjs.com/) if you haven't already.
+2. Install [npm](https://nodejs.org/en/) if you haven't already.
 
 3. On the command line inside the repository directory, install Cordova & Ionic. Then install the dependencies.
 
@@ -54,6 +54,8 @@ If you have some command line & git experience, this is a more flexible way to g
    npm install -g cordova ionic
    npm install
    ```
+
+These commands can take a while to finish.
 
 Now you can run the app in various ways. Option a is used to test the app quickly in a web browser. Option b almost does the same, but adds in support for more features. Option c allows you to test the app on an Android device.
 
@@ -76,19 +78,22 @@ ionic cordova platform add browser
 ionic cordova run browser -lc # starts a webserver, -lc enables live reloading & console logging
 ```
 
+Note: `cordova run browser` defaults to Google Chrome and will crash if it is not installed. You [can use](https://stackoverflow.com/questions/38075283/how-to-change-default-browser-of-cordova-browser-platform) the option `--target=firefox` to specify another browser.
+
 #### Option c - Android live build
 
 This method will build, transfer & start the app on your Android device. You'll need to connect it to your PC with a USB cable beforehand. The device needs to be in developer mode with USB Debugging enabled (search on how to do this for you device if you don't know).
 
-On your PC, you'll need to have the [Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html) and [Android Studio](https://developer.android.com/studio/index.html) installed. Additionally, check whether you have the right Android SDK Platform version & SDK Tools enabled/installed in the Android Studio settings. They have to match your device's Android version.
+On your PC, you'll need to have the [Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html) and [Android Studio](https://developer.android.com/studio/index.html) installed. Additionally, make sure the right Android SDK Platform tools are installed. You can do this in the Android Studio settings: in the Welcome screen, go to Configure -> SDK Platforms & check the platform that matches your device's Android version.
 
-Also, make sure that the necessary folders are in your `PATH` so that the build executables can be found in your CLI environment.
+Now, make sure that the necessary folders are in your `PATH` so that the build executables can be found in your CLI environment.
 
-On a Linux system with a default Android Studio install the following lines need to be added to the terminal configuration file. It might be different on your system.
+On a Linux system with a default Android Studio install the following lines need to be added to the terminal configuration file (~/.bashrc, ~/.zshrc, ...). The locations might be different on your system, depending on where you installed Android studio.
 
 ```bash
-PATH=PATH:$HOME/Android/Sdk/platform-tools:$HOME/Android/Sdk/tools
+PATH=$PATH:$HOME/Android/Sdk/platform-tools:$HOME/Android/Sdk/tools
 ANDROID_HOME=$HOME/Android/Sdk
+PATH=$PATH:/opt/android-studio/gradle/gradle-3.2/bin
 ```
 
 Now you can build & transfer the project to your device using the Cordova `run` command.
