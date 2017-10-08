@@ -74,27 +74,42 @@ export class LoginPage implements OnInit {
       return;
     }
 
-    let loggedIn:boolean = false;
-    let sub: Subscription = this.authService.login(this.email, this.password).subscribe(res => {
+    let sub: Subscription = this.authService.login(this.email, this.password)
+    .timeout(LoginPage.TIMEOUTTIME)
+    .subscribe(res => {
       if (this.authService.isLoggedIn()) {
-        loggedIn = true;
         this.start();
       } else {
         this.loginError();
         this.loading = false;
       }
-    })
+    },
+    () => {
+      Error("login error");
+      this.loading = false;
+    },
+    () => {
+      this.loading = false;
+    }
+  )
 
     var that = this;
+
+    // purpose of this:
+    // disable the current request after randomly defined TIMEOUTTIME ?
+    /*
     setTimeout(function() {
-      if(loggedIn)
+      if (this.authService.isLoggedIn()) {
         return;
-      sub.unsubscribe();
-      that.loginError("Timeout");
-      that.authService.logout();
+      } else {
+      sub.unsubscribe();            // unsub
+      // that.loginError("Timeout");   // irritating
+      that.authService.logout();    // log out
       that.loading = false;
-      return;
+      }
     }, LoginPage.TIMEOUTTIME);
+    */
+
   }
 
   start(): void {
