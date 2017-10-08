@@ -10,7 +10,7 @@
         "lint": "ionic-app-scripts lint",
         "ionic:build": "ionic-app-scripts build",
         "ionic:serve": "ionic-app-scripts serve",
-        "install": "ionic cordova plugin add cordova-plugin-camera --save && ionic cordova plugin add cordova-plugin-file-transfer --save && ionic cordova plugin add cordova-plugin-file --save && ionic cordova plugin add cordova-plugin-dialogs --save && ionic cordova plugin add com.telerik.plugins.nativepagetransitions --save"
+        "install": "ionic cordova plugin add cordova-plugin-camera --save && ionic cordova plugin add cordova-plugin-file-transfer --save && ionic cordova plugin add cordova-plugin-file --save && ionic cordova plugin add cordova-plugin-dialogs --save && ionic cordova plugin add com.telerik.plugins.nativepagetransitions --save && ionic cordova plugin add cordova-plugin-network-information && npm install --save @ionic-native/network"
     },
     "dependencies": {
         "@angular/common": "4.1.3",
