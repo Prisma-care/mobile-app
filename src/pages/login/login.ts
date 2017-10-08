@@ -7,6 +7,7 @@ import {TranslatorService} from "../../providers/translator.service";
 import {UtilService} from "../../providers/util-service";
 import {NewLovedonePage} from "../new-lovedone/new-lovedone";
 import {Subscription} from "rxjs/Subscription";
+import {Network} from "@ionic-native/network";
 
 
 @Component({
@@ -29,7 +30,9 @@ export class LoginPage implements OnInit {
   private translator: TranslatorService;
 
   constructor(public navCtrl: NavController, public authService: AuthService
-    , public alertCtrl: AlertController, public translatorService: TranslatorService, public utilService: UtilService, public menu: MenuController) {
+    , public alertCtrl: AlertController, public translatorService: TranslatorService,
+    public utilService: UtilService, public menu: MenuController,
+    private network: Network) {
     translatorService.refresh();
     this.translator = translatorService;
     this.util = utilService;
@@ -67,6 +70,12 @@ export class LoginPage implements OnInit {
   signIn() {
     if (this.loading)
       return;
+
+    if (this.network.type === "none") {
+      this.loginError("Je bent niet verbonden met het internet.");
+      return;
+    }
+
     this.loading = true;
     if (!this.email || !this.password) {
       this.loginError("Geen login/password");
