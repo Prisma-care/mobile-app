@@ -7,6 +7,7 @@ import {TranslatorService} from "../../providers/translator.service";
 import {UtilService} from "../../providers/util-service";
 import {NewLovedonePage} from "../new-lovedone/new-lovedone";
 import {Subscription} from "rxjs/Subscription";
+import {Network} from "@ionic-native/network";
 
 
 @Component({
@@ -29,7 +30,9 @@ export class LoginPage implements OnInit {
   private translator: TranslatorService;
 
   constructor(public navCtrl: NavController, public authService: AuthService
-    , public alertCtrl: AlertController, public translatorService: TranslatorService, public utilService: UtilService, public menu: MenuController) {
+    , public alertCtrl: AlertController, public translatorService: TranslatorService,
+    public utilService: UtilService, public menu: MenuController,
+    private network: Network) {
     translatorService.refresh();
     this.translator = translatorService;
     this.util = utilService;
@@ -67,6 +70,12 @@ export class LoginPage implements OnInit {
   signIn() {
     if (this.loading)
       return;
+
+    if (this.network.type === "none") {
+      this.loginError("Je bent niet verbonden met het internet.");
+      return;
+    }
+
     this.loading = true;
     if (!this.email || !this.password) {
       this.loginError("Geen login/password");
@@ -74,27 +83,42 @@ export class LoginPage implements OnInit {
       return;
     }
 
-    let loggedIn:boolean = false;
-    let sub: Subscription = this.authService.login(this.email, this.password).subscribe(res => {
+    let sub: Subscription = this.authService.login(this.email, this.password)
+    .timeout(LoginPage.TIMEOUTTIME)
+    .subscribe(res => {
       if (this.authService.isLoggedIn()) {
-        loggedIn = true;
         this.start();
       } else {
         this.loginError();
         this.loading = false;
       }
-    })
+    },
+    () => {
+      Error("login error");
+      this.loading = false;
+    },
+    () => {
+      this.loading = false;
+    }
+  )
 
     var that = this;
+
+    // purpose of this:
+    // disable the current request after randomly defined TIMEOUTTIME ?
+    /*
     setTimeout(function() {
-      if(loggedIn)
+      if (this.authService.isLoggedIn()) {
         return;
-      sub.unsubscribe();
-      that.loginError("Timeout");
-      that.authService.logout();
+      } else {
+      sub.unsubscribe();            // unsub
+      // that.loginError("Timeout");   // irritating
+      that.authService.logout();    // log out
       that.loading = false;
-      return;
+      }
     }, LoginPage.TIMEOUTTIME);
+    */
+
   }
 
   start(): void {

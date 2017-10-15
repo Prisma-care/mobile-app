@@ -76,7 +76,7 @@ export class AuthService extends PrismaService {
   // Checks if current token is still valid
   // the pages can sue this:  ionViewCanEnter() { return this.authService.isLoggedIn();} to secure the routes
   isLoggedIn(): boolean {
-    return  !!localStorage.getItem(env.temp.currentPatient) &&   !!localStorage.getItem(env.jwtToken);
+    return  !!localStorage.getItem(env.temp.currentPatient) && !!localStorage.getItem(env.jwtToken);
   }
 
   getCurrentUser(): User {

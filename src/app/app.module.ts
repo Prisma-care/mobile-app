@@ -22,6 +22,7 @@ import {FileTransfer} from "@ionic-native/file-transfer";
 import {File} from "@ionic-native/file";
 import {Transfer} from "@ionic-native/transfer";
 import {FilePath} from "@ionic-native/file-path";
+import {Network} from "@ionic-native/network";
 
 import {AlbumsPage} from "../pages/albums/albums";
 import {AlbumDetailPage} from "../pages/album-detail/album-detail";
@@ -98,6 +99,7 @@ import {InvitePage} from "../pages/invite/invite";
     FilePath,
     NativePageTransitions,
     TranslatorService,
+    Network,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
