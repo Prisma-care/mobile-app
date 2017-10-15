@@ -184,3 +184,33 @@ ion-navbar ion-buttons[end] button {
   bottom: 0;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 37%, rgba(33, 33, 33, 0.3) 87%);
 }
+
+// ALBUMS / ALBUM-DETAIL tiles
+
+.movie-indicator {
+  color: white;
+  display: block;
+  margin: 0 auto;
+  font-size: 50px;
+}
+
+.album-thumb {
+  height: 50vw; // todo: dynamic - set to width of comonent?
+  background-size: cover;
+  background-position: center;
+  background-color: color($colors, dark-gray);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  text-shadow: rgba(0, 0, 0, .6) 1px 1px 0;
+}
+
+.album-thumb > ion-spinner {
+  display: block;
+  position: absolute;
+  margin: auto;
+  bottom: 2em;
+  left: 0;
+  right: 0;
+}

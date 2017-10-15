@@ -97,8 +97,10 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       return;
     }
     else {
+      // representative image: index of the image that should show up as front cover of the album
       let index = this.getRepresentativeImageStoryIndex(this.albums[i]);
       let thumb: string = this.getThumb(this.albums[i].getBackgroundImage(index));
+
 
       if (!this.albums[i].getBackgroundImage(index)) {
         this.backgroundImages[i] = "";
@@ -198,8 +200,13 @@ export class AlbumsPage extends AuthGuard implements OnInit {
     return !!story.source && !!story.favorited;
   }
 
+  // TODO: both methods have a similar purpose...
   hasAnImage(story: UserStory) {
     return !!story.source;
+  }
+
+  noImage(index: number): boolean {
+    return !this.albums[index].getBackgroundImage(index);
   }
 
 
@@ -210,4 +217,5 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   imageLoaded(index: number): boolean {
     return !!this.backgroundImages[index] && this.backgroundImages[index] != this.loadingImageStyle;
   }
+
 }

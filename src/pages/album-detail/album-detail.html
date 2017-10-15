@@ -16,17 +16,20 @@
     <ion-row>
       <ion-col col-6 col-md-4 *ngFor="let story of album.stories,let i=index"
                (click)="showDetails(album, i)">
-        <div class="album-thumb" id="image{{i}}"
+        <div *ngIf="imageLoaded(i) || noImage(i)" class="album-thumb" id="image{{i}}"
              [style]="getBackgroundImg(i)">
           <div class="description-wrapper" *ngIf="!story.source && story.description">
             <p class="story-description">{{story.description}}</p>
           </div>
-        </div>
-        <ion-icon name="logo-youtube" color="white"
-                  style=" position: absolute;display: block;font-size: 50px;top: 35%;left: 35%;"
-                  *ngIf="isAVideoBackground(i)"></ion-icon>
-        <ion-icon *ngIf="isFavorited(i)" class="star" name="star"
+          <ion-icon name="logo-youtube" color="white"
+                    class="movie-indicator"
+                    *ngIf="isAVideoBackground(i)"></ion-icon>
+          <ion-icon *ngIf="isFavorited(i)" class="star" name="star"
                   [class.favorited]="isFavorited(i)"></ion-icon>
+        </div>
+        <div *ngIf="!imageLoaded(i) && !noImage(i)" class="album-thumb">
+          <ion-spinner item-start name="dots" color="dark-gray"></ion-spinner>
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>

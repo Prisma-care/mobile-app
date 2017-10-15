@@ -18,14 +18,10 @@ album-detail {
   }
 
   .album-thumb {
-    height: 50vw; // todo: dynamic - set to width of comonent?
-    background-size: cover;
-    background-position: center;
-    background-color: color($colors, light-gray);
-    position: relative;
-
     // settings for the description text
     padding: 2em;
+    background-color: color($colors, white);
+    text-shadow: none;
   }
 
   .col, [col-6] {
@@ -47,6 +43,7 @@ album-detail {
     text-overflow: ellipsis;
     overflow: hidden;
     height: 100%;
+    color: colors($colors, white);
   }
 
   .story-description {
