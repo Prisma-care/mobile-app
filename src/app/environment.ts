@@ -12,7 +12,7 @@ export const env = {
   lastestUsedVersion: 'version',
   localstorage: {LOCALSTORAGE_SELECTEDLANG: "langs"},
   privateImagesRegex: '/asset/',
-  loadingImage: "assets/img/homePage/loading.gif",
+  loadingImage: "assets/img/homePage/loading.png",
   api: {
     getSignIn: 'signin',
     getPatient: 'patient',

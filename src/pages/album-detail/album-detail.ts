@@ -196,6 +196,10 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     return this.utilService.getThumb(url);
   }
 
+  noImage(index: number): boolean {
+    return !this.backgroundImages[index];
+  }
+
   imageLoaded(index: number): boolean {
     return !!this.backgroundImages[index] && this.backgroundImages[index] != this.loadingImageStyle;
   }
