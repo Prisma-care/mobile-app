@@ -218,7 +218,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   noImage(index: number): boolean {
-    return !this.backgroundImages[index];
+    return this.album.stories[index].backgroundImage === "";
   }
 
   imageLoaded(index: number): boolean {
