@@ -10,6 +10,7 @@ import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
 import {env} from "../../app/environment";
 import {TranslatorService} from "../../providers/translator.service";
+import {UserStory} from "../../dto/user-story";
 
 @Component({
   selector: 'album-detail',
@@ -29,6 +30,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
               private storyService: StoryService, private sanitizer: StanizerService, private ref: ChangeDetectorRef) {
     super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
+    this.orderByFavorited();
     this.loadingImageStyle = this.sanitizer.sanitizeStyle(this.loadingImageStyle);
   }
 
@@ -38,6 +40,8 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   ionViewWillEnter(): void {
     this.storyService.getAlbum(this.authService.getCurrentPatient().patient_id, this.album.id).subscribe(res => {
       this.album = res;
+      this.orderByFavorited();
+      console.log('album',this.album);
       if (!this.album.isEmpty()) {
         let i: number = 0;
         this.album.stories.forEach(story => {
@@ -45,10 +49,22 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
             this.setBackgroundImages(i);
           i++;
         })
+
+        console.log('backgroundImages',this.backgroundImages)
       }
     });
   }
 
+  orderByFavorited() {
+    if(!this.album)
+      return;
+    if(this.album.isEmpty())
+      return;
+
+    const favorites= this.album.stories.filter((storie:UserStory)=>storie.favorited);
+    const notFavorites= this.album.stories.filter((storie:UserStory)=>!storie.favorited);
+    this.album.stories = favorites.concat(notFavorites);
+  }
 
   openActionSheet() {
     let text1: string = 'Tekst schrijven';
@@ -149,28 +165,28 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   setBackgroundImages(i: number) {
     let url: string = this.album.getBackgroundImage(i);
     if (!url) {
-      this.backgroundImages[i] = "";
+      this.album.stories[i].backgroundImage = "";
       this.ref.markForCheck();
       return;
     }
     let thumb = this.getThumb(url);
-    this.backgroundImages[i] = this.loadingImageStyle;
+    this.album.stories[i].backgroundImage = this.loadingImageStyle;
     if (thumb.indexOf(env.privateImagesRegex) < 0) {
       const style = `background-image: url(${thumb})`;
-      this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style);
+      this.album.stories[i].backgroundImage = this.sanitizer.sanitizeStyle(style);
       this.ref.markForCheck();
       return;
     }
     this.storyService.getImage(thumb).toPromise().then(blob => {
       const style2 = `background-image: url(${blob})`;
-      this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style2);
+      this.album.stories[i].backgroundImage = this.sanitizer.sanitizeStyle(style2);
       this.ref.markForCheck();
       return;
     });
   }
 
   getBackgroundImg(i: number): any {
-    return this.backgroundImages[i];
+    return this.album.stories[i].backgroundImage;
   }
 
   isAVideoBackground(i: number): boolean {
@@ -181,10 +197,15 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
     return url.toLowerCase().indexOf("img.youtube") >= 0;
   }
 
-  showDetails(album: Album, index: number) {
+  showDetails(album: Album, story: UserStory) {
+    const storyWithoutBackgourndImage={
+      ...story,
+      backgroundImage:null
+    };
+
     this.navCtrl.push(StoryDetailsPage, {
       "album": album,
-      "index": index ? index : 0
+      "story":storyWithoutBackgourndImage
     })
   }
 
@@ -201,6 +222,6 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   imageLoaded(index: number): boolean {
-    return !!this.backgroundImages[index] && this.backgroundImages[index] != this.loadingImageStyle;
+    return !!this.album.stories[index].backgroundImage && this.album.stories[index].backgroundImage != this.loadingImageStyle;
   }
 }

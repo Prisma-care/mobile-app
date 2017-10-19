@@ -9,15 +9,16 @@ export class TranslatorService {
   public constructor(public translateIn: TranslateService) {
     translateIn.addLangs(['nl']);
     translateIn.setDefaultLang(this.lang);
+    this.translateIn.use(this.lang);
     localStorage.setItem(env.localstorage.LOCALSTORAGE_SELECTEDLANG,'nl')
-    let browserLang: string = /** this.translateIn.getBrowserLang() || */this.lang;
-    if (!localStorage.getItem(env.localstorage.LOCALSTORAGE_SELECTEDLANG))
-      if (browserLang.toLowerCase().indexOf('en') >= 0 || browserLang.toLowerCase().indexOf('fr') >= 0 || browserLang.toLowerCase().indexOf('nl') >= 0) {
-        translateIn.use(this.translateIn.getBrowserLang());
-        this.switchLang(this.translateIn.getBrowserLang().toLowerCase());
-      }
-
-    this.refresh();
+    // let browserLang: string = /** this.translateIn.getBrowserLang() || */this.lang;
+    // if (!localStorage.getItem(env.localstorage.LOCALSTORAGE_SELECTEDLANG))
+    //   if (browserLang.toLowerCase().indexOf('en') >= 0 || browserLang.toLowerCase().indexOf('fr') >= 0 || browserLang.toLowerCase().indexOf('nl') >= 0) {
+    //     translateIn.use(this.translateIn.getBrowserLang());
+    //     this.switchLang(this.translateIn.getBrowserLang().toLowerCase());
+    //   }
+    //
+    // this.refresh();
   }
 
   /*
