@@ -26,4 +26,15 @@ page-new-story {
     font-size: map-get($sizes, 'medium');
   }
 
+  .plak-een-youtube-lin {
+    height: 52px;
+    width: 298px;
+    color: #545B6E;
+    font-family: Varela;
+    font-size: map-get($sizes, 'medium');
+    line-height: 26px;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
 }

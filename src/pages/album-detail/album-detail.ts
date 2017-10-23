@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
 import {ActionSheetController, NavController, NavParams} from "ionic-angular";
 import {StoryService} from "../../providers/back-end/story.service";
 import {Album} from "../../dto/album";
@@ -10,6 +10,7 @@ import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
 import {env} from "../../app/environment";
 import {TranslatorService} from "../../providers/translator.service";
+import {UserStory} from "../../dto/user-story";
 
 @Component({
   selector: 'album-detail',
@@ -20,35 +21,61 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
 
   public album: Album;
+  backgroundImages: any[] = [];
 
-  constructor(protected authService: AuthService, public navCtrl: NavController,public translatorService: TranslatorService,
+  public loadingImageStyle: any = `background-image: url(${env.loadingImage})`;
+
+  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
-              private storyService: StoryService, private sanitizer: StanizerService) {
-    super(authService, navCtrl,translatorService);
+              private storyService: StoryService, private sanitizer: StanizerService, private ref: ChangeDetectorRef) {
+    super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
+    this.orderByFavorited();
+    this.loadingImageStyle = this.sanitizer.sanitizeStyle(this.loadingImageStyle);
   }
 
   ngOnInit(): void {
   }
 
   ionViewWillEnter(): void {
-    if (this.album)
-      this.storyService.getAlbum(this.authService.getCurrentPatient().id, this.album.id).subscribe(res => {
-        this.album = res;
-      });
+    this.storyService.getAlbum(this.authService.getCurrentPatient().patient_id, this.album.id).subscribe(res => {
+      this.album = res;
+      this.orderByFavorited();
+      console.log('album',this.album);
+      if (!this.album.isEmpty()) {
+        let i: number = 0;
+        this.album.stories.forEach(story => {
+          if (!this.imageLoaded(i))
+            this.setBackgroundImages(i);
+          i++;
+        })
+
+        console.log('backgroundImages',this.backgroundImages)
+      }
+    });
   }
 
+  orderByFavorited() {
+    if(!this.album)
+      return;
+    if(this.album.isEmpty())
+      return;
+
+    const favorites= this.album.stories.filter((storie:UserStory)=>storie.favorited);
+    const notFavorites= this.album.stories.filter((storie:UserStory)=>!storie.favorited);
+    this.album.stories = favorites.concat(notFavorites);
+  }
 
   openActionSheet() {
-    let text1:string = 'Tekst schrijven';
-    let text2:string = 'Maak foto';
-    let text3:string = 'Kies foto van camerarol';
-    let text4:string = 'Kies video van Youtube';
-    let text5:string = 'Annuleer';
+    let text1: string = 'Tekst schrijven';
+    let text2: string = 'Maak foto';
+    let text3: string = 'Kies foto van camerarol';
+    let text4: string = 'Kies video van Youtube';
+    let text5: string = 'Annuleer';
     this.translatorService.translate(text1, value => text1 = value);
     this.translatorService.translate(text2, value => text2 = value);
     this.translatorService.translate(text3, value => text3 = value);
-    this.translatorService.translate(text4, value => text4= value);
+    this.translatorService.translate(text4, value => text4 = value);
     this.translatorService.translate(text5, value => text5 = value);
 
     let actionSheet = this.actionsheetCtrl.create({
@@ -96,6 +123,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
               fileChooseAttempt.then(
                 (dataUrl) => {
+                  console.log("Data Url : " + dataUrl)
                   if (dataUrl)
                     this.navCtrl.push(NewStoryPage,
                       {
@@ -134,30 +162,50 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   // DOM Sanitizer for image urls
-  sanitize(i: number): any {
+  setBackgroundImages(i: number) {
     let url: string = this.album.getBackgroundImage(i);
-    if (!url)
-      return "";
-    url = this.getThumb(url);
-    const style = `url(${url})`;
-    //console.log("Made : " + style);
-    return this.sanitizer.sanitizeStyle(style);
+    if (!url) {
+      this.album.stories[i].backgroundImage = "";
+      this.ref.markForCheck();
+      return;
+    }
+    let thumb = this.getThumb(url);
+    this.album.stories[i].backgroundImage = this.loadingImageStyle;
+    if (thumb.indexOf(env.privateImagesRegex) < 0) {
+      const style = `background-image: url(${thumb})`;
+      this.album.stories[i].backgroundImage = this.sanitizer.sanitizeStyle(style);
+      this.ref.markForCheck();
+      return;
+    }
+    this.storyService.getImage(thumb).toPromise().then(blob => {
+      const style2 = `background-image: url(${blob})`;
+      this.album.stories[i].backgroundImage = this.sanitizer.sanitizeStyle(style2);
+      this.ref.markForCheck();
+      return;
+    });
   }
 
+  getBackgroundImg(i: number): any {
+    return this.album.stories[i].backgroundImage;
+  }
 
   isAVideoBackground(i: number): boolean {
     let url: string = this.album.getBackgroundImage(i);
     if (!url)
       return false;
     url = this.getThumb(url);
-    //console.log("Made : " + style);
     return url.toLowerCase().indexOf("img.youtube") >= 0;
   }
 
-  showDetails(album: Album, index: number) {
+  showDetails(album: Album, story: UserStory) {
+    const storyWithoutBackgourndImage={
+      ...story,
+      backgroundImage:null
+    };
+
     this.navCtrl.push(StoryDetailsPage, {
       "album": album,
-      "index": index ? index : 0
+      "story":storyWithoutBackgourndImage
     })
   }
 
@@ -166,13 +214,14 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   getThumb(url: string) {
-    if (url.toLowerCase().indexOf("youtube.com") >= 0) {
-      var reg = /embed\/(.+?)\?/;
-      let video = url.match(reg)[1];
-      let thumbailLink = "http://img.youtube.com/vi/" + video + "/0.jpg";
-      return thumbailLink;
-    } else {
-      return url;
-    }
+    return this.utilService.getThumb(url);
+  }
+
+  noImage(index: number): boolean {
+    return this.album.stories[index].backgroundImage === "";
+  }
+
+  imageLoaded(index: number): boolean {
+    return !!this.album.stories[index].backgroundImage && this.album.stories[index].backgroundImage != this.loadingImageStyle;
   }
 }

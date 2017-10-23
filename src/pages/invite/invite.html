@@ -1,0 +1,36 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'Nodig iemand uit' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <br>
+    <h2 class="wie-kan-mee-het-digi">{{'Wie kan mee het digitale album bekijken en aanvullen' | translate}}?</h2>
+
+    <ion-item>
+      <ion-input type="text" value="" [(ngModel)]="firstname" placeholder="{{ 'Voornaam' | translate }}"
+                 required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="text" value="" [(ngModel)]="lastname" placeholder="{{ 'Naam' | translate}}" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="email" [(ngModel)]="email" placeholder="{{'E-mail' | translate}}"
+                 [pattern]="util.getEmailPattern()" clearOnEdit="false" required clearInput></ion-input>
+    </ion-item>
+
+  </ion-list>
+
+  <button ion-button solid block full large color="general" (click)="invite()" [disabled]="!canInvite()">
+    <div *ngIf="!loading">{{'Uitnodigen' | translate}}</div>
+    <div *ngIf="loading">
+      <ion-spinner item-start name="dots" color="white"></ion-spinner>
+    </div>
+  </button>
+</ion-content>

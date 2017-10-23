@@ -8,10 +8,15 @@ import {TranslatorService} from "../../providers/translator.service";
 @Component({
   selector: 'album-questions',
   template: `
-    <div class="page-header" *ngIf="currentQuestion">
-      <div (click)="nextQuestion()">
-        <h2>{{currentQuestion}}</h2>
-        <ion-icon name="refresh" class="question-refresh"></ion-icon>
+    <div class="clear"></div>
+    <div class="topic-wrapper">
+      <div class="topic-container" *ngIf="currentQuestion">
+        <span class="topic-sub">{{ 'Onderwerp' | translate }}</span>
+        <span class="topic-title">{{currentQuestion}}</span>
+        <span (click)="nextQuestion()" class="topic-other">
+          <ion-icon name="refresh"></ion-icon>
+          &nbsp;{{ 'Ander onderwerp' | translate }}
+        </span>
       </div>
     </div>
   `
@@ -23,9 +28,10 @@ export class AlbumQuestions extends AuthGuard implements OnInit {
   questions: string[] = [];
 
   @Input() query: string;
+  private questionIndex: number = 0;
 
-  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,private questionService: QuestionService) {
-    super(authService, navCtrl,translatorService);
+  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService, private questionService: QuestionService) {
+    super(authService, navCtrl, translatorService);
   }
 
   ngOnInit(): void {
@@ -37,9 +43,6 @@ export class AlbumQuestions extends AuthGuard implements OnInit {
   ionViewWillEnter(): void {
     this.questions = this.shuffle(this.questions);
   }
-
-
-  private questionIndex: number = 0;
 
   nextQuestion() {
     // TODO: implement a random question that avoids repetition
@@ -60,9 +63,9 @@ export class AlbumQuestions extends AuthGuard implements OnInit {
       temporaryValue = array[currentIndex];
       array[currentIndex] = array[randomIndex];
       array[randomIndex] = temporaryValue;
-  }
+    }
 
-  return array;
-}
+    return array;
+  }
 
 }

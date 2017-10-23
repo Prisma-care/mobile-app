@@ -54,4 +54,12 @@ page-storydetails {
   .star2.favorited {
     color: color($colors, yellow);
   }
+
+  .movie-indicator {
+    color: white;
+    display: block;
+    margin: 0 auto;
+    font-size: 50px;
+  }
+
 }

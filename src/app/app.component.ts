@@ -8,37 +8,68 @@ import {LoginPage} from "../pages/login/login";
 import {AuthService} from "../providers/auth-service/auth-service";
 import {TranslatorService} from "../providers/translator.service";
 import {TranslateService} from "@ngx-translate/core";
-import { NewLovedonePage } from "../pages/new-lovedone/new-lovedone";
+import {InvitePage} from "../pages/invite/invite";
+import {StoryService} from "../providers/back-end/story.service";
+import {CURENT_VERSION, env} from "./environment";
+import {Mixpanel} from '@ionic-native/mixpanel';
+import {Analytics} from '../providers/analytics';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  private translate: TranslateService;
-  private translator:TranslatorService;
-
   @ViewChild(Nav) nav: Nav;
   rootPage: any = LoginPage;
+  private translate: TranslateService;
+  private translator: TranslatorService;
+
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
-              public patientService: PatientService, public translatorService: TranslatorService,public authService: AuthService, public menu: MenuController) {
+              public patientService: PatientService, public translatorService: TranslatorService,
+              public authService: AuthService, public menu: MenuController,
+              public storyService: StoryService,
+              private analytics: Analytics) {
     //localStorage.clear();
     translatorService.refresh();
     this.translate = translatorService.translateIn;
     this.translator = translatorService;
+    if (this.authService.isLoggedIn()) {
+      let lastestUsedVersion: string = localStorage.getItem(env.lastestUsedVersion);
+      let currentVersion: string = CURENT_VERSION;
+
+      if (lastestUsedVersion) {
+        if (lastestUsedVersion.indexOf(currentVersion) != 0 || lastestUsedVersion.length != currentVersion.length)
+          this.logout();
+      } else {
+        this.logout();
+      }
+      this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(res => {
+        if (!this.authService.isLoggedIn())
+          this.logout();
+      });
+    }
+    localStorage.setItem(env.lastestUsedVersion, CURENT_VERSION);
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
     });
+
+    this.analytics.track('AppComponent::Prisma launched');
+
   }
 
   logout() {
-    console.log("login out");
     this.menu.close();
     this.authService.logout();
     this.nav.setRoot(LoginPage);
   }
 
+  invite() {
+    this.menu.close();
+    this.nav.push(InvitePage, {
+      "patientId": this.authService.getCurrentPatient().patient_id
+    });
+  }
 }

@@ -1,4 +1,5 @@
 import {PrismaService} from "./prisma-api.service";
+import {Headers, ResponseContentType} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/map";
@@ -12,20 +13,20 @@ import {env} from "../../app/environment";
 export class StoryService extends PrismaService {
 
   //For demo prupose !!!
-  public static fakeStory1: UserStory;
+ /** public static fakeStory1: UserStory;
   public static fakeStory2: UserStory;
-  public static fakeStory3: UserStory;
+  public static fakeStory3: UserStory;**/
 
   getUserStory(patientId: string, storyId: string): Observable<UserStory> {
     let url: string = env.api.getPatient;
     let storyUrl: string = env.api.getStory;
     //For demo prupose !!!
-    if (storyId.indexOf("2000") >= 0)
+   /** if (storyId.indexOf("2000") >= 0)
       return Observable.of(StoryService.fakeStory1);
     if (storyId.indexOf("2001") >= 0)
       return Observable.of(StoryService.fakeStory2);
     if (storyId.indexOf("2002") >= 0)
-      return Observable.of(StoryService.fakeStory3);
+      return Observable.of(StoryService.fakeStory3);**/
     return this._http.get(`${this._urlToApi}/${url}/${patientId}/${storyUrl}/${storyId}`, {
       headers: this._head
     })
@@ -35,7 +36,7 @@ export class StoryService extends PrismaService {
       .catch(err => this.handleError(err));
   }
 
-  getUserStories(): Observable<UserStory[]> {
+  getUserStories(): Observable<UserStory[]| any >  {
     return this._http.get("assets/json/stories.json", {
       headers: this._head
     }).map(res => {
@@ -46,36 +47,32 @@ export class StoryService extends PrismaService {
       .catch(error => this.handleError(error));
   }
 
-  getAlbums(patientId: string | number): Observable<Album[]> {
+  getAlbums(patientId: string | number): Observable<Album[]| any >  {
 
     let url: string = env.api.getPatient;
     let albumUrl: string = env.api.getAlbum;
+    this.ngOnInit();
     return this._http.get(`${this._urlToApi}/${url}/${patientId}/${albumUrl}`, {
       headers: this._head
     })
       .map(res => {
         let albums: Album[] = [];
+       // console.log(JSON.stringify(res.json().response));
         res.json().response.forEach(album => {
-            /* probably not needed
-             // fill in the stories
-             album.stories.forEach(
-             (story) => {
-             this.getUserStory()
-             }
-             );
-             */
             let al: Album = new Album(album);
             albums.push(this.setYoutubeVideoExemple(al));
           }
         );
+        console.log("After : " + albums);
         return albums;
       })
       .catch(err => this.handleError(err));
   }
 
-  getAlbum(patientId: string | number, albumId: string | number): Observable<Album> {
+  getAlbum(patientId: string | number, albumId: string | number): Observable<Album| any >  {
     let url: string = env.api.getPatient;
     let albumUrl: string = env.api.getAlbum;
+    this.ngOnInit();
     return this._http.get(`${this._urlToApi}/${url}/${patientId}/${albumUrl}/${albumId}`, {
       headers: this._head
     })
@@ -86,7 +83,7 @@ export class StoryService extends PrismaService {
       .catch(err => this.handleError(err));
   }
 
-  addAlbum(patientId: string | number, title: string): Observable<Album> {
+  addAlbum(patientId: string | number, title: string): Observable<Album| any >  {
     let url: string = env.api.getPatient;
     let albumUrl: string = env.api.getAlbum;
     return this._http.post(`${this._urlToApi}/${url}/${patientId}/${albumUrl}`, {title: title}, {
@@ -104,7 +101,7 @@ export class StoryService extends PrismaService {
       }).catch(err => this.handleError(err));
   }
 
-  addStory(patientId: number, newStory: UserStory): Observable<UserStory> {
+  addStory(patientId: number, newStory: UserStory): Observable<UserStory| any >  {
     let url: string = env.api.getPatient;
     let storyUrl: string = env.api.getStory;
     return this._http.post(`${this._urlToApi}/${url}/${patientId}/${storyUrl}`, newStory, {
@@ -119,7 +116,7 @@ export class StoryService extends PrismaService {
       }).catch(err => this.handleError(err));
   }
 
-  deleteStory(patientId: number, storyId: number): Observable<boolean> {
+  deleteStory(patientId: number, storyId: number): Observable<boolean| any >  {
     let url: string = env.api.getPatient;
     let storyUrl: string = env.api.getStory;
     return this._http.delete(`${this._urlToApi}/${url}/${patientId}/${storyUrl}/${storyId}`, {
@@ -134,9 +131,10 @@ export class StoryService extends PrismaService {
       }).catch(err => this.handleError(err));
   }
 
-  updateStory(patientId: number, newStory: UserStory): Observable<UserStory> {
+  updateStory(patientId: number, newStory: UserStory): Observable<UserStory| any >  {
     let url: string = env.api.getPatient;
     let storyUrl: string = env.api.getStory;
+    this._head.set('Authorization', 'Bearer ' + localStorage.getItem(env.jwtToken));
     return this._http.patch(`${this._urlToApi}/${url}/${patientId}/${storyUrl}/${newStory.id}`, newStory, {
       headers: this._head
     })
@@ -149,15 +147,27 @@ export class StoryService extends PrismaService {
       }).catch(err => this.handleError(err));
   }
 
-
+  getImage(filename: string): Observable<any| any >  {
+    let header: Headers = new Headers({'Content-Type': 'image/jpg'});
+    header.set('Authorization', 'Bearer ' + localStorage.getItem(env.jwtToken));
+    return this._http.get(`${filename}`, {
+      headers: header,
+      responseType: ResponseContentType.Blob
+    })
+      .map(res => {
+        return res.blob()
+      })
+      .map(blob => URL.createObjectURL(blob))
+      .catch(err => this.printError(err));
+  }
 
 
 //For demo prupose !!!
   setYoutubeVideoExemple(al: Album): Album {
-    let fakeVideosOn:boolean = false;
-    if(!fakeVideosOn)
+    let fakeVideosOn: boolean = false;
+    if (!fakeVideosOn)
       return al;
-    if (al.title.toLowerCase().indexOf("vrije tijd") >= 0) {
+   /** if (al.title.toLowerCase().indexOf("vrije tijd") >= 0) {
       if (!StoryService.fakeStory1) {
         let fakeStory: UserStory = new UserStory();
         fakeStory.title = "The 3 tenors";
@@ -197,7 +207,27 @@ export class StoryService extends PrismaService {
         StoryService.fakeStory3 = fakeStory;
       }
       al.stories.push(StoryService.fakeStory3);
-    }
+    }**/
     return al;
+  }
+
+  addYoutubeLinkAsset(patient_id: string, storyId: string, asset: string) {
+    let url: string = env.api.getAsset;
+    let patientUrl: string = env.api.getPatient;
+    let storyUrl: string = env.api.getStory;
+    return this._http.post(`${this._urlToApi}/${patientUrl}/${patient_id}/${storyUrl}/${storyId}/${url}`, {
+      "asset": asset,
+      "assetType": "youtube"
+    }, {
+      headers: this._head
+    })
+      .map(res => {
+        // If request fails, throw an Error that will be caught
+        if (res.status < 100 || res.status >= 300) {
+          return false;
+        }
+        return true;
+      }).catch(err => this.handleError(err));
+
   }
 }
