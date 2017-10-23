@@ -15,7 +15,7 @@
   <ion-grid>
     <ion-row>
       <ion-col col-6 col-md-4 *ngFor="let story of album.stories,let i=index"
-               (click)="showDetails(album, i)">
+               (click)="showDetails(album, story)">
         <div *ngIf="imageLoaded(i) || noImage(i)" class="album-thumb" id="image{{i}}"
              [style]="getBackgroundImg(i)">
           <div class="description-wrapper" *ngIf="!story.source && story.description">

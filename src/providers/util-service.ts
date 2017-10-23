@@ -39,8 +39,10 @@ export class UtilService {
     };
     // Get the data of an image
     return this.camera.getPicture(options).then((imagePath) => {
+      console.log('this.camera.getPicture', imagePath);
       // Special handling for Android library
       if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+        console.log('android')
         return this.filePath.resolveNativePath(imagePath)
           .then(filePath => {
             let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
@@ -57,7 +59,7 @@ export class UtilService {
         });
       }
     }, (err) => {
-     console.log('Error while selecting image.');
+      console.log('Error while selecting image.');
     });
   }
 

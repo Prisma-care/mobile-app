@@ -1,15 +1,11 @@
 <ion-menu [content]="content" color="white">
 
-  <ion-toolbar color="white">
-    <ion-title style="color: #FFABAEB4">Menu</ion-title>
-  </ion-toolbar>
 
   <ion-content>
+    <ion-toolbar color="white">
+      <ion-title style="color: #FFABAEB4">Menu</ion-title>
+    </ion-toolbar>
     <ion-list>
-      <button ion-item (click)="logout()" class="ion-menu-buttons">
-        <ion-icon name="exit" color="general"></ion-icon>
-        {{'Afmelden' | translate}}
-      </button>
       <button ion-item (click)="invite()" *ngIf="authService.getCurrentPatient()" class="ion-menu-buttons">
         <ion-icon name="person-add" color="general"></ion-icon>
         {{'Nodig iemand uit' | translate}}

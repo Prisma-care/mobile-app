@@ -12,6 +12,7 @@ import {StanizerService} from "../../providers/stanizer.service";
 import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
 import {TranslatorService} from "../../providers/translator.service";
+import {Analytics} from '../../providers/analytics';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class NewStoryPage extends AuthGuard {
   dataUrl: string;
   description: string;
   placeHolder: string = "Schrijf het verhaal.\nHoe meer details hoe beter.";
+  youtubeLinkPlaceHolder: string = "https://www.youtube.com/watch?v=ffSnk4v3aeg";
   youtubeLink: string;
   selectedAlbum: Album;
 
@@ -50,7 +52,8 @@ export class NewStoryPage extends AuthGuard {
   constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private utilService: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
-              public stanizer: StanizerService) {
+              public stanizer: StanizerService,
+              private analytics: Analytics) {
     super(authService, navCtrl, translatorService);
     this.translatorService.translate(this.placeHolder, value => this.placeHolder = value);
     this.method = navParams.get("method") as string;
@@ -119,6 +122,13 @@ export class NewStoryPage extends AuthGuard {
       newStory.source = this.youtubeLink;
     }
     this.storyService.addStory(+this.authService.getCurrentPatient().patient_id, newStory).toPromise().then(addedStory => {
+      this.analytics.track('NewStoryComponent::saving story', {
+        email: this.authService.getCurrentUser().email,
+        patient_id: +this.authService.getCurrentPatient().patient_id,
+        newStory,
+        selectedAlbum: this.selectedAlbum
+      });
+
       if (this.dataUrl) {
         this.uploadImage(this.authService.getCurrentPatient().patient_id, addedStory.id, this.dataUrl + "").then(res => {
           this.navCtrl.popTo(AlbumsPage, {
@@ -152,6 +162,14 @@ export class NewStoryPage extends AuthGuard {
     updatedStory.id = this.oldStory.id;
     updatedStory.description = this.oldStory.description;
     this.storyService.updateStory(+this.authService.getCurrentPatient().patient_id, updatedStory).toPromise().then(addedStory => {
+
+      this.analytics.track('NewStoryComponent::updateDescription', {
+        email: this.authService.getCurrentUser().email,
+        patient_id: +this.authService.getCurrentPatient().patient_id,
+        updatedStory,
+        selectedAlbum: this.selectedAlbum
+      });
+
       this.navCtrl.popTo(StoryDetailsPage, {
         "album": this.selectedAlbum,
         "index": this.index
@@ -162,6 +180,14 @@ export class NewStoryPage extends AuthGuard {
   updateImage() {
     if (this.dataUrl) {
       this.uploadImage(this.authService.getCurrentPatient().patient_id, this.oldStory.id, this.dataUrl + "").then(res => {
+
+        this.analytics.track('NewStoryComponent::uploadImage', {
+          email: this.authService.getCurrentUser().email,
+          patient_id: +this.authService.getCurrentPatient().patient_id,
+          selectedAlbum: this.selectedAlbum,
+          lastImage: this.dataUrl + ""
+        });
+
         this.navCtrl.popTo(StoryDetailsPage, {
           "album": this.selectedAlbum,
           "index": this.index
@@ -217,7 +243,8 @@ export class NewStoryPage extends AuthGuard {
         return;
       })
     } else {
-      this.stanizedUrl = this.util.pathForImage(this.dataUrl);
+      if (!this.method.includes(env.methods.addYoutubeStory) && (this.method.includes(env.methods.addNewStory) && this.dataUrl))
+        this.stanizedUrl = this.util.pathForImage(this.dataUrl);
       return;
     }
   }

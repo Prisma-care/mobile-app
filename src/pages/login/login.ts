@@ -8,6 +8,7 @@ import {UtilService} from "../../providers/util-service";
 import {NewLovedonePage} from "../new-lovedone/new-lovedone";
 import {Subscription} from "rxjs/Subscription";
 import {Network} from "@ionic-native/network";
+import {Analytics} from '../../providers/analytics';
 
 
 @Component({
@@ -32,7 +33,7 @@ export class LoginPage implements OnInit {
   constructor(public navCtrl: NavController, public authService: AuthService
     , public alertCtrl: AlertController, public translatorService: TranslatorService,
     public utilService: UtilService, public menu: MenuController,
-    private network: Network) {
+    private network: Network, private analytics: Analytics) {
     translatorService.refresh();
     this.translator = translatorService;
     this.util = utilService;
@@ -83,15 +84,19 @@ export class LoginPage implements OnInit {
       return;
     }
 
+    let loggedIn: boolean = false;
     let sub: Subscription = this.authService.login(this.email, this.password)
-    .timeout(LoginPage.TIMEOUTTIME)
-    .subscribe(res => {
-      if (this.authService.isLoggedIn()) {
-        this.start();
-      } else {
-        this.loginError();
-        this.loading = false;
-      }
+      .timeout(LoginPage.TIMEOUTTIME)
+      .subscribe(res => {
+        if (this.authService.isLoggedIn()) {
+          this.analytics.track('LoginComponent::Login success', this.authService.getCurrentUser().email);
+          loggedIn = true;
+          this.start();
+        } else {
+          this.analytics.track('LoginComponent::Login error', this.authService.getCurrentUser().email);
+          this.loginError();
+          this.loading = false;
+        }
     },
     () => {
       Error("login error");
@@ -106,18 +111,18 @@ export class LoginPage implements OnInit {
 
     // purpose of this:
     // disable the current request after randomly defined TIMEOUTTIME ?
-    /*
-    setTimeout(function() {
-      if (this.authService.isLoggedIn()) {
+
+    setTimeout(function () {
+      if (loggedIn)
         return;
-      } else {
-      sub.unsubscribe();            // unsub
-      // that.loginError("Timeout");   // irritating
-      that.authService.logout();    // log out
+      if(that.loading)
+        return;
+      sub.unsubscribe();
+      this.analytics.track('LoginComponent::Logout-Timeout', this.authService.getCurrentUser().email);
+      // that.loginError("Timeout"); // weird second error in UX
+      that.authService.logout();
       that.loading = false;
-      }
-    }, LoginPage.TIMEOUTTIME);
-    */
+      }, LoginPage.TIMEOUTTIME);
 
   }
 
@@ -156,10 +161,20 @@ export class LoginPage implements OnInit {
     user.lastName = this.lastname;
     this.authService.signUp(user).toPromise().then(res => {
       if (res) {
+        this.analytics.track('LoginComponent::Register success', {
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName
+        });
         this.navCtrl.setRoot(NewLovedonePage).then(res => {
           this.loading = false;
         });
       } else {
+        this.analytics.track('LoginComponent::Register error', {
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName
+        });
         this.loginError("Invalid data");
         this.loading = false;
         return;

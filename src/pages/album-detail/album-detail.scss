@@ -7,6 +7,11 @@ album-detail {
 
   album-questions .topic-wrapper {
     height: 30%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90000;
   }
 
   ion-title {

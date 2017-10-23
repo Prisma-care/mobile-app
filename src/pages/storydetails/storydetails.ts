@@ -1,5 +1,12 @@
 import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
-import {ActionSheetController, MenuController, NavController, NavParams, PopoverController} from "ionic-angular";
+import {
+  ActionSheetController,
+  MenuController,
+  NavController,
+  NavParams,
+  Platform,
+  PopoverController
+} from "ionic-angular";
 import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
@@ -12,6 +19,8 @@ import {env} from "../../app/environment";
 import {StanizerService} from "../../providers/stanizer.service";
 import {StoryOptionsComponent} from "./story-options.component";
 import {TranslatorService} from "../../providers/translator.service";
+import {YoutubeVideoPlayer} from '@ionic-native/youtube-video-player';
+import {Analytics} from '../../providers/analytics';
 
 @Component({
   selector: 'page-storydetails',
@@ -31,24 +40,38 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   constructor(protected  authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private nativePageTransitions: NativePageTransitions,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService,
-              public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController, private ref: ChangeDetectorRef) {
+              public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController, private ref: ChangeDetectorRef,
+              private youtube: YoutubeVideoPlayer,
+              private analytics: Analytics, private plateform: Platform) {
     super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
+    this.story = navParams.get("story") as UserStory;
     this.index = navParams.get("index") as number;
+
   }
 
   ngOnInit(): void {
     if (this.navParams.get("slide")) {
       //this.navCtrl.remove(this.navCtrl.length()-2);
     }
+
+    this.analytics.track('StoryDetailsPage::view', {
+      story: this.story,
+    });
+
+    console.log('plateform', this.plateform.platforms(), 'is in browser', this.plateform.is('mobileweb'));
+  }
+
+  isRunningInBrowser() {
+    return this.plateform.is('mobileweb') || this.plateform.is('core');
   }
 
   ionViewWillEnter() {
     if (this.album)
       this.storyService.getAlbum(this.authService.getCurrentPatient().patient_id, this.album.id).toPromise().then(res => {
         this.album = res;
-        if (!this.imageLoaded(this.index))
-          this.setStanizedUrl(this.album.stories[this.index].source, this.index);
+        if (!this.imageLoaded(this.findIndexStory(this.story)))
+          this.setStanizedUrl(this.story.source, this.index);
       });
     this.menu.enable(false);
   }
@@ -60,6 +83,15 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   getThumb(url: string): string {
     return "assets/img/t/" + url;
   }
+
+  getYoutubeThumb(url: string) {
+    return this.stanizer.sanitize(this.utilService.getThumb(url));
+  }
+
+  openYoutubeVideo(url: string) {
+    this.youtube.openVideo(this.utilService.getYoutubeId(url));
+  }
+
 
   isValidIndex(index: number): boolean {
     return index >= 0 && index < this.album.stories.length;
@@ -78,11 +110,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     //swipes left
     if (e.direction == 4) {
       options.direction = 'rigth';
-      this.nativePageTransitions.fade(options)
-        .then(onSucess => {
-        })
-        .catch(err => {
-        });
+
       this.previous();
 
     }
@@ -90,11 +118,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     //swipes rigth
     if (e.direction == 2) {
       options.direction = 'left';
-      this.nativePageTransitions.fade(options)
-        .then(onSucess => {
-        })
-        .catch(err => {
-        });
+
       this.next();
     }
 
@@ -102,16 +126,26 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   }
 
   next(): void {
-    this.index = (this.index + 1) % this.album.stories.length;
+    this.index = (this.findIndexStory(this.story) + 1) % this.album.stories.length;
+    this.story = this.album.stories[this.index];
+
     if (!this.imageLoaded(this.index))
-      this.setStanizedUrl(this.album.stories[this.index].source, this.index);
+      this.setStanizedUrl(this.story.source, this.index);
+  }
+
+  findIndexStory(story: UserStory): number {
+    return this.album.stories.findIndex((s: UserStory) => {
+      return s.id === story.id;
+    });
   }
 
   previous(): void {
-    this.index = this.index === 0 ? this.album.stories.length - 1 : this.index - 1;
-    if (!this.imageLoaded(this.index))
-      this.setStanizedUrl(this.album.stories[this.index].source, this.index);
 
+    this.index = this.findIndexStory(this.story) === 0 ? this.album.stories.length - 1 : this.index - 1;
+    this.story = this.album.stories[this.index];
+
+    if (!this.imageLoaded(this.index))
+      this.setStanizedUrl(this.story.source, this.index);
   }
 
   isFavorited(): boolean {
@@ -120,19 +154,23 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   toggleFavorite(): void {
     // this.getStory().favorited = this.getStory().favorited ? false : true;
-    //this.album.stories[this.index].user
+    //this.story.user
 
-    let story: UserStory = new UserStory();
-    this.album.stories[this.index].favorited = story.favorited = !this.album.stories[this.index].favorited;
-    story.id = this.album.stories[this.index].id;
-    this.storyService.updateStory(+this.authService.getCurrentPatient().patient_id, story).toPromise().then(addedStory => {
+    this.story.favorited = !this.story.favorited;
+    this.storyService.updateStory(+this.authService.getCurrentPatient().patient_id, this.story).toPromise().then(addedStory => {
 
     });
 
   }
 
   editDescription() {
+
     let story: UserStory = this.getStory();
+
+    this.analytics.track('StoryDetailsPage::editDescription', {
+      story,
+    });
+
     this.navCtrl.push(NewStoryPage, {
       "album": this.album,
       "story": story,
@@ -223,34 +261,36 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
       return;
     }
     if (url.indexOf(env.privateImagesRegex) < 0) {
-      this.backgroundImages[i] = this.stanizer.sanitize(url);
+      this.story.backgroundImage = this.stanizer.sanitize(url);
+      this.album.stories[i] = this.story;
       this.ref.markForCheck();
       return;
     }
 
 
     await this.storyService.getImage(url).toPromise().then(blob => {
-      this.backgroundImages[i] = this.stanizer.sanitize(blob);
+      this.story.backgroundImage = this.stanizer.sanitize(blob);
+      this.album.stories[i] = this.story;
       this.ref.markForCheck();
       return;
     })
   }
 
   getStanizedUrl() {
-    return this.backgroundImages[this.index];
+    return this.story.backgroundImage;
   }
 
   stanizeVideo(url: string) {
     return this.stanizer.sanitizeVideo("https://www.youtube.com/embed/" + this.utilService.getYoutubeId(url) + "?rel=0" +
-      "&amp;autoplay=1" +
+      "&amp;autoplay=0" +
       "&amp;showinfo=0");
   }
 
   imageLoaded(index: number): boolean {
-    return !!this.backgroundImages[index] && this.backgroundImages[index] != this.loadingImageUrl;
+    return !!this.story.backgroundImage && this.story.backgroundImage != this.loadingImageUrl;
   }
 
   private getStory(): UserStory {
-    return this.album.stories[this.index];
+    return this.story;
   }
 }
