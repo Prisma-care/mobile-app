@@ -5,7 +5,7 @@ export class User extends AbstractUser {
 
   email: string;
   password: string;
-  relations: Relation[] = [];
+  relations?: Relation[] = [];
 
   constructor(json?) {
     super(json);

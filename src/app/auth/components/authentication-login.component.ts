@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../core/authentication.service';
-import {AlertController, NavController} from 'ionic-angular';
+import {AlertController} from 'ionic-angular';
 import {Network} from '@ionic-native/network';
 import {Analytics} from '../../../providers/analytics';
 import {Observable} from 'rxjs/Observable';
@@ -50,9 +50,9 @@ import {Observable} from 'rxjs/Observable';
       </button>
 
       <div class="signup-suggestion">
-        <p class="alternate-option">
+        <p class="alternate-option" (click)="onRegisterClick()">
           Nog geen account ?
-          <a color="general" (click)="onRegisterClick()">
+          <a color="general">
             Maak account .
           </a>
         </p>
@@ -81,9 +81,7 @@ export class AuthenticationLoginComponent implements OnInit {
               private auth: AuthenticationService,
               private alertCtrl: AlertController,
               private network: Network,
-              private analytics: Analytics,
-              private navCtrl: NavController) {
-
+              private analytics: Analytics) {
   }
 
   // TODO: display error message
