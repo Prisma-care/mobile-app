@@ -25,8 +25,6 @@ export class UnauthorizedErrorInterceptor implements HttpInterceptor {
   }
 
   private clearTokens() {
-    localStorage.removeItem(this.env.jwtToken);
-    localStorage.removeItem(this.env.temp.currentUser);
-    localStorage.removeItem(this.env.temp.currentPatient);
+    localStorage.clear();
   }
 }
