@@ -5,13 +5,14 @@ import {AuthenticationInterceptor} from './interceptors/authentication.intercept
 import {CommonHeadersInterceptor} from './interceptors/common-headers.interceptor';
 import {UnauthorizedErrorInterceptor} from './interceptors/unauthorized-error.interceptor';
 import {AuthenticationService} from './authentication.service';
+import {IonicModule} from 'ionic-angular';
 
 const IMPORTS = [
   HttpClientModule,
-  HttpModule
+  HttpModule,
+  IonicModule
 ];
-const DECLARATIONS = [
-];
+const DECLARATIONS = [];
 
 @NgModule({
   declarations: [...DECLARATIONS],

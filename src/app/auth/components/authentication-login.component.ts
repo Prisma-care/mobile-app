@@ -117,20 +117,22 @@ export class AuthenticationLoginComponent implements OnInit {
     this.auth.login(email, password)
       .switchMap((res: boolean | Error) => {
         if (res instanceof Error) {
-          this.analytics.track('LoginComponent::Login error', this.auth.getCurrentUser().email);
-          this.showError();
+          this.analytics.track('LoginComponent::Login error', email);
+          this.showError(res.message);
           return Observable.empty();
         }
         return Observable.of(res);
       })
       .timeout(10000)
       .do(() => {
+        this.loading = false;
         this.analytics.track('LoginComponent::Login success', this.auth.getCurrentUser().email);
         this.onComplete();
       })
-      .subscribe(undefined, () => {
-        this.analytics.track('LoginComponent::Login error', this.auth.getCurrentUser().email);
-        this.showError();
+      .subscribe(undefined, (err) => {
+        console.log('subscr', err);
+        this.analytics.track('LoginComponent::Login error', email);
+        this.showError(err.message);
       })
 
 

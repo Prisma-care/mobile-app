@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {Environment, EnvironmentToken} from '../environment';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {User} from '../../dto/user';
@@ -11,6 +11,7 @@ import 'rxjs/add/operator/take';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import {Patient} from '../../dto/patient';
+import {getMessageFromBackendError} from '../utils';
 
 interface LoginResponse {
   response: {
@@ -26,6 +27,8 @@ export class AuthenticationService {
 
   constructor(@Inject(EnvironmentToken) private env: Environment,
               private http: HttpClient) {
+
+    this.handleError = this.handleError.bind(this);
   }
 
   login(email: string, password: string): Observable<boolean | Error> {
@@ -43,21 +46,16 @@ export class AuthenticationService {
         });
 
         this._isAuthenticated.next(true);
+        return this.isAuthenticatedSync;
       })
-      .catch((err) => {
-        this._isAuthenticated.next(false);
-        return Observable.of(err);
-      })
+      .catch(this.handleError)
 
   }
 
   signUp(user: User): Observable<boolean | Error> {
     return this.http.post(`${this.env.apiUrl}/${this.env.api.getUser}`, user)
       .switchMap(res => this.login(user.email, user.password))
-      .catch(err => {
-        this._isAuthenticated.next(false);
-        return Observable.of(err);
-      });
+      .catch(this.handleError);
   }
 
   setAuthenticationInfoInStorage({ token, currentPatient, userId }: { token: string, currentPatient: any, userId: string }) {
@@ -66,6 +64,12 @@ export class AuthenticationService {
     localStorage.setItem(this.env.temp.currentUser, JSON.stringify({ id: userId }));
   }
 
+  handleError(err: HttpErrorResponse): Observable<Error> {
+    this._isAuthenticated.next(false);
+    return Observable.of(new Error(
+      `${getMessageFromBackendError(err.error && err.error.meta && err.error.meta.message)}
+      `));
+  }
 
   get isAuthenticated(): Observable<boolean> {
     return this._isAuthenticated.asObservable();
@@ -78,7 +82,7 @@ export class AuthenticationService {
   }
 
   // TODO: to replace by isAuthenticatedSync
-  isLoggedIn():boolean {
+  isLoggedIn(): boolean {
     return this.isAuthenticatedSync;
   }
 

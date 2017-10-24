@@ -15,22 +15,22 @@ import {Observable} from 'rxjs/Observable';
       <ion-list>
         <ion-item>
           <ion-input type="text" value="" formControlName="firstName" placeholder="Voornaam"
-                     ></ion-input>
+          ></ion-input>
         </ion-item>
         <ion-item>
           <ion-input type="text" value="" formControlName="lastName" placeholder="Naam"
-                     ></ion-input>
+          ></ion-input>
         </ion-item>
         <ion-item>
           <ion-input type="email" value="" formControlName="email" placeholder="E-mail"
-                     ></ion-input>
+          ></ion-input>
         </ion-item>
         <ion-item>
           <ion-input
             [type]="type" #input
             formControlName="password"
             placeholder="Wachtwoord"
-            clearOnEdit="false"  clearInput></ion-input>
+            clearOnEdit="false" clearInput></ion-input>
           <button ion-button icon-only (click)="toggleShow()" clear item-right>
             <ion-icon *ngIf="!show" name="eye" color="medium-gray"></ion-icon>
             <ion-icon *ngIf="show" name="eye-off" color="medium-gray"></ion-icon>
@@ -137,7 +137,7 @@ export class AuthenticationRegisterComponent implements OnInit {
             firstName: user.firstName,
             lastName: user.lastName
           });
-          this.showError();
+          this.showError(res.message);
           return Observable.empty();
         }
         return Observable.of(res);
@@ -157,7 +157,7 @@ export class AuthenticationRegisterComponent implements OnInit {
           firstName: user.firstName,
           lastName: user.lastName
         });
-        this.showError();
+        this.showError(err.message);
       })
   }
 
