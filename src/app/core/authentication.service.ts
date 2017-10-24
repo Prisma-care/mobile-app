@@ -88,9 +88,7 @@ export class AuthenticationService {
   }
 
   private clearTokens() {
-    localStorage.removeItem(this.env.jwtToken);
-    localStorage.removeItem(this.env.temp.currentUser);
-    localStorage.removeItem(this.env.temp.currentPatient);
+    localStorage.clear();
   }
 
   getCurrentUser(): User {

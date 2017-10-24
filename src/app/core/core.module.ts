@@ -4,6 +4,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AuthenticationInterceptor} from './interceptors/authentication.interceptor';
 import {CommonHeadersInterceptor} from './interceptors/common-headers.interceptor';
 import {UnauthorizedErrorInterceptor} from './interceptors/unauthorized-error.interceptor';
+import {AuthenticationService} from './authentication.service';
 
 const IMPORTS = [
   HttpClientModule,
@@ -30,7 +31,8 @@ const DECLARATIONS = [
       provide: HTTP_INTERCEPTORS,
       useClass: UnauthorizedErrorInterceptor,
       multi: true,
-    }
+    },
+    AuthenticationService
   ],
   exports: [
     ...IMPORTS
