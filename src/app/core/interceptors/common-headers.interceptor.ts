@@ -1,7 +1,7 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {Environment, EnvironmentToken} from '../environment';
+import {Environment, EnvironmentToken} from '../../environment';
 
 @Injectable()
 export class CommonHeadersInterceptor implements HttpInterceptor {

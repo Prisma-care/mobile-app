@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {HttpModule} from '@angular/http';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {AuthenticationInterceptor} from './authentication.interceptor';
-import {CommonHeadersInterceptor} from './common-headers.interceptor';
-import {UnauthorizedErrorInterceptor} from './unauthorized-error.interceptor';
+import {AuthenticationInterceptor} from './interceptors/authentication.interceptor';
+import {CommonHeadersInterceptor} from './interceptors/common-headers.interceptor';
+import {UnauthorizedErrorInterceptor} from './interceptors/unauthorized-error.interceptor';
 
 const IMPORTS = [
   HttpClientModule,
