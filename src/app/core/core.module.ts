@@ -7,8 +7,6 @@ const IMPORTS = [
   HttpModule
 ];
 const DECLARATIONS = [
-  HttpClientModule,
-  HttpModule
 ];
 
 @NgModule({
