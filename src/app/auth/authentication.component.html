@@ -1,0 +1,11 @@
+<ion-content padding no-bounce>
+
+  <prisma-authentication-header></prisma-authentication-header>
+
+  <!--  Login case -->
+  <prisma-authentication-login
+    *ngIf="!isSigningUp"
+    [onRegisterClick]="toggleForm"
+    [onComplete]="complete"
+  ></prisma-authentication-login>
+</ion-content>
