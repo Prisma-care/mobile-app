@@ -42,6 +42,7 @@ import {Mixpanel} from '@ionic-native/mixpanel';
 import {Analytics} from '../providers/analytics';
 import {CoreModule} from './core/core.module';
 import {AuthModule} from './auth/auth.module';
+import {EnvironmentProvider} from './environment';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -91,6 +92,7 @@ export function createTranslateLoader(http: Http) {
     InvitePage
   ],
   providers: [
+    EnvironmentProvider,
     StatusBar,
     SplashScreen,
     UtilService,
