@@ -1,0 +1,18 @@
+page-login, prisma-authentication-login {
+
+  .signup-suggestion {
+
+    margin: auto;
+    text-align: center;
+    font-size: 16px;
+    p {
+      font-size: 16px;
+      color: color($colors, dark-gray);
+    }
+  }
+
+  .alternate-option {
+    color: color($colors, medium-gray);
+  }
+
+}
