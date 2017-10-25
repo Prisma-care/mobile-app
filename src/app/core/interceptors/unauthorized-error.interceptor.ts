@@ -1,7 +1,6 @@
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {Environment, EnvironmentToken} from '../../environment';
 import 'rxjs/add/operator/catch';
 import {App} from 'ionic-angular';
 import {AuthenticationPage} from '../../auth/authentication.component';
@@ -10,7 +9,7 @@ import {AuthenticationPage} from '../../auth/authentication.component';
 export class UnauthorizedErrorInterceptor implements HttpInterceptor {
   private AUTHENTICATION_PAGE_NAME = 'AuthenticationPage';
 
-  constructor(@Inject(EnvironmentToken) private env: Environment, public app: App) {
+  constructor(public app: App) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

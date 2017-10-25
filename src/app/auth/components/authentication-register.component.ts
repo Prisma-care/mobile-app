@@ -2,7 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../core/authentication.service';
 import {AlertController} from 'ionic-angular';
-import {Network} from '@ionic-native/network';
 import {Analytics} from '../../../providers/analytics';
 import {User} from '../../../dto/user';
 import {Observable} from 'rxjs/Observable';
@@ -75,7 +74,6 @@ export class AuthenticationRegisterComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private auth: AuthenticationService,
               private alertCtrl: AlertController,
-              private network: Network,
               private analytics: Analytics) {
   }
 
