@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {Loading, LoadingController, NavController, NavParams} from "ionic-angular";
+import {Loading, LoadingController, NavController, NavOptions, NavParams, ViewController} from "ionic-angular";
 import {Album} from "../../dto/album";
 import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
@@ -13,7 +13,10 @@ import {AuthService} from "../../providers/auth-service/auth-service";
 import {AuthGuard} from "../auth-guard";
 import {TranslatorService} from "../../providers/translator.service";
 import {Analytics} from '../../providers/analytics';
-
+import {Page} from 'ionic-angular/navigation/nav-util';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/switchMapTo';
 
 @Component({
   selector: 'page-new-story',
@@ -130,29 +133,35 @@ export class NewStoryPage extends AuthGuard {
       });
 
       if (this.dataUrl) {
-        this.uploadImage(this.authService.getCurrentPatient().patient_id, addedStory.id, this.dataUrl + "").then(res => {
-          this.navCtrl.popTo(AlbumsPage, {
-            "album": this.selectedAlbum,
-          });
-        }).catch(err => {
+        this.uploadImage(this.authService.getCurrentPatient().patient_id, addedStory.id, this.dataUrl + "")
+          .then(res => {
+            this.setRoot(AlbumsPage, {
+              "album": this.selectedAlbum,
+            }).subscribe();
+          }).catch(err => {
           console.log(err);
         });
       }
       else {
         if (this.method.indexOf(env.methods.addYoutubeStory) >= 0 && this.youtubeLink) {
           this.storyService.addYoutubeLinkAsset(this.authService.getCurrentPatient().patient_id, addedStory.id, this.youtubeLink).toPromise().then(ret => {
-            this.navCtrl.popTo(AlbumsPage, {
+            this.setRoot(AlbumsPage, {
               "album": this.selectedAlbum,
             });
             return;
           });
 
         }
-        this.navCtrl.popTo(AlbumsPage, {
+        this.setRoot(AlbumsPage, {
           "album": this.selectedAlbum,
         });
       }
     });
+  }
+
+  // TODO: workaround to replace popTo
+  setRoot(pageOrViewCtrl: Page | string | ViewController, params?: any, opts?: NavOptions): Observable<any> {
+    return Observable.from(this.navCtrl.setRoot(pageOrViewCtrl, params, opts));
   }
 
 
@@ -170,7 +179,7 @@ export class NewStoryPage extends AuthGuard {
         selectedAlbum: this.selectedAlbum
       });
 
-      this.navCtrl.popTo(StoryDetailsPage, {
+      this.setRoot(StoryDetailsPage, {
         "album": this.selectedAlbum,
         "index": this.index
       });
@@ -188,7 +197,7 @@ export class NewStoryPage extends AuthGuard {
           lastImage: this.dataUrl + ""
         });
 
-        this.navCtrl.popTo(StoryDetailsPage, {
+        this.setRoot(StoryDetailsPage, {
           "album": this.selectedAlbum,
           "index": this.index
         });

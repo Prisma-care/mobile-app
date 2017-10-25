@@ -12,7 +12,7 @@ import {StanizerService} from "../providers/stanizer.service";
 import {StoryDetailsPage} from "../pages/storydetails/storydetails";
 import {PrismaService} from "../providers/back-end/prisma-api.service";
 import {PatientService} from "../providers/back-end/user.service";
-import {Http, HttpModule} from "@angular/http";
+import {Http} from "@angular/http";
 import {StoryService} from "../providers/back-end/story.service";
 import {Camera} from "@ionic-native/camera";
 import {NewStoryPage} from "../pages/new-story/new-story";
@@ -40,6 +40,9 @@ import {InvitePage} from "../pages/invite/invite";
 
 import {Mixpanel} from '@ionic-native/mixpanel';
 import {Analytics} from '../providers/analytics';
+import {CoreModule} from './core/core.module';
+import {AuthModule} from './auth/auth.module';
+import {EnvironmentProvider} from './environment';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -64,7 +67,8 @@ export function createTranslateLoader(http: Http) {
     BrowserModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
-    HttpModule,
+    CoreModule,
+    AuthModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -72,6 +76,7 @@ export function createTranslateLoader(http: Http) {
         deps: [Http]
       }
     }),
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -87,6 +92,7 @@ export function createTranslateLoader(http: Http) {
     InvitePage
   ],
   providers: [
+    EnvironmentProvider,
     StatusBar,
     SplashScreen,
     UtilService,

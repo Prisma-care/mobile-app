@@ -13,13 +13,14 @@ import {StoryService} from "../providers/back-end/story.service";
 import {CURENT_VERSION, env} from "./environment";
 import {Mixpanel} from '@ionic-native/mixpanel';
 import {Analytics} from '../providers/analytics';
+import {AuthenticationPage} from './auth/authentication.component';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  rootPage: any = LoginPage;
+  rootPage: any = AuthenticationPage;
   private translate: TranslateService;
   private translator: TranslatorService;
 
@@ -29,7 +30,7 @@ export class MyApp {
               public authService: AuthService, public menu: MenuController,
               public storyService: StoryService,
               private analytics: Analytics) {
-    //localStorage.clear();
+    // localStorage.clear();
     translatorService.refresh();
     this.translate = translatorService.translateIn;
     this.translator = translatorService;
