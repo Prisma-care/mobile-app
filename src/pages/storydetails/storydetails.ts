@@ -11,7 +11,7 @@ import {StoryService} from "../../providers/back-end/story.service";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {NewStoryPage} from "../new-story/new-story";
-import {AuthService} from "../../providers/auth-service/auth-service";
+import {AuthenticationService} from "../../app/core/authentication.service";
 import {AuthGuard} from "../auth-guard";
 import {NativePageTransitions, NativeTransitionOptions} from "@ionic-native/native-page-transitions";
 import {UtilService} from "../../providers/util-service";
@@ -21,13 +21,14 @@ import {StoryOptionsComponent} from "./story-options.component";
 import {TranslatorService} from "../../providers/translator.service";
 import {YoutubeVideoPlayer} from '@ionic-native/youtube-video-player';
 import {Analytics} from '../../providers/analytics';
+import {PatientService} from "../../app/core/patient.service";
 
 @Component({
   selector: 'page-storydetails',
   templateUrl: 'storydetails.html',
 
 })
-export class StoryDetailsPage extends AuthGuard implements OnInit {
+export class StoryDetailsPage implements OnInit {
   public album: Album;
   public index: number;
   public story: UserStory;
@@ -37,13 +38,12 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
   public backgroundImages: any[] = [];
   // TODO: get favorite in backend &
   // 1 like?
-  constructor(protected  authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
+  constructor(protected  authService: AuthenticationService,private patientService: PatientService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private nativePageTransitions: NativePageTransitions,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService,
               public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController, private ref: ChangeDetectorRef,
               private youtube: YoutubeVideoPlayer,
               private analytics: Analytics, private plateform: Platform) {
-    super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
     this.story = navParams.get("story") as UserStory;
     this.index = navParams.get("index") as number;
@@ -68,7 +68,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
 
   ionViewWillEnter() {
     if (this.album)
-      this.storyService.getAlbum(this.authService.getCurrentPatient().patient_id, this.album.id).toPromise().then(res => {
+      this.storyService.getAlbum(this.patientService.getCurrentPatient().patient_id, this.album.id).toPromise().then(res => {
         this.album = res;
         if (!this.imageLoaded(this.findIndexStory(this.story)))
           this.setStanizedUrl(this.story.source, this.index);
@@ -157,7 +157,7 @@ export class StoryDetailsPage extends AuthGuard implements OnInit {
     //this.story.user
 
     this.story.favorited = !this.story.favorited;
-    this.storyService.updateStory(+this.authService.getCurrentPatient().patient_id, this.story).toPromise().then(addedStory => {
+    this.storyService.updateStory(+this.patientService.getCurrentPatient().patient_id, this.story).toPromise().then(addedStory => {
 
     });
 

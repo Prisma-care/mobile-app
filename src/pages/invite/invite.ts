@@ -1,18 +1,19 @@
 import {Component} from '@angular/core';
 import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {AuthGuard} from "../auth-guard";
-import {AuthService} from "../../providers/auth-service/auth-service";
+import {AuthenticationService} from "../../app/core/authentication.service";
 import {TranslatorService} from "../../providers/translator.service";
 import {UtilService} from "../../providers/util-service";
 import {PatientService} from "../../providers/back-end/user.service";
 import {AlbumsPage} from "../albums/albums";
 import {Analytics} from '../../providers/analytics';
+import {UserService} from "../../app/core/user.service";
 
 @Component({
   selector: 'page-invite',
   templateUrl: 'invite.html',
 })
-export class InvitePage extends AuthGuard {
+export class InvitePage  {
 
   firstname: string = "";
   lastname: string = "";
@@ -21,11 +22,9 @@ export class InvitePage extends AuthGuard {
   util: UtilService;
   private loading: boolean = false;
 
-  constructor(public authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
-              public alertCtrl: AlertController, public navParams: NavParams, public utilService: UtilService,
-              public patientService: PatientService,
+  constructor(public authService: AuthenticationService, public navCtrl: NavController, public translatorService: TranslatorService,
+              public alertCtrl: AlertController,private userService: UserService, public navParams: NavParams, public utilService: UtilService,
               private analytics: Analytics) {
-    super(authService, navCtrl, translatorService);
     this.patientId = navParams.get("patientId") as number;
     this.util = utilService;
   }
@@ -46,13 +45,13 @@ export class InvitePage extends AuthGuard {
       return;
     }
     const data = {
-      inviterId: this.authService.getCurrentUser().id + "",
+      inviterId: this.userService.getCurrentUser().id + "",
       lastName: this.lastname,
       firstName: this.firstname,
       email: this.email,
       patientId: this.patientId + ""
     };
-    this.patientService.inviteUser(data).toPromise().then(res => {
+    this.userService.inviteUser(data).toPromise().then(res => {
       if (res == true) {
 
         this.analytics.track('InviteComponent::invite success', data);

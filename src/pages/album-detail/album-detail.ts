@@ -6,18 +6,19 @@ import {UtilService} from "../../providers/util-service";
 import {NewStoryPage} from "../new-story/new-story";
 import {StoryDetailsPage} from "../storydetails/storydetails";
 import {StanizerService} from "../../providers/stanizer.service";
-import {AuthService} from "../../providers/auth-service/auth-service";
+import {AuthenticationService} from "../../app/core/authentication.service";
 import {AuthGuard} from "../auth-guard";
 import {env} from "../../app/environment";
 import {TranslatorService} from "../../providers/translator.service";
 import {UserStory} from "../../dto/user-story";
+import {PatientService} from "../../app/core/patient.service";
 
 @Component({
   selector: 'album-detail',
   templateUrl: 'album-detail.html'
 })
 
-export class AlbumDetailPage extends AuthGuard implements OnInit {
+export class AlbumDetailPage  implements OnInit {
 
 
   public album: Album;
@@ -25,10 +26,9 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
 
   public loadingImageStyle: any = `background-image: url(${env.loadingImage})`;
 
-  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
+  constructor(protected authService: AuthenticationService,public patientService: PatientService, public navCtrl: NavController, public translatorService: TranslatorService,
               public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
               private storyService: StoryService, private sanitizer: StanizerService, private ref: ChangeDetectorRef) {
-    super(authService, navCtrl, translatorService);
     this.album = navParams.get("album") as Album;
     this.orderByFavorited();
     this.loadingImageStyle = this.sanitizer.sanitizeStyle(this.loadingImageStyle);
@@ -38,7 +38,7 @@ export class AlbumDetailPage extends AuthGuard implements OnInit {
   }
 
   ionViewWillEnter(): void {
-    this.storyService.getAlbum(this.authService.getCurrentPatient().patient_id, this.album.id).subscribe(res => {
+    this.storyService.getAlbum(this.patientService.getCurrentPatient().patient_id, this.album.id).subscribe(res => {
       this.album = res;
       this.orderByFavorited();
       console.log('album',this.album);

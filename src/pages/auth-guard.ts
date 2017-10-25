@@ -1,4 +1,4 @@
-import {AuthService} from "../providers/auth-service/auth-service";
+import {AuthenticationService} from "../app/core/authentication.service";
 import {NavController} from "ionic-angular";
 import {LoginPage} from "./login/login";
 import {Injectable} from "@angular/core";
@@ -12,7 +12,7 @@ export class AuthGuard {
   private translate: TranslateService;
   private translator: TranslatorService;
 
-  constructor(protected authService: AuthService, protected  navCtrl: NavController, public translatorService: TranslatorService) {
+  constructor(protected authService: AuthenticationService, protected  navCtrl: NavController, public translatorService: TranslatorService) {
     translatorService.refresh();
     this.translator = translatorService;
   }
