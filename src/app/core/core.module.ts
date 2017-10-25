@@ -6,6 +6,8 @@ import {CommonHeadersInterceptor} from './interceptors/common-headers.intercepto
 import {UnauthorizedErrorInterceptor} from './interceptors/unauthorized-error.interceptor';
 import {AuthenticationService} from './authentication.service';
 import {IonicModule} from 'ionic-angular';
+import {PatientService} from "./patient.service";
+import {UserService} from "./user.service";
 
 const IMPORTS = [
   HttpClientModule,
@@ -33,7 +35,9 @@ const DECLARATIONS = [];
       useClass: UnauthorizedErrorInterceptor,
       multi: true,
     },
-    AuthenticationService
+    AuthenticationService,
+    PatientService,
+    UserService
   ],
   exports: [
     ...IMPORTS
