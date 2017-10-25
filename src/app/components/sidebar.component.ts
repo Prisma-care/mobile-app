@@ -1,5 +1,5 @@
 
-import {Component, ViewChild} from "@angular/core";
+import {Component, ViewChild, Input} from "@angular/core";
 import {AuthenticationPage} from "../auth/authentication.component";
 import {MenuController, Nav} from "ionic-angular";
 import {AuthenticationService} from "../core/authentication.service";
@@ -25,15 +25,14 @@ import {PatientService} from "../core/patient.service";
       </ion-list>
     </ion-content>
   </ion-menu>
-
-  <ion-nav id="nav" #content #rootNavController [root]="rootPage" swipeBackEnabled="false">
-  </ion-nav>
   `
 })
 export class SidebarComponent {
-  @ViewChild(Nav) nav: Nav;
-  rootPage: any = AuthenticationPage;
+  @Input()
+  nav
 
+  @Input()
+  content
 
   constructor(
     public menu: MenuController,

@@ -1,5 +1,5 @@
 import {Component, ViewChild, OnInit} from "@angular/core";
-import {MenuController, Nav, NavController, Platform} from "ionic-angular";
+import {MenuController, Platform, Nav} from "ionic-angular";
 import {StatusBar} from "@ionic-native/status-bar";
 import {SplashScreen} from "@ionic-native/splash-screen";
 
@@ -21,10 +21,14 @@ export class MyApp implements OnInit{
   private translate: TranslateService;
   private translator: TranslatorService;
 
+  @ViewChild(Nav) nav: Nav;
+  rootPage: any = AuthenticationPage;
 
-  constructor(public platform: Platform, public splashScreen: SplashScreen,
-              public patientService: PatientService, public translatorService: TranslatorService,
-              public authService: AuthenticationService, public menu: MenuController,
+  constructor(public platform: Platform,
+              public splashScreen: SplashScreen,
+              public patientService: PatientService, 
+              public translatorService: TranslatorService,
+              public authService: AuthenticationService,
               public storyService: StoryService,
               private analytics: Analytics,
               private statusBar: StatusBar
@@ -40,7 +44,7 @@ export class MyApp implements OnInit{
     this.authService.autoLoad()
     if(this.authService.isLoggedIn()){
       this.storyService.getAlbums(this.patientService.getCurrentPatient().patient_id)
-      //this.nav.setRoot(AlbumsPage)
+      this.nav.setRoot(AlbumsPage)
     }
 
     this.platform.ready().then(() => {
