@@ -86,6 +86,12 @@ export class AuthenticationService {
     return this.isAuthenticatedSync;
   }
 
+  autoLoad(){
+    if(localStorage.getItem(this.env.jwtToken)){
+      this._isAuthenticated.next(true)
+    }
+  }
+
   logout(): void {
     this.clearTokens();
     this._isAuthenticated.next(false);

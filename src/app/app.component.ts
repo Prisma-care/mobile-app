@@ -1,4 +1,4 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component, ViewChild, OnInit} from "@angular/core";
 import {MenuController, Nav, Platform} from "ionic-angular";
 import {StatusBar} from "@ionic-native/status-bar";
 import {SplashScreen} from "@ionic-native/splash-screen";
@@ -14,52 +14,45 @@ import {CURENT_VERSION, env} from "./environment";
 import {Mixpanel} from '@ionic-native/mixpanel';
 import {Analytics} from '../providers/analytics';
 import {AuthenticationPage} from './auth/authentication.component';
+import {AlbumsPage} from '../pages/albums/albums';
+import {AuthenticationService} from './core/authentication.service';
 
 @Component({
   templateUrl: 'app.html'
 })
-export class MyApp {
+export class MyApp implements OnInit{
   @ViewChild(Nav) nav: Nav;
   rootPage: any = AuthenticationPage;
   private translate: TranslateService;
   private translator: TranslatorService;
 
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
               public patientService: PatientService, public translatorService: TranslatorService,
-              public authService: AuthService, public menu: MenuController,
+              public authService: AuthenticationService, public menu: MenuController,
               public storyService: StoryService,
               private analytics: Analytics) {
-    // localStorage.clear();
-    translatorService.refresh();
-    this.translate = translatorService.translateIn;
-    this.translator = translatorService;
-    if (this.authService.isLoggedIn()) {
-      let lastestUsedVersion: string = localStorage.getItem(env.lastestUsedVersion);
-      let currentVersion: string = CURENT_VERSION;
+  }
 
-      if (lastestUsedVersion) {
-        if (lastestUsedVersion.indexOf(currentVersion) != 0 || lastestUsedVersion.length != currentVersion.length)
-          this.logout();
-      } else {
-        this.logout();
-      }
-      this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(res => {
-        if (!this.authService.isLoggedIn())
-          this.logout();
-      });
+  ngOnInit() {
+    //TODO: delete translator
+    this.translatorService.refresh();
+    this.translate = this.translatorService.translateIn;
+    this.translator = this.translatorService;
+
+    this.authService.autoLoad()
+    if(this.authService.isLoggedIn()){
+      this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id)
+      this.nav.setRoot(AlbumsPage)
     }
     localStorage.setItem(env.lastestUsedVersion, CURENT_VERSION);
-    platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
-      splashScreen.hide();
+    this.platform.ready().then(() => {
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
     });
 
     this.analytics.track('AppComponent::Prisma launched');
-
-  }
+ }
 
   logout() {
     this.menu.close();
