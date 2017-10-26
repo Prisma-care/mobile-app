@@ -9,7 +9,7 @@ import {Transfer, TransferObject} from "@ionic-native/transfer";
 import {AlbumsPage} from "../albums/albums";
 import {StoryDetailsPage} from "../storydetails/storydetails";
 import {StanizerService} from "../../providers/stanizer.service";
-import {AuthService} from "../../providers/auth-service/auth-service";
+import {AuthenticationService} from "../../app/core/authentication.service";
 import {AuthGuard} from "../auth-guard";
 import {TranslatorService} from "../../providers/translator.service";
 import {Analytics} from '../../providers/analytics';
@@ -17,6 +17,8 @@ import {Page} from 'ionic-angular/navigation/nav-util';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/switchMapTo';
+import {UserService} from "../../app/core/user.service";
+import {PatientService} from "../../app/core/patient.service";
 
 @Component({
   selector: 'page-new-story',
@@ -24,7 +26,7 @@ import 'rxjs/add/operator/switchMapTo';
 })
 
 
-export class NewStoryPage extends AuthGuard {
+export class NewStoryPage  {
 
 
   methods: {
@@ -52,12 +54,13 @@ export class NewStoryPage extends AuthGuard {
   loading: Loading;
   isLoading: boolean = false;
 
-  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
+  constructor(protected authService: AuthenticationService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
               private storyService: StoryService, private utilService: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
               public stanizer: StanizerService,
-              private analytics: Analytics) {
-    super(authService, navCtrl, translatorService);
+              private analytics: Analytics,
+              private userService: UserService,
+              private patientService: PatientService) {
     this.translatorService.translate(this.placeHolder, value => this.placeHolder = value);
     this.method = navParams.get("method") as string;
     this.dataUrl = navParams.get("dataUrl") as string;
@@ -119,21 +122,21 @@ export class NewStoryPage extends AuthGuard {
     let newStory: UserStory = new UserStory();
     newStory.albumId = +this.selectedAlbum.id;
     newStory.description = this.description || ".";
-    newStory.creatorId = +this.authService.getCurrentUser().id || 0;
+    newStory.creatorId = +this.userService.getCurrentUser().id || 0;
     if (this.method.indexOf(env.methods.addYoutubeStory) >= 0 && this.youtubeLink) {
       newStory.type = "youtube";
       newStory.source = this.youtubeLink;
     }
-    this.storyService.addStory(+this.authService.getCurrentPatient().patient_id, newStory).toPromise().then(addedStory => {
+    this.storyService.addStory(+this.patientService.getCurrentPatient().patient_id, newStory).toPromise().then(addedStory => {
       this.analytics.track('NewStoryComponent::saving story', {
-        email: this.authService.getCurrentUser().email,
-        patient_id: +this.authService.getCurrentPatient().patient_id,
+        email: this.userService.getCurrentUser().email,
+        patient_id: +this.patientService.getCurrentPatient().patient_id,
         newStory,
         selectedAlbum: this.selectedAlbum
       });
 
       if (this.dataUrl) {
-        this.uploadImage(this.authService.getCurrentPatient().patient_id, addedStory.id, this.dataUrl + "")
+        this.uploadImage(this.patientService.getCurrentPatient().patient_id, addedStory.id, this.dataUrl + "")
           .then(res => {
             this.setRoot(AlbumsPage, {
               "album": this.selectedAlbum,
@@ -144,7 +147,7 @@ export class NewStoryPage extends AuthGuard {
       }
       else {
         if (this.method.indexOf(env.methods.addYoutubeStory) >= 0 && this.youtubeLink) {
-          this.storyService.addYoutubeLinkAsset(this.authService.getCurrentPatient().patient_id, addedStory.id, this.youtubeLink).toPromise().then(ret => {
+          this.storyService.addYoutubeLinkAsset(this.patientService.getCurrentPatient().patient_id, addedStory.id, this.youtubeLink).toPromise().then(ret => {
             this.setRoot(AlbumsPage, {
               "album": this.selectedAlbum,
             });
@@ -170,11 +173,11 @@ export class NewStoryPage extends AuthGuard {
     let updatedStory = new UserStory();
     updatedStory.id = this.oldStory.id;
     updatedStory.description = this.oldStory.description;
-    this.storyService.updateStory(+this.authService.getCurrentPatient().patient_id, updatedStory).toPromise().then(addedStory => {
+    this.storyService.updateStory(+this.patientService.getCurrentPatient().patient_id, updatedStory).toPromise().then(addedStory => {
 
       this.analytics.track('NewStoryComponent::updateDescription', {
-        email: this.authService.getCurrentUser().email,
-        patient_id: +this.authService.getCurrentPatient().patient_id,
+        email: this.userService.getCurrentUser().email,
+        patient_id: +this.patientService.getCurrentPatient().patient_id,
         updatedStory,
         selectedAlbum: this.selectedAlbum
       });
@@ -188,11 +191,11 @@ export class NewStoryPage extends AuthGuard {
 
   updateImage() {
     if (this.dataUrl) {
-      this.uploadImage(this.authService.getCurrentPatient().patient_id, this.oldStory.id, this.dataUrl + "").then(res => {
+      this.uploadImage(this.patientService.getCurrentPatient().patient_id, this.oldStory.id, this.dataUrl + "").then(res => {
 
         this.analytics.track('NewStoryComponent::uploadImage', {
-          email: this.authService.getCurrentUser().email,
-          patient_id: +this.authService.getCurrentPatient().patient_id,
+          email: this.userService.getCurrentUser().email,
+          patient_id: +this.patientService.getCurrentPatient().patient_id,
           selectedAlbum: this.selectedAlbum,
           lastImage: this.dataUrl + ""
         });

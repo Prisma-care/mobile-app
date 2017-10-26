@@ -1,76 +1,57 @@
-import {Component, ViewChild} from "@angular/core";
-import {MenuController, Nav, Platform} from "ionic-angular";
+import {Component, ViewChild, OnInit} from "@angular/core";
+import {Platform, Nav} from "ionic-angular";
 import {StatusBar} from "@ionic-native/status-bar";
 import {SplashScreen} from "@ionic-native/splash-screen";
 
-import {PatientService} from "../providers/back-end/user.service";
-import {LoginPage} from "../pages/login/login";
-import {AuthService} from "../providers/auth-service/auth-service";
 import {TranslatorService} from "../providers/translator.service";
 import {TranslateService} from "@ngx-translate/core";
-import {InvitePage} from "../pages/invite/invite";
 import {StoryService} from "../providers/back-end/story.service";
-import {CURENT_VERSION, env} from "./environment";
-import {Mixpanel} from '@ionic-native/mixpanel';
 import {Analytics} from '../providers/analytics';
 import {AuthenticationPage} from './auth/authentication.component';
+import {AlbumsPage} from '../pages/albums/albums';
+import {AuthenticationService} from './core/authentication.service';
+import {PatientService} from "./core/patient.service";
+import {NewLovedonePage} from "./auth/components/new-lovedone/new-lovedone";
 
 @Component({
   templateUrl: 'app.html'
 })
-export class MyApp {
-  @ViewChild(Nav) nav: Nav;
-  rootPage: any = AuthenticationPage;
+export class MyApp implements OnInit{
   private translate: TranslateService;
   private translator: TranslatorService;
 
+  @ViewChild(Nav) nav: Nav;
+  rootPage: any = AuthenticationPage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
-              public patientService: PatientService, public translatorService: TranslatorService,
-              public authService: AuthService, public menu: MenuController,
+  constructor(public platform: Platform,
+              public splashScreen: SplashScreen,
+              public patientService: PatientService,
+              public translatorService: TranslatorService,
+              public authService: AuthenticationService,
               public storyService: StoryService,
-              private analytics: Analytics) {
-    // localStorage.clear();
-    translatorService.refresh();
-    this.translate = translatorService.translateIn;
-    this.translator = translatorService;
-    if (this.authService.isLoggedIn()) {
-      let lastestUsedVersion: string = localStorage.getItem(env.lastestUsedVersion);
-      let currentVersion: string = CURENT_VERSION;
+              private analytics: Analytics,
+              private statusBar: StatusBar
+              ) {
+  }
 
-      if (lastestUsedVersion) {
-        if (lastestUsedVersion.indexOf(currentVersion) != 0 || lastestUsedVersion.length != currentVersion.length)
-          this.logout();
-      } else {
-        this.logout();
-      }
-      this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(res => {
-        if (!this.authService.isLoggedIn())
-          this.logout();
-      });
+  ngOnInit() {
+    //TODO: delete translator
+    this.translatorService.refresh();
+    this.translate = this.translatorService.translateIn;
+    this.translator = this.translatorService;
+
+    this.authService.autoLoad();
+    if(this.authService.isLoggedIn()){
+      this.storyService.getAlbums(this.patientService.getCurrentPatient().patient_id);
+      this.patientService.getCurrentPatient() ? this.nav.setRoot(AlbumsPage):this.nav.setRoot(NewLovedonePage);
     }
-    localStorage.setItem(env.lastestUsedVersion, CURENT_VERSION);
-    platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
-      splashScreen.hide();
-    });
 
+    this.platform.ready().then(() => {
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
+    });
     this.analytics.track('AppComponent::Prisma launched');
+ }
 
-  }
 
-  logout() {
-    this.menu.close();
-    this.authService.logout();
-    this.nav.setRoot(LoginPage);
-  }
-
-  invite() {
-    this.menu.close();
-    this.nav.push(InvitePage, {
-      "patientId": this.authService.getCurrentPatient().patient_id
-    });
-  }
 }

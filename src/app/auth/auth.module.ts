@@ -4,6 +4,7 @@ import {AuthenticationRegisterComponent} from './components/authentication-regis
 import {AuthenticationLoginComponent} from './components/authentication-login.component';
 import {SharedModule} from '../shared/shared.module';
 import {AuthenticationPage} from './authentication.component';
+import {NewLovedonePage} from "./components/new-lovedone/new-lovedone";
 
 const IMPORTS = [
   SharedModule
@@ -12,14 +13,15 @@ const DECLARATIONS = [
   AuthenticationHeaderComponent,
   AuthenticationRegisterComponent,
   AuthenticationLoginComponent,
-  AuthenticationPage
+  AuthenticationPage,
+  NewLovedonePage
 ];
 
 @NgModule({
   declarations: [...DECLARATIONS],
   imports: [...IMPORTS],
   providers: [],
-  entryComponents: [AuthenticationPage],
+  entryComponents: [AuthenticationPage, NewLovedonePage],
   exports: [
     ...IMPORTS,
     ...DECLARATIONS

@@ -10,19 +10,20 @@ import {AlbumDetailPage} from "../album-detail/album-detail";
 import {env} from "../../app/environment";
 import {Patient} from "../../dto/patient";
 import {AuthGuard} from "../auth-guard";
-import {AuthService} from "../../providers/auth-service/auth-service";
+import {AuthenticationService} from "../../app/core/authentication.service";
 import {TranslatorService} from "../../providers/translator.service";
 import {LoginPage} from "../login/login";
 import {UtilService} from "../../providers/util-service";
-import {NewLovedonePage} from "../new-lovedone/new-lovedone";
+import {NewLovedonePage} from "../../app/auth/components/new-lovedone/new-lovedone";
 import {Analytics} from '../../providers/analytics';
+import {PatientService} from "../../app/core/patient.service";
 
 
 @Component({
   selector: 'albums-page',
   templateUrl: 'albums.html'
 })
-export class AlbumsPage extends AuthGuard implements OnInit {
+export class AlbumsPage  implements OnInit {
   user: User = JSON.parse(localStorage.getItem(env.temp.currentUser)) as User;
   albums: Album[] = [];
   backgroundImages: any[] = [];
@@ -31,13 +32,13 @@ export class AlbumsPage extends AuthGuard implements OnInit {
   //backgrpind collors
   private colorCodes: string[] = ["#FAD820", "#FF9F00", "#F35A4B", "#D95DB4", "#637DC8"];
 
-  constructor(public authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService,
+  constructor(public authService: AuthenticationService, public navCtrl: NavController, public translatorService: TranslatorService,
               public camera: Camera, public sanitizer: StanizerService, public storyService: StoryService,
               public alertCtrl: AlertController, public menu: MenuController, private ref: ChangeDetectorRef,
               public utilService: UtilService,
+              public patientService: PatientService,
               private analytics: Analytics) {
-    super(authService, navCtrl, translatorService);
-    this.currentPatient = this.authService.getCurrentPatient();
+    this.currentPatient = this.patientService.getCurrentPatient();
     menu.enable(true);
     this.loadingImageStyle = this.sanitizer.sanitizeStyle(this.loadingImageStyle);
   }
@@ -45,8 +46,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
 
   ngOnInit(): void {
     // TODO: replace with a service method
-    this.currentPatient = this.authService.getCurrentPatient();
-
+    this.currentPatient = this.patientService.getCurrentPatient();
     console.log('OnInit album');
   }
 
@@ -55,7 +55,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
       this.navCtrl.setRoot(NewLovedonePage);
       return;
     }
-    this.storyService.getAlbums(this.authService.getCurrentPatient().patient_id).toPromise().then(albums => {
+    this.storyService.getAlbums(this.patientService.getCurrentPatient().patient_id).toPromise().then(albums => {
       this.albums = albums as Album[] || [];
       if (!this.authService.isLoggedIn()) {
         this.navCtrl.setRoot(LoginPage).then(res => {
@@ -188,11 +188,11 @@ export class AlbumsPage extends AuthGuard implements OnInit {
         {
           text: text3,
           handler: data => {
-            this.storyService.addAlbum(this.authService.getCurrentPatient().patient_id, data.title).toPromise()
+            this.storyService.addAlbum(this.patientService.getCurrentPatient().patient_id, data.title).toPromise()
               .then(album => {
 
                 this.analytics.track('AlbumsComponent::add album success', {
-                  patient_id: this.authService.getCurrentPatient().patient_id,
+                  patient_id: this.patientService.getCurrentPatient().patient_id,
                   title: data.title
                 });
 
@@ -203,7 +203,7 @@ export class AlbumsPage extends AuthGuard implements OnInit {
               .catch(() => {
 
                 this.analytics.track('AlbumsComponent::add album error', {
-                  patient_id: this.authService.getCurrentPatient().patient_id,
+                  patient_id: this.patientService.getCurrentPatient().patient_id,
                   title: data.title
                 });
 

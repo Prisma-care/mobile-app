@@ -5,6 +5,7 @@ import {AlertController} from 'ionic-angular';
 import {Network} from '@ionic-native/network';
 import {Analytics} from '../../../providers/analytics';
 import {Observable} from 'rxjs/Observable';
+import {UserService} from "../../core/user.service";
 
 @Component({
   selector: 'prisma-authentication-login',
@@ -81,7 +82,8 @@ export class AuthenticationLoginComponent implements OnInit {
               private auth: AuthenticationService,
               private alertCtrl: AlertController,
               private network: Network,
-              private analytics: Analytics) {
+              private analytics: Analytics,
+              private userService: UserService) {
   }
 
   // TODO: display error message
@@ -126,11 +128,10 @@ export class AuthenticationLoginComponent implements OnInit {
       .timeout(10000)
       .do(() => {
         this.loading = false;
-        this.analytics.track('LoginComponent::Login success', this.auth.getCurrentUser().email);
+        this.analytics.track('LoginComponent::Login success', this.userService.getCurrentUser().email);
         this.onComplete();
       })
       .subscribe(undefined, (err) => {
-        console.log('subscr', err);
         this.analytics.track('LoginComponent::Login error', email);
         this.showError(err.message);
       })

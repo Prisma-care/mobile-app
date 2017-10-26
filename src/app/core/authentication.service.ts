@@ -10,7 +10,6 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
-import {Patient} from '../../dto/patient';
 import {getMessageFromBackendError} from '../utils';
 
 interface LoginResponse {
@@ -86,6 +85,12 @@ export class AuthenticationService {
     return this.isAuthenticatedSync;
   }
 
+  autoLoad(){
+    if(localStorage.getItem(this.env.jwtToken)){
+      this._isAuthenticated.next(true)
+    }
+  }
+
   logout(): void {
     this.clearTokens();
     this._isAuthenticated.next(false);
@@ -95,16 +100,4 @@ export class AuthenticationService {
     localStorage.clear();
   }
 
-  getCurrentUser(): User {
-    return JSON.parse(localStorage.getItem(this.env.temp.currentUser)) as User;
-  }
-
-  getCurrentPatient(): Patient {
-    return JSON.parse(localStorage.getItem(this.env.temp.currentPatient)) as Patient;
-  }
-
-  // temp method to set a patient to the local storage
-  setPatient(patient: Patient): void {
-    localStorage.setItem(this.env.temp.currentPatient, JSON.stringify(patient));
-  }
 }
