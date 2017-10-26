@@ -44,8 +44,11 @@ export class UserService {
 
   inviteUser(invitationData: { inviterId: string, firstName: string, lastName: string, email: string, patientId: string }): Observable<boolean | any> {
     let url: string = this.env.api.invite;
-    invitationData.patientId = invitationData.patientId.toUpperCase();
-    return this.http.post(`${this.env.apiUrl}/${url}`, invitationData)
+    const copyInvitationData = {
+      ...invitationData,
+      patientId:invitationData.patientId.toUpperCase()
+    };
+    return this.http.post(`${this.env.apiUrl}/${url}`, copyInvitationData)
       .catch(err => this.handleError(err));
   }
 
@@ -54,7 +57,6 @@ export class UserService {
   }
 
   handleError(err: HttpErrorResponse): Observable<Error> {
-    console.log("err",err)
     return Observable.of(new Error(
       `${getMessageFromBackendError(err.error && err.error.meta && err.error.meta.message)}
       `));
