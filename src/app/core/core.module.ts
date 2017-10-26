@@ -8,6 +8,8 @@ import {AuthenticationService} from './authentication.service';
 import {IonicModule} from 'ionic-angular';
 import {PatientService} from "./patient.service";
 import {UserService} from "./user.service";
+import {AlbumService} from "./album.service";
+import {StoryService} from "./story.service";
 
 const IMPORTS = [
   HttpClientModule,
@@ -37,7 +39,9 @@ const DECLARATIONS = [];
     },
     AuthenticationService,
     PatientService,
-    UserService
+    UserService,
+    AlbumService,
+    StoryService
   ],
   exports: [
     ...IMPORTS
