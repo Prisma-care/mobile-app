@@ -1,7 +1,7 @@
 
-import {Component, ViewChild, Input} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {AuthenticationPage} from "../auth/authentication.component";
-import {MenuController, Nav} from "ionic-angular";
+import {MenuController} from "ionic-angular";
 import {AuthenticationService} from "../core/authentication.service";
 import {InvitePage} from "../../pages/invite/invite";
 import {PatientService} from "../core/patient.service";
@@ -11,7 +11,7 @@ import {PatientService} from "../core/patient.service";
   template: `<ion-menu [content]="content" color="white">
     <ion-content>
       <ion-toolbar color="white">
-        <ion-title style="color: #FFABAEB4">Menu</ion-title>
+        <ion-title class="ion-title-color">Menu</ion-title>
       </ion-toolbar>
       <ion-list>
         <button ion-item (click)="invite()" *ngIf="patientService.getCurrentPatient()" class="ion-menu-buttons">
@@ -25,14 +25,21 @@ import {PatientService} from "../core/patient.service";
       </ion-list>
     </ion-content>
   </ion-menu>
-  `
+  `,
+  styles:[
+    `
+      .ion-title-color {
+        color: #FFABAEB4
+      }
+    `
+  ]
 })
 export class SidebarComponent {
   @Input()
-  nav
+  nav;
 
   @Input()
-  content
+  content;
 
   constructor(
     public menu: MenuController,
