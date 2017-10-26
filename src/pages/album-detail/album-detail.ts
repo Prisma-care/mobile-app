@@ -1,6 +1,5 @@
 import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
 import {ActionSheetController, NavController, NavParams} from "ionic-angular";
-import {StoryService} from "../../providers/back-end/story.service";
 import {Album} from "../../dto/album";
 import {UtilService} from "../../providers/util-service";
 import {NewStoryPage} from "../new-story/new-story";
@@ -12,6 +11,7 @@ import {env} from "../../app/environment";
 import {TranslatorService} from "../../providers/translator.service";
 import {UserStory} from "../../dto/user-story";
 import {PatientService} from "../../app/core/patient.service";
+import {AlbumService} from "../../app/core/album.service";
 
 @Component({
   selector: 'album-detail',
@@ -26,9 +26,16 @@ export class AlbumDetailPage  implements OnInit {
 
   public loadingImageStyle: any = `background-image: url(${env.loadingImage})`;
 
-  constructor(protected authService: AuthenticationService,public patientService: PatientService, public navCtrl: NavController, public translatorService: TranslatorService,
-              public actionsheetCtrl: ActionSheetController, public utilService: UtilService, public navParams: NavParams,
-              private storyService: StoryService, private sanitizer: StanizerService, private ref: ChangeDetectorRef) {
+  constructor(protected authService: AuthenticationService,
+              public patientService: PatientService,
+              public navCtrl: NavController,
+              public translatorService: TranslatorService,
+              public actionsheetCtrl: ActionSheetController,
+              public utilService: UtilService,
+              public navParams: NavParams,
+              private sanitizer: StanizerService,
+              private ref: ChangeDetectorRef,
+              private  albumService:AlbumService) {
     this.album = navParams.get("album") as Album;
     this.orderByFavorited();
     this.loadingImageStyle = this.sanitizer.sanitizeStyle(this.loadingImageStyle);
@@ -38,11 +45,11 @@ export class AlbumDetailPage  implements OnInit {
   }
 
   ionViewWillEnter(): void {
-    this.storyService.getAlbum(this.patientService.getCurrentPatient().patient_id, this.album.id).subscribe(res => {
-      this.album = res;
+    this.albumService.getAlbum(this.patientService.getCurrentPatient().patient_id, this.album.id).subscribe(res => {
+      this.album = res as Album;
       this.orderByFavorited();
       console.log('album',this.album);
-      if (!this.album.isEmpty()) {
+      if (this.album) {
         let i: number = 0;
         this.album.stories.forEach(story => {
           if (!this.imageLoaded(i))
@@ -57,8 +64,6 @@ export class AlbumDetailPage  implements OnInit {
 
   orderByFavorited() {
     if(!this.album)
-      return;
-    if(this.album.isEmpty())
       return;
 
     const favorites= this.album.stories.filter((storie:UserStory)=>storie.favorited);
@@ -177,7 +182,7 @@ export class AlbumDetailPage  implements OnInit {
       this.ref.markForCheck();
       return;
     }
-    this.storyService.getImage(thumb).toPromise().then(blob => {
+    this.albumService.getImage(thumb).toPromise().then(blob => {
       const style2 = `background-image: url(${blob})`;
       this.album.stories[i].backgroundImage = this.sanitizer.sanitizeStyle(style2);
       this.ref.markForCheck();

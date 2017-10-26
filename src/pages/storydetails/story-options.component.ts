@@ -1,6 +1,6 @@
 import {NavController, NavParams, ViewController} from "ionic-angular";
 import {Component} from "@angular/core";
-import {StoryService} from "../../providers/back-end/story.service";
+import {StoryService} from "../../app/core/story.service";
 import {AuthService} from "../../providers/auth-service/auth-service";
 
 @Component({

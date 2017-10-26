@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {Loading, LoadingController, NavController, NavOptions, NavParams, ViewController} from "ionic-angular";
 import {Album} from "../../dto/album";
-import {StoryService} from "../../providers/back-end/story.service";
+import {StoryService} from "../../app/core/story.service";
 import {UserStory} from "../../dto/user-story";
 import {UtilService} from "../../providers/util-service";
 import {API_URL, env} from "../../app/environment";
@@ -127,7 +127,7 @@ export class NewStoryPage  {
       newStory.type = "youtube";
       newStory.source = this.youtubeLink;
     }
-    this.storyService.addStory(+this.patientService.getCurrentPatient().patient_id, newStory).toPromise().then(addedStory => {
+    this.storyService.addStory(+this.patientService.getCurrentPatient().patient_id, newStory).toPromise().then((addedStory):any => {
       this.analytics.track('NewStoryComponent::saving story', {
         email: this.userService.getCurrentUser().email,
         patient_id: +this.patientService.getCurrentPatient().patient_id,
@@ -136,7 +136,7 @@ export class NewStoryPage  {
       });
 
       if (this.dataUrl) {
-        this.uploadImage(this.patientService.getCurrentPatient().patient_id, addedStory.id, this.dataUrl + "")
+        this.uploadImage(this.patientService.getCurrentPatient().patient_id, (addedStory as any).id , this.dataUrl + "")
           .then(res => {
             this.setRoot(AlbumsPage, {
               "album": this.selectedAlbum,
@@ -147,7 +147,7 @@ export class NewStoryPage  {
       }
       else {
         if (this.method.indexOf(env.methods.addYoutubeStory) >= 0 && this.youtubeLink) {
-          this.storyService.addYoutubeLinkAsset(this.patientService.getCurrentPatient().patient_id, addedStory.id, this.youtubeLink).toPromise().then(ret => {
+          this.storyService.addYoutubeLinkAsset(this.patientService.getCurrentPatient().patient_id, (addedStory as any).id, this.youtubeLink).toPromise().then(ret => {
             this.setRoot(AlbumsPage, {
               "album": this.selectedAlbum,
             });
@@ -251,7 +251,7 @@ export class NewStoryPage  {
         return;
       }
       this.storyService.getImage(this.dataUrl).toPromise().then(blob => {
-        this.stanizedUrl = this.stanizer.sanitize(blob);
+        this.stanizedUrl = this.stanizer.sanitize(blob as string);
         return;
       })
     } else {
