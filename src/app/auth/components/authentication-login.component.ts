@@ -1,11 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../core/authentication.service';
-import {AlertController} from 'ionic-angular';
+import {AlertController, NavController} from 'ionic-angular';
 import {Network} from '@ionic-native/network';
 import {Analytics} from '../../../providers/analytics';
 import {Observable} from 'rxjs/Observable';
 import {UserService} from "../../core/user.service";
+import {PasswordResetComponent} from "./password-reset/password-reset.component";
 
 @Component({
   selector: 'prisma-authentication-login',
@@ -57,6 +58,11 @@ import {UserService} from "../../core/user.service";
             Maak account .
           </a>
         </p>
+        <p class="alternate-option" (click)="goToPasswordResetPage()">
+          <a color="general">
+            Wachtwoord vergeten?
+          </a>
+        </p>
       </div>
     </form>
   `,
@@ -83,7 +89,8 @@ export class AuthenticationLoginComponent implements OnInit {
               private alertCtrl: AlertController,
               private network: Network,
               private analytics: Analytics,
-              private userService: UserService) {
+              private userService: UserService,
+              private navCtrl: NavController) {
   }
 
   // TODO: display error message
@@ -135,8 +142,10 @@ export class AuthenticationLoginComponent implements OnInit {
         this.analytics.track('LoginComponent::Login error', email);
         this.showError(err.message);
       })
+  }
 
-
+  goToPasswordResetPage():void{
+    this.navCtrl.push(PasswordResetComponent);
   }
 
   showError(errorMessage: string = 'Je gebruikersnaam of wachtwoord klopt niet.') {
