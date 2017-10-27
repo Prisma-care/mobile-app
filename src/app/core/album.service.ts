@@ -2,7 +2,7 @@ import {Inject, Injectable} from "@angular/core";
 import {Environment, EnvironmentToken} from "../environment";
 import {HttpClient} from "@angular/common/http";
 import {HttpErrorResponse} from "@angular/common/http";
-import {getMessageFromBackendError, getUrlImage} from "../utils";
+import {getMessageFromBackendError, getThumbnails, getUrlImage} from "../utils";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/of";
 import {UserStory} from "../../dto/user-story";
@@ -43,6 +43,10 @@ export class AlbumService {
 
   getImage(filename: string): Observable<string| Error >  {
     return getUrlImage.call(this,filename)
+  }
+
+  getThumb(url):string{
+    return getThumbnails(url);
   }
 
   addYoutubeLinkAsset(patient_id: string, storyId: string, asset: string) {
