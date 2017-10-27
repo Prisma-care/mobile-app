@@ -12,6 +12,7 @@ import {AuthenticationService} from './core/authentication.service';
 import {PatientService} from "./core/patient.service";
 import {NewLovedonePage} from "./auth/components/new-lovedone/new-lovedone";
 import {AlbumService} from "./core/album.service";
+import {AlbumListPage} from "./albumList/albumList.component";
 
 @Component({
   templateUrl: 'app.html'
@@ -21,7 +22,6 @@ export class MyApp implements OnInit{
   private translator: TranslatorService;
 
   @ViewChild(Nav) nav: Nav;
-  rootPage: any = AuthenticationPage;
 
   constructor(public platform: Platform,
               public splashScreen: SplashScreen,
@@ -40,10 +40,11 @@ export class MyApp implements OnInit{
     this.translate = this.translatorService.translateIn;
     this.translator = this.translatorService;
 
+    this.nav.setRoot(AuthenticationPage);
     this.authService.autoLoad();
     if(this.authService.isLoggedIn()){
       this.albumService.getAlbums(this.patientService.getCurrentPatient().patient_id);
-      this.patientService.getCurrentPatient() ? this.nav.setRoot(AlbumsPage):this.nav.setRoot(NewLovedonePage);
+      this.patientService.getCurrentPatient() ? this.nav.setRoot(AlbumListPage):this.nav.setRoot(NewLovedonePage);
     }
 
     this.platform.ready().then(() => {
