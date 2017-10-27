@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuController, NavController} from 'ionic-angular';
 import {AuthenticationService} from "../core/authentication.service";
-import {AlbumsPage} from '../../pages/albums/albums';
 import {NewLovedonePage} from './components/new-lovedone/new-lovedone';
+import {AlbumListPage} from "../albumList/albumList.component";
+import {AlbumsPage} from "../../pages/albums/albums";
 
 @Component({
   selector: 'prisma-authentication-page',
@@ -40,9 +41,6 @@ export class AuthenticationPage implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.auth.isLoggedIn()) {
-      this.navCtrl.setRoot(AlbumsPage);
-    }
   }
 
   ionViewCanLeave(): boolean {
