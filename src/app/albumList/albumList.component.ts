@@ -1,11 +1,8 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {Environment, EnvironmentToken} from "../environment";
-import {UserService} from "../core/user.service";
 import {PatientService} from "../core/patient.service";
 import {MenuController} from "ionic-angular";
-import {User} from "../../dto/user";
 import {Album} from "../../dto/album";
-import {Patient} from "../../dto/patient";
 import {AlbumService} from "../core/album.service";
 import {Observable} from "rxjs/Observable";
 
@@ -48,7 +45,7 @@ import {Observable} from "rxjs/Observable";
       <ion-grid *ngIf="albums">
         <ion-row>
           <ion-col col-6 col-md-4 *ngFor="let album of albums | async">
-            <prisma-album-page [album]="album"></prisma-album-page>
+            <prisma-album [album]="album"></prisma-album>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -67,7 +64,6 @@ export class AlbumListPage implements OnInit {
   albums: Observable<Album[]>;
 
   constructor(@Inject(EnvironmentToken) private env: Environment,
-              private userService: UserService,
               private patientService: PatientService,
               private menu: MenuController,
               private albumService: AlbumService) {

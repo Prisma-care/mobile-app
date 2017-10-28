@@ -1,19 +1,15 @@
 import {Component, Inject, Input, OnInit} from "@angular/core";
-import {Environment, EnvironmentToken} from "../../environment";
-import {UserService} from "../../core/user.service";
-import {PatientService} from "../../core/patient.service";
-import {MenuController, NavController} from "ionic-angular";
+import {NavController} from "ionic-angular";
 import {AlbumService} from "../../core/album.service";
 import {UserStory} from "../../../dto/user-story";
 import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
-import {StoryService} from "../../core/story.service";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/switchMap";
-import {AlbumDetailPage} from "../../../pages/album-detail/album-detail";
 import "rxjs/add/operator/last";
+import {StoryListPage} from "../../storiesList/storyList.component";
 
 @Component({
-  selector: 'prisma-album-page',
+  selector: 'prisma-album',
   styles:
     [
         `
@@ -71,7 +67,7 @@ import "rxjs/add/operator/last";
   `
 })
 
-export class AlbumPage implements OnInit {
+export class AlbumComponent implements OnInit {
   colorCodes: string[] = ["#FAD820", "#FF9F00", "#F35A4B", "#D95DB4", "#637DC8"];
   backgroundImage: SafeStyle;
   backgroundColor: string;
@@ -80,8 +76,7 @@ export class AlbumPage implements OnInit {
   @Input()
   album;
 
-  constructor(@Inject(EnvironmentToken) private env: Environment,
-              private albumService: AlbumService,
+  constructor(private albumService: AlbumService,
               private sanitizer: DomSanitizer,
               private navCtrl: NavController) {
   }
@@ -118,7 +113,7 @@ export class AlbumPage implements OnInit {
   }
 
   showDetails() {
-    this.navCtrl.push(AlbumDetailPage, {
+    this.navCtrl.push(StoryListPage, {
       "album": this.album,
     });
   }

@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {AlbumPage} from "./album/album.component";
+import {AlbumComponent} from "./album/album.component";
 import {AlbumListPage} from "./albumList.component";
 import {SharedModule} from "../shared/shared.module";
 
@@ -7,7 +7,7 @@ const IMPORTS = [
   SharedModule
 ];
 const DECLARATIONS = [
-  AlbumPage,
+  AlbumComponent,
   AlbumListPage
 ];
 
