@@ -12,7 +12,7 @@ import {StanizerService} from "../providers/stanizer.service";
 import {StoryDetailsPage} from "../pages/storydetails/storydetails";
 import {PrismaService} from "../providers/back-end/prisma-api.service";
 import {PatientService} from "../providers/back-end/user.service";
-import {Http, HttpModule} from "@angular/http";
+import {Http} from "@angular/http";
 import {StoryService} from "../providers/back-end/story.service";
 import {Camera} from "@ionic-native/camera";
 import {NewStoryPage} from "../pages/new-story/new-story";
@@ -27,7 +27,6 @@ import {AlbumDetailPage} from "../pages/album-detail/album-detail";
 import {AuthService} from "../providers/auth-service/auth-service";
 import {QuestionService} from "../providers/question-service/question.service";
 import {AlbumQuestions} from "../pages/album-detail/album-questions";
-import {LoginPage} from "../pages/login/login";
 import {AuthGuard} from "../pages/auth-guard";
 import {NativePageTransitions} from "@ionic-native/native-page-transitions";
 import {StoryOptionsComponent} from "../pages/storydetails/story-options.component";
@@ -35,11 +34,14 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TranslatorService} from "../providers/translator.service";
 import {LoginHeaderComponent} from "../pages/login/login-header.component";
-import {NewLovedonePage} from "../pages/new-lovedone/new-lovedone";
 import {InvitePage} from "../pages/invite/invite";
 
 import {Mixpanel} from '@ionic-native/mixpanel';
 import {Analytics} from '../providers/analytics';
+import {CoreModule} from './core/core.module';
+import {AuthModule} from './auth/auth.module';
+import {EnvironmentProvider} from './environment';
+import {SidebarComponent} from "./components/sidebar.component";
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -49,7 +51,6 @@ export function createTranslateLoader(http: Http) {
 @NgModule({
   declarations: [
     MyApp,
-    LoginPage,
     AlbumsPage,
     AlbumDetailPage,
     StoryDetailsPage,
@@ -58,13 +59,14 @@ export function createTranslateLoader(http: Http) {
     StoryOptionsComponent,
     LoginHeaderComponent,
     InvitePage,
-    NewLovedonePage
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
-    HttpModule,
+    CoreModule,
+    AuthModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -72,21 +74,22 @@ export function createTranslateLoader(http: Http) {
         deps: [Http]
       }
     }),
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    LoginPage,
     AlbumsPage,
     AlbumDetailPage,
     StoryDetailsPage,
     NewStoryPage,
     AlbumQuestions,
     StoryOptionsComponent,
-    NewLovedonePage,
-    InvitePage
+    InvitePage,
+    SidebarComponent
   ],
   providers: [
+    EnvironmentProvider,
     StatusBar,
     SplashScreen,
     UtilService,

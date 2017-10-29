@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {AlertController, NavController, NavParams} from 'ionic-angular';
-import {PatientService} from "../../providers/back-end/user.service";
-import {AuthService} from "../../providers/auth-service/auth-service";
+import {PatientService} from "../../app/core/patient.service";
+import {AuthenticationService} from "../../app/core/authentication.service";
 import {Patient} from "../../dto/patient";
 import {AlbumsPage} from "../albums/albums";
 import {AuthGuard} from "../auth-guard";
@@ -17,16 +17,15 @@ import {TranslatorService} from "../../providers/translator.service";
   selector: 'page-new-lovedone',
   templateUrl: 'new-lovedone.html',
 })
-export class NewLovedonePage extends AuthGuard {
+export class NewLovedonePage  {
 
   firstname: string = "";
   lastname: string = "";
   private loading: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public lovedOnes: PatientService, public authService: AuthService,
+              public lovedOnes: PatientService, public authService: AuthenticationService,
               public  alertCtrl: AlertController, translatorService: TranslatorService) {
-    super(authService, navCtrl, translatorService);
   }
 
   canCreateLovedOne(): boolean {
@@ -40,7 +39,7 @@ export class NewLovedonePage extends AuthGuard {
     this.loading = true;
     this.createLovedOne().then((patient) => {
       patient.patient_id = patient.id;
-        this.authService.setPatient(patient);
+        this.lovedOnes.setPatient(patient);
         this.navCtrl.setRoot(AlbumsPage).then(res => {
           this.loading = false;
         });

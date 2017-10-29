@@ -1,7 +1,7 @@
 import {QuestionService} from "../../providers/question-service/question.service";
 import {Component, Input, OnInit} from "@angular/core";
 import {AuthGuard} from "../auth-guard";
-import {AuthService} from "../../providers/auth-service/auth-service";
+import {AuthenticationService} from "../../app/core/authentication.service";
 import {NavController} from "ionic-angular";
 import {TranslatorService} from "../../providers/translator.service";
 
@@ -22,7 +22,7 @@ import {TranslatorService} from "../../providers/translator.service";
   `
 })
 
-export class AlbumQuestions extends AuthGuard implements OnInit {
+export class AlbumQuestions  implements OnInit {
 
   currentQuestion: string = "";
   questions: string[] = [];
@@ -30,8 +30,7 @@ export class AlbumQuestions extends AuthGuard implements OnInit {
   @Input() query: string;
   private questionIndex: number = 0;
 
-  constructor(protected authService: AuthService, public navCtrl: NavController, public translatorService: TranslatorService, private questionService: QuestionService) {
-    super(authService, navCtrl, translatorService);
+  constructor(protected authService: AuthenticationService, public navCtrl: NavController, public translatorService: TranslatorService, private questionService: QuestionService) {
   }
 
   ngOnInit(): void {
