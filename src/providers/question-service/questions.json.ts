@@ -2,7 +2,7 @@ export const QUESTIONS = [
   // PERSONAL
   {
     "questions": [
-      "Oude familielden",
+      "Oude familieleden",
       "Land van herkomst",
       "Overgrootouders"
     ],
@@ -14,7 +14,15 @@ export const QUESTIONS = [
       "Huisdieren",
       "Gewoontes of tradities",
       "Favoriet eten als kind",
-      "Kinderkleding"
+      "Kinderkleding",
+      "Opvoeding",
+      "Broers en zussen",
+      "Slaaprituelen",
+      "Communiefeest",
+      "Braaf of rebels",
+      "Vrienden aan huis",
+      "Grootouders",
+      "Verhuizen"
     ],
     "keywords": ["kindertijd", "kind", "jeugd", "gezin"]
   },
@@ -23,14 +31,18 @@ export const QUESTIONS = [
       "Beroep",
       "Eerste werk",
       "Vakantiejobs",
-      "Leuke collega's"
+      "Leuke collega's",
+      "Bazen"
     ],
     "keywords": ["werk", "bureau"]
   },
   {
     "questions": [
       "Basisschool",
-      "Leerkrachten"
+      "Leerkrachten",
+      "Favoriete schoolvak",
+      "Op straf",
+      "Reglementen"
     ],
     "keywords": ["school", "leerkracht", "klas", "kindertijd"]
   },
@@ -39,7 +51,10 @@ export const QUESTIONS = [
       "Eerste verliefdheid",
       "Afspraakjes",
       "Voorstellen aan familie",
-      "Trouwdag"
+      "Trouwdag",
+      "Chaperone",
+      "Liefdesbrieven",
+      "Geschenkjes"
     ],
     "keywords": ["trouw", "liefde"]
   },
@@ -48,7 +63,10 @@ export const QUESTIONS = [
       "Eerste kind",
       "Namen van kinderen",
       "Trouwfeesten",
-      "Geboortes"
+      "Geboortes",
+      "Familiefeesten",
+      "Broers en zussen",
+      "Familie in het buitenland"
     ],
     "keywords": ["familie", "gezin"]
   },
@@ -77,7 +95,10 @@ export const QUESTIONS = [
       "Verre landen",
       "Alleen op vakantie",
       "Vervoersmiddelen",
-      "Mooie steden"
+      "Mooie steden",
+      "De zee",
+      "Vakantiekolonies",
+      "Buitenlands eten"
     ],
     "keywords": ["vakantie", "reizen", "reis", "avontuur"]
   },
@@ -108,7 +129,36 @@ export const QUESTIONS = [
       "Feesten in gemeente",
       "Evenementen in de gemeente",
     ],
-    "keywords": ["gemeente", "roeselare"]
+    "keywords": ["gemeente"]
+  },
+  {
+    "questions": [
+      "Boodschappen doen",
+      "Verwarming",
+      "Wassen",
+      "Vervoer",
+      "Koken"
+    ],
+    "keywords": ["dagelijks leven"]
+  },
+  {
+    "questions": [
+      "Spelprogramma's",
+      "Luisterspelen",
+      "Journaal",
+      "Kinderprogramma's"
+    ],
+    "keywords": ["vermaak"]
+  },
+  {
+    "questions": [
+      "Familiefeesten",
+      "Communiefeest",
+      "Kerstcadeaus",
+      "Verjaardagstaart",
+      "Naar de misdienst"
+    ],
+    "keywords": ["feesten", "tradities"]
   },
 ];
 
