@@ -11,6 +11,7 @@ import 'rxjs/add/operator/take';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import {getMessageFromBackendError} from '../utils';
+import { UserService } from "./user.service";
 
 interface LoginResponse {
   response: {
@@ -25,7 +26,7 @@ export class AuthenticationService {
   private _isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(@Inject(EnvironmentToken) private env: Environment,
-              private http: HttpClient) {
+              private http: HttpClient, private userService: UserService) {
 
     this.handleError = this.handleError.bind(this);
   }
@@ -61,6 +62,12 @@ export class AuthenticationService {
     localStorage.setItem(this.env.jwtToken, token);
     localStorage.setItem(this.env.temp.currentPatient, JSON.stringify(currentPatient || ''));
     localStorage.setItem(this.env.temp.currentUser, JSON.stringify({ id: userId }));
+
+    // set full user info by getting it from the backend
+    this.userService.getUser().map((user) => {
+      console.log("user is : " + JSON.stringify(user));
+      localStorage.setItem(this.env.temp.currentUser, JSON.stringify(user));
+    }).subscribe();
   }
 
   handleError(err: HttpErrorResponse): Observable<Error> {

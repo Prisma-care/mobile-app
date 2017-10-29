@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
-import {Mixpanel} from '@ionic-native/mixpanel';
+import {Mixpanel, MixpanelPeople} from '@ionic-native/mixpanel';
+import { User } from "../dto/user";
 
 
 declare var cordova: any;
@@ -9,7 +10,7 @@ export class Analytics {
   isInit = false;
   private token = '0c69ebeb92fc86a0b9d813b5fb6215e7';
 
-  constructor(private mixpanel: Mixpanel) {
+  constructor(private mixpanel: Mixpanel, private mixpanelPeople: MixpanelPeople) {
     this.init();
   }
 
@@ -38,5 +39,28 @@ export class Analytics {
     this.init().then(() => {
       this.mixpanel.track(eventName, props);
     });
+  }
+
+  identify(user: User): void {
+    if (this.isInit) {
+      this.mixpanel.identify(String(user.id))
+        .then(() => {
+            const mixProps: any = {
+              "$first_name": user.firstName,
+              "$last_name": user.lastName,
+              "$created": user.createdAt,
+              "$email": user.email
+            };
+            console.log("user = " + JSON.stringify(user));
+            // setOnce will not overwrite an already existing profile
+            this.mixpanelPeople.setOnce(mixProps).catch((err) => {
+              console.log('Error at binding user info to mixpanel identification.', err)
+            });
+
+          }
+        )
+        .catch((err) => console.log("Mixpanel user identification error", err));
+
+    }
   }
 }

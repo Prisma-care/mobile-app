@@ -128,6 +128,7 @@ export class AuthenticationLoginComponent implements OnInit {
       .timeout(10000)
       .do(() => {
         this.loading = false;
+        this.analytics.identify(this.userService.getCurrentUser());
         this.analytics.track('LoginComponent::Login success', this.userService.getCurrentUser().email);
         this.onComplete();
       })
