@@ -48,6 +48,13 @@ export class AuthenticationService {
         this._isAuthenticated.next(true);
         return this.isAuthenticatedSync;
       })
+      // chain by getting & setting full user info (for Mixpanel)
+      .flatMap((authSync) => {
+        return this.userService.getUser()
+        .map((user) => {
+          localStorage.setItem(this.env.temp.currentUser, JSON.stringify(user))})
+        .map(() => authSync);
+      })
       .catch(this.handleError)
 
   }
@@ -62,12 +69,6 @@ export class AuthenticationService {
     localStorage.setItem(this.env.jwtToken, token);
     localStorage.setItem(this.env.temp.currentPatient, JSON.stringify(currentPatient || ''));
     localStorage.setItem(this.env.temp.currentUser, JSON.stringify({ id: userId }));
-
-    // set full user info by getting it from the backend
-    this.userService.getUser().map((user) => {
-      console.log("user is : " + JSON.stringify(user));
-      localStorage.setItem(this.env.temp.currentUser, JSON.stringify(user));
-    }).subscribe();
   }
 
   handleError(err: HttpErrorResponse): Observable<Error> {

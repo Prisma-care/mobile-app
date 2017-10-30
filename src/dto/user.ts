@@ -14,6 +14,8 @@ export class User extends AbstractUser {
     this.email = json.email;
     this.password = json.password;
     this.relations = [];
-    json.relations.forEach(relation => this.relations.push(new Relation(relation)));
+    if (json.relations) {
+      json.relations.forEach(relation => this.relations.push(new Relation(relation)));
+    }
   }
 }
