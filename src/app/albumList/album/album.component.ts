@@ -1,12 +1,12 @@
-import {Component, Inject, Input, OnInit} from "@angular/core";
+import {Component, Inject, Input, OnDestroy, OnInit} from "@angular/core";
 import {NavController} from "ionic-angular";
 import {AlbumService} from "../../core/album.service";
 import {UserStory} from "../../../dto/user-story";
 import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
-import {Observable} from "rxjs/Observable";
 import "rxjs/add/operator/switchMap";
 import "rxjs/add/operator/last";
-import {StoryListPage} from "../../storiesList/storyList.component";
+import {StoryListPage} from "../../storyList/storyList.component";
+import {Subject} from "rxjs/Subject";
 
 @Component({
   selector: 'prisma-album',
@@ -54,7 +54,7 @@ import {StoryListPage} from "../../storiesList/storyList.component";
          class="album-thumb"
          [style]="backgroundImage"
          [style.background-color]="backgroundColor"
-         (click)="showDetails(album)">
+         (click)="showDetails()">
       <div class="tile-overlay-gradient"></div>
       <h3 class="hist-title">{{album.title || '?'}}</h3>
       <ion-icon name="logo-youtube" color="white"
@@ -67,14 +67,17 @@ import {StoryListPage} from "../../storiesList/storyList.component";
   `
 })
 
-export class AlbumComponent implements OnInit {
+export class AlbumComponent implements OnInit, OnDestroy {
+
   colorCodes: string[] = ["#FAD820", "#FF9F00", "#F35A4B", "#D95DB4", "#637DC8"];
+  destroy$: Subject<boolean> = new Subject<boolean>();
   backgroundImage: SafeStyle;
   backgroundColor: string;
   imageLoaded: boolean = false;
   isAVideo: boolean = false;
   @Input()
   album;
+
 
   constructor(private albumService: AlbumService,
               private sanitizer: DomSanitizer,
@@ -83,29 +86,25 @@ export class AlbumComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log("album", this.album);
     this.setBackgroundImage(this.album.stories);
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
 
   setBackgroundImage(stories: UserStory[]) {
     if (stories.length !== 0) {
-      Observable.from(stories)
-        .last()
-        .map(item => {
-          if (item.type !== "youtube") {
-            return this.albumService.getImage(item.source)
-          } else {
-            this.isAVideo = true;
-            return Observable.of(this.albumService.getThumb(item.source))
-          }
-        })
-        .switchMap(x => x)
+      const story = stories[stories.length-1];
+      this.albumService.getBackground(story)
+        .takeUntil(this.destroy$)
         .subscribe(imageUrl => {
           this.backgroundImage = this.sanitizer
             .bypassSecurityTrustStyle(`background-image: url(${imageUrl})`);
           this.imageLoaded = true;
-        })
+        });
+      this.isAVideo=story.type==='youtube';
     } else {
       this.backgroundColor = this.colorCodes[Math.floor(Math.random() * this.colorCodes.length)]
       this.imageLoaded = true;
