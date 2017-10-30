@@ -1,7 +1,7 @@
-import {Component, Inject, OnInit} from "@angular/core";
+import {Component, Inject} from "@angular/core";
 import {Environment, EnvironmentToken} from "../environment";
 import {PatientService} from "../core/patient.service";
-import {MenuController} from "ionic-angular";
+import {MenuController, NavController} from "ionic-angular";
 import {Album} from "../../dto/album";
 import {AlbumService} from "../core/album.service";
 import {Observable} from "rxjs/Observable";
@@ -23,7 +23,7 @@ import {Observable} from "rxjs/Observable";
           box-shadow: none;
           -webkit-box-shadow: none;
         }
-        
+
         .button {
           left: -0.5em
         }
@@ -59,7 +59,7 @@ import {Observable} from "rxjs/Observable";
   `
 })
 
-export class AlbumListPage implements OnInit {
+export class AlbumListPage{
 
   albums: Observable<Album[]>;
 
@@ -70,12 +70,13 @@ export class AlbumListPage implements OnInit {
   }
 
 
-  ngOnInit(): void {
+  ionViewWillEnter():void{
     this.menu.enable(true);
+    this.albums=this.albumService.getAlbums(this.patientService.getCurrentPatient().patient_id)
   }
 
-  ionViewWillEnter():void{
-    this.albums=this.albumService.getAlbums(this.patientService.getCurrentPatient().patient_id)
+  ionViewWillLeave():void{
+    this.menu.enable(false);
   }
 
   addAlbum(){

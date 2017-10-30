@@ -39,7 +39,7 @@ import {AuthModule} from './auth/auth.module';
 import {EnvironmentProvider} from './environment';
 import {SidebarComponent} from "./components/sidebar.component";
 import {AlbumModule} from "./albumList/album.module";
-import {StoryModule} from "./storiesList/story.module";
+import {StoryModule} from "./storyList/story.module";
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');

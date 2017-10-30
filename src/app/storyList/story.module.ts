@@ -10,14 +10,15 @@ const IMPORTS = [
 ];
 const DECLARATIONS = [
   StoryListPage,
-  StoryComponent
+  StoryComponent,
+  StoryDetailsPage
 ];
 
 @NgModule({
   declarations: [...DECLARATIONS],
   imports: [...IMPORTS],
   providers: [],
-  entryComponents: [StoryListPage],
+  entryComponents: [StoryListPage, StoryDetailsPage],
   exports: [
     ...IMPORTS,
     ...DECLARATIONS

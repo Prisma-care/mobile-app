@@ -10,6 +10,7 @@ import {PatientService} from "./patient.service";
 import {UserService} from "./user.service";
 import {AlbumService} from "./album.service";
 import {StoryService} from "./story.service";
+import {QuestionService} from "./question.service";
 
 const IMPORTS = [
   HttpClientModule,
@@ -41,7 +42,8 @@ const DECLARATIONS = [];
     PatientService,
     UserService,
     AlbumService,
-    StoryService
+    StoryService,
+    QuestionService
   ],
   exports: [
     ...IMPORTS
