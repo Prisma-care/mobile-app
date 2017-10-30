@@ -42,8 +42,9 @@ export class Analytics {
   }
 
   identify(user: User): void {
-    if (this.isInit) {
-      this.mixpanel.identify(String(user.id))
+    // a function that handles the mixpanel registration
+    let mixpanelIdentify: (() => void) =
+      () => this.mixpanel.identify(String(user.id))
         .then(() => {
             const mixProps: any = {
               "$first_name": user.firstName,
@@ -61,6 +62,11 @@ export class Analytics {
         )
         .catch((err) => console.log("Mixpanel user identification error", err));
 
+    if (this.isInit) {
+      mixpanelIdentify();
+    }
+    else {
+      this.init().then(mixpanelIdentify);
     }
   }
 }
