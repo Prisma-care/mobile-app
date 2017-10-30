@@ -1,0 +1,65 @@
+prisma-story-detail {
+
+  .detail-title {
+    float: left;
+  }
+
+  .description {
+    padding: 1em;
+    color: #fff;
+    background-color: color($colors, general);
+    font-size: map-get($sizes, 'medium');
+  }
+
+  .description-text {
+    margin: 0;
+  }
+
+  .detail-button {
+    width: 100%;
+    font-size: map-get($sizes, 'medium');
+    background-color: transparent;
+    text-align: left;
+    padding-left: 1em;
+
+    div {
+      p {
+        color: color($colors, dark-gray);
+        margin-left: 0.4em;
+      }
+    }
+
+    .story-action {
+      display: block;
+    }
+  }
+
+  .detail-button * {
+    display: inline-block;
+  }
+
+  img {
+    display: block;
+  }
+
+  .image-container {
+    position: relative;
+  }
+
+  .star2 {
+    font-size: 2em;
+    color: color($colors, dark-gray);
+  }
+
+  .star2.favorited {
+    color: color($colors, yellow);
+  }
+
+  .movie-indicator {
+    color: white;
+    display: block;
+    margin: 0 auto;
+    font-size: 50px;
+  }
+
+}
