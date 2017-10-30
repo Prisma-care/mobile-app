@@ -7,8 +7,8 @@ import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/from";
 import "rxjs/add/observable/of";
 import {StoryService} from "../../core/story.service";
-import {StoryDetailsPage} from "./storyDetail/storyDetail.component";
 import {Subject} from "rxjs/Subject";
+import {StoryDetailsPage} from "../../../pages/storydetails/storydetails";
 
 @Component({
   selector: 'prisma-story',
