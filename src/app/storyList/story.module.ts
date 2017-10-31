@@ -4,6 +4,7 @@ import {StoryListPage} from "./storyList.component";
 import {StoryComponent} from "./story/story.component";
 import {QuestionComponent} from "./question/question.component";
 import {StoryDetailsPage} from "./story/storyDetail/storyDetail.component";
+import {StoryOptionsComponent} from "./story/storyDetail/storyOption/storyOptions.component";
 
 const IMPORTS = [
   SharedModule
@@ -11,14 +12,15 @@ const IMPORTS = [
 const DECLARATIONS = [
   StoryListPage,
   StoryComponent,
-  StoryDetailsPage
+  StoryDetailsPage,
+  StoryOptionsComponent
 ];
 
 @NgModule({
   declarations: [...DECLARATIONS],
   imports: [...IMPORTS],
   providers: [],
-  entryComponents: [StoryListPage, StoryDetailsPage],
+  entryComponents: [StoryListPage, StoryDetailsPage, StoryOptionsComponent],
   exports: [
     ...IMPORTS,
     ...DECLARATIONS
