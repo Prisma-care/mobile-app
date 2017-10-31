@@ -96,6 +96,9 @@ a[disabled], button[disabled], [ion-button][disabled] {
 // PAGE HEADER
 
 .page-header {
+  .button-ios{
+    height: 3.6rem;
+  }
   padding: 2em 3em;
   //background-color: map-get($colors, 'primary');
   height: 50vw;

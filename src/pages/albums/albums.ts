@@ -1,7 +1,6 @@
 import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
 import {AlertController, MenuController, NavController} from "ionic-angular";
 import {StanizerService} from "../../providers/stanizer.service";
-import {StoryService} from "../../providers/back-end/story.service";
 import {User} from "../../dto/user";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
@@ -17,6 +16,7 @@ import {UtilService} from "../../providers/util-service";
 import {NewLovedonePage} from "../../app/auth/components/new-lovedone/new-lovedone";
 import {Analytics} from '../../providers/analytics';
 import {PatientService} from "../../app/core/patient.service";
+import {AlbumService} from "../../app/core/album.service";
 
 
 @Component({
@@ -32,12 +32,18 @@ export class AlbumsPage  implements OnInit {
   //backgrpind collors
   private colorCodes: string[] = ["#FAD820", "#FF9F00", "#F35A4B", "#D95DB4", "#637DC8"];
 
-  constructor(public authService: AuthenticationService, public navCtrl: NavController, public translatorService: TranslatorService,
-              public camera: Camera, public sanitizer: StanizerService, public storyService: StoryService,
-              public alertCtrl: AlertController, public menu: MenuController, private ref: ChangeDetectorRef,
+  constructor(public authService: AuthenticationService,
+              public navCtrl: NavController,
+              public translatorService: TranslatorService,
+              public camera: Camera,
+              public sanitizer: StanizerService,
+              public alertCtrl: AlertController,
+              public menu: MenuController,
+              private ref: ChangeDetectorRef,
               public utilService: UtilService,
               public patientService: PatientService,
-              private analytics: Analytics) {
+              private analytics: Analytics,
+              private albumService:AlbumService) {
     this.currentPatient = this.patientService.getCurrentPatient();
     menu.enable(true);
     this.loadingImageStyle = this.sanitizer.sanitizeStyle(this.loadingImageStyle);
@@ -55,7 +61,7 @@ export class AlbumsPage  implements OnInit {
       this.navCtrl.setRoot(NewLovedonePage);
       return;
     }
-    this.storyService.getAlbums(this.patientService.getCurrentPatient().patient_id).toPromise().then(albums => {
+    this.albumService.getAlbums(this.patientService.getCurrentPatient().patient_id).toPromise().then(albums => {
       this.albums = albums as Album[] || [];
       if (!this.authService.isLoggedIn()) {
         this.navCtrl.setRoot(LoginPage).then(res => {
@@ -120,7 +126,7 @@ export class AlbumsPage  implements OnInit {
         this.ref.markForCheck();
         return;
       }
-      this.storyService.getImage(thumb).toPromise().then(blob => {
+      this.albumService.getImage(thumb).toPromise().then(blob => {
         //this.albums[i].blobs[index] = blob;
         const style2 = `background-image: url(${blob})`;
         this.backgroundImages[i] = this.sanitizer.sanitizeStyle(style2);
@@ -188,7 +194,7 @@ export class AlbumsPage  implements OnInit {
         {
           text: text3,
           handler: data => {
-            this.storyService.addAlbum(this.patientService.getCurrentPatient().patient_id, data.title).toPromise()
+            this.albumService.addAlbum(this.patientService.getCurrentPatient().patient_id, data.title).toPromise()
               .then(album => {
 
                 this.analytics.track('AlbumsComponent::add album success', {

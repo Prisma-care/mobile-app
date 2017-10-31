@@ -1,13 +1,13 @@
 import {Component} from "@angular/core";
 import {Loading, LoadingController, NavController, NavOptions, NavParams, ViewController} from "ionic-angular";
 import {Album} from "../../dto/album";
-import {StoryService} from "../../providers/back-end/story.service";
+import {StoryService} from "../../app/core/story.service";
 import {UserStory} from "../../dto/user-story";
 import {UtilService} from "../../providers/util-service";
 import {API_URL, env} from "../../app/environment";
 import {Transfer, TransferObject} from "@ionic-native/transfer";
-import {AlbumsPage} from "../albums/albums";
-import {StoryDetailsPage} from "../storydetails/storydetails";
+import {AlbumListPage} from "../../app/albumList/albumList.component";
+import {StoryDetailsPage} from "../../app/storyList/story/storyDetail/storyDetail.component";
 import {StanizerService} from "../../providers/stanizer.service";
 import {AuthenticationService} from "../../app/core/authentication.service";
 import {AuthGuard} from "../auth-guard";
@@ -60,7 +60,8 @@ export class NewStoryPage  {
               public stanizer: StanizerService,
               private analytics: Analytics,
               private userService: UserService,
-              private patientService: PatientService) {
+              private patientService: PatientService,
+              private viewCtrl: ViewController) {
     this.translatorService.translate(this.placeHolder, value => this.placeHolder = value);
     this.method = navParams.get("method") as string;
     this.dataUrl = navParams.get("dataUrl") as string;
@@ -127,7 +128,7 @@ export class NewStoryPage  {
       newStory.type = "youtube";
       newStory.source = this.youtubeLink;
     }
-    this.storyService.addStory(+this.patientService.getCurrentPatient().patient_id, newStory).toPromise().then(addedStory => {
+    this.storyService.addStory(+this.patientService.getCurrentPatient().patient_id, newStory).toPromise().then((addedStory):any => {
       this.analytics.track('NewStoryComponent::saving story', {
         email: this.userService.getCurrentUser().email,
         patient_id: +this.patientService.getCurrentPatient().patient_id,
@@ -136,9 +137,9 @@ export class NewStoryPage  {
       });
 
       if (this.dataUrl) {
-        this.uploadImage(this.patientService.getCurrentPatient().patient_id, addedStory.id, this.dataUrl + "")
+        this.uploadImage(this.patientService.getCurrentPatient().patient_id, (addedStory as any).id , this.dataUrl + "")
           .then(res => {
-            this.setRoot(AlbumsPage, {
+            this.setRoot(AlbumListPage, {
               "album": this.selectedAlbum,
             }).subscribe();
           }).catch(err => {
@@ -147,15 +148,15 @@ export class NewStoryPage  {
       }
       else {
         if (this.method.indexOf(env.methods.addYoutubeStory) >= 0 && this.youtubeLink) {
-          this.storyService.addYoutubeLinkAsset(this.patientService.getCurrentPatient().patient_id, addedStory.id, this.youtubeLink).toPromise().then(ret => {
-            this.setRoot(AlbumsPage, {
+          this.storyService.addYoutubeLinkAsset(this.patientService.getCurrentPatient().patient_id, (addedStory as any).id, this.youtubeLink).toPromise().then(ret => {
+            this.setRoot(AlbumListPage, {
               "album": this.selectedAlbum,
             });
             return;
           });
 
         }
-        this.setRoot(AlbumsPage, {
+        this.setRoot(AlbumListPage, {
           "album": this.selectedAlbum,
         });
       }
@@ -182,10 +183,13 @@ export class NewStoryPage  {
         selectedAlbum: this.selectedAlbum
       });
 
-      this.setRoot(StoryDetailsPage, {
+      this.navCtrl.push(StoryDetailsPage, {
         "album": this.selectedAlbum,
+        "story": this.oldStory,
         "index": this.index
       });
+      this.navCtrl.remove(this.viewCtrl.index, 2)
+
     });
   }
 
@@ -200,12 +204,14 @@ export class NewStoryPage  {
           lastImage: this.dataUrl + ""
         });
 
-        this.setRoot(StoryDetailsPage, {
+        this.navCtrl.push(StoryDetailsPage, {
           "album": this.selectedAlbum,
+          "story": this.oldStory,
           "index": this.index
         });
+        this.navCtrl.remove(this.viewCtrl.index, 2)
       }).catch(err => {
-        console.log("Upload eror :" + JSON.stringify(err));
+        console.log("Upload error :" + JSON.stringify(err));
       });
     }
   }
@@ -251,7 +257,7 @@ export class NewStoryPage  {
         return;
       }
       this.storyService.getImage(this.dataUrl).toPromise().then(blob => {
-        this.stanizedUrl = this.stanizer.sanitize(blob);
+        this.stanizedUrl = this.stanizer.sanitize(blob as string);
         return;
       })
     } else {

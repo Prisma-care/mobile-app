@@ -10,10 +10,7 @@ import {StatusBar} from "@ionic-native/status-bar";
 import {SplashScreen} from "@ionic-native/splash-screen";
 import {StanizerService} from "../providers/stanizer.service";
 import {StoryDetailsPage} from "../pages/storydetails/storydetails";
-import {PrismaService} from "../providers/back-end/prisma-api.service";
-import {PatientService} from "../providers/back-end/user.service";
 import {Http} from "@angular/http";
-import {StoryService} from "../providers/back-end/story.service";
 import {Camera} from "@ionic-native/camera";
 import {NewStoryPage} from "../pages/new-story/new-story";
 import {UtilService} from "../providers/util-service";
@@ -24,7 +21,6 @@ import {Network} from "@ionic-native/network";
 
 import {AlbumsPage} from "../pages/albums/albums";
 import {AlbumDetailPage} from "../pages/album-detail/album-detail";
-import {AuthService} from "../providers/auth-service/auth-service";
 import {QuestionService} from "../providers/question-service/question.service";
 import {AlbumQuestions} from "../pages/album-detail/album-questions";
 import {AuthGuard} from "../pages/auth-guard";
@@ -42,6 +38,8 @@ import {CoreModule} from './core/core.module';
 import {AuthModule} from './auth/auth.module';
 import {EnvironmentProvider} from './environment';
 import {SidebarComponent} from "./components/sidebar.component";
+import {AlbumModule} from "./albumList/album.module";
+import {StoryModule} from "./storyList/story.module";
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -67,6 +65,8 @@ export function createTranslateLoader(http: Http) {
     IonicStorageModule.forRoot(),
     CoreModule,
     AuthModule,
+    AlbumModule,
+    StoryModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -95,11 +95,7 @@ export function createTranslateLoader(http: Http) {
     UtilService,
     StanizerService,
     QuestionService,
-    PrismaService,
-    StoryService,
-    PatientService,
     AuthGuard,
-    AuthService,
     Camera,
     File,
     Transfer,

@@ -7,7 +7,7 @@ import {
   Platform,
   PopoverController
 } from "ionic-angular";
-import {StoryService} from "../../providers/back-end/story.service";
+import {StoryService} from "../../app/core/story.service";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {NewStoryPage} from "../new-story/new-story";
@@ -22,6 +22,7 @@ import {TranslatorService} from "../../providers/translator.service";
 import {YoutubeVideoPlayer} from '@ionic-native/youtube-video-player';
 import {Analytics} from '../../providers/analytics';
 import {PatientService} from "../../app/core/patient.service";
+import {AlbumService} from "../../app/core/album.service";
 
 @Component({
   selector: 'page-storydetails',
@@ -38,12 +39,22 @@ export class StoryDetailsPage implements OnInit {
   public backgroundImages: any[] = [];
   // TODO: get favorite in backend &
   // 1 like?
-  constructor(protected  authService: AuthenticationService,private patientService: PatientService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
-              private storyService: StoryService, private nativePageTransitions: NativePageTransitions,
-              public actionsheetCtrl: ActionSheetController, public utilService: UtilService,
-              public stanizer: StanizerService, public popoverCtrl: PopoverController, public menu: MenuController, private ref: ChangeDetectorRef,
+  constructor(protected  authService: AuthenticationService,
+              private patientService: PatientService,
+              public navCtrl: NavController,
+              public translatorService: TranslatorService,
+              public navParams: NavParams,
+              private storyService: StoryService,
+              private nativePageTransitions: NativePageTransitions,
+              public actionsheetCtrl: ActionSheetController,
+              public utilService: UtilService,
+              public stanizer: StanizerService,
+              public popoverCtrl: PopoverController,
+              public menu: MenuController, private ref: ChangeDetectorRef,
               private youtube: YoutubeVideoPlayer,
-              private analytics: Analytics, private plateform: Platform) {
+              private analytics: Analytics,
+              private plateform: Platform,
+              private albumService:AlbumService) {
     this.album = navParams.get("album") as Album;
     this.story = navParams.get("story") as UserStory;
     this.index = navParams.get("index") as number;
@@ -68,8 +79,8 @@ export class StoryDetailsPage implements OnInit {
 
   ionViewWillEnter() {
     if (this.album)
-      this.storyService.getAlbum(this.patientService.getCurrentPatient().patient_id, this.album.id).toPromise().then(res => {
-        this.album = res;
+      this.albumService.getAlbum(this.patientService.getCurrentPatient().patient_id, this.album.id).toPromise().then(res => {
+        this.album = res as Album;
         if (!this.imageLoaded(this.findIndexStory(this.story)))
           this.setStanizedUrl(this.story.source, this.index);
       });
@@ -269,7 +280,7 @@ export class StoryDetailsPage implements OnInit {
 
 
     await this.storyService.getImage(url).toPromise().then(blob => {
-      this.story.backgroundImage = this.stanizer.sanitize(blob);
+      this.story.backgroundImage = this.stanizer.sanitize(blob as string);
       this.album.stories[i] = this.story;
       this.ref.markForCheck();
       return;

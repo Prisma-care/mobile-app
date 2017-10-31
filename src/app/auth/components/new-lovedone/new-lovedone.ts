@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AlbumsPage} from "../../../../pages/albums/albums";
 import {PatientService} from "../../../core/patient.service";
 import {Patient} from "../../../../dto/patient";
+import {AlbumListPage} from "../../../albumList/albumList.component";
 
 @Component({
   selector: 'prisma-new-lovedone',
@@ -39,7 +40,7 @@ export class NewLovedonePage implements OnInit {
       .subscribe((patient: Patient) => {
         patient.patient_id = patient.id;
         this.patientService.setPatient(patient);
-        this.navCtrl.setRoot(AlbumsPage);
+        this.navCtrl.setRoot(AlbumListPage);
       }, () => {
         this.loading = false;
         this.creationError();
