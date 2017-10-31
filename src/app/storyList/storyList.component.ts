@@ -1,11 +1,14 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Component, Inject, OnDestroy, OnInit} from "@angular/core";
 import {UserStory} from "../../dto/user-story";
-import {NavParams} from "ionic-angular";
+import {ActionSheetController, NavController, NavParams} from "ionic-angular";
 import {Album} from "../../dto/album";
 import {AlbumService} from "../core/album.service";
 import {PatientService} from "../core/patient.service";
 import {Subject} from "rxjs/Subject";
 import "rxjs/add/operator/takeUntil";
+import {Environment, EnvironmentToken} from "../environment";
+import {NewStoryPage} from "../../pages/new-story/new-story";
+import {UtilService} from "../../providers/util-service";
 
 @Component({
   selector: 'prisma-storyList-page',
@@ -49,14 +52,17 @@ export class StoryListPage implements OnInit, OnDestroy {
   stories: UserStory[];
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private navParams: NavParams,
+  constructor(@Inject(EnvironmentToken) private env: Environment,
+              private navParams: NavParams,
               private albumService: AlbumService,
-              private patientService: PatientService) {
+              private patientService: PatientService,
+              private navCtrl: NavController,
+              private actionsheetCtrl: ActionSheetController,
+              private utilService:UtilService) {
   }
 
   ngOnInit(): void {
     this.album = this.navParams.get("album") as Album;
-    this.stories = this.orderByFavorited();
   }
 
   ngOnDestroy(): void {
@@ -79,5 +85,83 @@ export class StoryListPage implements OnInit, OnDestroy {
       const quickFixedItem = {...it, type : it.source.includes('youtu') ? 'youtube' : null};
       return quickFixedItem.favorited ? [quickFixedItem, ...acc] : [...acc, quickFixedItem]
     }, []);
+  }
+
+  openActionSheet() {
+    let text1: string = 'Tekst schrijven';
+    let text2: string = 'Maak foto';
+    let text3: string = 'Kies foto van camerarol';
+    let text4: string = 'Kies video van Youtube';
+    let text5: string = 'Annuleer';
+
+    let actionSheet = this.actionsheetCtrl.create({
+        title: 'Foto toevoegen',
+        cssClass: 'action-sheets-basic-page',
+        buttons: [
+          {
+            text: text2,
+            role: 'destructive',
+            icon: 'camera',
+            cssClass: 'general',
+            handler: () => {
+              let pictureAttempt: Promise<any> = this.utilService.takeAPicture();
+
+              pictureAttempt.then(
+                (dataUrl) => {
+                  if (dataUrl)
+                    this.navCtrl.push(NewStoryPage,
+                      {
+                        "dataUrl": dataUrl,
+                        "album": this.album,
+                        "method": this.env.methods.addNewStory
+                      })
+                });
+            }
+          },
+          {
+            text: text3,
+            role: 'destructive',
+            icon: 'image',
+            handler: () => {
+              let fileChooseAttempt: Promise<any> = this.utilService.chooseAFile();
+
+              fileChooseAttempt.then(
+                (dataUrl) => {
+                  console.log("Data Url : " + dataUrl)
+                  if (dataUrl)
+                    this.navCtrl.push(NewStoryPage,
+                      {
+                        "dataUrl": dataUrl,
+                        "album": this.album,
+                        "method": this.env.methods.addNewStory
+                      })
+                });
+            }
+          },
+          {
+            text: text4,
+            role: 'destructive',
+            icon: 'play',
+            handler: () => {
+              this.navCtrl.push(NewStoryPage,
+                {
+                  "album": this.album,
+                  "method":this.env.methods.addYoutubeStory
+                });
+            }
+          },
+          {
+            text: text5,
+            role: 'cancel',
+            icon: 'md-arrow-back',
+            handler: () => {
+              console.log('canceled');
+            }
+          },
+        ]
+
+      })
+    ;
+    actionSheet.present();
   }
 }
