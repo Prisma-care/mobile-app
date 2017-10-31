@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuController, NavController} from 'ionic-angular';
-import {AuthenticationService} from "../core/authentication.service";
 import {NewLovedonePage} from './components/new-lovedone/new-lovedone';
 import {AlbumListPage} from "../albumList/albumList.component";
-import {AlbumsPage} from "../../pages/albums/albums";
 
 @Component({
   selector: 'prisma-authentication-page',
@@ -31,7 +29,6 @@ export class AuthenticationPage implements OnInit {
   isLogging: boolean = true;
 
   constructor(private navCtrl: NavController,
-              private auth: AuthenticationService,
               private menuCtrl: MenuController) {
 
     this.toggleForm = this.toggleForm.bind(this);
@@ -60,8 +57,7 @@ export class AuthenticationPage implements OnInit {
   }
 
   onLoginComplete() {
-    // TODO implement redirect to loved one creation if not yet connected to a loved one!
-    this.navCtrl.setRoot(AlbumsPage);
+    this.navCtrl.setRoot(AlbumListPage);
   }
 
   onRegisterComplete() {
