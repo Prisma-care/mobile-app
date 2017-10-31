@@ -11,6 +11,7 @@ import 'rxjs/add/operator/take';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import {getMessageFromBackendError} from '../utils';
+import { UserService } from "./user.service";
 
 interface LoginResponse {
   response: {
@@ -25,7 +26,7 @@ export class AuthenticationService {
   private _isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(@Inject(EnvironmentToken) private env: Environment,
-              private http: HttpClient) {
+              private http: HttpClient, private userService: UserService) {
 
     this.handleError = this.handleError.bind(this);
   }
@@ -46,6 +47,13 @@ export class AuthenticationService {
 
         this._isAuthenticated.next(true);
         return this.isAuthenticatedSync;
+      })
+      // chain by getting & setting full user info (for Mixpanel)
+      .flatMap((authSync) => {
+        return this.userService.getUser()
+        .map((user) => {
+          localStorage.setItem(this.env.temp.currentUser, JSON.stringify(user))})
+        .map(() => authSync);
       })
       .catch(this.handleError)
 

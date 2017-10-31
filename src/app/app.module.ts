@@ -36,7 +36,7 @@ import {TranslatorService} from "../providers/translator.service";
 import {LoginHeaderComponent} from "../pages/login/login-header.component";
 import {InvitePage} from "../pages/invite/invite";
 
-import {Mixpanel} from '@ionic-native/mixpanel';
+import {Mixpanel, MixpanelPeople} from '@ionic-native/mixpanel';
 import {Analytics} from '../providers/analytics';
 import {CoreModule} from './core/core.module';
 import {AuthModule} from './auth/auth.module';
@@ -109,6 +109,7 @@ export function createTranslateLoader(http: Http) {
     Network,
     YoutubeVideoPlayer,
     Mixpanel,
+    MixpanelPeople,
     Analytics,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
