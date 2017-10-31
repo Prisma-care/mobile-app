@@ -1,11 +1,12 @@
 import {Component, OnInit} from "@angular/core";
 import {Album} from "../../../../dto/album";
 import {UserStory} from "../../../../dto/user-story";
-import {MenuController, NavController, NavParams, PopoverController, ViewController} from "ionic-angular";
+import {MenuController, NavController, NavParams, PopoverController, ViewController, ToastController} from "ionic-angular";
+
 import {Analytics} from "../../../../providers/analytics";
 import {NativeTransitionOptions} from "@ionic-native/native-page-transitions";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
-import {StoryOptionsComponent} from "../../../../pages/storydetails/story-options.component";
+import {StoryOptionsComponent} from "./storyOption/storyOptions.component";
 import {YoutubeVideoPlayer} from "@ionic-native/youtube-video-player";
 import {StoryService} from "../../../core/story.service";
 import {PatientService} from "../../../core/patient.service";
@@ -91,7 +92,8 @@ export class StoryDetailsPage implements OnInit {
               private storyService: StoryService,
               private patientService: PatientService,
               private navCtrl: NavController,
-              private viewCtrl: ViewController) {
+              private viewCtrl: ViewController,
+              public toastCtrl: ToastController) {
   }
 
   ngOnInit(): void {
@@ -177,9 +179,20 @@ export class StoryDetailsPage implements OnInit {
     const popover = this.popoverCtrl.create(StoryOptionsComponent, {
       story: this.story
     });
+
+    const toast = (message) => this.toastCtrl.create({
+      message,
+      duration: 3000,
+      position: 'bottom'
+    }).present();
+
     popover.onDidDismiss(dismissData => {
-      if ((dismissData) == "delete") {
+      if ((dismissData) === "deleteSuccess") {
+        toast('Story was deleted succesfully');
         this.navCtrl.pop();
+      }
+      if(dismissData === "deleteError"){
+        toast('Error deleting the story')
       }
     });
     popover.present({
