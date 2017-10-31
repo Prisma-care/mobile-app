@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, Inject, OnInit} from "@angular/core";
 import {Album} from "../../../../dto/album";
 import {UserStory} from "../../../../dto/user-story";
 import {MenuController, NavController, NavParams, PopoverController, ViewController, ToastController} from "ionic-angular";
@@ -12,6 +12,8 @@ import {StoryService} from "../../../core/story.service";
 import {PatientService} from "../../../core/patient.service";
 import {Subject} from "rxjs/Subject";
 import "rxjs/add/operator/takeUntil";
+import {NewStoryPage} from "../../../../pages/new-story/new-story";
+import {Environment, EnvironmentToken} from "../../../environment";
 
 @Component({
   selector: 'prisma-story-detail',
@@ -60,7 +62,7 @@ import "rxjs/add/operator/takeUntil";
 
           <div class="row">
             <div class="detail-button">
-              <div class="story-action" (click)="editDescription()">
+              <div class="story-action" (click)="editDescription(this.story)">
                 <ion-icon name="md-create" color="general"></ion-icon>
                 <p>Vul het verhaal aan</p>
               </div>
@@ -84,7 +86,8 @@ export class StoryDetailsPage implements OnInit {
   backgroundImage: SafeUrl;
   isAVideo: Boolean = false;
 
-  constructor(private navParams: NavParams,
+  constructor(@Inject(EnvironmentToken) private env: Environment,
+              private navParams: NavParams,
               private analytics: Analytics,
               private sanitizer: DomSanitizer,
               private popoverCtrl: PopoverController,
@@ -102,7 +105,7 @@ export class StoryDetailsPage implements OnInit {
     });
     this.album = this.navParams.get("album") as Album;
     this.story = this.navParams.get("story") as UserStory;
-    this.backgroundImage = this.sanitizer.bypassSecurityTrustUrl(this.navParams.get("image"));
+    this.backgroundImage = this.sanitizer.bypassSecurityTrustUrl(this.story.backgroundImage);
     this.isAVideo = this.story.type === "youtube"
   }
 
@@ -136,29 +139,31 @@ export class StoryDetailsPage implements OnInit {
   }
 
   next(): void {
-    const nextStory = this.album.stories[(this.album.stories.indexOf(this.story) + 1) % this.album.stories.length];
+    const nextStoryBeforeType = this.album.stories[(this.album.stories.findIndex(story => this.story.id === story.id) + 1) % this.album.stories.length];
+    const nextStory = {...nextStoryBeforeType, type : nextStoryBeforeType.source.includes('youtu') ? 'youtube' : null};
     this.storyService.getBackground(nextStory)
       .takeUntil(this.destroy$)
       .subscribe(imageUrl => {
+        nextStory.backgroundImage = imageUrl;
         this.navCtrl.push(StoryDetailsPage, {
           "album": this.album,
-          "story": nextStory,
-          "image": imageUrl
+          "story": nextStory
         });
         this.navCtrl.remove(this.viewCtrl.index)
       })
   }
 
   previous(): void {
-    const index = this.album.stories.indexOf(this.story) === 0 ? this.album.stories.length - 1 : this.album.stories.indexOf(this.story) - 1;
-    const previousStory = this.album.stories[index];
+    const index = this.album.stories.findIndex(story => this.story.id === story.id) === 0 ? this.album.stories.length - 1 : this.album.stories.findIndex(story => this.story.id === story.id) - 1;
+    const previousStoryBeforeType = this.album.stories[index];
+    const previousStory = {...previousStoryBeforeType, type : previousStoryBeforeType.source.includes('youtu') ? 'youtube' : null};
     this.storyService.getBackground(previousStory)
       .takeUntil(this.destroy$)
       .subscribe((imageUrl) => {
+        previousStory.backgroundImage=imageUrl;
         this.navCtrl.push(StoryDetailsPage, {
           "album": this.album,
-          "story": previousStory,
-          "image": imageUrl
+          "story": previousStory
         });
         this.navCtrl.remove(this.viewCtrl.index)
       })
@@ -173,6 +178,19 @@ export class StoryDetailsPage implements OnInit {
 
   openYoutubeVideo(url: string) {
     this.youtube.openVideo(this.storyService.getYoutubeId(url));
+  }
+
+  editDescription(story) {
+
+    this.analytics.track('StoryDetailsPage::editDescription', {
+      story
+    });
+
+    this.navCtrl.push(NewStoryPage, {
+      "album": this.album,
+      "story": story,
+      "method": this.env.methods.replaceDescription
+    })
   }
 
   showMore(event): void {
