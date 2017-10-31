@@ -31,6 +31,9 @@ h1.prisma-title {
   font-size: map-get($sizes, "medium");
 }
 
+.toolbar-background{
+  background-color: color($colors, general);
+}
 // INPUT SIZE
 
 ion-input {
@@ -40,6 +43,8 @@ ion-input {
 .ion-menu > .ion-toolbar > ion-title {
   color: color($colors, medium-gray);
 }
+
+
 
 .ion-menu-buttons {
   font-size: 16px;
@@ -132,8 +137,8 @@ a[disabled], button[disabled], [ion-button][disabled] {
   }
 }
 
-.toolbar-background-md {
-  background-color: map-get($colors, 'primary');
+.toolbar-background {
+  background-color:  color($colors, primary);
 }
 
 // NAVBAR ICONS
