@@ -1,10 +1,11 @@
 import {Component, Inject} from "@angular/core";
 import {Environment, EnvironmentToken} from "../environment";
 import {PatientService} from "../core/patient.service";
-import {MenuController, NavController} from "ionic-angular";
+import {AlertController, MenuController, NavController} from "ionic-angular";
 import {Album} from "../../dto/album";
 import {AlbumService} from "../core/album.service";
 import {Observable} from "rxjs/Observable";
+import {Analytics} from "../../providers/analytics";
 
 @Component({
   selector: 'prisma-albumList-page',
@@ -59,28 +60,76 @@ import {Observable} from "rxjs/Observable";
   `
 })
 
-export class AlbumListPage{
+export class AlbumListPage {
 
   albums: Observable<Album[]>;
 
   constructor(@Inject(EnvironmentToken) private env: Environment,
               private patientService: PatientService,
               private menu: MenuController,
-              private albumService: AlbumService) {
+              private albumService: AlbumService,
+              private alertCtrl: AlertController,
+              private analytics: Analytics) {
   }
 
 
-  ionViewWillEnter():void{
+  ionViewWillEnter(): void {
     this.menu.enable(true);
-    this.albums=this.albumService.getAlbums(this.patientService.getCurrentPatient().patient_id)
+    this.albums = this.albumService.getAlbums(this.patientService.getCurrentPatient().patient_id) as Observable<Album[]>
   }
 
-  ionViewWillLeave():void{
+  ionViewWillLeave(): void {
     this.menu.enable(false);
   }
 
-  addAlbum(){
-    //Todo addAlbum
-  }
+  addAlbum(): void {
 
+    let albumFailedAlert = this.alertCtrl.create({
+      title: 'Fout bij het maken van het album',
+      subTitle: 'Onze excuses, het album kon niet aangemaakt worden. Er is iets fout met Prisma.\nProbeer later nog eens opnieuw!',
+      buttons: ['Ok']
+    });
+
+    let text1: string = 'Voeg album toe';
+    let text2: string = 'Annuleer';
+    let text3: string = 'Voeg toe';
+
+    this.alertCtrl.create({
+      "title": text1,
+      "message": 'Hoe wil je het album noemen?',
+      inputs: [
+        {
+          name: 'title',
+          placeholder: 'bv. Kajakclub'
+        },
+      ],
+      buttons: [
+        {
+          text: text2
+        },
+        {
+          text: text3,
+          handler: data => {
+            this.albumService.addAlbum(this.patientService.getCurrentPatient().patient_id, data.title)
+              .subscribe(() => {
+
+                this.analytics.track('AlbumsComponent::add album success', {
+                  patient_id: this.patientService.getCurrentPatient().patient_id,
+                  title: data.title
+                });
+
+                this.albums = this.albumService.getAlbums(this.patientService.getCurrentPatient().patient_id) as Observable<Album[]>
+              }, () => {
+                this.analytics.track('AlbumsComponent::add album error', {
+                  patient_id: this.patientService.getCurrentPatient().patient_id,
+                  title: data.title
+                });
+
+                albumFailedAlert.present()
+              })
+          }
+        }
+      ]
+    }).present();
+  }
 }
