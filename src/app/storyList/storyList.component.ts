@@ -52,7 +52,6 @@ export class StoryListPage implements OnInit, OnDestroy {
   constructor(private navParams: NavParams,
               private albumService: AlbumService,
               private patientService: PatientService) {
-
   }
 
   ngOnInit(): void {
@@ -65,18 +64,20 @@ export class StoryListPage implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  /*ionViewDidLoad(): void {
+  ionViewDidEnter(): void {
     this.albumService.getAlbum(this.patientService.getCurrentPatient().patient_id, this.album.id)
       .takeUntil(this.destroy$)
-      .subscribe(album => {
+      .subscribe((album: Album) => {
         this.album = album as Album;
         this.stories = this.orderByFavorited();
       })
-  }*/
+  }
 
   orderByFavorited() {
     return this.album.stories.reduce((acc, it) => {
-      return it.favorited ? [it, ...acc] : [...acc, it]
+      //TODO quickFix for backend not sending the type
+      const quickFixedItem = {...it, type : it.source.includes('youtu') ? 'youtube' : null};
+      return quickFixedItem.favorited ? [quickFixedItem, ...acc] : [...acc, quickFixedItem]
     }, []);
   }
 }
