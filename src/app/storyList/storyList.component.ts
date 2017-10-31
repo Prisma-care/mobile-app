@@ -11,7 +11,7 @@ import {NewStoryPage} from "../../pages/new-story/new-story";
 import {UtilService} from "../../providers/util-service";
 
 @Component({
-  selector: 'prisma-storyList-page',
+  selector: 'prisma-story-list-page',
   template:
       `
     <ion-header>

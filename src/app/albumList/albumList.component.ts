@@ -8,7 +8,7 @@ import {Observable} from "rxjs/Observable";
 import {Analytics} from "../../providers/analytics";
 
 @Component({
-  selector: 'prisma-albumList-page',
+  selector: 'prisma-album-list-page',
   styles:
     [
         `
