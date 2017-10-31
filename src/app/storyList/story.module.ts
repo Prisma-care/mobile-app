@@ -13,7 +13,8 @@ const DECLARATIONS = [
   StoryListPage,
   StoryComponent,
   StoryDetailsPage,
-  StoryOptionsComponent
+  StoryOptionsComponent,
+  QuestionComponent
 ];
 
 @NgModule({

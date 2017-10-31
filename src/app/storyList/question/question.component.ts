@@ -4,7 +4,7 @@ import {QuestionService} from "../../core/question.service";
 @Component({
   selector: 'prisma-question',
   template: `
-    <div class="clear"></div>
+    <div class="clear">
     <div class="topic-wrapper">
       <div class="topic-container" *ngIf="currentQuestion">
         <span class="topic-sub">Onderwerp</span>
@@ -14,6 +14,7 @@ import {QuestionService} from "../../core/question.service";
           &nbsp;Ander onderwerp
         </span>
       </div>
+    </div>
     </div>
   `
 })

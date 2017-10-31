@@ -40,7 +40,7 @@ import {UtilService} from "../../providers/util-service";
           <span>'Voeg verhaal toe'</span>
         </div>
       </div>
-      <!--<prisma-question [query]="album.title"></prisma-question>-->
+      <prisma-question [query]="album.title"></prisma-question>
     </ion-content>
 
   `

@@ -19,11 +19,11 @@ prisma-question {
     .topic-title {
       font-size: map-get($sizes, 'extra-large');
       color: color($colors, dark-gray);
+      margin-bottom: 1.5em;
     }
 
     .topic-other {
       position: absolute;
-      margin-bottom: $topic-padding + 0.4rem;
       bottom: 0;
       font-size: map-get($sizes, 'medium');
       color: color($colors, blue);
