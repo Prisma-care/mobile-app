@@ -64,8 +64,7 @@ export class StoryComponent implements OnInit, OnDestroy {
       this.storyService.getBackground(story)
         .takeUntil(this.destroy$)
         .subscribe((imageUrl:string) => {
-        console.log(imageUrl)
-          this.imageUrl = imageUrl;
+          this.story.backgroundImage = imageUrl;
           this.backgroundImage = this.sanitizer
             .bypassSecurityTrustStyle(`background-image: url(${imageUrl})`);
           this.imageLoaded = true;
@@ -75,8 +74,7 @@ export class StoryComponent implements OnInit, OnDestroy {
   showDetails() {
     this.navCtrl.push(StoryDetailsPage, {
       "album": this.album,
-      "story": this.story,
-      "image": this.imageUrl
+      "story": this.story
     });
   }
 }
