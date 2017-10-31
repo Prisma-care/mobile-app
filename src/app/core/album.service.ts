@@ -7,7 +7,6 @@ import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/of";
 import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
-import "rxjs/add/operator/retryWhen";
 
 interface AlbumsResponse {
   response:Album[]
@@ -27,7 +26,6 @@ export class AlbumService {
   getAlbums(patientId: string | number): Observable<Album[]| Error >  {
     return this.http.get(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getAlbum}`)
       .map(({response}:AlbumsResponse) =>  response.reduce((acc,it)=> [...acc,new Album(it)],[]))
-      .retryWhen(() => Observable.timer(1000))
       .catch(err => this.handleError(err));
   }
 
