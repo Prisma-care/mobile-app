@@ -41,7 +41,7 @@ import {Analytics} from "../../providers/analytics";
         <button ion-button menuToggle class="albums-menu">
           <ion-icon color="black" name='menu'></ion-icon>
         </button>
-        <h2>Waarover babbelen we vandaag?</h2>
+        <h2>Waarover babbelen<br/> we vandaag?</h2>
       </div>
       <ion-grid *ngIf="albums">
         <ion-row>
