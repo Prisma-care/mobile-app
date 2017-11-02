@@ -1,10 +1,10 @@
-
 import {Component, Input} from "@angular/core";
 import {AuthenticationPage} from "../auth/authentication.component";
 import {MenuController} from "ionic-angular";
 import {AuthenticationService} from "../core/authentication.service";
 import {InvitePage} from "../../pages/invite/invite";
 import {PatientService} from "../core/patient.service";
+import {GiveFeedbackComponent} from "./giveFeedback/giveFeedback.component";
 
 @Component({
   selector: 'prisma-sidebar',
@@ -17,6 +17,10 @@ import {PatientService} from "../core/patient.service";
         <button ion-item (click)="invite()" *ngIf="patientService.getCurrentPatient()" class="ion-menu-buttons">
           <ion-icon name="person-add" color="general"></ion-icon>
           Nodig iemand uit
+        </button>
+        <button ion-item (click)="goToFeedbackPage()" class="ion-menu-buttons">
+          <ion-icon name="mail" color="general"></ion-icon>
+          Geef feedback
         </button>
         <button ion-item (click)="logout()" class="ion-menu-buttons">
           <ion-icon name="exit" color="general"></ion-icon>
@@ -58,5 +62,9 @@ export class SidebarComponent {
     this.nav.push(InvitePage, {
       "patientId": this.patientService.getCurrentPatient().patient_id
     });
+  }
+
+  goToFeedbackPage(){
+    this.nav.push(GiveFeedbackComponent)
   }
 }

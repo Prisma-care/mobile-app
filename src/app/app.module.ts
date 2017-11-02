@@ -40,6 +40,7 @@ import {EnvironmentProvider} from './environment';
 import {SidebarComponent} from "./components/sidebar.component";
 import {AlbumModule} from "./albumList/album.module";
 import {StoryModule} from "./storyList/story.module";
+import {GiveFeedbackComponent} from "./components/giveFeedback/giveFeedback.component";
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -57,7 +58,8 @@ export function createTranslateLoader(http: Http) {
     StoryOptionsComponent,
     LoginHeaderComponent,
     InvitePage,
-    SidebarComponent
+    SidebarComponent,
+    GiveFeedbackComponent
   ],
   imports: [
     BrowserModule,
@@ -86,7 +88,8 @@ export function createTranslateLoader(http: Http) {
     AlbumQuestions,
     StoryOptionsComponent,
     InvitePage,
-    SidebarComponent
+    SidebarComponent,
+    GiveFeedbackComponent
   ],
   providers: [
     EnvironmentProvider,
