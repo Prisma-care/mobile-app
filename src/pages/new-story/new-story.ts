@@ -19,6 +19,7 @@ import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/switchMapTo';
 import {UserService} from "../../app/core/user.service";
 import {PatientService} from "../../app/core/patient.service";
+import {StoryListPage} from "../../app/storyList/storyList.component";
 
 @Component({
   selector: 'page-new-story',
@@ -139,9 +140,7 @@ export class NewStoryPage  {
       if (this.dataUrl) {
         this.uploadImage(this.patientService.getCurrentPatient().patient_id, (addedStory as any).id , this.dataUrl + "")
           .then(res => {
-            this.setRoot(AlbumListPage, {
-              "album": this.selectedAlbum,
-            }).subscribe();
+            return this.navCtrl.pop();
           }).catch(err => {
           console.log(err);
         });
@@ -149,16 +148,10 @@ export class NewStoryPage  {
       else {
         if (this.method.indexOf(env.methods.addYoutubeStory) >= 0 && this.youtubeLink) {
           this.storyService.addYoutubeLinkAsset(this.patientService.getCurrentPatient().patient_id, (addedStory as any).id, this.youtubeLink).toPromise().then(ret => {
-            this.setRoot(AlbumListPage, {
-              "album": this.selectedAlbum,
-            });
-            return;
+            return this.navCtrl.pop();
           });
 
         }
-        this.setRoot(AlbumListPage, {
-          "album": this.selectedAlbum,
-        });
       }
     });
   }
