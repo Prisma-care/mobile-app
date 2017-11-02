@@ -1,9 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from "@angular/core";
-import {NavController, NavParams} from "ionic-angular";
-import {Album} from "../../../dto/album";
+import {NavController} from "ionic-angular";
 import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {UserStory} from "../../../dto/user-story";
-import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/from";
 import "rxjs/add/observable/of";
 import {StoryService} from "../../core/story.service";

@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnDestroy, OnInit} from "@angular/core";
+import {Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {NavController} from "ionic-angular";
 import {AlbumService} from "../../core/album.service";
 import {UserStory} from "../../../dto/user-story";

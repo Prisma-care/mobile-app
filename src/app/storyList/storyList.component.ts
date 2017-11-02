@@ -22,10 +22,8 @@ import {UtilService} from "../../providers/util-service";
             <ion-icon name="camera" color="white"></ion-icon>
           </button>
         </ion-buttons>
-
       </ion-navbar>
     </ion-header>
-
     <ion-content no-bounce>
       <ion-grid>
         <ion-row>
@@ -42,7 +40,6 @@ import {UtilService} from "../../providers/util-service";
       </div>
       <prisma-question [query]="album.title"></prisma-question>
     </ion-content>
-
   `
 })
 
@@ -70,7 +67,7 @@ export class StoryListPage implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  ionViewDidEnter(): void {
+  ionViewWillEnter(): void {
     this.albumService.getAlbum(this.patientService.getCurrentPatient().patient_id, this.album.id)
       .takeUntil(this.destroy$)
       .subscribe((album: Album) => {

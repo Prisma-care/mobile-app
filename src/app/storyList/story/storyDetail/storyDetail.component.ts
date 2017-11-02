@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {Album} from "../../../../dto/album";
 import {UserStory} from "../../../../dto/user-story";
-import {MenuController, NavController, NavParams, PopoverController, ViewController, ToastController} from "ionic-angular";
+import { NavController, NavParams, PopoverController, ViewController, ToastController} from "ionic-angular";
 
 import {Analytics} from "../../../../providers/analytics";
 import {NativeTransitionOptions} from "@ionic-native/native-page-transitions";
