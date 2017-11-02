@@ -32,7 +32,7 @@ import {PatientService} from "../../core/patient.service";
           </p>
         </div>
       <hr>
-      <a href="mailto:info@prismacare.com" ion-item no-lines detail-none class="send-email">
+      <a href="mailto:info@prismacare.com?subject=Bericht uit Prisma applicatie" ion-item no-lines detail-none class="send-email">
         <ion-icon name="mail" color="general" class="send-mail-icon"></ion-icon>
         Stuur email
       </a>
