@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {MenuController, NavController} from 'ionic-angular';
 import {NewLovedonePage} from './components/new-lovedone/new-lovedone';
 import {AlbumListPage} from "../albumList/albumList.component";
@@ -24,7 +24,7 @@ import {AlbumListPage} from "../albumList/albumList.component";
     </ion-content>
   `,
 })
-export class AuthenticationPage implements OnInit {
+export class AuthenticationPage {
 
   isLogging: boolean = true;
 
@@ -35,13 +35,6 @@ export class AuthenticationPage implements OnInit {
     this.onLoginComplete = this.onLoginComplete.bind(this);
     this.onRegisterComplete = this.onRegisterComplete.bind(this);
 
-  }
-
-  ngOnInit(): void {
-  }
-
-  ionViewCanLeave(): boolean {
-    return true;
   }
 
   ionViewWillEnter() {

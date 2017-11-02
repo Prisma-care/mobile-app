@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../core/authentication.service';
 import {AlertController, NavController} from 'ionic-angular';
@@ -19,7 +19,8 @@ import {PasswordResetComponent} from "./password-reset/password-reset.component"
             formControlName="email"
             placeholder="E-mail"
             clearOnEdit="false"
-            clearInput>
+            clearInput
+            #inputEmail>
           </ion-input>
         </ion-item>
 
@@ -79,6 +80,9 @@ export class AuthenticationLoginComponent implements OnInit {
   @Input()
   data: { email: string } = { email: '' };
 
+  @ViewChild('inputEmail')
+  inputEmail
+
   form: FormGroup;
   type = "password";
   show = false;
@@ -110,6 +114,10 @@ export class AuthenticationLoginComponent implements OnInit {
         Validators.maxLength(40)
       ], []]
     });
+
+    setTimeout(()=>{
+      this.inputEmail.setFocus()
+    },300)
   }
 
   toggleShow() {
@@ -146,7 +154,9 @@ export class AuthenticationLoginComponent implements OnInit {
   }
 
   goToPasswordResetPage():void{
-    this.navCtrl.push(PasswordResetComponent);
+    this.navCtrl.push(PasswordResetComponent, {
+      "email":this.form.getRawValue().email
+    });
   }
 
   showError(errorMessage: string = 'Je gebruikersnaam of wachtwoord klopt niet.') {

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../core/authentication.service';
 import {AlertController} from 'ionic-angular';
@@ -13,7 +13,7 @@ import {Observable} from 'rxjs/Observable';
 
       <ion-list>
         <ion-item>
-          <ion-input type="text" value="" formControlName="firstName" placeholder="Voornaam"
+          <ion-input #inputFirstname type="text" value="" formControlName="firstName" placeholder="Voornaam"
           ></ion-input>
         </ion-item>
         <ion-item>
@@ -66,6 +66,9 @@ export class AuthenticationRegisterComponent implements OnInit {
   @Input()
   data: User;
 
+  @ViewChild('inputFirstname')
+  inputFirstname
+
   form: FormGroup;
   type = "password";
   show = false;
@@ -113,6 +116,10 @@ export class AuthenticationRegisterComponent implements OnInit {
       ],
 
     });
+
+    setTimeout(()=>{
+      this.inputFirstname.setFocus()
+    },300)
   }
 
   toggleShow() {
