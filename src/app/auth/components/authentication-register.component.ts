@@ -10,21 +10,20 @@ import {Observable} from 'rxjs/Observable';
   selector: 'prisma-authentication-register',
   template: `
     <form [formGroup]="form">
-
-      <ion-list>
-        <ion-item>
+      <ion-list class="list">
+        <ion-item padding>
           <ion-input #inputFirstname type="text" value="" formControlName="firstName" placeholder="Voornaam"
           ></ion-input>
         </ion-item>
-        <ion-item>
+        <ion-item padding>
           <ion-input type="text" value="" formControlName="lastName" placeholder="Naam"
           ></ion-input>
         </ion-item>
-        <ion-item>
+        <ion-item padding>
           <ion-input type="email" value="" formControlName="email" placeholder="E-mail"
           ></ion-input>
         </ion-item>
-        <ion-item>
+        <ion-item padding>
           <ion-input
             [type]="type" #input
             formControlName="password"
@@ -48,9 +47,7 @@ import {Observable} from 'rxjs/Observable';
       <div class="signup-suggestion">
         <p class="alternate-option">Al een account? <a color="general" (click)="onLoginClick()">Aanmelden.</a></p>
       </div>
-
     </form>
-
   `
 })
 export class AuthenticationRegisterComponent implements OnInit {
@@ -119,7 +116,7 @@ export class AuthenticationRegisterComponent implements OnInit {
 
     setTimeout(()=>{
       this.inputFirstname.setFocus()
-    },300)
+    },400)
   }
 
   toggleShow() {
