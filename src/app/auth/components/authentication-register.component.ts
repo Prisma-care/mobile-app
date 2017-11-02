@@ -46,7 +46,7 @@ import {Observable} from 'rxjs/Observable';
       </button>
 
       <div class="signup-suggestion">
-        <p class="alternate-option">Al een account? <a color="general" (click)="onLoginClick()">Aanmelden</a></p>
+        <p class="alternate-option">Al een account? <a color="general" (click)="onLoginClick()">Aanmelden.</a></p>
       </div>
 
     </form>

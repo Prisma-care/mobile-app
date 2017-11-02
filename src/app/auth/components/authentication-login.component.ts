@@ -53,9 +53,9 @@ import {PasswordResetComponent} from "./password-reset/password-reset.component"
 
       <div class="signup-suggestion">
         <p class="alternate-option" (click)="onRegisterClick()">
-          Nog geen account ?
+          Nog geen account?
           <a color="general">
-            Maak account .
+            Maak account.
           </a>
         </p>
         <p class="alternate-option" (click)="goToPasswordResetPage()">

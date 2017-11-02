@@ -37,7 +37,7 @@ import {UtilService} from "../../providers/util-service";
       <div (click)="openActionSheet()" class="add-new-container">
         <div class="add-new">
           <ion-icon name="camera"></ion-icon>
-          <span>'Voeg verhaal toe'</span>
+          <span>Voeg verhaal toe</span>
         </div>
       </div>
       <prisma-question [query]="album.title"></prisma-question>
@@ -95,7 +95,7 @@ export class StoryListPage implements OnInit, OnDestroy {
     let text5: string = 'Annuleer';
 
     let actionSheet = this.actionsheetCtrl.create({
-        title: 'Foto toevoegen',
+        title: 'Voeg verhaal toe',
         cssClass: 'action-sheets-basic-page',
         buttons: [
           {
