@@ -37,10 +37,11 @@ import {Analytics} from '../providers/analytics';
 import {CoreModule} from './core/core.module';
 import {AuthModule} from './auth/auth.module';
 import {EnvironmentProvider} from './environment';
-import {SidebarComponent} from "./components/sidebar.component";
+import {SidebarComponent} from "./sidebar/sidebar.component";
 import {AlbumModule} from "./albumList/album.module";
 import {StoryModule} from "./storyList/story.module";
-import {GiveFeedbackComponent} from "./components/giveFeedback/giveFeedback.component";
+import {GiveFeedbackComponent} from "./sidebar/giveFeedback/giveFeedback.component";
+import {SidebarModule} from "./sidebar/sidebar.module";
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -58,8 +59,6 @@ export function createTranslateLoader(http: Http) {
     StoryOptionsComponent,
     LoginHeaderComponent,
     InvitePage,
-    SidebarComponent,
-    GiveFeedbackComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +66,7 @@ export function createTranslateLoader(http: Http) {
     IonicStorageModule.forRoot(),
     CoreModule,
     AuthModule,
+    SidebarModule,
     AlbumModule,
     StoryModule,
     TranslateModule.forRoot({
@@ -88,8 +88,6 @@ export function createTranslateLoader(http: Http) {
     AlbumQuestions,
     StoryOptionsComponent,
     InvitePage,
-    SidebarComponent,
-    GiveFeedbackComponent
   ],
   providers: [
     EnvironmentProvider,

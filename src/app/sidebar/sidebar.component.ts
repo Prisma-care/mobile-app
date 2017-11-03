@@ -2,7 +2,7 @@ import {Component, Input} from "@angular/core";
 import {AuthenticationPage} from "../auth/authentication.component";
 import {MenuController} from "ionic-angular";
 import {AuthenticationService} from "../core/authentication.service";
-import {InvitePage} from "../../pages/invite/invite";
+import {InvitePage} from "./invite/invite";
 import {PatientService} from "../core/patient.service";
 import {GiveFeedbackComponent} from "./giveFeedback/giveFeedback.component";
 
@@ -14,7 +14,7 @@ import {GiveFeedbackComponent} from "./giveFeedback/giveFeedback.component";
         <ion-title class="ion-title-color">Menu</ion-title>
       </ion-toolbar>
       <ion-list>
-        <button ion-item (click)="invite()" *ngIf="patientService.getCurrentPatient()" class="ion-menu-buttons">
+        <button ion-item (click)="invite()" class="ion-menu-buttons">
           <ion-icon name="person-add" color="general"></ion-icon>
           Nodig iemand uit
         </button>
@@ -60,7 +60,7 @@ export class SidebarComponent {
   invite() {
     this.menu.close();
     this.nav.push(InvitePage, {
-      "patientId": this.patientService.getCurrentPatient().patient_id
+      "patientId": this.patientService.getCurrentPatient().patient_id.toString()
     });
   }
 
