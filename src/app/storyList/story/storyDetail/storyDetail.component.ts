@@ -46,10 +46,9 @@ import {Environment, EnvironmentToken} from "../../../environment";
             <img id="{{'video-'+story.id}}" [src]="backgroundImage"
                  (click)="openYoutubeVideo(story.source)"
                  style="width:100%; max-width:100%">
-            <ion-icon name="logo-youtube" color="white"
-                      (click)="openYoutubeVideo(story.source)"
-                      style=" position: absolute;display: block;font-size: 50px;top: 35%;left: 35%;"
-                      class="movie-indicator"></ion-icon>
+            <div (click)="openYoutubeVideo(story.source)"
+              style=" position: absolute;display: block;font-size: 50px;top: 35%;left: 45%;"
+              class="youtube-icon movie-indicator"></div>
             <ion-icon class="star" name="{{story.favorited ? 'star' : 'star-outline'}}"
                       [class.favorited]="story.favorited" (click)="toggleFavorite()"></ion-icon>
           </div>
