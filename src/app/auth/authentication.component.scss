@@ -1,4 +1,4 @@
-page-login, prisma-authentication-login, prisma-authentication-register {
+prisma-authentication-header, prisma-authentication-login, prisma-authentication-register {
 
   .signup-suggestion {
 
@@ -14,5 +14,18 @@ page-login, prisma-authentication-login, prisma-authentication-register {
   .alternate-option {
     color: color($colors, medium-gray);
   }
+  .toolbar-content{
+    text-align: center;
+  }
 
+  .toolbar-content-md{
+    margin-right: 3em;
+  }
+
+  .list {
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+    margin-top:1.5em;
+    margin-bottom: 2.5em;
+  }
 }

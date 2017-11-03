@@ -11,7 +11,6 @@ import {StoryDetailsPage} from "../../app/storyList/story/storyDetail/storyDetai
 import {StanizerService} from "../../providers/stanizer.service";
 import {AuthenticationService} from "../../app/core/authentication.service";
 import {AuthGuard} from "../auth-guard";
-import {TranslatorService} from "../../providers/translator.service";
 import {Analytics} from '../../providers/analytics';
 import {Page} from 'ionic-angular/navigation/nav-util';
 import {Observable} from 'rxjs/Observable';
@@ -55,7 +54,7 @@ export class NewStoryPage  {
   loading: Loading;
   isLoading: boolean = false;
 
-  constructor(protected authService: AuthenticationService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
+  constructor(protected authService: AuthenticationService, public navCtrl: NavController, public navParams: NavParams,
               private storyService: StoryService, private utilService: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
               public stanizer: StanizerService,
@@ -63,7 +62,6 @@ export class NewStoryPage  {
               private userService: UserService,
               private patientService: PatientService,
               private viewCtrl: ViewController) {
-    this.translatorService.translate(this.placeHolder, value => this.placeHolder = value);
     this.method = navParams.get("method") as string;
     this.dataUrl = navParams.get("dataUrl") as string;
     this.selectedAlbum = navParams.get("album") as Album;
