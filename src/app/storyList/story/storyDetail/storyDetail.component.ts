@@ -32,17 +32,14 @@ import {Environment, EnvironmentToken} from "../../../environment";
       </ion-navbar>
     </ion-header>
 
-    <ion-content padding *ngIf="story">
-      <div class="swipe-wrapper" (swipe)="swipeEvent($event)">
-        <div>
+    <ion-content no-bounce>
+      <div (swipe)="swipeEvent($event)">
           <div class="image-container"
                *ngIf="!isAVideo">
-            <div *ngIf="story.source">
               <img id="{{story.id}}" [src]="backgroundImage"
                    style="width:100%; max-width:100%">
               <ion-icon class="star" name="{{story.favorited ? 'star' : 'star-outline'}}"
                         [class.favorited]="story.favorited" (click)="toggleFavorite()"></ion-icon>
-            </div>
           </div>
           <div class="image-container"
                *ngIf="isAVideo">
@@ -73,7 +70,6 @@ import {Environment, EnvironmentToken} from "../../../environment";
             </div>
           </div>
         </div>
-      </div>
     </ion-content>
   `,
 
