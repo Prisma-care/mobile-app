@@ -1,0 +1,14 @@
+prisma-intro-page {
+    h1 {
+       text-align: center;
+       font-size: 2em;
+       color: #A9A9A9;
+       margin-bottom:1.5em;
+    }
+
+    .alternate-option {
+        color: color($colors, medium-gray);
+        text-align: center;
+        margin-top:1.5em;
+      }
+}

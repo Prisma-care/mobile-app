@@ -1,12 +1,16 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'prisma-authentication-header',
   template: `
-    <div class="prisma-header">
-      <img src="http://i.imgur.com/n90n0Kz.png"/>
-    </div>
+  <ion-navbar>
+    <ion-title>
+      {{title}}
+    </ion-title>
+  </ion-navbar>
   `
 })
 export class AuthenticationHeaderComponent {
+  @Input()
+  title
 }

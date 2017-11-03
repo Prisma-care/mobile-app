@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit} from "@angular/core";
+import {Component, Inject, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {UserStory} from "../../dto/user-story";
 import {ActionSheetController, NavController, NavParams} from "ionic-angular";
 import {Album} from "../../dto/album";
@@ -9,6 +9,7 @@ import "rxjs/add/operator/takeUntil";
 import {Environment, EnvironmentToken} from "../environment";
 import {NewStoryPage} from "../../pages/new-story/new-story";
 import {UtilService} from "../../providers/util-service";
+import { Content } from "ionic-angular/navigation/nav-interfaces";
 
 @Component({
   selector: 'prisma-story-list-page',
@@ -19,14 +20,12 @@ import {UtilService} from "../../providers/util-service";
         <ion-title>{{album.title}}</ion-title>
         <ion-buttons end>
           <button ion-button icon-only (click)="openActionSheet()">
-            <ion-icon name="camera" color="white"></ion-icon>
+            <ion-icon  (click)="openActionSheet()" class="bar-icon" name="md-add"></ion-icon>
           </button>
         </ion-buttons>
-
       </ion-navbar>
     </ion-header>
-
-    <ion-content no-bounce>
+    <ion-content #content no-bounce>
       <ion-grid>
         <ion-row>
           <ion-col col-6 col-md-4 *ngFor="let story of stories">
@@ -36,17 +35,18 @@ import {UtilService} from "../../providers/util-service";
       </ion-grid>
       <div (click)="openActionSheet()" class="add-new-container">
         <div class="add-new">
-          <ion-icon name="camera"></ion-icon>
+          <ion-icon class="add-icon" name="md-add"></ion-icon>
           <span>Voeg verhaal toe</span>
         </div>
       </div>
       <prisma-question [query]="album.title"></prisma-question>
     </ion-content>
-
   `
 })
 
 export class StoryListPage implements OnInit, OnDestroy {
+
+  @ViewChild('content') content: Content;
 
   album: Album;
   stories: UserStory[];
@@ -70,13 +70,14 @@ export class StoryListPage implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  ionViewDidEnter(): void {
+  ionViewWillEnter(): void {
     this.albumService.getAlbum(this.patientService.getCurrentPatient().patient_id, this.album.id)
       .takeUntil(this.destroy$)
       .subscribe((album: Album) => {
         this.album = album as Album;
         this.stories = this.orderByFavorited();
       })
+    this.content.resize();
   }
 
   orderByFavorited() {

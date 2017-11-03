@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {Album} from "../../../../dto/album";
 import {UserStory} from "../../../../dto/user-story";
-import {MenuController, NavController, NavParams, PopoverController, ViewController, ToastController} from "ionic-angular";
+import { NavController, NavParams, PopoverController, ViewController, ToastController} from "ionic-angular";
 
 import {Analytics} from "../../../../providers/analytics";
 import {NativeTransitionOptions} from "@ionic-native/native-page-transitions";
@@ -32,27 +32,23 @@ import {Environment, EnvironmentToken} from "../../../environment";
       </ion-navbar>
     </ion-header>
 
-    <ion-content padding *ngIf="story">
-      <div class="swipe-wrapper" (swipe)="swipeEvent($event)">
-        <div>
+    <ion-content no-bounce>
+      <div (swipe)="swipeEvent($event)">
           <div class="image-container"
                *ngIf="!isAVideo">
-            <div *ngIf="story.source">
               <img id="{{story.id}}" [src]="backgroundImage"
                    style="width:100%; max-width:100%">
               <ion-icon class="star" name="{{story.favorited ? 'star' : 'star-outline'}}"
                         [class.favorited]="story.favorited" (click)="toggleFavorite()"></ion-icon>
-            </div>
           </div>
           <div class="image-container"
                *ngIf="isAVideo">
             <img id="{{'video-'+story.id}}" [src]="backgroundImage"
                  (click)="openYoutubeVideo(story.source)"
                  style="width:100%; max-width:100%">
-            <ion-icon name="logo-youtube" color="white"
-                      (click)="openYoutubeVideo(story.source)"
-                      style=" position: absolute;display: block;font-size: 50px;top: 35%;left: 35%;"
-                      class="movie-indicator"></ion-icon>
+            <div (click)="openYoutubeVideo(story.source)"
+              style=" position: absolute;display: block;font-size: 50px;top: 35%;left: 45%;"
+              class="youtube-icon movie-indicator"></div>
             <ion-icon class="star" name="{{story.favorited ? 'star' : 'star-outline'}}"
                       [class.favorited]="story.favorited" (click)="toggleFavorite()"></ion-icon>
           </div>
@@ -73,7 +69,6 @@ import {Environment, EnvironmentToken} from "../../../environment";
             </div>
           </div>
         </div>
-      </div>
     </ion-content>
   `,
 

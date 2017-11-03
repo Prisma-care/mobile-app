@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{title | translate}}</ion-title>
+    <ion-title>{{title}}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="commit()">
         <ion-icon name="checkmark"></ion-icon>
@@ -33,7 +33,7 @@
     <button ion-button solid block full large color="primary" (click)="commitWithLoading()"
             [disabled]="method.indexOf(methods.addYoutubeStory) >= 0 && !util.checkYoutubeLink(youtubeLink)">
       <ion-icon name="checkmark"></ion-icon>
-      <div *ngIf="!isLoading">&nbsp;{{'Opslaan' | translate}}
+      <div *ngIf="!isLoading">&nbsp;Opslaan
       </div>
       <div *ngIf="isLoading">
         <ion-spinner item-start name="dots" color="white"></ion-spinner>

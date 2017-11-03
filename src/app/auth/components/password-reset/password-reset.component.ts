@@ -1,11 +1,6 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthenticationService} from '../../../core/authentication.service';
-import {AlertController, NavController} from 'ionic-angular';
-import {Network} from '@ionic-native/network';
-import {Analytics} from '../../../../providers/analytics';
-import {Observable} from 'rxjs/Observable';
-import {UserService} from "../../../core/user.service";
+import {AlertController} from 'ionic-angular';
 import { NavParams } from 'ionic-angular/navigation/nav-params';
 
 @Component({
@@ -13,16 +8,18 @@ import { NavParams } from 'ionic-angular/navigation/nav-params';
   template: `
     <ion-header>
       <ion-navbar>
-        <ion-title>Nieuw wachtwoord</ion-title>
+        <ion-title>
+          Nieuw wachtwoord
+        </ion-title>
       </ion-navbar>
     </ion-header>
-    <ion-content>
+    <ion-content no-bounce>
       <p class="text-password-reset">
         Ontvang een nieuw <br/>wachtwoord in je mailbox.
       </p>
       <form [formGroup]="form">
-        <ion-list inset>
-          <ion-item>
+        <ion-list class="list">
+          <ion-item padding>
             <ion-input
               type="email"
               formControlName="email"
@@ -69,12 +66,10 @@ export class PasswordResetComponent implements OnInit {
         []
       ]
     });
-  }
 
-  ionViewDidEnter(){
     setTimeout(()=>{
       this.inputEmail.setFocus()
-    },50)
+    },400)
   }
 
   resetPassword({email}: { email: string }) {

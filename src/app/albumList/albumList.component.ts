@@ -1,7 +1,6 @@
-import {Component, Inject} from "@angular/core";
-import {Environment, EnvironmentToken} from "../environment";
+import {Component} from "@angular/core";
 import {PatientService} from "../core/patient.service";
-import {AlertController, MenuController, NavController} from "ionic-angular";
+import {AlertController, MenuController} from "ionic-angular";
 import {Album} from "../../dto/album";
 import {AlbumService} from "../core/album.service";
 import {Observable} from "rxjs/Observable";
@@ -52,7 +51,7 @@ import {Analytics} from "../../providers/analytics";
       </ion-grid>
       <div class="add-new-container">
         <div class="add-new" (click)="addAlbum()">
-          <ion-icon name="camera"></ion-icon>
+          <ion-icon class="add-icon" name="md-add"></ion-icon>
           <span>Voeg album toe</span>
         </div>
       </div>
@@ -64,8 +63,7 @@ export class AlbumListPage {
 
   albums: Observable<Album[]>;
 
-  constructor(@Inject(EnvironmentToken) private env: Environment,
-              private patientService: PatientService,
+  constructor(private patientService: PatientService,
               private menu: MenuController,
               private albumService: AlbumService,
               private alertCtrl: AlertController,

@@ -12,8 +12,8 @@ import {PasswordResetComponent} from "./password-reset/password-reset.component"
   selector: 'prisma-authentication-login',
   template: `
     <form [formGroup]="form">
-      <ion-list inset>
-        <ion-item>
+      <ion-list class="list">
+        <ion-item padding>
           <ion-input
             type="email"
             formControlName="email"
@@ -24,7 +24,7 @@ import {PasswordResetComponent} from "./password-reset/password-reset.component"
           </ion-input>
         </ion-item>
 
-        <ion-item>
+        <ion-item padding>
           <ion-input
             [type]="type"
             #input
@@ -117,7 +117,7 @@ export class AuthenticationLoginComponent implements OnInit {
 
     setTimeout(()=>{
       this.inputEmail.setFocus()
-    },300)
+    },400)
   }
 
   toggleShow() {
