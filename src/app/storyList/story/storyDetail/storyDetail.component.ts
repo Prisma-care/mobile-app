@@ -58,7 +58,7 @@ import {Environment, EnvironmentToken} from "../../../environment";
 
           <div class="row">
             <div class="detail-button">
-              <div class="story-action" (click)="editDescription(this.story)">
+              <div class="story-action" (click)="editDescription(story)">
                 <ion-icon name="md-create" color="general"></ion-icon>
                 <p>Vul het verhaal aan</p>
               </div>
@@ -180,7 +180,8 @@ export class StoryDetailsPage implements OnInit {
     this.navCtrl.push(NewStoryPage, {
       "album": this.album,
       "story": story,
-      "method": this.env.methods.replaceDescription
+      "method": this.env.methods.replaceDescription,
+      "dataUrl": story.backgroundImage
     })
   }
 
