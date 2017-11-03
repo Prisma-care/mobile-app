@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from "@angular/core";
+import {Component, Inject, OnInit, ViewChild} from "@angular/core";
 import {Album} from "../../../../dto/album";
 import {UserStory} from "../../../../dto/user-story";
 import { NavController, NavParams, PopoverController, ViewController, ToastController} from "ionic-angular";
@@ -14,6 +14,7 @@ import {Subject} from "rxjs/Subject";
 import "rxjs/add/operator/takeUntil";
 import {NewStoryPage} from "../../../../pages/new-story/new-story";
 import {Environment, EnvironmentToken} from "../../../environment";
+import { Content } from "ionic-angular/navigation/nav-interfaces";
 
 @Component({
   selector: 'prisma-story-detail',
@@ -32,7 +33,7 @@ import {Environment, EnvironmentToken} from "../../../environment";
       </ion-navbar>
     </ion-header>
 
-    <ion-content no-bounce>
+    <ion-content #content no-bounce>
       <div (swipe)="swipeEvent($event)">
           <div class="image-container"
                *ngIf="story.type !== 'youtube'">
@@ -75,6 +76,8 @@ import {Environment, EnvironmentToken} from "../../../environment";
 })
 export class StoryDetailsPage implements OnInit {
 
+  @ViewChild('content') content: Content;
+
   destroy$: Subject<boolean> = new Subject<boolean>();
   album: Album;
   story: UserStory;
@@ -105,6 +108,10 @@ export class StoryDetailsPage implements OnInit {
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
+  }
+
+  ionViewWillEnter(){
+    this.content.resize();
   }
 
   swipeEvent(e) {
