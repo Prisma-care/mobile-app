@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit} from "@angular/core";
+import {Component, Inject, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {UserStory} from "../../dto/user-story";
 import {ActionSheetController, NavController, NavParams} from "ionic-angular";
 import {Album} from "../../dto/album";
@@ -9,6 +9,7 @@ import "rxjs/add/operator/takeUntil";
 import {Environment, EnvironmentToken} from "../environment";
 import {NewStoryPage} from "../../pages/new-story/new-story";
 import {UtilService} from "../../providers/util-service";
+import { Content } from "ionic-angular/navigation/nav-interfaces";
 
 @Component({
   selector: 'prisma-story-list-page',
@@ -24,7 +25,7 @@ import {UtilService} from "../../providers/util-service";
         </ion-buttons>
       </ion-navbar>
     </ion-header>
-    <ion-content no-bounce>
+    <ion-content #content no-bounce>
       <ion-grid>
         <ion-row>
           <ion-col col-6 col-md-4 *ngFor="let story of stories">
@@ -44,6 +45,8 @@ import {UtilService} from "../../providers/util-service";
 })
 
 export class StoryListPage implements OnInit, OnDestroy {
+
+  @ViewChild('content') content: Content;
 
   album: Album;
   stories: UserStory[];
@@ -74,8 +77,9 @@ export class StoryListPage implements OnInit, OnDestroy {
         this.album = album as Album;
         this.stories = this.orderByFavorited();
       })
+    this.content.resize();
   }
-
+  
   orderByFavorited() {
     return this.album.stories.reduce((acc, it) => {
       //TODO quickFix for backend not sending the type
