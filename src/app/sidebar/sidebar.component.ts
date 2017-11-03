@@ -2,7 +2,7 @@ import {Component, Input} from "@angular/core";
 import {AuthenticationPage} from "../auth/authentication.component";
 import {MenuController} from "ionic-angular";
 import {AuthenticationService} from "../core/authentication.service";
-import {InvitePage} from "../../pages/invite/invite";
+import {InvitePage} from "./invite/invite";
 import {PatientService} from "../core/patient.service";
 import {GiveFeedbackComponent} from "./giveFeedback/giveFeedback.component";
 
@@ -60,7 +60,7 @@ export class SidebarComponent {
   invite() {
     this.menu.close();
     this.nav.push(InvitePage, {
-      "patientId": this.patientService.getCurrentPatient().patient_id
+      "patientId": this.patientService.getCurrentPatient().patient_id.toString()
     });
   }
 
