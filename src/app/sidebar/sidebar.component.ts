@@ -14,7 +14,7 @@ import {GiveFeedbackComponent} from "./giveFeedback/giveFeedback.component";
         <ion-title class="ion-title-color">Menu</ion-title>
       </ion-toolbar>
       <ion-list>
-        <button ion-item (click)="invite()" *ngIf="patientService.getCurrentPatient()" class="ion-menu-buttons">
+        <button ion-item (click)="invite()" class="ion-menu-buttons">
           <ion-icon name="person-add" color="general"></ion-icon>
           Nodig iemand uit
         </button>
