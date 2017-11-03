@@ -10,6 +10,9 @@ import {Environment, EnvironmentToken} from "../environment";
 import {NewStoryPage} from "../../pages/new-story/new-story";
 import {UtilService} from "../../providers/util-service";
 import { Content } from "ionic-angular/navigation/nav-interfaces";
+import { StoryListOptionsComponent } from "./component/storyListOptions.component";
+import { PopoverController } from "ionic-angular/components/popover/popover-controller";
+import { ToastController } from "ionic-angular/components/toast/toast-controller";
 
 @Component({
   selector: 'prisma-story-list-page',
@@ -19,8 +22,8 @@ import { Content } from "ionic-angular/navigation/nav-interfaces";
       <ion-navbar>
         <ion-title>{{album.title}}</ion-title>
         <ion-buttons end>
-          <button ion-button icon-only (click)="openActionSheet()">
-            <ion-icon  (click)="openActionSheet()" class="bar-icon" name="md-add"></ion-icon>
+          <button ion-button icon-only (click)="showMore($event)">
+            <ion-icon name="more"></ion-icon>
           </button>
         </ion-buttons>
       </ion-navbar>
@@ -58,11 +61,14 @@ export class StoryListPage implements OnInit, OnDestroy {
               private patientService: PatientService,
               private navCtrl: NavController,
               private actionsheetCtrl: ActionSheetController,
-              private utilService:UtilService) {
+              private utilService:UtilService,
+              private popoverCtrl: PopoverController,
+              private toastCtrl: ToastController) {
   }
 
   ngOnInit(): void {
     this.album = this.navParams.get("album") as Album;
+    this.openActionSheet = this.openActionSheet.bind(this)
   }
 
   ngOnDestroy(): void {
@@ -164,5 +170,32 @@ export class StoryListPage implements OnInit, OnDestroy {
       })
     ;
     actionSheet.present();
+  }
+
+  showMore(event): void {
+    const popover = this.popoverCtrl.create(StoryListOptionsComponent, {
+      album: this.album,
+      actionSheet: this.openActionSheet
+    },
+    { cssClass: 'storyList-popover'});
+
+    const toast = (message) => this.toastCtrl.create({
+      message,
+      duration: 3000,
+      position: 'bottom'
+    }).present();
+
+    popover.onDidDismiss(dismissData => {
+      if ((dismissData) === "deleteSuccess") {
+        toast('Album was deleted succesfully');
+        this.navCtrl.pop();
+      }
+      if(dismissData === "deleteError"){
+        toast('Error deleting the album')
+      }
+    });
+    popover.present({
+      ev: event
+    });
   }
 }
