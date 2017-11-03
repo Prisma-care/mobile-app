@@ -4,10 +4,13 @@ import {StoryService} from "../../../../core/story.service";
 import {PatientService} from "../../../../core/patient.service";
 
 @Component({
+  selector:'prisma-story-options',
   template: `
-    <ion-list>
-      <ion-list-header>Meer opties</ion-list-header>
-      <button ion-item (click)="deleteStory()">Verwijder dit verhaal</button>
+    <ion-list class="list">
+      <ion-item (click)="deleteStory()">
+        <ion-icon class="trash-icon" name="md-trash"></ion-icon>
+        <p class="contenu">Verwijder dit verhaal</p>
+      </ion-item>
     </ion-list>
   `
 })

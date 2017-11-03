@@ -6,7 +6,7 @@ import { NavController, NavParams, PopoverController, ViewController, ToastContr
 import {Analytics} from "../../../../providers/analytics";
 import {NativeTransitionOptions} from "@ionic-native/native-page-transitions";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
-import {StoryOptionsComponent} from "./storyOption/storyOptions.component";
+import {StoryOptionsComponent} from "./component/storyOptions.component";
 import {YoutubeVideoPlayer} from "@ionic-native/youtube-video-player";
 import {StoryService} from "../../../core/story.service";
 import {PatientService} from "../../../core/patient.service";
@@ -191,7 +191,8 @@ export class StoryDetailsPage implements OnInit {
   showMore(event): void {
     const popover = this.popoverCtrl.create(StoryOptionsComponent, {
       story: this.story
-    });
+    },
+    { cssClass: 'storyDetail-popover'});
 
     const toast = (message) => this.toastCtrl.create({
       message,
