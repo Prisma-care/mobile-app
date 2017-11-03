@@ -13,12 +13,12 @@ import { NavParams } from 'ionic-angular/navigation/nav-params';
     <ion-content no-bounce>
       <!--  Login case -->
       <prisma-authentication-login
-        *ngIf="isLogging"
+        *ngIf="!isLogging"
         [onRegisterClick]="toggleForm"
         [onComplete]="onLoginComplete"
       ></prisma-authentication-login>
       <prisma-authentication-register
-        *ngIf="!isLogging"
+        *ngIf="isLogging"
         [onLoginClick]="toggleForm"
         [onComplete]="onRegisterComplete"
       ></prisma-authentication-register>
@@ -27,7 +27,7 @@ import { NavParams } from 'ionic-angular/navigation/nav-params';
 })
 export class AuthenticationPage implements OnInit{
 
-  isLogging: boolean = true;
+  isLogging: boolean = false;
   title:string;
 
   constructor(private navCtrl: NavController,
@@ -41,7 +41,7 @@ export class AuthenticationPage implements OnInit{
 
   ngOnInit(): void {
     this.isLogging = this.navParams.get('isLogging')
-    this.isLogging ? this.title="Meld je aan" : this.title="Registreer"
+    this.isLogging ? this.title="Registreer" : this.title="Meld je aan"
   }
 
   ionViewWillEnter() {
@@ -54,7 +54,7 @@ export class AuthenticationPage implements OnInit{
 
   toggleForm() {
     this.isLogging = !this.isLogging;
-    this.isLogging ? this.title="Meld je aan" : this.title="Registreer"
+    this.isLogging ? this.title="Registreer" : this.title="Meld je aan"
   }
 
   onLoginComplete() {

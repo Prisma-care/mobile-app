@@ -9,8 +9,8 @@ import { AuthenticationPage } from "../../authentication.component";
     <ion-content>
         <img src="assets/img/introPage/intro.jpg"/>
         <h1>Kleur jullie <br/> herinneringen</h1>
-        <button ion-button full large (click)="onClick(false)">Registreer</button>
-        <p class="alternate-option" (click)="onClick(true)">
+        <button ion-button full large (click)="onRegister(true)">Registreer</button>
+        <p class="alternate-option" (click)="onRegister(false)">
          Al een account?
         <a color="general">
           Meld je aan.
@@ -26,7 +26,7 @@ export class IntroPage {
 
   }
 
-  onClick(value:boolean){
+  onRegister(value:boolean){
     this.navCtrl.push(AuthenticationPage, {
       "isLogging":value
     })
