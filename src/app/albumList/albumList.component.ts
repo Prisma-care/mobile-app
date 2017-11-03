@@ -51,7 +51,7 @@ import {Analytics} from "../../providers/analytics";
       </ion-grid>
       <div class="add-new-container">
         <div class="add-new" (click)="addAlbum()">
-          <ion-icon name="camera"></ion-icon>
+          <ion-icon class="add-icon" name="md-add"></ion-icon>
           <span>Voeg album toe</span>
         </div>
       </div>

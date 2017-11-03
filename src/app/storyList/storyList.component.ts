@@ -20,7 +20,7 @@ import { Content } from "ionic-angular/navigation/nav-interfaces";
         <ion-title>{{album.title}}</ion-title>
         <ion-buttons end>
           <button ion-button icon-only (click)="openActionSheet()">
-            <ion-icon name="camera" color="white"></ion-icon>
+            <ion-icon  (click)="openActionSheet()" class="bar-icon" name="md-add"></ion-icon>
           </button>
         </ion-buttons>
       </ion-navbar>
@@ -35,7 +35,7 @@ import { Content } from "ionic-angular/navigation/nav-interfaces";
       </ion-grid>
       <div (click)="openActionSheet()" class="add-new-container">
         <div class="add-new">
-          <ion-icon name="camera"></ion-icon>
+          <ion-icon class="add-icon" name="md-add"></ion-icon>
           <span>Voeg verhaal toe</span>
         </div>
       </div>
@@ -79,7 +79,7 @@ export class StoryListPage implements OnInit, OnDestroy {
       })
     this.content.resize();
   }
-  
+
   orderByFavorited() {
     return this.album.stories.reduce((acc, it) => {
       //TODO quickFix for backend not sending the type

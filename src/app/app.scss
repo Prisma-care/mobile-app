@@ -245,3 +245,40 @@ ion-navbar ion-buttons[end] button {
   }
   
 }
+
+.add-icon{
+  background: white;
+  width:30px;
+  height: 30px;
+  border-radius: 3px;
+  position: relative;
+  margin:auto;
+  margin-bottom: 10px;
+
+  &:before{
+    color:color($colors, primary);
+    font-size:35px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.bar-icon{
+  background: white;
+  width:15px;
+  height: 15px;
+  border-radius: 3px;
+  position: relative;
+  margin:auto;
+
+  &:before{
+    color:color($colors, primary);
+    font-size:30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
