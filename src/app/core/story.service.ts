@@ -41,7 +41,7 @@ export class StoryService {
       .catch(err => this.handleError(err));
   }
 
-  deleteStory(patientId: number, storyId: number): Observable<boolean| Error >  {
+  deleteStory(patientId: number, storyId: number): Observable<Object| Error >  {
     return this.http.delete(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getStory}/${storyId}`)
       .catch(err => this.handleError(err));
   }

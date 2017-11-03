@@ -35,6 +35,12 @@ export class AlbumService {
       .catch(err => this.handleError(err));
   }
 
+  deleteAlbum(patientId: string | number, albumId: string | number): Observable<Object| Error >  {
+    return this.http.delete(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getAlbum}/${albumId}`)
+      .catch(err => this.handleError(err));
+  }
+  
+
   addAlbum(patientId: string | number, title: string): Observable<Album| Error >  {
     return this.http.post(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getAlbum}`, {title: title})
       .map(({response}:AlbumResponse) => new Album(response))
