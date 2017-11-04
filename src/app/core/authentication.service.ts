@@ -65,6 +65,11 @@ export class AuthenticationService {
       .catch(this.handleError);
   }
 
+  resetPassword(email: string) : Observable<boolean | Error>{
+    return this.http.post(`${this.env.apiUrl}/reset`, {email})
+      .catch(this.handleError)
+  }
+
   setAuthenticationInfoInStorage({ token, currentPatient, userId }: { token: string, currentPatient: any, userId: string }) {
     localStorage.setItem(this.env.jwtToken, token);
     localStorage.setItem(this.env.temp.currentPatient, JSON.stringify(currentPatient || ''));
