@@ -16,7 +16,7 @@ import {Subject} from "rxjs/Subject";
          class="album-thumb"
          [style]="backgroundImage"
          (click)="showDetails()">
-      <div *ngIf="this.story.type==='youtube'" class="youtube-icon movie-indicator"></div>
+      <div *ngIf="story.type==='youtube'" class="youtube-icon movie-indicator"></div>
       <ion-icon *ngIf="story.favorited" class="star" name="star"
                 [class.favorited]="isFavorited"></ion-icon>
     </div>
