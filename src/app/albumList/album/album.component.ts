@@ -56,7 +56,6 @@ import {Subject} from "rxjs/Subject";
          [style.background-color]="backgroundColor"
          (click)="showDetails()">
       <div class="tile-overlay-gradient"></div>
-      <div *ngIf="isAVideo" class="youtube-icon movie-indicator"></div>
       <h3 class="hist-title">{{album.title || '?'}}</h3>
     </div>
     <div *ngIf="!imageLoaded" class="album-thumb">

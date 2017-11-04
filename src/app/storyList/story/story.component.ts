@@ -16,7 +16,7 @@ import {Subject} from "rxjs/Subject";
          class="album-thumb"
          [style]="backgroundImage"
          (click)="showDetails()">
-      <div *ngIf="isAVideo" class="youtube-icon movie-indicator"></div>
+      <div *ngIf="story.type==='youtube'" class="youtube-icon movie-indicator"></div>
       <ion-icon *ngIf="story.favorited" class="star" name="star"
                 [class.favorited]="isFavorited"></ion-icon>
     </div>
@@ -32,7 +32,6 @@ export class StoryComponent implements OnInit, OnDestroy {
   backgroundImage:SafeStyle;
   imageUrl:string;
   imageLoaded:Boolean=false;
-  isAVideo:Boolean=false;
 
   @Input()
   story;
@@ -47,7 +46,6 @@ export class StoryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.isAVideo=this.story.type==='youtube';
     this.setBackgroundImage(this.story);
   }
 

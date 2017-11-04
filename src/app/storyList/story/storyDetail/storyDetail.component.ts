@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from "@angular/core";
+import {Component, Inject, OnInit, ViewChild} from "@angular/core";
 import {Album} from "../../../../dto/album";
 import {UserStory} from "../../../../dto/user-story";
 import { NavController, NavParams, PopoverController, ViewController, ToastController} from "ionic-angular";
@@ -14,6 +14,7 @@ import {Subject} from "rxjs/Subject";
 import "rxjs/add/operator/takeUntil";
 import {NewStoryPage} from "../../../../pages/new-story/new-story";
 import {Environment, EnvironmentToken} from "../../../environment";
+import { Content } from "ionic-angular/navigation/nav-interfaces";
 
 @Component({
   selector: 'prisma-story-detail',
@@ -32,17 +33,17 @@ import {Environment, EnvironmentToken} from "../../../environment";
       </ion-navbar>
     </ion-header>
 
-    <ion-content no-bounce>
+    <ion-content #content no-bounce>
       <div (swipe)="swipeEvent($event)">
           <div class="image-container"
-               *ngIf="!isAVideo">
+               *ngIf="story.type !== 'youtube'">
               <img id="{{story.id}}" [src]="backgroundImage"
                    style="width:100%; max-width:100%">
               <ion-icon class="star" name="{{story.favorited ? 'star' : 'star-outline'}}"
                         [class.favorited]="story.favorited" (click)="toggleFavorite()"></ion-icon>
           </div>
           <div class="image-container"
-               *ngIf="isAVideo">
+               *ngIf="story.type === 'youtube'">
             <img id="{{'video-'+story.id}}" [src]="backgroundImage"
                  (click)="openYoutubeVideo(story.source)"
                  style="width:100%; max-width:100%">
@@ -58,7 +59,7 @@ import {Environment, EnvironmentToken} from "../../../environment";
 
           <div class="row">
             <div class="detail-button">
-              <div class="story-action" (click)="editDescription(this.story)">
+              <div class="story-action" (click)="editDescription(story)">
                 <ion-icon name="md-create" color="general"></ion-icon>
                 <p>Vul het verhaal aan</p>
               </div>
@@ -75,11 +76,12 @@ import {Environment, EnvironmentToken} from "../../../environment";
 })
 export class StoryDetailsPage implements OnInit {
 
+  @ViewChild('content') content: Content;
+
   destroy$: Subject<boolean> = new Subject<boolean>();
   album: Album;
   story: UserStory;
   backgroundImage: SafeUrl;
-  isAVideo: Boolean = false;
 
   constructor(@Inject(EnvironmentToken) private env: Environment,
               private navParams: NavParams,
@@ -101,12 +103,15 @@ export class StoryDetailsPage implements OnInit {
     this.album = this.navParams.get("album") as Album;
     this.story = this.navParams.get("story") as UserStory;
     this.backgroundImage = this.sanitizer.bypassSecurityTrustUrl(this.story.backgroundImage);
-    this.isAVideo = this.story.type === "youtube"
   }
 
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
+  }
+
+  ionViewWillEnter(){
+    this.content.resize();
   }
 
   swipeEvent(e) {
@@ -134,8 +139,7 @@ export class StoryDetailsPage implements OnInit {
   }
 
   next(): void {
-    const nextStoryBeforeType = this.album.stories[(this.album.stories.findIndex(story => this.story.id === story.id) + 1) % this.album.stories.length];
-    const nextStory = {...nextStoryBeforeType, type : nextStoryBeforeType.source.includes('youtu') ? 'youtube' : null};
+    const nextStory = this.album.stories[(this.album.stories.findIndex(story => this.story.id === story.id) + 1) % this.album.stories.length];
     this.storyService.getBackground(nextStory)
       .takeUntil(this.destroy$)
       .subscribe(imageUrl => {
@@ -150,8 +154,7 @@ export class StoryDetailsPage implements OnInit {
 
   previous(): void {
     const index = this.album.stories.findIndex(story => this.story.id === story.id) === 0 ? this.album.stories.length - 1 : this.album.stories.findIndex(story => this.story.id === story.id) - 1;
-    const previousStoryBeforeType = this.album.stories[index];
-    const previousStory = {...previousStoryBeforeType, type : previousStoryBeforeType.source.includes('youtu') ? 'youtube' : null};
+    const previousStory = this.album.stories[index];
     this.storyService.getBackground(previousStory)
       .takeUntil(this.destroy$)
       .subscribe((imageUrl) => {
@@ -184,7 +187,8 @@ export class StoryDetailsPage implements OnInit {
     this.navCtrl.push(NewStoryPage, {
       "album": this.album,
       "story": story,
-      "method": this.env.methods.replaceDescription
+      "method": this.env.methods.replaceDescription,
+      "dataUrl": story.backgroundImage
     })
   }
 

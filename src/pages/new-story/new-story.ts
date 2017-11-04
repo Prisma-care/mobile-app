@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {Loading, LoadingController, NavController, NavOptions, NavParams, ViewController} from "ionic-angular";
 import {Album} from "../../dto/album";
 import {StoryService} from "../../app/core/story.service";
@@ -26,7 +26,7 @@ import {StoryListPage} from "../../app/storyList/storyList.component";
 })
 
 
-export class NewStoryPage  {
+export class NewStoryPage  implements OnInit{
 
 
   methods: {
@@ -48,35 +48,32 @@ export class NewStoryPage  {
 
   index: number = 0;
   oldStory: UserStory;
-  util: UtilService;
 
 //file Transfer
   loading: Loading;
   isLoading: boolean = false;
 
   constructor(protected authService: AuthenticationService, public navCtrl: NavController, public navParams: NavParams,
-              private storyService: StoryService, private utilService: UtilService,
+              private storyService: StoryService, private util: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
               public stanizer: StanizerService,
               private analytics: Analytics,
               private userService: UserService,
               private patientService: PatientService,
               private viewCtrl: ViewController) {
-    this.method = navParams.get("method") as string;
-    this.dataUrl = navParams.get("dataUrl") as string;
-    this.selectedAlbum = navParams.get("album") as Album;
-    this.index = navParams.get("index") as number;
-    this.util = utilService;
+
+  }
+
+  ngOnInit(): void {
+    this.method = this.navParams.get("method") as string;
+    this.dataUrl = this.navParams.get("dataUrl") as string;
+    this.selectedAlbum = this.navParams.get("album") as Album;
+    this.index = this.navParams.get("index") as number;
     this.title = 'Vul het verhaal aan';
-    this.oldStory = navParams.get("story") as UserStory;
+    this.oldStory = this.navParams.get("story") as UserStory;
 
     if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
       this.description = this.oldStory.description;
-      if (this.oldStory.source)
-        if (this.oldStory.source.toLowerCase().indexOf("youtube.com") < 0)
-          this.dataUrl = this.oldStory.source;
-        else
-          this.dataUrl = null;
     }
     this.sanitizeUrl();
     if (this.method.indexOf(env.methods.replaceImage) >= 0) {
@@ -88,14 +85,6 @@ export class NewStoryPage  {
       this.title = "Kies video van Youtube";
       this.description = "Video van Youtube";
     }
-
-
-    // check if source is a question answer
-    /*if (navParams.get("questionAnswer")) {
-      this.description = navParams.get("description");
-      this.commit(); // skip to step 2 because we already have the description
-    }*/
-
   }
 
   commitWithLoading() {
@@ -228,7 +217,7 @@ export class NewStoryPage  {
       content: 'Uploading...',
     });
     this.loading.present();
-    var targetPath = this.utilService.pathForImage(lastImage);
+    var targetPath = this.util.pathForImage(lastImage);
     console.log("Path : " + targetPath);
     // Use the FileTransfer to upload the image
     return fileTransfer.upload(targetPath, url, options).then(data => {
