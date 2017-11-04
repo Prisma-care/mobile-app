@@ -1,7 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AlertController} from 'ionic-angular';
-import { NavParams } from 'ionic-angular/navigation/nav-params';
+import {AlertController, NavController} from 'ionic-angular';
+import {NavParams} from 'ionic-angular/navigation/nav-params';
+import {AuthenticationService} from "../../../core/authentication.service";
 
 @Component({
   selector: 'prisma-password-reset',
@@ -53,7 +54,9 @@ export class PasswordResetComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private alertCtrl: AlertController,
-              private navParams: NavParams) {
+              private navParams: NavParams,
+              private authService: AuthenticationService,
+              private navCtrl: NavController) {
   }
 
   ngOnInit(): void {
@@ -67,19 +70,26 @@ export class PasswordResetComponent implements OnInit {
       ]
     });
 
-    setTimeout(()=>{
+    setTimeout(() => {
       this.inputEmail.setFocus()
-    },400)
+    }, 400)
   }
 
   resetPassword({email}: { email: string }) {
-    console.log("hello", email)
+    this.authService.resetPassword(email).subscribe((data) => {
+      if (data instanceof Error) {
+        this.showMessage(data.message)
+      } else {
+        this.showMessage('OK')
+        this.navCtrl.pop()
+      }
+    })
   }
 
-  showError(errorMessage: string = 'Je gebruikersnaam of wachtwoord klopt niet.') {
+  showMessage(message: string) {
     this.loading = false;
     let alert = this.alertCtrl.create({
-      title: errorMessage,
+      title: message,
       buttons: ['Ok']
     });
 

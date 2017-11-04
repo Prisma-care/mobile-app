@@ -59,11 +59,11 @@ import {PasswordResetComponent} from "./password-reset/password-reset.component"
             Maak account.
           </a>
         </p>
-        <p class="alternate-option" (click)="goToPasswordResetPage()">
+        <!--<p class="alternate-option" (click)="goToPasswordResetPage()">
           <a color="general">
             Wachtwoord vergeten?
           </a>
-        </p>
+        </p>-->
       </div>
     </form>
   `,
