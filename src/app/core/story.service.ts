@@ -68,7 +68,7 @@ export class StoryService {
     return background.call(this,story)
   }
 
-  addYoutubeLinkAsset(patient_id: string, storyId: string, asset: string):Observable<Boolean|Error> {
+  addYoutubeLinkAsset(patient_id: string, storyId: string, asset: string):Observable<Object|Error> {
 
     return this.http.post(`${this.env.apiUrl}/${this.env.api.getPatient}/${patient_id}/${this.env.api.getStory}/${storyId}/${this.env.api.getAsset}`, {
       "asset": asset,
