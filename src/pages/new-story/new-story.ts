@@ -131,7 +131,7 @@ export class NewStoryPage  implements OnInit{
       }
       else {
         if (this.method.indexOf(env.methods.addYoutubeStory) >= 0 && this.youtubeLink) {
-          this.storyService.addYoutubeLinkAsset(this.patientService.getCurrentPatient().patient_id, (addedStory as any).id, this.youtubeLink).toPromise().then(ret => {
+          this.storyService.addYoutubeLinkAsset(+this.patientService.getCurrentPatient().patient_id, (addedStory as any).id, this.youtubeLink).toPromise().then(ret => {
             return this.navCtrl.pop();
           });
 

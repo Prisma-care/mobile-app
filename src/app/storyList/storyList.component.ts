@@ -7,12 +7,12 @@ import {PatientService} from "../core/patient.service";
 import {Subject} from "rxjs/Subject";
 import "rxjs/add/operator/takeUntil";
 import {Environment, EnvironmentToken} from "../environment";
-import {NewStoryPage} from "../../pages/new-story/new-story";
 import { Content } from "ionic-angular/navigation/nav-interfaces";
 import { StoryListOptionsComponent } from "./component/storyListOptions.component";
 import { PopoverController } from "ionic-angular/components/popover/popover-controller";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
 import { StoryService } from "../core/story.service";
+import { createOrUpdateStoryPage } from "./createOrUpdateStory/createOrUpdateStory.component";
 
 @Component({
   selector: 'prisma-story-list-page',
@@ -111,7 +111,7 @@ export class StoryListPage implements OnInit, OnDestroy {
             cssClass: 'general',
             handler: () => {
               this.storyService.takeAPicture().takeUntil(this.destroy$).subscribe(dataUrl =>{
-                this.navCtrl.push(NewStoryPage,
+                this.navCtrl.push(createOrUpdateStoryPage,
                   {
                     "dataUrl": dataUrl,
                     "album": this.album,
@@ -126,7 +126,7 @@ export class StoryListPage implements OnInit, OnDestroy {
             icon: 'image',
             handler: () => {
               this.storyService.chooseAFile().takeUntil(this.destroy$).subscribe(dataUrl =>{
-                this.navCtrl.push(NewStoryPage,
+                this.navCtrl.push(createOrUpdateStoryPage,
                   {
                     "dataUrl": dataUrl,
                     "album": this.album,
@@ -140,7 +140,7 @@ export class StoryListPage implements OnInit, OnDestroy {
             role: 'destructive',
             icon: 'play',
             handler: () => {
-              this.navCtrl.push(NewStoryPage,
+              this.navCtrl.push(createOrUpdateStoryPage,
                 {
                   "album": this.album,
                   "method":this.env.methods.addYoutubeStory
