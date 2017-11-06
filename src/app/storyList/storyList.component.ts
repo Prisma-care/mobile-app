@@ -187,11 +187,11 @@ export class StoryListPage implements OnInit, OnDestroy {
 
     popover.onDidDismiss(dismissData => {
       if ((dismissData) === "deleteSuccess") {
-        toast('Album was deleted succesfully');
+        toast('Het album is verwijderd.');
         this.navCtrl.pop();
       }
       if(dismissData === "deleteError"){
-        toast('Error deleting the album')
+        toast('Het album kon niet verwijderd worden.')
       }
     });
     popover.present({

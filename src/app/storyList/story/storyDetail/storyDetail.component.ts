@@ -202,11 +202,11 @@ export class StoryDetailsPage implements OnInit {
 
     popover.onDidDismiss(dismissData => {
       if ((dismissData) === "deleteSuccess") {
-        toast('Story was deleted succesfully');
+        toast('Het verhaal is verwijderd.');
         this.navCtrl.pop();
       }
       if(dismissData === "deleteError"){
-        toast('Error deleting the story')
+        toast('Het verhaal kon niet verwijderd worden.')
       }
     });
     popover.present({
