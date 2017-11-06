@@ -12,8 +12,7 @@ import {UserStory} from "../../dto/user-story";
 import {Album} from "../../dto/album";
 import {NewStoryPage} from "../new-story/new-story";
 import {AuthenticationService} from "../../app/core/authentication.service";
-import {AuthGuard} from "../auth-guard";
-import {NativePageTransitions, NativeTransitionOptions} from "@ionic-native/native-page-transitions";
+import { NativeTransitionOptions} from "@ionic-native/native-page-transitions";
 import {UtilService} from "../../providers/util-service";
 import {env} from "../../app/environment";
 import {StanizerService} from "../../providers/stanizer.service";
@@ -45,7 +44,6 @@ export class StoryDetailsPage implements OnInit {
               public translatorService: TranslatorService,
               public navParams: NavParams,
               private storyService: StoryService,
-              private nativePageTransitions: NativePageTransitions,
               public actionsheetCtrl: ActionSheetController,
               public utilService: UtilService,
               public stanizer: StanizerService,

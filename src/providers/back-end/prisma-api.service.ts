@@ -39,11 +39,8 @@ export class PrismaService implements OnInit {
   }
 
   public handleError(error: Response | any) {
-    console.log("Error ! " + JSON.stringify(error));
-    //logs out if no user token avaible when needed
-    let errorString: string = JSON.stringify(error).toLowerCase();
+
     if (error.status === 401) {
-      console.log("Token expired or not provided");
       localStorage.removeItem(env.jwtToken);
       localStorage.removeItem(env.temp.currentUser);
       localStorage.removeItem(env.temp.currentPatient);
@@ -54,7 +51,6 @@ export class PrismaService implements OnInit {
   }
 
   public printError(error: Response | any) {
-    console.log("Error ! " + JSON.stringify(error));
     return Observable.of(error) as Observable<any>;
   }
 }
