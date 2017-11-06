@@ -33,7 +33,6 @@ export class MyApp implements OnInit {
 
     this.nav.setRoot(IntroPage);
     this.authService.autoLoad();
-    this.statusBar.backgroundColorByHexString('#637DC8');
     if (this.authService.isLoggedIn() && this.network.type !== 'none') {
       this.albumService.getAlbums(this.patientService.getCurrentPatient().patient_id);
       this.patientService.getCurrentPatient() ? this.nav.setRoot(AlbumListPage) : this.nav.setRoot(NewLovedonePage);
@@ -41,6 +40,7 @@ export class MyApp implements OnInit {
 
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
+      this.statusBar.backgroundColorByHexString('#637DC8');
       this.splashScreen.hide();
     });
     this.analytics.track('AppComponent::Prisma launched');
