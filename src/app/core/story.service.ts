@@ -5,6 +5,10 @@ import {UserStory} from "../../dto/user-story";
 import {background, getMessageFromBackendError, getThumbnails, getUrlImage, youtubeId} from "../utils";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Environment, EnvironmentToken} from "../environment";
+import { Camera } from "@ionic-native/camera";
+import { FilePath } from "@ionic-native/file-path";
+import {File} from "@ionic-native/file";
+import { ToastController } from "ionic-angular";
 
 interface storyResponse {
   response:UserStory
@@ -14,10 +18,16 @@ interface storiesResponse {
   response:UserStory[]
 }
 
+declare var cordova: any;
+
 @Injectable()
 export class StoryService {
   constructor(@Inject(EnvironmentToken) private env: Environment,
-              private http: HttpClient) {
+              private http: HttpClient,
+              private camera: Camera,
+              private filePath: FilePath,
+              private file: File,
+              private toastCtrl: ToastController) {
     this.handleError = this.handleError.bind(this);
   }
 
@@ -75,7 +85,47 @@ export class StoryService {
       "assetType": "youtube"
     })
       .catch(err => this.handleError(err));
+  }
 
+  takeAPicture(): Observable<string> {
+    return this.getPicture(this.camera.PictureSourceType.CAMERA);
+  }
+
+  chooseAFile(): Observable<string> {
+    return this.getPicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+  }
+
+  getPicture(sourceType):Observable<string> {
+    const options = {
+      quality: 90,
+      sourceType: sourceType,
+      saveToPhotoAlbum: false,
+      encodingType: this.camera.EncodingType.JPEG,
+      targetWidth: 1000,
+      targetHeight: 1000,
+      correctOrientation: true
+    };
+
+    return Observable.fromPromise(this.camera.getPicture(options))
+      .map((imagePath) => {
+        if(sourceType === this.camera.PictureSourceType.PHOTOLIBRARY){
+          return Observable.fromPromise(this.filePath.resolveNativePath(imagePath))
+            .map((filePath)=>{
+              let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+              let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+              return this.copyFileToLocalDir(correctPath, currentName)
+            }).switchMap(x=>x)
+        } else {
+          let currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+          let correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+          return this.copyFileToLocalDir(correctPath, currentName)
+        }
+      }).switchMap(x => x)
+  }
+
+  copyFileToLocalDir(correctPath,currentName):Observable<string>{
+    return Observable.fromPromise(this.file.copyFile(correctPath, currentName, cordova.file.dataDirectory, `${new Date().getTime()}.jpg`))
+      .map(file => file.name)
   }
 
   handleError(err: HttpErrorResponse): Observable<Error> {
