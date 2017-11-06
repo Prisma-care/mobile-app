@@ -1,0 +1,28 @@
+prisma-story-list-options, prisma-story-options {
+   .contenu {
+    color:color($colors, primary);
+    height: 15px;
+  }
+
+  .trash-icon{
+    width:15px;
+    height: 15px;
+    position: relative;
+    margin:0 10px 0 0;
+    float:left;
+  
+    &:before{
+      color:color($colors, primary);
+      font-size:20px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .list {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}

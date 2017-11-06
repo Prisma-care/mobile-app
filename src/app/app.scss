@@ -266,19 +266,32 @@ ion-navbar ion-buttons[end] button {
 }
 
 .bar-icon{
-  background: white;
+  background: color($colors, primary);
   width:15px;
   height: 15px;
   border-radius: 3px;
   position: relative;
-  margin:auto;
+  margin:0 10px 0 0;
+  float:left;
 
   &:before{
-    color:color($colors, primary);
-    font-size:30px;
+    color:white;
+    font-size:20px;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
   }
+}
+
+.storyList-popover .popover-content{
+  width:175px;
+  height:85px;
+  border-radius: 10px;
+}
+
+.storyDetail-popover .popover-content{
+  width:215px;
+  height:45px;
+  border-radius: 10px;
 }
