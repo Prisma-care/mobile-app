@@ -10,10 +10,14 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(this.setAuthorizationHeader(req));
+    if(req.url.includes(this.env.apiUrl)){
+      return next.handle(this.setAuthorizationHeader(req));
+    }
+    return next.handle(req)
   }
 
   setAuthorizationHeader(req: HttpRequest<any>): HttpRequest<any> {
+    
     return req.clone({ setHeaders: { Authorization: `Bearer ${localStorage.getItem(this.env.jwtToken)}` } });
   }
 }
