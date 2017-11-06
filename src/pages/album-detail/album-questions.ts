@@ -1,6 +1,5 @@
 import {QuestionService} from "../../providers/question-service/question.service";
 import {Component, Input, OnInit} from "@angular/core";
-import {AuthGuard} from "../auth-guard";
 import {AuthenticationService} from "../../app/core/authentication.service";
 import {NavController} from "ionic-angular";
 import {TranslatorService} from "../../providers/translator.service";

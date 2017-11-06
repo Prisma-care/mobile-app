@@ -6,11 +6,9 @@ import {UserStory} from "../../dto/user-story";
 import {UtilService} from "../../providers/util-service";
 import {API_URL, env} from "../../app/environment";
 import {Transfer, TransferObject} from "@ionic-native/transfer";
-import {AlbumListPage} from "../../app/albumList/albumList.component";
 import {StoryDetailsPage} from "../../app/storyList/story/storyDetail/storyDetail.component";
 import {StanizerService} from "../../providers/stanizer.service";
 import {AuthenticationService} from "../../app/core/authentication.service";
-import {AuthGuard} from "../auth-guard";
 import {Analytics} from '../../providers/analytics';
 import {Page} from 'ionic-angular/navigation/nav-util';
 import {Observable} from 'rxjs/Observable';
@@ -18,7 +16,6 @@ import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/switchMapTo';
 import {UserService} from "../../app/core/user.service";
 import {PatientService} from "../../app/core/patient.service";
-import {StoryListPage} from "../../app/storyList/storyList.component";
 
 @Component({
   selector: 'page-new-story',

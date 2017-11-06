@@ -1,10 +1,8 @@
 import {Component} from '@angular/core';
 import {AlertController, NavController, NavParams} from 'ionic-angular';
-import {AuthGuard} from "../auth-guard";
 import {AuthenticationService} from "../../app/core/authentication.service";
 import {TranslatorService} from "../../providers/translator.service";
 import {UtilService} from "../../providers/util-service";
-import {PatientService} from "../../providers/back-end/user.service";
 import {AlbumsPage} from "../albums/albums";
 import {Analytics} from '../../providers/analytics';
 import {UserService} from "../../app/core/user.service";

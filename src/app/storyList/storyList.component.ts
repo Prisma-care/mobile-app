@@ -89,7 +89,6 @@ export class StoryListPage implements OnInit, OnDestroy {
   }
 
   openActionSheet() {
-    let text1: string = 'Tekst schrijven';
     let text2: string = 'Maak foto';
     let text3: string = 'Kies foto van camerarol';
     let text4: string = 'Kies video van Youtube';
