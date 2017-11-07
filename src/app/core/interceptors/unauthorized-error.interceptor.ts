@@ -19,8 +19,6 @@ export class UnauthorizedErrorInterceptor implements HttpInterceptor {
       .catch((httpError: HttpErrorResponse) => {
         // Check if we had 401 response
         if (httpError.status === 401 && req.url.includes(this.env.apiUrl)) {
-          console.log('UnauthorizedErrorInterceptor::HttpErrorResponse::401');
-          console.log("error", httpError)
           this.clearTokens();
           const nav = this.app.getActiveNav();
           const activeNavName = nav.getActive().name;
