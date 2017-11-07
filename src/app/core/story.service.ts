@@ -8,6 +8,7 @@ import { Environment, EnvironmentToken } from "../environment";
 import { Camera } from "@ionic-native/camera";
 import { FilePath } from "@ionic-native/file-path";
 import { File } from "@ionic-native/file";
+import 'rxjs/add/operator/catch';
 
 interface storyResponse {
   response: UserStory
@@ -146,14 +147,24 @@ export class StoryService {
   }
 
 
-  checkYoutubeLink(url: string): Observable<string | null> {
-    const youtubeLinkRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/
+  validYoutubeLink(url):Boolean{
+    const youtubeLinkRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|watch\/|v\/)?)([\w\-]+)(\S+)?$/
     if (url.toLowerCase().match(youtubeLinkRegex)) {
+      return true;
+    }
+    return false;
+  }
+
+
+  checkYoutubeLink(url: string): Observable<string | Error> {
+    
+    if (this.validYoutubeLink(url)) {
       const urlId = this.getYoutubeId(url)
       return this.http.get(`https://www.googleapis.com/youtube/v3/videos?id=${urlId}&key=${this.env.youtubeApiKey}&part=snippet`)
-        .map((res: youtubeResponse) => res.pageInfo.totalResults ? res.items[0].snippet.thumbnails.standard.url : null)
+        .map((res: youtubeResponse) => res.pageInfo.totalResults ? res.items[0].snippet.thumbnails.standard.url :  null)
+        .catch(err => this.handleError(err))
     } else {
-      return Observable.of(null);
+      return Observable.of(null)
     }
   }
 
