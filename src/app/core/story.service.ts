@@ -149,10 +149,7 @@ export class StoryService {
 
   validYoutubeLink(url):Boolean{
     const youtubeLinkRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|watch\/|v\/)?)([\w\-]+)(\S+)?$/
-    if (url.toLowerCase().match(youtubeLinkRegex)) {
-      return true;
-    }
-    return false;
+    return url.toLowerCase().match(youtubeLinkRegex)
   }
 
 
