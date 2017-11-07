@@ -23,12 +23,6 @@ import { User } from "../../../dto/user";
     <ion-header>
     <ion-navbar>
         <ion-title>{{title}}</ion-title>
-        <ion-buttons end>
-        <button ion-button icon-only (click)="commit()">
-            <ion-icon name="checkmark"></ion-icon>
-        </button>
-        </ion-buttons>
-
     </ion-navbar>
     </ion-header>
 
@@ -53,7 +47,8 @@ import { User } from "../../../dto/user";
           </ion-thumbnail>
         </ion-item>
 
-        <button ion-button solid block full large color="primary" (click)="commit()">
+        <button ion-button solid block full large color="primary" (click)="commit()"
+          [disabled]="!isLoading">
           <ion-icon name="checkmark"></ion-icon>
         </button>
 
