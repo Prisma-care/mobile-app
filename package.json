@@ -1,18 +1,17 @@
 {
-    "name": "prisma-frontend",
-    "version": "0.0.1",
-    "author": "Project Prisma",
-    "homepage": "http://2017.summerofcode.be/",
-    "private": true,
-    "scripts": {
-        "clean": "ionic-app-scripts clean",
-        "build": "ionic-app-scripts build",
-        "lint": "ionic-app-scripts lint",
-        "ionic:build": "ionic-app-scripts build",
-        "ionic:serve": "ionic-app-scripts serve",
-        "install": "ionic cordova plugin add cordova-plugin-mixpanel && ionic cordova plugin add cordova-plugin-youtube-video-player && ionic cordova plugin add cordova-plugin-camera --save && ionic cordova plugin add cordova-plugin-file-transfer --save && ionic cordova plugin add cordova-plugin-file --save && ionic cordova plugin add cordova-plugin-dialogs --save && ionic cordova plugin add com.telerik.plugins.nativepagetransitions --save && ionic cordova plugin add cordova-plugin-network-information"
-    },
-    "dependencies": {
+  "name": "prisma-frontend",
+  "version": "0.0.1",
+  "author": "Project Prisma",
+  "homepage": "http://2017.summerofcode.be/",
+  "private": true,
+  "scripts": {
+    "clean": "ionic-app-scripts clean",
+    "build": "ionic-app-scripts build",
+    "lint": "ionic-app-scripts lint",
+    "ionic:build": "ionic-app-scripts build",
+    "ionic:serve": "ionic-app-scripts serve"
+  },
+  "dependencies": {
         "@angular/common": "^4.4.3",
         "@angular/compiler": "^4.4.3",
         "@angular/compiler-cli": "^4.4.3",

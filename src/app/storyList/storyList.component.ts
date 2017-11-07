@@ -7,12 +7,12 @@ import {PatientService} from "../core/patient.service";
 import {Subject} from "rxjs/Subject";
 import "rxjs/add/operator/takeUntil";
 import {Environment, EnvironmentToken} from "../environment";
-import {NewStoryPage} from "../../pages/new-story/new-story";
-import {UtilService} from "../../providers/util-service";
 import { Content } from "ionic-angular/navigation/nav-interfaces";
 import { StoryListOptionsComponent } from "./component/storyListOptions.component";
 import { PopoverController } from "ionic-angular/components/popover/popover-controller";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
+import { StoryService } from "../core/story.service";
+import { createOrUpdateStoryPage } from "./createOrUpdateStory/createOrUpdateStory.component";
 
 @Component({
   selector: 'prisma-story-list-page',
@@ -61,9 +61,9 @@ export class StoryListPage implements OnInit, OnDestroy {
               private patientService: PatientService,
               private navCtrl: NavController,
               private actionsheetCtrl: ActionSheetController,
-              private utilService:UtilService,
               private popoverCtrl: PopoverController,
-              private toastCtrl: ToastController) {
+              private toastCtrl: ToastController,
+              private storyService: StoryService) {
   }
 
   ngOnInit(): void {
@@ -88,9 +88,7 @@ export class StoryListPage implements OnInit, OnDestroy {
 
   orderByFavorited() {
     return this.album.stories.reduce((acc, it) => {
-      //TODO quickFix for backend not sending the type
-      const quickFixedItem = {...it, type : it.source.includes('youtu') ? 'youtube' : null};
-      return quickFixedItem.favorited ? [quickFixedItem, ...acc] : [...acc, quickFixedItem]
+      return it.favorited ? [it, ...acc] : [...acc, it]
     }, []);
   }
 
@@ -110,18 +108,14 @@ export class StoryListPage implements OnInit, OnDestroy {
             icon: 'camera',
             cssClass: 'general',
             handler: () => {
-              let pictureAttempt: Promise<any> = this.utilService.takeAPicture();
-
-              pictureAttempt.then(
-                (dataUrl) => {
-                  if (dataUrl)
-                    this.navCtrl.push(NewStoryPage,
-                      {
-                        "dataUrl": dataUrl,
-                        "album": this.album,
-                        "method": this.env.methods.addNewStory
-                      })
-                });
+              this.storyService.takeAPicture().takeUntil(this.destroy$).subscribe(dataUrl =>{
+                this.navCtrl.push(createOrUpdateStoryPage,
+                  {
+                    "dataUrl": dataUrl,
+                    "album": this.album,
+                    "method": this.env.methods.addNewStory
+                  })
+              })
             }
           },
           {
@@ -129,19 +123,14 @@ export class StoryListPage implements OnInit, OnDestroy {
             role: 'destructive',
             icon: 'image',
             handler: () => {
-              let fileChooseAttempt: Promise<any> = this.utilService.chooseAFile();
-
-              fileChooseAttempt.then(
-                (dataUrl) => {
-                  console.log("Data Url : " + dataUrl)
-                  if (dataUrl)
-                    this.navCtrl.push(NewStoryPage,
-                      {
-                        "dataUrl": dataUrl,
-                        "album": this.album,
-                        "method": this.env.methods.addNewStory
-                      })
-                });
+              this.storyService.chooseAFile().takeUntil(this.destroy$).subscribe(dataUrl =>{
+                this.navCtrl.push(createOrUpdateStoryPage,
+                  {
+                    "dataUrl": dataUrl,
+                    "album": this.album,
+                    "method": this.env.methods.addNewStory
+                  })
+              })
             }
           },
           {
@@ -149,7 +138,7 @@ export class StoryListPage implements OnInit, OnDestroy {
             role: 'destructive',
             icon: 'play',
             handler: () => {
-              this.navCtrl.push(NewStoryPage,
+              this.navCtrl.push(createOrUpdateStoryPage,
                 {
                   "album": this.album,
                   "method":this.env.methods.addYoutubeStory
@@ -161,7 +150,6 @@ export class StoryListPage implements OnInit, OnDestroy {
             role: 'cancel',
             icon: 'md-arrow-back',
             handler: () => {
-              console.log('canceled');
             }
           },
         ]

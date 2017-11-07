@@ -12,9 +12,9 @@ import {StoryService} from "../../../core/story.service";
 import {PatientService} from "../../../core/patient.service";
 import {Subject} from "rxjs/Subject";
 import "rxjs/add/operator/takeUntil";
-import {NewStoryPage} from "../../../../pages/new-story/new-story";
 import {Environment, EnvironmentToken} from "../../../environment";
 import { Content } from "ionic-angular/navigation/nav-interfaces";
+import { createOrUpdateStoryPage } from "../../createOrUpdateStory/createOrUpdateStory.component";
 
 @Component({
   selector: 'prisma-story-detail',
@@ -143,10 +143,12 @@ export class StoryDetailsPage implements OnInit {
     this.storyService.getBackground(nextStory)
       .takeUntil(this.destroy$)
       .subscribe(imageUrl => {
-        nextStory.backgroundImage = imageUrl;
         this.navCtrl.push(StoryDetailsPage, {
           "album": this.album,
-          "story": nextStory
+          "story": {
+            ...nextStory,
+            backgroundImage:imageUrl
+          }
         });
         this.navCtrl.remove(this.viewCtrl.index)
       })
@@ -158,10 +160,12 @@ export class StoryDetailsPage implements OnInit {
     this.storyService.getBackground(previousStory)
       .takeUntil(this.destroy$)
       .subscribe((imageUrl) => {
-        previousStory.backgroundImage=imageUrl;
         this.navCtrl.push(StoryDetailsPage, {
           "album": this.album,
-          "story": previousStory
+          "story": {
+            ...previousStory,
+            backgroundImage:imageUrl
+          }
         });
         this.navCtrl.remove(this.viewCtrl.index)
       })
@@ -184,7 +188,7 @@ export class StoryDetailsPage implements OnInit {
       story
     });
 
-    this.navCtrl.push(NewStoryPage, {
+    this.navCtrl.push(createOrUpdateStoryPage, {
       "album": this.album,
       "story": story,
       "method": this.env.methods.replaceDescription,

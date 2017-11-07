@@ -10,7 +10,10 @@ export class CommonHeadersInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(this.setHeaders(req));
+    if(req.url.includes(this.env.apiUrl)){
+      return next.handle(this.setHeaders(req));
+    }
+    return next.handle(req)
   }
 
   setHeaders(req: HttpRequest<any>): HttpRequest<any> {
