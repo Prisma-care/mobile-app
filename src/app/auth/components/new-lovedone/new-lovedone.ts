@@ -79,8 +79,10 @@ export class NewLovedonePage implements OnInit {
     this.loading = true;
     this.lovedOnes.addPatient(firstName.trim(), lastName.trim())
       .subscribe((patient: Patient) => {
-        patient.patient_id = patient.id;
-        this.patientService.setPatient(patient);
+        this.patientService.setPatient({
+          ...patient,
+          patient_id: patient.id
+        });
         this.navCtrl.setRoot(AlbumListPage);
       }, () => {
         this.loading = false;

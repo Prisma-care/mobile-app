@@ -26,15 +26,4 @@ export abstract class AbstractUser {
     if (json.createdAt)
       this.createdAt = new Date(json.createdAt);
   }
-
-  getThumbnail(): string {
-    return this.location; // TODO: derive thumbnail link
-  }
-
-  /** Gets the age of the user */
-  getAge(): number {
-    // this can be derived from the dateOfBirth
-    return 1; // TODO: with moment.js
-  }
-
 }

@@ -143,10 +143,12 @@ export class StoryDetailsPage implements OnInit {
     this.storyService.getBackground(nextStory)
       .takeUntil(this.destroy$)
       .subscribe(imageUrl => {
-        nextStory.backgroundImage = imageUrl;
         this.navCtrl.push(StoryDetailsPage, {
           "album": this.album,
-          "story": nextStory
+          "story": {
+            ...nextStory,
+            backgroundImage:imageUrl
+          }
         });
         this.navCtrl.remove(this.viewCtrl.index)
       })
@@ -158,10 +160,12 @@ export class StoryDetailsPage implements OnInit {
     this.storyService.getBackground(previousStory)
       .takeUntil(this.destroy$)
       .subscribe((imageUrl) => {
-        previousStory.backgroundImage=imageUrl;
         this.navCtrl.push(StoryDetailsPage, {
           "album": this.album,
-          "story": previousStory
+          "story": {
+            ...previousStory,
+            backgroundImage:imageUrl
+          }
         });
         this.navCtrl.remove(this.viewCtrl.index)
       })

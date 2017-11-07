@@ -5,6 +5,7 @@ import {Album} from "../../dto/album";
 import {AlbumService} from "../core/album.service";
 import {Observable} from "rxjs/Observable";
 import {Analytics} from "../../providers/analytics";
+import { Patient } from "../../dto/patient";
 
 @Component({
   selector: 'prisma-album-list-page',
@@ -62,6 +63,7 @@ import {Analytics} from "../../providers/analytics";
 export class AlbumListPage {
 
   albums: Observable<Album[]>;
+  currentPatient: Patient;
 
   constructor(private patientService: PatientService,
               private menu: MenuController,
@@ -73,7 +75,8 @@ export class AlbumListPage {
 
   ionViewWillEnter(): void {
     this.menu.enable(true);
-    this.albums = this.albumService.getAlbums(this.patientService.getCurrentPatient().patient_id) as Observable<Album[]>
+    this.currentPatient = this.patientService.getCurrentPatient()
+    this.albums = this.albumService.getAlbums(this.currentPatient.patient_id) as Observable<Album[]>
   }
 
   ionViewWillLeave(): void {
@@ -108,18 +111,17 @@ export class AlbumListPage {
         {
           text: text3,
           handler: data => {
-            this.albumService.addAlbum(this.patientService.getCurrentPatient().patient_id, data.title)
+            this.albumService.addAlbum(this.currentPatient.patient_id, data.title)
               .subscribe(() => {
-
                 this.analytics.track('AlbumsComponent::add album success', {
-                  patient_id: this.patientService.getCurrentPatient().patient_id,
+                  patient_id: this.currentPatient.patient_id,
                   title: data.title
                 });
 
-                this.albums = this.albumService.getAlbums(this.patientService.getCurrentPatient().patient_id) as Observable<Album[]>
+                this.albums = this.albumService.getAlbums(this.currentPatient.patient_id) as Observable<Album[]>
               }, () => {
                 this.analytics.track('AlbumsComponent::add album error', {
-                  patient_id: this.patientService.getCurrentPatient().patient_id,
+                  patient_id: this.currentPatient.patient_id,
                   title: data.title
                 });
 

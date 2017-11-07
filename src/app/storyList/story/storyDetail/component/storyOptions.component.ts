@@ -24,8 +24,7 @@ export class StoryOptionsComponent {
   ) {}
 
   deleteStory(): void {
-    let story = this.navParams.data.story;
-    this.storyService.deleteStory(+this.patientService.getCurrentPatient().patient_id, +story.id).subscribe(
+    this.storyService.deleteStory(+this.patientService.getCurrentPatient().patient_id, +this.navParams.data.story.id).subscribe(
       () => {
         this.viewCtrl.dismiss("deleteSuccess");
       }, err => {

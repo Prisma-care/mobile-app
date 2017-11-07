@@ -14,6 +14,8 @@ import { ViewController } from "ionic-angular/navigation/view-controller";
 import { TransferObject, Transfer } from "@ionic-native/transfer";
 import { LoadingController, Loading } from "ionic-angular";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
+import { Patient } from "../../../dto/patient";
+import { User } from "../../../dto/user";
 
 @Component({
   selector: 'prisma-create-update-story',
@@ -76,33 +78,42 @@ export class createOrUpdateStoryPage implements OnInit {
 
   loading: Loading;
   isLoading: Boolean = false
+  currentPatient: Patient;
+  currentUser: User;
 
   methods = {
     [this.env.methods.addNewStory]: {
       init: () => {
         this.initStory()
-        this.story.type = 'image'
+        this.story = {
+          ...this.story,
+          type:'image'
+        }
         this.image = this.storyService.pathForImage(this.dataUrl)
         this.isLoading = true;
       },
       send: () => {
         this.addStory().subscribe((addedStory) => {
-          this.uploadImage(+this.patientService.getCurrentPatient().patient_id, +addedStory.id, this.dataUrl)
+          this.uploadImage(+this.currentPatient.patient_id, +addedStory.id, this.dataUrl)
         })
       }
     },
     [this.env.methods.addYoutubeStory]: {
       init: () => {
+        this.title = 'Kies video van Youtube';
         this.initStory()
-        this.story.type = 'youtube'
-        this.title = "Kies video van Youtube";
-        this.story.description = "Video van Youtube";
-        this.story.source = "https://www.youtube.com/watch?v="
+        this.story = {
+          ...this.story,
+          albumId: +this.album.id,
+          creatorId: +this.currentUser.id,
+          type: 'youtube',
+          description: 'Video van Youtube'
+        }
       },
       send: () => {
         if (this.isLoading) {
           this.addStory()
-            .map((addedStory) => this.storyService.addYoutubeLinkAsset(+this.patientService.getCurrentPatient().patient_id, +addedStory.id, this.story.source))
+            .map((addedStory) => this.storyService.addYoutubeLinkAsset(+this.currentPatient.patient_id, +addedStory.id, this.story.source))
             .switchMap(x => x)
             .subscribe(() => this.navCtrl.pop())
         } else {
@@ -145,6 +156,8 @@ export class createOrUpdateStoryPage implements OnInit {
     this.dataUrl = this.navParams.get("dataUrl");
     this.album = this.navParams.get("album") as Album;
     this.story = { ...this.navParams.get("story") } as UserStory;
+    this.currentPatient = this.patientService.getCurrentPatient();
+    this.currentUser = this.userService.getCurrentUser()
     this.methods[this.method].init();
   }
 
@@ -153,11 +166,11 @@ export class createOrUpdateStoryPage implements OnInit {
   }
 
   updateDescription() {
-    this.storyService.updateStory(+this.patientService.getCurrentPatient().patient_id, this.story).subscribe(addedStory => {
+    this.storyService.updateStory(+this.currentPatient.patient_id, this.story).subscribe(addedStory => {
 
       this.analytics.track('NewStoryComponent::updateDescription', {
-        email: this.userService.getCurrentUser().email,
-        patient_id: +this.patientService.getCurrentPatient().patient_id,
+        email: this.currentUser.email,
+        patient_id: +this.currentPatient.patient_id,
         updatedStory: this.story,
         selectedAlbum: this.album
       });
@@ -172,15 +185,18 @@ export class createOrUpdateStoryPage implements OnInit {
   }
 
   initStory() {
-    this.story.albumId = +this.album.id;
-    this.story.creatorId = +this.userService.getCurrentUser().id || 0;
+    this.story = {
+      ...this.story,
+      albumId: +this.album.id,
+      creatorId: +this.currentUser.id
+    }
   }
 
   addStory() {
-    return this.storyService.addStory(+this.patientService.getCurrentPatient().patient_id, this.story).map((addedStory: UserStory) => {
+    return this.storyService.addStory(+this.currentPatient.patient_id, this.story).map((addedStory: UserStory) => {
       this.analytics.track('NewStoryComponent::saving story', {
-        email: this.userService.getCurrentUser().email,
-        patient_id: +this.patientService.getCurrentPatient().patient_id,
+        email: this.currentUser.email,
+        patient_id: +this.currentPatient.patient_id,
         newStory: this.story,
         selectedAlbum: this.album
       });
@@ -190,7 +206,7 @@ export class createOrUpdateStoryPage implements OnInit {
 
   checkYoutubeLink(value) {
     this.storyService.checkYoutubeLink(value)
-      .subscribe(res => {
+      .subscribe((res:string) => {
         if (res) {
           this.image = this.sanitizer.bypassSecurityTrustUrl(res)
           this.isLoading = true;

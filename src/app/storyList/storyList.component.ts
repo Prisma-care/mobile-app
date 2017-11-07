@@ -88,9 +88,7 @@ export class StoryListPage implements OnInit, OnDestroy {
 
   orderByFavorited() {
     return this.album.stories.reduce((acc, it) => {
-      //TODO quickFix for backend not sending the type
-      const quickFixedItem = {...it, type : it.source.includes('youtu') ? 'youtube' : null};
-      return quickFixedItem.favorited ? [quickFixedItem, ...acc] : [...acc, quickFixedItem]
+      return it.favorited ? [it, ...acc] : [...acc, it]
     }, []);
   }
 
@@ -152,7 +150,6 @@ export class StoryListPage implements OnInit, OnDestroy {
             role: 'cancel',
             icon: 'md-arrow-back',
             handler: () => {
-              console.log('canceled');
             }
           },
         ]
