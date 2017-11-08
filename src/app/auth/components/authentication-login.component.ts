@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../core/authentication.service';
 import {AlertController, NavController} from 'ionic-angular';
@@ -13,18 +13,19 @@ import {PasswordResetComponent} from "./password-reset/password-reset.component"
   selector: 'prisma-authentication-login',
   template: `
     <form [formGroup]="form">
-      <ion-list inset>
-        <ion-item>
+      <ion-list class="list">
+        <ion-item padding>
           <ion-input
             type="email"
             formControlName="email"
             placeholder="E-mail"
             clearOnEdit="false"
-            clearInput>
+            clearInput
+            #inputEmail>
           </ion-input>
         </ion-item>
 
-        <ion-item>
+        <ion-item padding>
           <ion-input
             [type]="type"
             #input
@@ -54,16 +55,16 @@ import {PasswordResetComponent} from "./password-reset/password-reset.component"
 
       <div class="signup-suggestion">
         <p class="alternate-option" (click)="onRegisterClick()">
-          Nog geen account ?
+          Nog geen account?
           <a color="general">
-            Maak account .
+            Maak account.
           </a>
         </p>
-        <p class="alternate-option" (click)="goToPasswordResetPage()">
+        <!--<p class="alternate-option" (click)="goToPasswordResetPage()">
           <a color="general">
             Wachtwoord vergeten?
           </a>
-        </p>
+        </p>-->
       </div>
     </form>
   `,
@@ -79,6 +80,9 @@ export class AuthenticationLoginComponent implements OnInit {
 
   @Input()
   data: { email: string } = { email: '' };
+
+  @ViewChild('inputEmail')
+  inputEmail
 
   form: FormGroup;
   type = "password";
@@ -112,6 +116,10 @@ export class AuthenticationLoginComponent implements OnInit {
         Validators.maxLength(40)
       ], []]
     });
+
+    setTimeout(()=>{
+      this.inputEmail.setFocus()
+    },400)
   }
 
   toggleShow() {
@@ -149,7 +157,9 @@ export class AuthenticationLoginComponent implements OnInit {
   }
 
   goToPasswordResetPage():void{
-    this.navCtrl.push(PasswordResetComponent);
+    this.navCtrl.push(PasswordResetComponent, {
+      "email":this.form.getRawValue().email
+    });
   }
 
   showError(errorMessage: string = 'Je gebruikersnaam of wachtwoord klopt niet.') {

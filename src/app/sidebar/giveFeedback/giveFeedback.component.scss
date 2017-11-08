@@ -1,0 +1,21 @@
+prisma-give-feedback{
+  background: white;
+
+  .text-give-feedback{
+    margin-left: 1.5em;
+    line-height: 1.3em;
+    font-size: 18px;
+    color: color($colors, dark-gray);
+  }
+
+  .send-email{
+    margin-left: 0.6em;
+    font-size: 18px;
+    color: color($colors, primary);
+  }
+
+  .send-mail-icon{
+    margin-right: 0.3em;
+  }
+}
+

@@ -6,7 +6,6 @@ import {NewStoryPage} from "../new-story/new-story";
 import {StoryDetailsPage} from "../storydetails/storydetails";
 import {StanizerService} from "../../providers/stanizer.service";
 import {AuthenticationService} from "../../app/core/authentication.service";
-import {AuthGuard} from "../auth-guard";
 import {env} from "../../app/environment";
 import {TranslatorService} from "../../providers/translator.service";
 import {UserStory} from "../../dto/user-story";

@@ -8,7 +8,6 @@ import {Camera} from "@ionic-native/camera";
 import {AlbumDetailPage} from "../album-detail/album-detail";
 import {env} from "../../app/environment";
 import {Patient} from "../../dto/patient";
-import {AuthGuard} from "../auth-guard";
 import {AuthenticationService} from "../../app/core/authentication.service";
 import {TranslatorService} from "../../providers/translator.service";
 import {LoginPage} from "../login/login";

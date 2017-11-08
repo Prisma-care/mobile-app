@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {Loading, LoadingController, NavController, NavOptions, NavParams, ViewController} from "ionic-angular";
 import {Album} from "../../dto/album";
 import {StoryService} from "../../app/core/story.service";
@@ -6,12 +6,9 @@ import {UserStory} from "../../dto/user-story";
 import {UtilService} from "../../providers/util-service";
 import {API_URL, env} from "../../app/environment";
 import {Transfer, TransferObject} from "@ionic-native/transfer";
-import {AlbumListPage} from "../../app/albumList/albumList.component";
 import {StoryDetailsPage} from "../../app/storyList/story/storyDetail/storyDetail.component";
 import {StanizerService} from "../../providers/stanizer.service";
 import {AuthenticationService} from "../../app/core/authentication.service";
-import {AuthGuard} from "../auth-guard";
-import {TranslatorService} from "../../providers/translator.service";
 import {MixpanelService} from '../../providers/analytics/mixpanel.service';
 import {Page} from 'ionic-angular/navigation/nav-util';
 import {Observable} from 'rxjs/Observable';
@@ -26,7 +23,7 @@ import {PatientService} from "../../app/core/patient.service";
 })
 
 
-export class NewStoryPage  {
+export class NewStoryPage  implements OnInit{
 
 
   methods: {
@@ -48,36 +45,32 @@ export class NewStoryPage  {
 
   index: number = 0;
   oldStory: UserStory;
-  util: UtilService;
 
 //file Transfer
   loading: Loading;
   isLoading: boolean = false;
 
-  constructor(protected authService: AuthenticationService, public navCtrl: NavController, public translatorService: TranslatorService, public navParams: NavParams,
-              private storyService: StoryService, private utilService: UtilService,
+  constructor(protected authService: AuthenticationService, public navCtrl: NavController, public navParams: NavParams,
+              private storyService: StoryService, private util: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
               public stanizer: StanizerService,
               private mixpanel: MixpanelService,
               private userService: UserService,
               private patientService: PatientService,
               private viewCtrl: ViewController) {
-    this.translatorService.translate(this.placeHolder, value => this.placeHolder = value);
-    this.method = navParams.get("method") as string;
-    this.dataUrl = navParams.get("dataUrl") as string;
-    this.selectedAlbum = navParams.get("album") as Album;
-    this.index = navParams.get("index") as number;
-    this.util = utilService;
+
+  }
+
+  ngOnInit(): void {
+    this.method = this.navParams.get("method") as string;
+    this.dataUrl = this.navParams.get("dataUrl") as string;
+    this.selectedAlbum = this.navParams.get("album") as Album;
+    this.index = this.navParams.get("index") as number;
     this.title = 'Vul het verhaal aan';
-    this.oldStory = navParams.get("story") as UserStory;
+    this.oldStory = this.navParams.get("story") as UserStory;
 
     if (this.method.indexOf(env.methods.replaceDescription) >= 0) {
       this.description = this.oldStory.description;
-      if (this.oldStory.source)
-        if (this.oldStory.source.toLowerCase().indexOf("youtube.com") < 0)
-          this.dataUrl = this.oldStory.source;
-        else
-          this.dataUrl = null;
     }
     this.sanitizeUrl();
     if (this.method.indexOf(env.methods.replaceImage) >= 0) {
@@ -89,14 +82,6 @@ export class NewStoryPage  {
       this.title = "Kies video van Youtube";
       this.description = "Video van Youtube";
     }
-
-
-    // check if source is a question answer
-    /*if (navParams.get("questionAnswer")) {
-      this.description = navParams.get("description");
-      this.commit(); // skip to step 2 because we already have the description
-    }*/
-
   }
 
   commitWithLoading() {
@@ -139,26 +124,18 @@ export class NewStoryPage  {
       if (this.dataUrl) {
         this.uploadImage(this.patientService.getCurrentPatient().patient_id, (addedStory as any).id , this.dataUrl + "")
           .then(res => {
-            this.setRoot(AlbumListPage, {
-              "album": this.selectedAlbum,
-            }).subscribe();
+            return this.navCtrl.pop();
           }).catch(err => {
           console.log(err);
         });
       }
       else {
         if (this.method.indexOf(env.methods.addYoutubeStory) >= 0 && this.youtubeLink) {
-          this.storyService.addYoutubeLinkAsset(this.patientService.getCurrentPatient().patient_id, (addedStory as any).id, this.youtubeLink).toPromise().then(ret => {
-            this.setRoot(AlbumListPage, {
-              "album": this.selectedAlbum,
-            });
-            return;
+          this.storyService.addYoutubeLinkAsset(+this.patientService.getCurrentPatient().patient_id, (addedStory as any).id, this.youtubeLink).toPromise().then(ret => {
+            return this.navCtrl.pop();
           });
 
         }
-        this.setRoot(AlbumListPage, {
-          "album": this.selectedAlbum,
-        });
       }
     });
   }
@@ -237,7 +214,7 @@ export class NewStoryPage  {
       content: 'Uploading...',
     });
     this.loading.present();
-    var targetPath = this.utilService.pathForImage(lastImage);
+    var targetPath = this.util.pathForImage(lastImage);
     console.log("Path : " + targetPath);
     // Use the FileTransfer to upload the image
     return fileTransfer.upload(targetPath, url, options).then(data => {

@@ -38,9 +38,11 @@ import {FullstoryService} from '../providers/analytics/fullstory.service';
 import {CoreModule} from './core/core.module';
 import {AuthModule} from './auth/auth.module';
 import {EnvironmentProvider} from './environment';
-import {SidebarComponent} from "./components/sidebar.component";
 import {AlbumModule} from "./albumList/album.module";
 import {StoryModule} from "./storyList/story.module";
+import {SidebarModule} from "./sidebar/sidebar.module";
+import { LoginPage } from "../pages/login/login";
+import { NewLovedonePage } from "../pages/new-lovedone/new-lovedone";
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -57,8 +59,9 @@ export function createTranslateLoader(http: Http) {
     AlbumQuestions,
     StoryOptionsComponent,
     LoginHeaderComponent,
+    LoginPage,
+    NewLovedonePage,
     InvitePage,
-    SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -66,6 +69,7 @@ export function createTranslateLoader(http: Http) {
     IonicStorageModule.forRoot(),
     CoreModule,
     AuthModule,
+    SidebarModule,
     AlbumModule,
     StoryModule,
     TranslateModule.forRoot({
@@ -87,7 +91,6 @@ export function createTranslateLoader(http: Http) {
     AlbumQuestions,
     StoryOptionsComponent,
     InvitePage,
-    SidebarComponent
   ],
   providers: [
     EnvironmentProvider,

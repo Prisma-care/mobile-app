@@ -1,9 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from "@angular/core";
-import {NavController, NavParams} from "ionic-angular";
-import {Album} from "../../../dto/album";
+import {NavController} from "ionic-angular";
 import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {UserStory} from "../../../dto/user-story";
-import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/from";
 import "rxjs/add/observable/of";
 import {StoryService} from "../../core/story.service";
@@ -12,15 +10,25 @@ import {Subject} from "rxjs/Subject";
 
 @Component({
   selector: 'prisma-story',
+  styles: [
+    `
+      .album-thumb h3 {
+        padding: 0 1em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 16px;
+      }
+    `
+  ],
   template:
     `
     <div *ngIf="imageLoaded" 
          class="album-thumb"
          [style]="backgroundImage"
          (click)="showDetails()">
-      <ion-icon name="logo-youtube" color="white"
-                class="movie-indicator"
-                *ngIf="isAVideo"></ion-icon>
+      <div *ngIf="story.type==='youtube'" class="youtube-icon movie-indicator"></div>
+      <h3 *ngIf="story.type==='youtube'">{{story.description}}</h3>
       <ion-icon *ngIf="story.favorited" class="star" name="star"
                 [class.favorited]="isFavorited"></ion-icon>
     </div>
@@ -36,7 +44,6 @@ export class StoryComponent implements OnInit, OnDestroy {
   backgroundImage:SafeStyle;
   imageUrl:string;
   imageLoaded:Boolean=false;
-  isAVideo:Boolean=false;
 
   @Input()
   story;
@@ -51,7 +58,6 @@ export class StoryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.isAVideo=this.story.type==='youtube';
     this.setBackgroundImage(this.story);
   }
 
@@ -64,7 +70,10 @@ export class StoryComponent implements OnInit, OnDestroy {
       this.storyService.getBackground(story)
         .takeUntil(this.destroy$)
         .subscribe((imageUrl:string) => {
-          this.story.backgroundImage = imageUrl;
+          this.story = {
+            ...this.story,
+            backgroundImage:imageUrl
+          }
           this.backgroundImage = this.sanitizer
             .bypassSecurityTrustStyle(`background-image: url(${imageUrl})`);
           this.imageLoaded = true;

@@ -4,7 +4,6 @@ import {PatientService} from "../../app/core/patient.service";
 import {AuthenticationService} from "../../app/core/authentication.service";
 import {Patient} from "../../dto/patient";
 import {AlbumsPage} from "../albums/albums";
-import {AuthGuard} from "../auth-guard";
 import {TranslatorService} from "../../providers/translator.service";
 
 /**

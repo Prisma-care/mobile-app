@@ -1,11 +1,11 @@
-import {Component, Inject} from "@angular/core";
-import {Environment, EnvironmentToken} from "../environment";
+import {Component} from "@angular/core";
 import {PatientService} from "../core/patient.service";
-import {AlertController, MenuController, NavController} from "ionic-angular";
+import {AlertController, MenuController} from "ionic-angular";
 import {Album} from "../../dto/album";
 import {AlbumService} from "../core/album.service";
 import {Observable} from "rxjs/Observable";
 import {MixpanelService} from "../../providers/analytics/mixpanel.service";
+import {Patient} from "../../dto/patient";
 
 @Component({
   selector: 'prisma-album-list-page',
@@ -41,7 +41,7 @@ import {MixpanelService} from "../../providers/analytics/mixpanel.service";
         <button ion-button menuToggle class="albums-menu">
           <ion-icon color="black" name='menu'></ion-icon>
         </button>
-        <h2>Waarover babbelen we vandaag?</h2>
+        <h2>Waarover babbelen<br/> we vandaag?</h2>
       </div>
       <ion-grid *ngIf="albums">
         <ion-row>
@@ -52,7 +52,7 @@ import {MixpanelService} from "../../providers/analytics/mixpanel.service";
       </ion-grid>
       <div class="add-new-container">
         <div class="add-new" (click)="addAlbum()">
-          <ion-icon name="camera"></ion-icon>
+          <ion-icon class="add-icon" name="md-add"></ion-icon>
           <span>Voeg album toe</span>
         </div>
       </div>
@@ -63,9 +63,9 @@ import {MixpanelService} from "../../providers/analytics/mixpanel.service";
 export class AlbumListPage {
 
   albums: Observable<Album[]>;
+  currentPatient: Patient;
 
-  constructor(@Inject(EnvironmentToken) private env: Environment,
-              private patientService: PatientService,
+  constructor(private patientService: PatientService,
               private menu: MenuController,
               private albumService: AlbumService,
               private alertCtrl: AlertController,
@@ -75,7 +75,8 @@ export class AlbumListPage {
 
   ionViewWillEnter(): void {
     this.menu.enable(true);
-    this.albums = this.albumService.getAlbums(this.patientService.getCurrentPatient().patient_id) as Observable<Album[]>
+    this.currentPatient = this.patientService.getCurrentPatient()
+    this.albums = this.albumService.getAlbums(this.currentPatient.patient_id) as Observable<Album[]>
   }
 
   ionViewWillLeave(): void {
@@ -110,18 +111,17 @@ export class AlbumListPage {
         {
           text: text3,
           handler: data => {
-            this.albumService.addAlbum(this.patientService.getCurrentPatient().patient_id, data.title)
+            this.albumService.addAlbum(this.currentPatient.patient_id, data.title)
               .subscribe(() => {
-
                 this.mixpanel.track('AlbumsComponent::add album success', {
-                  patient_id: this.patientService.getCurrentPatient().patient_id,
+                  patient_id: this.currentPatient.patient_id,
                   title: data.title
                 });
 
-                this.albums = this.albumService.getAlbums(this.patientService.getCurrentPatient().patient_id) as Observable<Album[]>
+                this.albums = this.albumService.getAlbums(this.currentPatient.patient_id) as Observable<Album[]>
               }, () => {
                 this.mixpanel.track('AlbumsComponent::add album error', {
-                  patient_id: this.patientService.getCurrentPatient().patient_id,
+                  patient_id: this.currentPatient.patient_id,
                   title: data.title
                 });
 

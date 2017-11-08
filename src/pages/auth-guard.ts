@@ -3,13 +3,11 @@ import {NavController} from "ionic-angular";
 import {LoginPage} from "./login/login";
 import {Injectable} from "@angular/core";
 import {TranslatorService} from "../providers/translator.service";
-import {TranslateService} from "@ngx-translate/core";
 
 
 @Injectable()
 export class AuthGuard {
   //General injection
-  private translate: TranslateService;
   private translator: TranslatorService;
 
   constructor(protected authService: AuthenticationService, protected  navCtrl: NavController, public translatorService: TranslatorService) {

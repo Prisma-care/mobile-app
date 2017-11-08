@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnDestroy, OnInit} from "@angular/core";
+import {Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {NavController} from "ionic-angular";
 import {AlbumService} from "../../core/album.service";
 import {UserStory} from "../../../dto/user-story";
@@ -57,9 +57,6 @@ import {Subject} from "rxjs/Subject";
          (click)="showDetails()">
       <div class="tile-overlay-gradient"></div>
       <h3 class="hist-title">{{album.title || '?'}}</h3>
-      <ion-icon name="logo-youtube" color="white"
-                class="movie-indicator"
-                *ngIf="isAVideo"></ion-icon>
     </div>
     <div *ngIf="!imageLoaded" class="album-thumb">
       <ion-spinner item-start name="dots" color="white"></ion-spinner>

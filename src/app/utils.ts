@@ -41,13 +41,12 @@ export const getThumbnails = (url) => {
   if (!url) {
     return '';
   }
-  let results = url.match('[\\?&]v=([^&#]*)');
-  let video = (results === null) ? '' : results[1];
+  let video = youtubeId(url)
   return 'http://img.youtube.com/vi/' + video + '/0.jpg';
 };
 
 export const youtubeId = (url: string): string => {
-  var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   var match = url.match(regExp);
 
   if (match && match[2].length == 11) {

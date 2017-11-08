@@ -5,11 +5,13 @@ export interface Environment {
   apiUrl: string;
   currentVersion: string;
   production: boolean;
+  youtubeApiKey:string;
   jwtToken: string;
   lastestUsedVersion: string;
   localstorage: { LOCALSTORAGE_SELECTEDLANG: string };
   privateImagesRegex: string;
   loadingImage: string;
+  supportMailAddress: string;
   api: {
     getSignIn: string;
     getPatient: string;
@@ -41,11 +43,13 @@ export const env: Environment = {
   apiUrl: API_URL,
   currentVersion: '0.3.2',
   production: false,
+  youtubeApiKey:'AIzaSyBGA18_O8NWLDbu2nRPRc_FRMcK0DTQs80',
   jwtToken: 'id_token',
   lastestUsedVersion: 'version',
   localstorage: { LOCALSTORAGE_SELECTEDLANG: "langs" },
   privateImagesRegex: '/asset/',
   loadingImage: "assets/img/homePage/loading.png",
+  supportMailAddress: 'info@prisma.care',
   api: {
     getSignIn: 'signin',
     getPatient: 'patient',

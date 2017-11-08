@@ -44,8 +44,6 @@ ion-input {
   color: color($colors, medium-gray);
 }
 
-
-
 .ion-menu-buttons {
   font-size: 16px;
   color: color($colors, general);
@@ -221,4 +219,79 @@ ion-navbar ion-buttons[end] button {
   bottom: 2em;
   left: 0;
   right: 0;
+}
+
+
+
+.youtube-icon{
+  height:1em;
+  width:1em;
+  background: color($colors, primary);
+  border-radius: 0.5em;
+  position: relative;
+
+  &:before{
+    content:"";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background: url('../assets/img/Triangle.png') no-repeat 5.5px center;
+    background-size: contain;
+    height: 23px;
+    width: 23px;
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+
+  }
+  
+}
+
+.add-icon{
+  background: white;
+  width:30px;
+  height: 30px;
+  border-radius: 3px;
+  position: relative;
+  margin:auto;
+  margin-bottom: 10px;
+
+  &:before{
+    color:color($colors, primary);
+    font-size:35px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.bar-icon{
+  background: color($colors, primary);
+  width:15px;
+  height: 15px;
+  border-radius: 3px;
+  position: relative;
+  margin:0 10px 0 0;
+  float:left;
+
+  &:before{
+    color:white;
+    font-size:20px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.storyList-popover .popover-content{
+  width:175px;
+  height:85px;
+  border-radius: 10px;
+}
+
+.storyDetail-popover .popover-content{
+  width:215px;
+  height:45px;
+  border-radius: 10px;
 }
