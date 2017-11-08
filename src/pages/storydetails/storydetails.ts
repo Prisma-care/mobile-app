@@ -20,7 +20,7 @@ import {StanizerService} from "../../providers/stanizer.service";
 import {StoryOptionsComponent} from "./story-options.component";
 import {TranslatorService} from "../../providers/translator.service";
 import {YoutubeVideoPlayer} from '@ionic-native/youtube-video-player';
-import {Analytics} from '../../providers/analytics';
+import {MixpanelService} from '../../providers/analytics/mixpanel.service';
 import {PatientService} from "../../app/core/patient.service";
 import {AlbumService} from "../../app/core/album.service";
 
@@ -52,7 +52,7 @@ export class StoryDetailsPage implements OnInit {
               public popoverCtrl: PopoverController,
               public menu: MenuController, private ref: ChangeDetectorRef,
               private youtube: YoutubeVideoPlayer,
-              private analytics: Analytics,
+              private mixpanel: MixpanelService,
               private plateform: Platform,
               private albumService:AlbumService) {
     this.album = navParams.get("album") as Album;
@@ -66,7 +66,7 @@ export class StoryDetailsPage implements OnInit {
       //this.navCtrl.remove(this.navCtrl.length()-2);
     }
 
-    this.analytics.track('StoryDetailsPage::view', {
+    this.mixpanel.track('StoryDetailsPage::view', {
       story: this.story,
     });
 
@@ -178,7 +178,7 @@ export class StoryDetailsPage implements OnInit {
 
     let story: UserStory = this.getStory();
 
-    this.analytics.track('StoryDetailsPage::editDescription', {
+    this.mixpanel.track('StoryDetailsPage::editDescription', {
       story,
     });
 

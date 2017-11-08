@@ -5,7 +5,7 @@ import {SplashScreen} from "@ionic-native/splash-screen";
 
 import {TranslatorService} from "../providers/translator.service";
 import {TranslateService} from "@ngx-translate/core";
-import {Analytics} from '../providers/analytics';
+import {MixpanelService} from '../providers/analytics/mixpanel.service';
 import {AuthenticationPage} from './auth/authentication.component';
 import {AlbumsPage} from '../pages/albums/albums';
 import {AuthenticationService} from './core/authentication.service';
@@ -30,7 +30,7 @@ export class MyApp implements OnInit{
               public translatorService: TranslatorService,
               public authService: AuthenticationService,
               private albumService:AlbumService,
-              private analytics: Analytics,
+              private mixpanel: MixpanelService,
               private statusBar: StatusBar,
               private network: Network) {
   }
@@ -52,7 +52,7 @@ export class MyApp implements OnInit{
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
-    this.analytics.track('AppComponent::Prisma launched');
+    this.mixpanel.track('AppComponent::Prisma launched');
  }
 
 

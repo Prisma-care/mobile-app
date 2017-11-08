@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../core/authentication.service';
 import {AlertController} from 'ionic-angular';
-import {Analytics} from '../../../providers/analytics';
+import {MixpanelService} from '../../../providers/analytics/mixpanel.service';
 import {User} from '../../../dto/user';
 import {Observable} from 'rxjs/Observable';
 
@@ -74,7 +74,7 @@ export class AuthenticationRegisterComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private auth: AuthenticationService,
               private alertCtrl: AlertController,
-              private analytics: Analytics) {
+              private mixpanel: MixpanelService) {
   }
 
   // TODO: display error message
@@ -130,7 +130,7 @@ export class AuthenticationRegisterComponent implements OnInit {
     this.auth.signUp(user as User)
       .switchMap((res: boolean | Error) => {
         if (res instanceof Error) {
-          this.analytics.track('LoginComponent::Register error', {
+          this.mixpanel.track('LoginComponent::Register error', {
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName
@@ -141,7 +141,7 @@ export class AuthenticationRegisterComponent implements OnInit {
         return Observable.of(res);
       })
       .do(() => {
-        this.analytics.track('LoginComponent::Register success', {
+        this.mixpanel.track('LoginComponent::Register success', {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName
@@ -150,7 +150,7 @@ export class AuthenticationRegisterComponent implements OnInit {
         this.onComplete();
       })
       .subscribe(undefined, (err) => {
-        this.analytics.track('LoginComponent::Register error', {
+        this.mixpanel.track('LoginComponent::Register error', {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName

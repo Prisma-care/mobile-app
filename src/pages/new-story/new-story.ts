@@ -12,7 +12,7 @@ import {StanizerService} from "../../providers/stanizer.service";
 import {AuthenticationService} from "../../app/core/authentication.service";
 import {AuthGuard} from "../auth-guard";
 import {TranslatorService} from "../../providers/translator.service";
-import {Analytics} from '../../providers/analytics';
+import {MixpanelService} from '../../providers/analytics/mixpanel.service';
 import {Page} from 'ionic-angular/navigation/nav-util';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
@@ -58,7 +58,7 @@ export class NewStoryPage  {
               private storyService: StoryService, private utilService: UtilService,
               private transfer: Transfer, public loadingCtrl: LoadingController,
               public stanizer: StanizerService,
-              private analytics: Analytics,
+              private mixpanel: MixpanelService,
               private userService: UserService,
               private patientService: PatientService,
               private viewCtrl: ViewController) {
@@ -129,7 +129,7 @@ export class NewStoryPage  {
       newStory.source = this.youtubeLink;
     }
     this.storyService.addStory(+this.patientService.getCurrentPatient().patient_id, newStory).toPromise().then((addedStory):any => {
-      this.analytics.track('NewStoryComponent::saving story', {
+      this.mixpanel.track('NewStoryComponent::saving story', {
         email: this.userService.getCurrentUser().email,
         patient_id: +this.patientService.getCurrentPatient().patient_id,
         newStory,
@@ -176,7 +176,7 @@ export class NewStoryPage  {
     updatedStory.description = this.oldStory.description;
     this.storyService.updateStory(+this.patientService.getCurrentPatient().patient_id, updatedStory).toPromise().then(addedStory => {
 
-      this.analytics.track('NewStoryComponent::updateDescription', {
+      this.mixpanel.track('NewStoryComponent::updateDescription', {
         email: this.userService.getCurrentUser().email,
         patient_id: +this.patientService.getCurrentPatient().patient_id,
         updatedStory,
@@ -197,7 +197,7 @@ export class NewStoryPage  {
     if (this.dataUrl) {
       this.uploadImage(this.patientService.getCurrentPatient().patient_id, this.oldStory.id, this.dataUrl + "").then(res => {
 
-        this.analytics.track('NewStoryComponent::uploadImage', {
+        this.mixpanel.track('NewStoryComponent::uploadImage', {
           email: this.userService.getCurrentUser().email,
           patient_id: +this.patientService.getCurrentPatient().patient_id,
           selectedAlbum: this.selectedAlbum,

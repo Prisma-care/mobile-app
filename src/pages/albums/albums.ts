@@ -14,7 +14,7 @@ import {TranslatorService} from "../../providers/translator.service";
 import {LoginPage} from "../login/login";
 import {UtilService} from "../../providers/util-service";
 import {NewLovedonePage} from "../../app/auth/components/new-lovedone/new-lovedone";
-import {Analytics} from '../../providers/analytics';
+import {MixpanelService} from '../../providers/analytics/mixpanel.service';
 import {PatientService} from "../../app/core/patient.service";
 import {AlbumService} from "../../app/core/album.service";
 
@@ -42,7 +42,7 @@ export class AlbumsPage  implements OnInit {
               private ref: ChangeDetectorRef,
               public utilService: UtilService,
               public patientService: PatientService,
-              private analytics: Analytics,
+              private mixpanel: MixpanelService,
               private albumService:AlbumService) {
     this.currentPatient = this.patientService.getCurrentPatient();
     menu.enable(true);
@@ -197,7 +197,7 @@ export class AlbumsPage  implements OnInit {
             this.albumService.addAlbum(this.patientService.getCurrentPatient().patient_id, data.title).toPromise()
               .then(album => {
 
-                this.analytics.track('AlbumsComponent::add album success', {
+                this.mixpanel.track('AlbumsComponent::add album success', {
                   patient_id: this.patientService.getCurrentPatient().patient_id,
                   title: data.title
                 });
@@ -208,7 +208,7 @@ export class AlbumsPage  implements OnInit {
               })
               .catch(() => {
 
-                this.analytics.track('AlbumsComponent::add album error', {
+                this.mixpanel.track('AlbumsComponent::add album error', {
                   patient_id: this.patientService.getCurrentPatient().patient_id,
                   title: data.title
                 });

@@ -8,7 +8,7 @@ import {UtilService} from "../../providers/util-service";
 import {NewLovedonePage} from "../new-lovedone/new-lovedone";
 import {Subscription} from "rxjs/Subscription";
 import {Network} from "@ionic-native/network";
-import {Analytics} from '../../providers/analytics';
+import {MixpanelService} from '../../providers/analytics/mixpanel.service';
 
 
 @Component({
@@ -33,7 +33,7 @@ export class LoginPage implements OnInit {
   constructor(public navCtrl: NavController, public authService: AuthService
     , public alertCtrl: AlertController, public translatorService: TranslatorService,
     public utilService: UtilService, public menu: MenuController,
-    private network: Network, private analytics: Analytics) {
+    private network: Network, private mixpanel: MixpanelService) {
     translatorService.refresh();
     this.translator = translatorService;
     this.util = utilService;
@@ -89,11 +89,11 @@ export class LoginPage implements OnInit {
       .timeout(LoginPage.TIMEOUTTIME)
       .subscribe(res => {
         if (this.authService.isLoggedIn()) {
-          this.analytics.track('LoginComponent::Login success', this.authService.getCurrentUser().email);
+          this.mixpanel.track('LoginComponent::Login success', this.authService.getCurrentUser().email);
           loggedIn = true;
           this.start();
         } else {
-          this.analytics.track('LoginComponent::Login error', this.authService.getCurrentUser().email);
+          this.mixpanel.track('LoginComponent::Login error', this.authService.getCurrentUser().email);
           this.loginError();
           this.loading = false;
         }
@@ -118,7 +118,7 @@ export class LoginPage implements OnInit {
       if(that.loading)
         return;
       sub.unsubscribe();
-      this.analytics.track('LoginComponent::Logout-Timeout', this.authService.getCurrentUser().email);
+      this.mixpanel.track('LoginComponent::Logout-Timeout', this.authService.getCurrentUser().email);
       // that.loginError("Timeout"); // weird second error in UX
       that.authService.logout();
       that.loading = false;
@@ -161,7 +161,7 @@ export class LoginPage implements OnInit {
     user.lastName = this.lastname;
     this.authService.signUp(user).toPromise().then(res => {
       if (res) {
-        this.analytics.track('LoginComponent::Register success', {
+        this.mixpanel.track('LoginComponent::Register success', {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName
@@ -170,7 +170,7 @@ export class LoginPage implements OnInit {
           this.loading = false;
         });
       } else {
-        this.analytics.track('LoginComponent::Register error', {
+        this.mixpanel.track('LoginComponent::Register error', {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName

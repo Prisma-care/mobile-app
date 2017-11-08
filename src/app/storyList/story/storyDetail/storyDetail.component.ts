@@ -3,7 +3,7 @@ import {Album} from "../../../../dto/album";
 import {UserStory} from "../../../../dto/user-story";
 import {MenuController, NavController, NavParams, PopoverController, ViewController, ToastController} from "ionic-angular";
 
-import {Analytics} from "../../../../providers/analytics";
+import {MixpanelService} from "../../../../providers/analytics/mixpanel.service";
 import {NativeTransitionOptions} from "@ionic-native/native-page-transitions";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {StoryOptionsComponent} from "./storyOption/storyOptions.component";
@@ -88,7 +88,7 @@ export class StoryDetailsPage implements OnInit {
 
   constructor(@Inject(EnvironmentToken) private env: Environment,
               private navParams: NavParams,
-              private analytics: Analytics,
+              private mixpanel: MixpanelService,
               private sanitizer: DomSanitizer,
               private popoverCtrl: PopoverController,
               private youtube: YoutubeVideoPlayer,
@@ -100,7 +100,7 @@ export class StoryDetailsPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.analytics.track('StoryDetailsPage::view', {
+    this.mixpanel.track('StoryDetailsPage::view', {
       story: this.story,
     });
     this.album = this.navParams.get("album") as Album;
@@ -182,7 +182,7 @@ export class StoryDetailsPage implements OnInit {
 
   editDescription(story) {
 
-    this.analytics.track('StoryDetailsPage::editDescription', {
+    this.mixpanel.track('StoryDetailsPage::editDescription', {
       story
     });
 

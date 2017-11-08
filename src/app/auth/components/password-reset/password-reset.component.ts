@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../../core/authentication.service';
 import {AlertController, NavController} from 'ionic-angular';
 import {Network} from '@ionic-native/network';
-import {Analytics} from '../../../../providers/analytics';
+import {MixpanelService} from '../../../../providers/analytics/mixpanel.service';
 import {Observable} from 'rxjs/Observable';
 import {UserService} from "../../../core/user.service";
 
