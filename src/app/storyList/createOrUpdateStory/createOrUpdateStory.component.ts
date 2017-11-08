@@ -4,7 +4,7 @@ import { Album } from "../../../dto/album";
 import { UserStory } from "../../../dto/user-story";
 import { EnvironmentToken, Environment } from "../../environment";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
-import { StoryService } from "../../core/story.service";
+import {StoryService, youtubeResponse} from "../../core/story.service";
 import { Analytics } from "../../../providers/analytics";
 import { PatientService } from "../../core/patient.service";
 import { UserService } from "../../core/user.service";
@@ -187,7 +187,7 @@ export class createOrUpdateStoryPage implements OnInit {
     }
   }
 
-  addStory() {
+   addStory() {
     return this.storyService.addStory(+this.currentPatient.patient_id, this.story).map((addedStory: UserStory) => {
       this.analytics.track('NewStoryComponent::saving story', {
         email: this.currentUser.email,
@@ -201,12 +201,13 @@ export class createOrUpdateStoryPage implements OnInit {
 
   checkYoutubeLink(value) {
     this.storyService.checkYoutubeLink(value)
-      .subscribe((res:string) => {
+      .subscribe((res: {thumbnail: string, description: string}) => {
         if (res) {
-          this.image = this.sanitizer.bypassSecurityTrustUrl(res)
+          this.image = this.sanitizer.bypassSecurityTrustUrl(res.thumbnail);
+          this.story = {...this.story, description: res.description};
           this.isLoading = true;
         } else {
-          this.image = ''
+          this.image = '';
           this.isLoading = false;
         }
       })
