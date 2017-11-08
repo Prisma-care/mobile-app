@@ -79,11 +79,9 @@ export class createOrUpdateStoryPage implements OnInit {
   methods = {
     [this.env.methods.addNewStory]: {
       init: () => {
-        this.initStory()
-        this.story = {
-          ...this.story,
+        this.story = this.initStory({
           type:'image'
-        }
+        })
         this.image = this.storyService.pathForImage(this.dataUrl)
         this.isLoading = true;
       },
@@ -96,14 +94,10 @@ export class createOrUpdateStoryPage implements OnInit {
     [this.env.methods.addYoutubeStory]: {
       init: () => {
         this.title = 'Kies video van Youtube';
-        this.initStory()
-        this.story = {
-          ...this.story,
-          albumId: +this.album.id,
-          creatorId: +this.currentUser.id,
+        this.story = this.initStory({
           type: 'youtube',
           description: 'Video van Youtube'
-        }
+        })
       },
       send: () => {
         if (this.isLoading) {
@@ -179,9 +173,10 @@ export class createOrUpdateStoryPage implements OnInit {
     });
   }
 
-  initStory() {
-    this.story = {
+  initStory(params) {
+    return {
       ...this.story,
+      ...params,
       albumId: +this.album.id,
       creatorId: +this.currentUser.id
     }
