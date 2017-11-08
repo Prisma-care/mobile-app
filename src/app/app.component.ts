@@ -39,8 +39,6 @@ export class MyApp implements OnInit {
     }
 
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.statusBar.backgroundColorByHexString('#637DC8');
       this.splashScreen.hide();
     });
     this.analytics.track('AppComponent::Prisma launched');
