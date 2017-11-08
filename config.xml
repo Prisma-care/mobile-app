@@ -29,6 +29,8 @@
     <preference name="webviewbounce" value="false" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
+    <preference name="StatusBarOverlaysWebView" value="false" />
+    <preference name="StatusBarBackgroundColor" value="#637DC8" />
     <preference name="StatusBarStyle" value="default" />
     <preference name="orientation" value="default" />
     <preference name="SplashMaintainAspectRatio" value="true" />
