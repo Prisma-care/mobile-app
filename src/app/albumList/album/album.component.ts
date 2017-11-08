@@ -10,51 +10,12 @@ import {Subject} from "rxjs/Subject";
 
 @Component({
   selector: 'prisma-album',
-  styles:
-    [
-        `
-        .grid {
-          padding: 0;
-        }
-
-        .albums-menu {
-          position: absolute;
-          top: 0.2em;
-          left: 0.2em;
-          font-size: 1.7em;
-          box-shadow: none;
-          -webkit-box-shadow: none;
-        }
-
-        .col, [col-6] {
-          padding: 0;
-        }
-
-        .album-thumb h3 {
-          padding: 0 1em;
-          display: inline-block;
-          text-align: center;
-          margin: auto;
-          color: #fff;
-          position: absolute;
-          bottom: 1em;
-          left: 0;
-          width: 100%;
-
-        }
-
-        .img-loaded + ion-spinner {
-          display: none;
-        }
-      `
-    ],
   template:
       `
     <div *ngIf="imageLoaded"
          class="album-thumb"
-         [style]="backgroundImage"
-         [style.background-color]="backgroundColor"
          (click)="showDetails()">
+      <img class="album-thumb" [src]="backgroundImage">
       <div class="tile-overlay-gradient"></div>
       <h3 class="hist-title">{{album.title || '?'}}</h3>
     </div>
@@ -98,7 +59,7 @@ export class AlbumComponent implements OnInit, OnDestroy {
         .takeUntil(this.destroy$)
         .subscribe(imageUrl => {
           this.backgroundImage = this.sanitizer
-            .bypassSecurityTrustStyle(`background-image: url(${imageUrl})`);
+            .bypassSecurityTrustUrl(imageUrl);
           this.imageLoaded = true;
         });
       this.isAVideo=story.type==='youtube';
