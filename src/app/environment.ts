@@ -10,6 +10,7 @@ export interface Environment {
   localstorage: { LOCALSTORAGE_SELECTEDLANG: string };
   privateImagesRegex: string;
   loadingImage: string;
+  supportMailAddress: string;
   api: {
     getSignIn: string;
     getPatient: string;
@@ -46,6 +47,7 @@ export const env: Environment = {
   localstorage: { LOCALSTORAGE_SELECTEDLANG: "langs" },
   privateImagesRegex: '/asset/',
   loadingImage: "assets/img/homePage/loading.png",
+  supportMailAddress: 'info@prisma.care',
   api: {
     getSignIn: 'signin',
     getPatient: 'patient',
