@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {Component, Input, OnDestroy, OnInit, Inject} from "@angular/core";
 import {NavController} from "ionic-angular";
 import {AlbumService} from "../../core/album.service";
 import {UserStory} from "../../../dto/user-story";
@@ -7,6 +7,7 @@ import "rxjs/add/operator/switchMap";
 import "rxjs/add/operator/last";
 import {StoryListPage} from "../../storyList/storyList.component";
 import {Subject} from "rxjs/Subject";
+import { EnvironmentToken, Environment } from "../../environment";
 
 @Component({
   selector: 'prisma-album',
@@ -27,7 +28,6 @@ import {Subject} from "rxjs/Subject";
 
 export class AlbumComponent implements OnInit, OnDestroy {
 
-  colorCodes: string[] = ["#FAD820", "#FF9F00", "#F35A4B", "#D95DB4", "#637DC8"];
   destroy$: Subject<boolean> = new Subject<boolean>();
   backgroundImage: SafeStyle;
   backgroundColor: string;
@@ -37,7 +37,8 @@ export class AlbumComponent implements OnInit, OnDestroy {
   album;
 
 
-  constructor(private albumService: AlbumService,
+  constructor(@Inject(EnvironmentToken) private env: Environment,
+              private albumService: AlbumService,
               private sanitizer: DomSanitizer,
               private navCtrl: NavController) {
   }
@@ -64,7 +65,7 @@ export class AlbumComponent implements OnInit, OnDestroy {
         });
       this.isAVideo=story.type==='youtube';
     } else {
-      this.backgroundColor = this.colorCodes[Math.floor(Math.random() * this.colorCodes.length)]
+      this.backgroundImage = this.env.emptyAlbum;
       this.imageLoaded = true;
     }
   }
