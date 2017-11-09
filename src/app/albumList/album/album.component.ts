@@ -17,6 +17,7 @@ import {Subject} from "rxjs/Subject";
          (click)="showDetails()">
       <img class="album-thumb" [src]="backgroundImage">
       <div class="tile-overlay-gradient"></div>
+      <div *ngIf="album.hasNew" class="has-new-item">NIEUW</div>
       <h3 class="hist-title">{{album.title || '?'}}</h3>
     </div>
     <div *ngIf="!imageLoaded" class="album-thumb">

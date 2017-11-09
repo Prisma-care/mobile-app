@@ -24,7 +24,7 @@ prisma-album-list-page, prisma-album {
     width: 100%;
 
 	}
-	
+
 	.albums-menu {
     position: absolute;
     top: 0.2em;
@@ -37,7 +37,7 @@ prisma-album-list-page, prisma-album {
   .img-loaded + ion-spinner {
     display: none;
   }
-  
+
     // PAGE HEADER
 
 	.page-header {
@@ -53,7 +53,7 @@ prisma-album-list-page, prisma-album {
     justify-content: center;
     position: relative;
   }
-  
+
   .page-header h2 {
     font-size: map-get($sizes, 'extra-large');
     margin: 0;
@@ -63,4 +63,15 @@ prisma-album-list-page, prisma-album {
     // color: map-get($colors, 'dark-gray');
     color: #fff;
 	}
+
+  .has-new-item{
+    right: 0;
+    top: 1em;
+    background-color: white;
+    font-size: 9px;
+    color: #637DC8;
+    position: absolute;
+    text-shadow: none;
+    padding: 2px 0.5em 1px 0.5em;
+  }
 }
