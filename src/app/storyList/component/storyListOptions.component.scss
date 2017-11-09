@@ -1,7 +1,7 @@
 prisma-story-list-options, prisma-story-options {
    .contenu {
     color:color($colors, primary);
-    height: 15px;
+
   }
 
   .trash-icon{
@@ -24,5 +24,7 @@ prisma-story-list-options, prisma-story-options {
   .list {
     margin-left: 10px;
     margin-right: 10px;
+    margin-bottom: 0;
   }
+
 }
