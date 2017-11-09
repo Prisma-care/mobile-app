@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {MenuController, NavController} from 'ionic-angular';
+import {AlertController, MenuController, NavController} from 'ionic-angular';
 import {NewLovedonePage} from './components/new-lovedone/new-lovedone';
 import {AlbumListPage} from "../albumList/albumList.component";
 import { NavParams } from 'ionic-angular/navigation/nav-params';
@@ -32,7 +32,8 @@ export class AuthenticationPage implements OnInit{
 
   constructor(private navCtrl: NavController,
               private menuCtrl: MenuController,
-              private navParams: NavParams) {
+              private navParams: NavParams,
+              private alertCtrl: AlertController) {
 
     this.toggleForm = this.toggleForm.bind(this);
     this.onLoginComplete = this.onLoginComplete.bind(this);
@@ -40,8 +41,18 @@ export class AuthenticationPage implements OnInit{
   }
 
   ngOnInit(): void {
-    this.isLogging = this.navParams.get('isLogging')
-    this.isLogging ? this.title="Registreer" : this.title="Meld je aan"
+    this.isLogging = this.navParams.get('isLogging');
+    this.isLogging ? this.title="Registreer" : this.title="Meld je aan";
+  }
+
+  ionViewDidEnter(){
+    const error = this.navParams.get('error');
+    if(error){
+      this.alertCtrl.create({
+        title: error,
+        buttons: ['Ok']
+      }).present();
+    }
   }
 
   ionViewWillEnter() {
