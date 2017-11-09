@@ -63,9 +63,8 @@ import {Subject} from "rxjs/Subject";
       `
     <div *ngIf="imageLoaded"
          class="album-thumb"
-         [style]="backgroundImage"
-         [style.background-color]="backgroundColor"
          (click)="showDetails()">
+      <img class="album-thumb" [src]="backgroundImage">
       <div class="tile-overlay-gradient"></div>
       <div *ngIf="album.hasNew" class="has-new-item">NIEUW</div>
       <h3 class="hist-title">{{album.title || '?'}}</h3>
@@ -110,7 +109,7 @@ export class AlbumComponent implements OnInit, OnDestroy {
         .takeUntil(this.destroy$)
         .subscribe(imageUrl => {
           this.backgroundImage = this.sanitizer
-            .bypassSecurityTrustStyle(`background-image: url(${imageUrl})`);
+            .bypassSecurityTrustUrl(imageUrl);
           this.imageLoaded = true;
         });
       this.isAVideo=story.type==='youtube';
