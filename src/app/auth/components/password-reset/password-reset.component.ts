@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AlertController, NavController} from 'ionic-angular';
+import {AlertController, NavController, ToastController} from 'ionic-angular';
 import {NavParams} from 'ionic-angular/navigation/nav-params';
 import {AuthenticationService} from "../../../core/authentication.service";
 
@@ -16,7 +16,7 @@ import {AuthenticationService} from "../../../core/authentication.service";
     </ion-header>
     <ion-content no-bounce>
       <p class="text-password-reset">
-        Ontvang een nieuw <br/>wachtwoord in je mailbox.
+        Geef je email adres in, en je ontvangt een link om een nieuw wachtwoord in te stellen.
       </p>
       <form [formGroup]="form">
         <ion-list class="list">
@@ -47,13 +47,13 @@ import {AuthenticationService} from "../../../core/authentication.service";
 export class PasswordResetComponent implements OnInit {
 
   @ViewChild('inputEmail')
-  inputEmail
+  inputEmail;
 
   form: FormGroup;
   loading: boolean = false;
 
   constructor(private fb: FormBuilder,
-              private alertCtrl: AlertController,
+              public toastCtrl: ToastController,
               private navParams: NavParams,
               private authService: AuthenticationService,
               private navCtrl: NavController) {
@@ -80,7 +80,7 @@ export class PasswordResetComponent implements OnInit {
       if (data instanceof Error) {
         this.showMessage(data.message)
       } else {
-        this.showMessage('OK')
+        this.showMessage('Check je email inbox om een nieuw wachtwoord in te stellen.');
         this.navCtrl.pop()
       }
     })
@@ -88,11 +88,10 @@ export class PasswordResetComponent implements OnInit {
 
   showMessage(message: string) {
     this.loading = false;
-    let alert = this.alertCtrl.create({
-      title: message,
-      buttons: ['Ok']
-    });
-
-    alert.present();
+    this.toastCtrl.create({
+      message,
+      duration: 5000,
+      position: 'bottom'
+    }).present();
   }
 }
