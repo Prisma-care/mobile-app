@@ -10,27 +10,18 @@ import {Subject} from "rxjs/Subject";
 
 @Component({
   selector: 'prisma-story',
-  styles: [
-    `
-      .album-thumb h3 {
-        padding: 0 1em;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 16px;
-      }
-    `
-  ],
   template:
     `
     <div *ngIf="imageLoaded" 
          class="album-thumb"
-         [style]="backgroundImage"
          (click)="showDetails()">
-      <div *ngIf="story.type==='youtube'" class="youtube-icon movie-indicator"></div>
-      <h3 *ngIf="story.type==='youtube'">{{story.description}}</h3>
+      <img class="album-thumb" [src]="backgroundImage">
+      <div class="boxPlay">
+        <div *ngIf="story.type==='youtube'" class="youtube-icon movie-indicator"></div>
+      </div>
       <ion-icon *ngIf="story.favorited" class="star" name="star"
-                [class.favorited]="isFavorited"></ion-icon>
+      [class.favorited]="isFavorited"></ion-icon>
+      <h3 *ngIf="story.type==='youtube'">{{story.description}}</h3>
     </div>
     <div *ngIf="!imageLoaded" class="album-thumb">
       <ion-spinner item-start name="dots" color="white"></ion-spinner>
@@ -75,7 +66,7 @@ export class StoryComponent implements OnInit, OnDestroy {
             backgroundImage:imageUrl
           }
           this.backgroundImage = this.sanitizer
-            .bypassSecurityTrustStyle(`background-image: url(${imageUrl})`);
+            .bypassSecurityTrustUrl(imageUrl);
           this.imageLoaded = true;
         });
   }

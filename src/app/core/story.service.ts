@@ -108,29 +108,11 @@ export class StoryService {
     };
 
     return Observable.fromPromise(this.camera.getPicture(options))
-      .map((imagePath) => {
-        if (sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-          return Observable.fromPromise(this.filePath.resolveNativePath(imagePath))
-            .map((filePath) => {
-              let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-              let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-              return this.copyFileToLocalDir(correctPath, currentName)
-            }).switchMap(x => x)
-        } else {
-          let currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-          let correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-          return this.copyFileToLocalDir(correctPath, currentName)
-        }
-      }).switchMap(x => x)
   }
 
-  copyFileToLocalDir(correctPath, currentName): Observable<string> {
-    return Observable.fromPromise(this.file.copyFile(correctPath, currentName, this.file.dataDirectory, `${new Date().getTime()}.jpg`))
-      .map(file => file.name)
-  }
-
-  pathForImage(img) {
-    return this.file.dataDirectory + img;
+  validYoutubeLink(url):Boolean{
+    const youtubeLinkRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|watch\/|v\/)?)([\w\-]+)(\S+)?$/
+    return url.toLowerCase().match(youtubeLinkRegex)
   }
 
   checkYoutubeLink(url: string): Observable<Object | Error> {
