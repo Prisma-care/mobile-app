@@ -46,6 +46,17 @@ import {Subject} from "rxjs/Subject";
         .img-loaded + ion-spinner {
           display: none;
         }
+
+        .has-new-item{
+          right: 0;
+          top: 1em;
+          background-color: white;
+          font-size: 9px;
+          color: #637DC8;
+          position: absolute;
+          text-shadow: none;
+          padding: 2px 0.5em 1px 0.5em;
+        }
       `
     ],
   template:
@@ -56,6 +67,7 @@ import {Subject} from "rxjs/Subject";
          [style.background-color]="backgroundColor"
          (click)="showDetails()">
       <div class="tile-overlay-gradient"></div>
+      <div *ngIf="album.hasNew" class="has-new-item">NIEUW</div>
       <h3 class="hist-title">{{album.title || '?'}}</h3>
     </div>
     <div *ngIf="!imageLoaded" class="album-thumb">
