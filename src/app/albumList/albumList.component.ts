@@ -6,6 +6,9 @@ import {AlbumService} from "../core/album.service";
 import {Observable} from "rxjs/Observable";
 import {MixpanelService} from "../../providers/analytics/mixpanel.service";
 import {Patient} from "../../dto/patient";
+import { StoryListPage } from "../storyList/storyList.component";
+import { NavController } from "ionic-angular/navigation/nav-controller";
+import { UserStory } from "../../dto/user-story";
 
 @Component({
   selector: 'prisma-album-list-page',
@@ -22,7 +25,13 @@ import {Patient} from "../../dto/patient";
       <ion-grid *ngIf="albums">
         <ion-row>
           <ion-col col-6 col-md-4 *ngFor="let album of albums | async">
-            <prisma-album [album]="album"></prisma-album>
+            <prisma-album-story
+              [getBackground]="getBackground" 
+              [album]="album" 
+              [story]="album.stories[album.stories.length-1]" 
+              [showDetails]="showDetails"
+              [isAlbum]="true">
+            </prisma-album-story>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -45,7 +54,10 @@ export class AlbumListPage {
               private menu: MenuController,
               private albumService: AlbumService,
               private alertCtrl: AlertController,
-              private mixpanel: MixpanelService) {
+              private mixpanel: MixpanelService,
+              private navCtrl: NavController) {
+    this.getBackground = this.getBackground.bind(this)
+    this.showDetails = this.showDetails.bind(this)
   }
 
 
@@ -57,6 +69,16 @@ export class AlbumListPage {
 
   ionViewWillLeave(): void {
     this.menu.enable(false);
+  }
+
+  showDetails(album:Album) {
+    this.navCtrl.push(StoryListPage, {
+      "album": album,
+    });
+  }
+
+  getBackground(story:UserStory){
+    return this.albumService.getBackground(story)
   }
 
   addAlbum(): void {

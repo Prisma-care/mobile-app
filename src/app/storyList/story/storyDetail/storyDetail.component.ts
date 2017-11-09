@@ -14,7 +14,7 @@ import {Subject} from "rxjs/Subject";
 import "rxjs/add/operator/takeUntil";
 import {Environment, EnvironmentToken} from "../../../environment";
 import { Content } from "ionic-angular/navigation/nav-interfaces";
-import { createOrUpdateStoryPage } from "../../createOrUpdateStory/createOrUpdateStory.component";
+import { CreateOrUpdateStoryPage } from "../../createOrUpdateStory/createOrUpdateStory.component";
 
 @Component({
   selector: 'prisma-story-detail',
@@ -188,7 +188,7 @@ export class StoryDetailsPage implements OnInit {
       story
     });
 
-    this.navCtrl.push(createOrUpdateStoryPage, {
+    this.navCtrl.push(CreateOrUpdateStoryPage, {
       "album": this.album,
       "story": story,
       "method": this.env.methods.replaceDescription,

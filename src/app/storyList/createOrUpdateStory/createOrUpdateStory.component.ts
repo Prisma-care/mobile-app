@@ -59,7 +59,7 @@ import { User } from "../../../dto/user";
 })
 
 
-export class createOrUpdateStoryPage implements OnInit {
+export class CreateOrUpdateStoryPage implements OnInit {
 
   method: string;
   dataUrl: string;
