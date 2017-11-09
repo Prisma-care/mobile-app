@@ -26,11 +26,11 @@ import { UserStory } from "../../dto/user-story";
         <ion-row>
           <ion-col col-6 col-md-4 *ngFor="let album of albums | async">
             <prisma-album-story
-              [setBackground]="setBackground" 
+              [getBackground]="getBackground" 
               [album]="album" 
               [story]="album.stories[album.stories.length-1]" 
               [showDetails]="showDetails"
-              [template]="true">
+              [isAlbum]="true">
             </prisma-album-story>
           </ion-col>
         </ion-row>
@@ -56,7 +56,7 @@ export class AlbumListPage {
               private alertCtrl: AlertController,
               private mixpanel: MixpanelService,
               private navCtrl: NavController) {
-    this.setBackground = this.setBackground.bind(this)
+    this.getBackground = this.getBackground.bind(this)
     this.showDetails = this.showDetails.bind(this)
   }
 
@@ -77,7 +77,7 @@ export class AlbumListPage {
     });
   }
 
-  setBackground(story:UserStory){
+  getBackground(story:UserStory){
     return this.albumService.getBackground(story)
   }
 
