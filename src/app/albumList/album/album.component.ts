@@ -10,55 +10,6 @@ import {Subject} from "rxjs/Subject";
 
 @Component({
   selector: 'prisma-album',
-  styles:
-    [
-        `
-        .grid {
-          padding: 0;
-        }
-
-        .albums-menu {
-          position: absolute;
-          top: 0.2em;
-          left: 0.2em;
-          font-size: 1.7em;
-          box-shadow: none;
-          -webkit-box-shadow: none;
-        }
-
-        .col, [col-6] {
-          padding: 0;
-        }
-
-        .album-thumb h3 {
-          padding: 0 1em;
-          display: inline-block;
-          text-align: center;
-          margin: auto;
-          color: #fff;
-          position: absolute;
-          bottom: 1em;
-          left: 0;
-          width: 100%;
-
-        }
-
-        .img-loaded + ion-spinner {
-          display: none;
-        }
-
-        .has-new-item{
-          right: 0;
-          top: 1em;
-          background-color: white;
-          font-size: 9px;
-          color: #637DC8;
-          position: absolute;
-          text-shadow: none;
-          padding: 2px 0.5em 1px 0.5em;
-        }
-      `
-    ],
   template:
       `
     <div *ngIf="imageLoaded"
