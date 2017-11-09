@@ -41,7 +41,7 @@ import { User } from "../../../dto/user";
             <ion-textarea autofocus class="story-text" placeholder="{{youtubeLinkPlaceHolder}}" (ngModelChange)="checkYoutubeLink($event)" [(ngModel)]="story.source" rows="3" style="padding-left: 0"
                         clearInput></ion-textarea>
         </ion-item>
-          <ion-thumbnail class="thumbnail" style="padding-left: 7%;">
+          <ion-thumbnail class="thumbnail" style="padding-left: 7%;" *ngIf="method===env.methods.addYoutubeStory">
               <img *ngIf="isLoading" [src]="image">
               <ion-spinner *ngIf="!isLoading" item-start name="dots" color="grey"></ion-spinner>
           </ion-thumbnail>
@@ -68,7 +68,7 @@ export class createOrUpdateStoryPage implements OnInit {
   story: UserStory;
   title: string = 'Vul het verhaal aan';
 
-  placeHolder: string = "Schrijf het verhaal.\nHoe meer details hoe beter.";
+  placeHolder: string = `Schrijf het verhaal.\nHoe meer details hoe beter.`;
   youtubeLinkPlaceHolder: string = "https://www.youtube.com/watch?v=ffSnk4v3aeg";
 
   loading: Loading;
@@ -82,9 +82,8 @@ export class createOrUpdateStoryPage implements OnInit {
         this.initStory()
         this.story = {
           ...this.story,
-          type:'image'
+          type: 'image'
         }
-        this.image = this.storyService.pathForImage(this.dataUrl)
         this.isLoading = true;
       },
       send: () => {
@@ -122,7 +121,6 @@ export class createOrUpdateStoryPage implements OnInit {
     },
     [this.env.methods.replaceDescription]: {
       init: () => {
-        this.image = this.sanitizer.bypassSecurityTrustUrl(this.dataUrl)
         this.isLoading = true;
       },
       send: () => {
@@ -201,7 +199,7 @@ export class createOrUpdateStoryPage implements OnInit {
 
   checkYoutubeLink(value) {
     this.storyService.checkYoutubeLink(value)
-      .subscribe((res:string) => {
+      .subscribe((res: string) => {
         if (res) {
           this.image = this.sanitizer.bypassSecurityTrustUrl(res)
           this.isLoading = true;
@@ -232,7 +230,7 @@ export class createOrUpdateStoryPage implements OnInit {
       content: 'Uploading...',
     });
     this.loading.present();
-    const targetPath = this.storyService.pathForImage(lastImage);
+    const targetPath = lastImage;
 
     fileTransfer.upload(targetPath, url, options).then(data => {
       this.loading.dismissAll();

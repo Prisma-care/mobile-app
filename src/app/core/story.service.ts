@@ -139,11 +139,7 @@ export class StoryService {
 
   copyFileToLocalDir(correctPath, currentName): Observable<string> {
     return Observable.fromPromise(this.file.copyFile(correctPath, currentName, this.file.dataDirectory, `${new Date().getTime()}.jpg`))
-      .map(file => file.name)
-  }
-
-  pathForImage(img) {
-    return this.file.dataDirectory + img;
+      .map(file => file.toURL())
   }
 
 
