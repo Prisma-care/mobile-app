@@ -1,44 +1,36 @@
-import {Component, Input, OnDestroy, OnInit} from "@angular/core";
-import {NavController} from "ionic-angular";
-import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
+import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { NavController } from "ionic-angular";
+import { DomSanitizer, SafeStyle } from "@angular/platform-browser";
 import "rxjs/add/operator/switchMap";
 import "rxjs/add/operator/last";
-import {Subject} from "rxjs/Subject";
+import { Subject } from "rxjs/Subject";
 import { UserStory } from "../../dto/user-story";
 
 @Component({
   selector: 'prisma-album-story',
   template:
-      `
-    <div *ngIf="template">
-      <div *ngIf="imageLoaded"
-          class="album-thumb"
-          (click)="showDetails(album)">
-        <img class="album-thumb" [src]="backgroundImage">
-        <div class="tile-overlay-gradient"></div>
-        <div *ngIf="album.hasNew" class="has-new-item">NIEUW</div>
-        <h3 class="hist-title">{{album.title || '?'}}</h3>
-      </div>
-      <div *ngIf="!imageLoaded" class="album-thumb">
-        <ion-spinner item-start name="dots" color="white"></ion-spinner>
-      </div>
-    </div>
-      
-    <div *ngIf="!template">
-      <div *ngIf="imageLoaded" 
+    `
+    <div *ngIf="imageLoaded" 
       class="album-thumb"
       (click)="showDetails(album, story)">
       <img class="album-thumb" [src]="backgroundImage">
-      <div class="boxPlay">
-        <div *ngIf="story.type==='youtube'" class="youtube-icon movie-indicator"></div>
+      <div *ngIf="isAlbum">
+          <div class="tile-overlay-gradient"></div>
+          <div *ngIf="album.hasNew" class="has-new-item">NIEUW</div>
+          <h3 class="hist-title">{{album.title || '?'}}</h3>
       </div>
-      <ion-icon *ngIf="story.favorited" class="star" name="star"
-      [class.favorited]="isFavorited"></ion-icon>
-      <h3 *ngIf="story.type==='youtube'">{{story.description}}</h3>
+
+      <div *ngIf="!isAlbum">
+          <div class="boxPlay">
+            <div *ngIf="typeYoutube(story)" class="youtube-icon movie-indicator"></div>
+          </div>
+          <ion-icon *ngIf="story.favorited" class="star" name="star"
+            [class.favorited]="isFavorited"></ion-icon>
+          <h3 *ngIf="typeYoutube(story)">{{story.description}}</h3>
       </div>
-      <div *ngIf="!imageLoaded" class="album-thumb">
+    </div>
+    <div *ngIf="!imageLoaded" class="album-thumb">
       <ion-spinner item-start name="dots" color="white"></ion-spinner>
-      </div>
     </div>
   `
 })
@@ -49,8 +41,7 @@ export class AlbumOrStoryComponent implements OnInit, OnDestroy {
   backgroundImage: SafeStyle;
   backgroundColor: string;
   imageLoaded: boolean = false;
-  isAVideo: boolean = false;
-  
+
   @Input()
   album;
 
@@ -58,7 +49,7 @@ export class AlbumOrStoryComponent implements OnInit, OnDestroy {
   story;
 
   @Input()
-  setBackground;
+  getBackground;
 
   @Input()
   showDetails;
@@ -67,7 +58,7 @@ export class AlbumOrStoryComponent implements OnInit, OnDestroy {
   emptyAlbum
 
   @Input()
-  template;
+  isAlbum;
 
 
   constructor(private sanitizer: DomSanitizer) {
@@ -76,7 +67,6 @@ export class AlbumOrStoryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setBackgroundImage(this.story);
-
   }
 
   ngOnDestroy(): void {
@@ -86,21 +76,24 @@ export class AlbumOrStoryComponent implements OnInit, OnDestroy {
 
   setBackgroundImage(story: UserStory) {
     if (story) {
-      this.setBackground(story)
+      this.getBackground(story)
         .takeUntil(this.destroy$)
         .subscribe(imageUrl => {
           this.story = {
             ...this.story,
-            backgroundImage:imageUrl
+            backgroundImage: imageUrl
           }
           this.backgroundImage = this.sanitizer
             .bypassSecurityTrustUrl(imageUrl);
           this.imageLoaded = true;
         });
-      this.isAVideo=story.type==='youtube';
     } else {
       this.backgroundImage = this.emptyAlbum;
       this.imageLoaded = true;
     }
+  }
+
+  typeYoutube(story): boolean {
+    return story.type === 'youtube'
   }
 }
