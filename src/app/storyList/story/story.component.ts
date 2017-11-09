@@ -19,9 +19,9 @@ import {Subject} from "rxjs/Subject";
       <div class="boxPlay">
         <div *ngIf="story.type==='youtube'" class="youtube-icon movie-indicator"></div>
       </div>
-      <h3 *ngIf="story.type==='youtube'">{{story.description}}</h3>
       <ion-icon *ngIf="story.favorited" class="star" name="star"
-                [class.favorited]="isFavorited"></ion-icon>
+      [class.favorited]="isFavorited"></ion-icon>
+      <h3 *ngIf="story.type==='youtube'">{{story.description}}</h3>
     </div>
     <div *ngIf="!imageLoaded" class="album-thumb">
       <ion-spinner item-start name="dots" color="white"></ion-spinner>
