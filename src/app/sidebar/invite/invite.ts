@@ -4,7 +4,7 @@ import {AuthenticationService} from "../../core/authentication.service";
 import {UtilService} from "../../../providers/util-service";
 import {UserService} from "../../core/user.service";
 import {AlbumListPage} from "../../albumList/albumList.component";
-import {Analytics} from '../../../providers/analytics';
+import {MixpanelService} from '../../../providers/analytics/mixpanel.service';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -25,7 +25,7 @@ export class InvitePage {
               private userService: UserService,
               public navParams: NavParams,
               public utilService: UtilService,
-              private analytics: Analytics,
+              private mixpanel: MixpanelService,
               private fb: FormBuilder) {
   }
 
@@ -59,7 +59,7 @@ export class InvitePage {
 
   invite({firstName, lastName, email}: { firstName: string, lastName: string, email: string }) {
     this.loading = true;
-    this.analytics.track('InviteComponent::invite started');
+    this.mixpanel.track('InviteComponent::invite started');
     const data = {
       inviterId: this.inviterId,
       patientId: this.patientId,
@@ -69,11 +69,11 @@ export class InvitePage {
     };
     this.userService.inviteUser(data).subscribe(res => {
       if (res instanceof Error) {
-        this.analytics.track('InviteComponent::invite error', data);
+        this.mixpanel.track('InviteComponent::invite error', data);
         this.invitePopup(firstName, res.message);
         this.loading = false;
       } else {
-        this.analytics.track('InviteComponent::invite success', data);
+        this.mixpanel.track('InviteComponent::invite success', data);
         this.invitePopup(firstName);
         this.navCtrl.setRoot(AlbumListPage);
       }

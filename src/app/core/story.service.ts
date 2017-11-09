@@ -18,7 +18,7 @@ interface storiesResponse {
   response: UserStory[]
 }
 
-interface youtubeResponse {
+export interface youtubeResponse {
   items: {
     0: {
       snippet: {
@@ -26,7 +26,8 @@ interface youtubeResponse {
           standard: {
             url: string
           }
-        }
+        },
+        description: string,
       }
     }
   }
@@ -129,12 +130,15 @@ export class StoryService {
   }
 
 
-  checkYoutubeLink(url: string): Observable<string | Error> {
-    
+  checkYoutubeLink(url: string): Observable<Object | Error> {
+
     if (this.validYoutubeLink(url)) {
-      const urlId = this.getYoutubeId(url)
+      const urlId = this.getYoutubeId(url);
       return this.http.get(`https://www.googleapis.com/youtube/v3/videos?id=${urlId}&key=${this.env.youtubeApiKey}&part=snippet`)
-        .map((res: youtubeResponse) => res.pageInfo.totalResults ? res.items[0].snippet.thumbnails.standard.url :  null)
+        .map((res: youtubeResponse) => ({
+          thumbnail : res.pageInfo.totalResults ? res.items[0].snippet.thumbnails.standard.url :  null,
+          description: res.items[0].snippet.description
+        }))
         .catch(err => this.handleError(err))
     } else {
       return Observable.of(null)

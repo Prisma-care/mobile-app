@@ -3,7 +3,7 @@ import { Platform, Nav } from "ionic-angular";
 import { StatusBar } from "@ionic-native/status-bar";
 import { SplashScreen } from "@ionic-native/splash-screen";
 
-import { Analytics } from '../providers/analytics';
+import { MixpanelService } from '../providers/analytics/mixpanel.service';
 import { AuthenticationService } from './core/authentication.service';
 import { PatientService } from "./core/patient.service";
 import { NewLovedonePage } from "./auth/components/new-lovedone/new-lovedone";
@@ -24,7 +24,7 @@ export class MyApp implements OnInit {
               public patientService: PatientService,
               public authService: AuthenticationService,
               private albumService: AlbumService,
-              private analytics: Analytics,
+              private mixpanel: MixpanelService,
               private statusBar: StatusBar,
               private network: Network) {
   }
@@ -41,8 +41,6 @@ export class MyApp implements OnInit {
     this.platform.ready().then(() => {
       this.splashScreen.hide();
     });
-    this.analytics.track('AppComponent::Prisma launched');
+    this.mixpanel.track('AppComponent::Prisma launched');
   }
-
-
 }

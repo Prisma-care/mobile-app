@@ -5,7 +5,7 @@ import { UserStory } from "../../../dto/user-story";
 import { EnvironmentToken, Environment } from "../../environment";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { StoryService } from "../../core/story.service";
-import { Analytics } from "../../../providers/analytics";
+import { MixpanelService } from "../../../providers/analytics/mixpanel.service";
 import { PatientService } from "../../core/patient.service";
 import { UserService } from "../../core/user.service";
 import { StoryDetailsPage } from "../story/storyDetail/storyDetail.component";
@@ -133,7 +133,7 @@ export class createOrUpdateStoryPage implements OnInit {
     private navParams: NavParams,
     private sanitizer: DomSanitizer,
     private storyService: StoryService,
-    private analytics: Analytics,
+    private mixpanel: MixpanelService,
     private patientService: PatientService,
     private userService: UserService,
     private navCtrl: NavController,
@@ -161,7 +161,7 @@ export class createOrUpdateStoryPage implements OnInit {
   updateDescription() {
     this.storyService.updateStory(+this.currentPatient.patient_id, this.story).subscribe(addedStory => {
 
-      this.analytics.track('NewStoryComponent::updateDescription', {
+      this.mixpanel.track('NewStoryComponent::updateDescription', {
         email: this.currentUser.email,
         patient_id: +this.currentPatient.patient_id,
         updatedStory: this.story,
@@ -185,9 +185,9 @@ export class createOrUpdateStoryPage implements OnInit {
     }
   }
 
-  addStory() {
+   addStory() {
     return this.storyService.addStory(+this.currentPatient.patient_id, this.story).map((addedStory: UserStory) => {
-      this.analytics.track('NewStoryComponent::saving story', {
+      this.mixpanel.track('NewStoryComponent::saving story', {
         email: this.currentUser.email,
         patient_id: +this.currentPatient.patient_id,
         newStory: this.story,
@@ -199,12 +199,13 @@ export class createOrUpdateStoryPage implements OnInit {
 
   checkYoutubeLink(value) {
     this.storyService.checkYoutubeLink(value)
-      .subscribe((res: string) => {
+      .subscribe((res: {thumbnail: string, description: string}) => {
         if (res) {
-          this.image = this.sanitizer.bypassSecurityTrustUrl(res)
+          this.image = this.sanitizer.bypassSecurityTrustUrl(res.thumbnail);
+          this.story = {...this.story, description: res.description};
           this.isLoading = true;
         } else {
-          this.image = ''
+          this.image = '';
           this.isLoading = false;
         }
       })

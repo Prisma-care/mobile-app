@@ -4,7 +4,7 @@ import {AuthenticationService} from "../../app/core/authentication.service";
 import {TranslatorService} from "../../providers/translator.service";
 import {UtilService} from "../../providers/util-service";
 import {AlbumsPage} from "../albums/albums";
-import {Analytics} from '../../providers/analytics';
+import {MixpanelService} from '../../providers/analytics/mixpanel.service';
 import {UserService} from "../../app/core/user.service";
 
 @Component({
@@ -22,7 +22,7 @@ export class InvitePage  {
 
   constructor(public authService: AuthenticationService, public navCtrl: NavController, public translatorService: TranslatorService,
               public alertCtrl: AlertController,private userService: UserService, public navParams: NavParams, public utilService: UtilService,
-              private analytics: Analytics) {
+              private mixpanel: MixpanelService) {
     this.patientId = navParams.get("patientId") as number;
     this.util = utilService;
   }
@@ -32,7 +32,7 @@ export class InvitePage  {
   }
 
   invite() {
-    this.analytics.track('InviteComponent::invite started');
+    this.mixpanel.track('InviteComponent::invite started');
 
     if (this.loading)
       return;
@@ -52,14 +52,14 @@ export class InvitePage  {
     this.userService.inviteUser(data).toPromise().then(res => {
       if (res == true) {
 
-        this.analytics.track('InviteComponent::invite success', data);
+        this.mixpanel.track('InviteComponent::invite success', data);
 
         this.inviteDone();
         this.navCtrl.setRoot(AlbumsPage).then(res => {
           this.loading = false;
         });
       } else {
-        this.analytics.track('InviteComponent::invite error', data);
+        this.mixpanel.track('InviteComponent::invite error', data);
         const error= res.json();
         console.log('error:invitation', error);
         this.inviteError(error.meta  ? error.meta.message.email.join('\n') : '');

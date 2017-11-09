@@ -4,8 +4,8 @@ import {AlertController, MenuController} from "ionic-angular";
 import {Album} from "../../dto/album";
 import {AlbumService} from "../core/album.service";
 import {Observable} from "rxjs/Observable";
-import {Analytics} from "../../providers/analytics";
-import { Patient } from "../../dto/patient";
+import {MixpanelService} from "../../providers/analytics/mixpanel.service";
+import {Patient} from "../../dto/patient";
 
 @Component({
   selector: 'prisma-album-list-page',
@@ -45,7 +45,7 @@ export class AlbumListPage {
               private menu: MenuController,
               private albumService: AlbumService,
               private alertCtrl: AlertController,
-              private analytics: Analytics) {
+              private mixpanel: MixpanelService) {
   }
 
 
@@ -89,14 +89,14 @@ export class AlbumListPage {
           handler: data => {
             this.albumService.addAlbum(this.currentPatient.patient_id, data.title)
               .subscribe(() => {
-                this.analytics.track('AlbumsComponent::add album success', {
+                this.mixpanel.track('AlbumsComponent::add album success', {
                   patient_id: this.currentPatient.patient_id,
                   title: data.title
                 });
 
                 this.albums = this.albumService.getAlbums(this.currentPatient.patient_id) as Observable<Album[]>
               }, () => {
-                this.analytics.track('AlbumsComponent::add album error', {
+                this.mixpanel.track('AlbumsComponent::add album error', {
                   patient_id: this.currentPatient.patient_id,
                   title: data.title
                 });
