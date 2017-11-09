@@ -13,6 +13,7 @@ import { PopoverController } from "ionic-angular/components/popover/popover-cont
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
 import { StoryService } from "../core/story.service";
 import { createOrUpdateStoryPage } from "./createOrUpdateStory/createOrUpdateStory.component";
+import { StoryDetailsPage } from "./story/storyDetail/storyDetail.component";
 
 @Component({
   selector: 'prisma-story-list-page',
@@ -32,7 +33,14 @@ import { createOrUpdateStoryPage } from "./createOrUpdateStory/createOrUpdateSto
       <ion-grid>
         <ion-row>
           <ion-col col-6 col-md-4 *ngFor="let story of stories">
-            <prisma-story [story]="story" [album]="album"></prisma-story>
+            <prisma-album-story
+              [setBackground]="setBackground" 
+              [album]="album" 
+              [story]="story" 
+              [showDetails]="showDetails"
+              [emptyAlbum]="env.emptyAlbum"
+              [template]="false">
+            </prisma-album-story>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -64,6 +72,8 @@ export class StoryListPage implements OnInit, OnDestroy {
               private popoverCtrl: PopoverController,
               private toastCtrl: ToastController,
               private storyService: StoryService) {
+    this.setBackground = this.setBackground.bind(this)
+    this.showDetails = this.showDetails.bind(this)
   }
 
   ngOnInit(): void {
@@ -90,6 +100,17 @@ export class StoryListPage implements OnInit, OnDestroy {
     return this.album.stories.reduce((acc, it) => {
       return it.favorited ? [it, ...acc] : [...acc, it]
     }, []);
+  }
+
+  setBackground(story:UserStory){
+    return this.storyService.getBackground(story)
+  }
+
+  showDetails(album:Album, story:UserStory) {
+    this.navCtrl.push(StoryDetailsPage, {
+      "album": album,
+      "story": story
+    });
   }
 
   openActionSheet() {
