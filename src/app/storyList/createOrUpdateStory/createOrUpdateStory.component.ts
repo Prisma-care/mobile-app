@@ -4,7 +4,7 @@ import { Album } from "../../../dto/album";
 import { UserStory } from "../../../dto/user-story";
 import { EnvironmentToken, Environment } from "../../environment";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
-import { StoryService, youtubeResponse } from "../../core/story.service";
+import { StoryService } from "../../core/story.service";
 import { MixpanelService } from "../../../providers/analytics/mixpanel.service";
 import { PatientService } from "../../core/patient.service";
 import { UserService } from "../../core/user.service";
