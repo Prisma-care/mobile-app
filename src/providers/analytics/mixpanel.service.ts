@@ -1,12 +1,12 @@
 import {Injectable} from "@angular/core";
 import {Mixpanel, MixpanelPeople} from '@ionic-native/mixpanel';
-import { User } from "../dto/user";
+import { User } from "../../dto/user";
 
 
 declare var cordova: any;
 
 @Injectable()
-export class Analytics {
+export class MixpanelService {
   isInit = false;
   private token = '0c69ebeb92fc86a0b9d813b5fb6215e7';
 

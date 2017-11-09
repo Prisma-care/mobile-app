@@ -33,7 +33,8 @@ import {LoginHeaderComponent} from "../pages/login/login-header.component";
 import {InvitePage} from "../pages/invite/invite";
 
 import {Mixpanel, MixpanelPeople} from '@ionic-native/mixpanel';
-import {Analytics} from '../providers/analytics';
+import {MixpanelService} from '../providers/analytics/mixpanel.service';
+import {FullstoryService} from '../providers/analytics/fullstory.service';
 import {CoreModule} from './core/core.module';
 import {AuthModule} from './auth/auth.module';
 import {EnvironmentProvider} from './environment';
@@ -64,7 +65,7 @@ export function createTranslateLoader(http: Http) {
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {statusbarPadding: false}),
     IonicStorageModule.forRoot(),
     CoreModule,
     AuthModule,
@@ -109,8 +110,9 @@ export function createTranslateLoader(http: Http) {
     YoutubeVideoPlayer,
     Mixpanel,
     MixpanelPeople,
-    Analytics,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    MixpanelService,
+    FullstoryService,
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })
 export class AppModule {

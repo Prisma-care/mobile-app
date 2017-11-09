@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {Component, Input, OnDestroy, OnInit, Inject} from "@angular/core";
 import {NavController} from "ionic-angular";
 import {AlbumService} from "../../core/album.service";
 import {UserStory} from "../../../dto/user-story";
@@ -7,55 +7,18 @@ import "rxjs/add/operator/switchMap";
 import "rxjs/add/operator/last";
 import {StoryListPage} from "../../storyList/storyList.component";
 import {Subject} from "rxjs/Subject";
+import { EnvironmentToken, Environment } from "../../environment";
 
 @Component({
   selector: 'prisma-album',
-  styles:
-    [
-        `
-        .grid {
-          padding: 0;
-        }
-
-        .albums-menu {
-          position: absolute;
-          top: 0.2em;
-          left: 0.2em;
-          font-size: 1.7em;
-          box-shadow: none;
-          -webkit-box-shadow: none;
-        }
-
-        .col, [col-6] {
-          padding: 0;
-        }
-
-        .album-thumb h3 {
-          padding: 0 1em;
-          display: inline-block;
-          text-align: center;
-          margin: auto;
-          color: #fff;
-          position: absolute;
-          bottom: 1em;
-          left: 0;
-          width: 100%;
-
-        }
-
-        .img-loaded + ion-spinner {
-          display: none;
-        }
-      `
-    ],
   template:
       `
     <div *ngIf="imageLoaded"
          class="album-thumb"
-         [style]="backgroundImage"
-         [style.background-color]="backgroundColor"
          (click)="showDetails()">
+      <img class="album-thumb" [src]="backgroundImage">
       <div class="tile-overlay-gradient"></div>
+      <div *ngIf="album.hasNew" class="has-new-item">NIEUW</div>
       <h3 class="hist-title">{{album.title || '?'}}</h3>
     </div>
     <div *ngIf="!imageLoaded" class="album-thumb">
@@ -66,7 +29,6 @@ import {Subject} from "rxjs/Subject";
 
 export class AlbumComponent implements OnInit, OnDestroy {
 
-  colorCodes: string[] = ["#FAD820", "#FF9F00", "#F35A4B", "#D95DB4", "#637DC8"];
   destroy$: Subject<boolean> = new Subject<boolean>();
   backgroundImage: SafeStyle;
   backgroundColor: string;
@@ -76,7 +38,8 @@ export class AlbumComponent implements OnInit, OnDestroy {
   album;
 
 
-  constructor(private albumService: AlbumService,
+  constructor(@Inject(EnvironmentToken) private env: Environment,
+              private albumService: AlbumService,
               private sanitizer: DomSanitizer,
               private navCtrl: NavController) {
   }
@@ -98,12 +61,12 @@ export class AlbumComponent implements OnInit, OnDestroy {
         .takeUntil(this.destroy$)
         .subscribe(imageUrl => {
           this.backgroundImage = this.sanitizer
-            .bypassSecurityTrustStyle(`background-image: url(${imageUrl})`);
+            .bypassSecurityTrustUrl(imageUrl);
           this.imageLoaded = true;
         });
       this.isAVideo=story.type==='youtube';
     } else {
-      this.backgroundColor = this.colorCodes[Math.floor(Math.random() * this.colorCodes.length)]
+      this.backgroundImage = this.env.emptyAlbum;
       this.imageLoaded = true;
     }
   }

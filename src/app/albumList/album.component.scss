@@ -1,0 +1,77 @@
+prisma-album-list-page, prisma-album {
+
+  .button {
+    left: -0.5em
+  }
+
+  .grid {
+    padding: 0;
+  }
+
+  .col, [col-6] {
+    padding: 0;
+  }
+
+  .album-thumb h3 {
+    padding: 0 1em;
+    display: inline-block;
+    text-align: center;
+    margin: auto;
+    color: #fff;
+    position: absolute;
+    bottom: 1em;
+    left: 0;
+    width: 100%;
+
+	}
+
+	.albums-menu {
+    position: absolute;
+    top: 0.2em;
+    left: 0.2em;
+    font-size: 1.7em;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+  }
+
+  .img-loaded + ion-spinner {
+    display: none;
+  }
+
+    // PAGE HEADER
+
+	.page-header {
+    .button-ios{
+      height: 3.6rem;
+    }
+    padding: 2em 3em;
+    //background-color: map-get($colors, 'primary');
+    height: 50vw;
+    background-color: color($colors, primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+
+  .page-header h2 {
+    font-size: map-get($sizes, 'extra-large');
+    margin: 0;
+    //line-height: 33px;
+    text-align: center;
+    font-family: $prisma-ff;
+    // color: map-get($colors, 'dark-gray');
+    color: #fff;
+	}
+
+  .has-new-item{
+    right: 0;
+    top: 1em;
+    background-color: white;
+    font-size: 9px;
+    color: #637DC8;
+    position: absolute;
+    text-shadow: none;
+    padding: 2px 0.5em 1px 0.5em;
+  }
+}

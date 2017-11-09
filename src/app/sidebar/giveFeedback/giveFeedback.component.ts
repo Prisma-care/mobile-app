@@ -1,4 +1,5 @@
-import {Component} from "@angular/core";
+import {Component, Inject} from "@angular/core";
+import {Environment, EnvironmentToken} from "../../environment";
 
 @Component({
   selector: 'prisma-give-feedback',
@@ -27,7 +28,7 @@ import {Component} from "@angular/core";
           </p>
         </div>
       <hr>
-      <a href="mailto:info@prismacare.com?subject=Bericht uit Prisma applicatie" ion-item no-lines detail-none class="send-email">
+      <a href="mailto:{{env.supportMailAddress}}?subject=Bericht uit Prisma applicatie" ion-item no-lines detail-none class="send-email">
         <ion-icon name="mail" color="general" class="send-mail-icon"></ion-icon>
         Stuur email
       </a>
@@ -38,7 +39,8 @@ import {Component} from "@angular/core";
 })
 export class GiveFeedbackComponent {
 
-  constructor() {
+  constructor(@Inject(EnvironmentToken) private env: Environment) {
   }
+
 
 }

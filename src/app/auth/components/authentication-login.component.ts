@@ -3,7 +3,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../core/authentication.service';
 import {AlertController, NavController} from 'ionic-angular';
 import {Network} from '@ionic-native/network';
-import {Analytics} from '../../../providers/analytics';
+import {MixpanelService} from '../../../providers/analytics/mixpanel.service';
+import {FullstoryService} from '../../../providers/analytics/fullstory.service';
 import {Observable} from 'rxjs/Observable';
 import {UserService} from "../../core/user.service";
 import {PasswordResetComponent} from "./password-reset/password-reset.component";
@@ -92,7 +93,8 @@ export class AuthenticationLoginComponent implements OnInit {
               private auth: AuthenticationService,
               private alertCtrl: AlertController,
               private network: Network,
-              private analytics: Analytics,
+              private mixpanel: MixpanelService,
+              private fullstory: FullstoryService,
               private userService: UserService,
               private navCtrl: NavController) {
   }
@@ -134,7 +136,7 @@ export class AuthenticationLoginComponent implements OnInit {
     this.auth.login(email, password)
       .switchMap((res: boolean | Error) => {
         if (res instanceof Error) {
-          this.analytics.track('LoginComponent::Login error', email);
+          this.mixpanel.track('LoginComponent::Login error', email);
           this.showError(res.message);
           return Observable.empty();
         }
@@ -143,12 +145,13 @@ export class AuthenticationLoginComponent implements OnInit {
       .timeout(10000)
       .do(() => {
         this.loading = false;
-        this.analytics.identify(this.userService.getCurrentUser());
-        this.analytics.track('LoginComponent::Login success', this.userService.getCurrentUser().email);
+        this.mixpanel.identify(this.userService.getCurrentUser());
+        this.fullstory.identify(this.userService.getCurrentUser());
+        this.mixpanel.track('LoginComponent::Login success', this.userService.getCurrentUser().email);
         this.onComplete();
       })
       .subscribe(undefined, (err) => {
-        this.analytics.track('LoginComponent::Login error', email);
+        this.mixpanel.track('LoginComponent::Login error', email);
         this.showError(err.message);
       })
   }
