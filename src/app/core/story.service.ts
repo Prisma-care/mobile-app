@@ -2,7 +2,10 @@
 import { Inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import { UserStory } from "../../dto/user-story";
-import { background, getMessageFromBackendError, getThumbnails, getUrlImage, youtubeId } from "../utils";
+import {
+  background, getMessageFromBackendError, getThumbnails, getUrlImage, getYoutubeDescriptionAndThumbnail,
+  youtubeId
+} from "../utils";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Environment, EnvironmentToken } from "../environment";
 import { Camera } from "@ionic-native/camera";
@@ -16,24 +19,6 @@ interface storyResponse {
 
 interface storiesResponse {
   response: UserStory[]
-}
-
-export interface youtubeResponse {
-  items: {
-    0: {
-      snippet: {
-        thumbnails: {
-          standard: {
-            url: string
-          }
-        },
-        description: string,
-      }
-    }
-  }
-  pageInfo: {
-    totalResults: number
-  }
 }
 
 @Injectable()
@@ -85,8 +70,9 @@ export class StoryService {
     return youtubeId(url)
   }
 
-  getThumb(url): string {
-    return getThumbnails(url);
+  getThumb(url): Observable<string> {
+    return this.checkYoutubeLink(url).map((res: {thumbnail: string}) => {
+      return res.thumbnail});
   }
 
   getBackground(story: UserStory): Observable<string | Error> {
@@ -129,20 +115,8 @@ export class StoryService {
     return url.toLowerCase().match(youtubeLinkRegex)
   }
 
-
   checkYoutubeLink(url: string): Observable<Object | Error> {
-
-    if (this.validYoutubeLink(url)) {
-      const urlId = this.getYoutubeId(url);
-      return this.http.get(`https://www.googleapis.com/youtube/v3/videos?id=${urlId}&key=${this.env.youtubeApiKey}&part=snippet`)
-        .map((res: youtubeResponse) => ({
-          thumbnail : res.pageInfo.totalResults ? res.items[0].snippet.thumbnails.standard.url :  null,
-          description: res.items[0].snippet.description
-        }))
-        .catch(err => this.handleError(err))
-    } else {
-      return Observable.of(null)
-    }
+    return getYoutubeDescriptionAndThumbnail.call(this, url);
   }
 
   handleError(err: HttpErrorResponse): Observable<Error> {
