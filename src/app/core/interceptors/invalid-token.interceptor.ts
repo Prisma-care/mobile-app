@@ -16,7 +16,6 @@ export class InvalidTokenInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req)
       .catch((httpError: HttpErrorResponse) => {
-      console.log(httpError);
         // Check if we had 400 response and if the error is about the token
         if (httpError.status === 400 && httpError.error.meta.message.includes('token is invalid')){
           this.clearTokens();
