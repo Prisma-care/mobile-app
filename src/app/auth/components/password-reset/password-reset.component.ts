@@ -34,7 +34,7 @@ import {AuthenticationService} from "../../../core/authentication.service";
 
         <button ion-button solid block full large color="general"
                 (click)="resetPassword(form.getRawValue())"
-                [disabled]="form.invalid">
+                [disabled]="form.invalid || loading">
           <div *ngIf="!loading">Verzenden</div>
           <div *ngIf="loading">
             <ion-spinner item-start name="dots" color="white"></ion-spinner>
@@ -76,10 +76,12 @@ export class PasswordResetComponent implements OnInit {
   }
 
   resetPassword({email}: { email: string }) {
+    this.loading=true;
     this.authService.resetPassword(email)
     .subscribe((data) => {
       if (data instanceof Error) {
         this.showMessage(data.message)
+        this.loading=false;
       } else {
         this.showMessage('Check je email inbox om een nieuw wachtwoord in te stellen.');
         this.navCtrl.pop()
