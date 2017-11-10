@@ -4,7 +4,8 @@ import {AuthenticationService} from '../../core/authentication.service';
 import {AlertController} from 'ionic-angular';
 import {MixpanelService} from '../../../providers/analytics/mixpanel.service';
 import {User} from '../../../dto/user';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs/Rx';
+import { switchMap, tap } from 'rxjs/operators'
 
 @Component({
   selector: 'prisma-authentication-register',
@@ -132,27 +133,29 @@ export class AuthenticationRegisterComponent implements OnInit {
     };
 
     this.auth.signUp(user as User)
-      .switchMap((res: boolean | Error) => {
-        if (res instanceof Error) {
-          this.mixpanel.track('LoginComponent::Register error', {
+      .pipe(
+        switchMap((res: boolean | Error) => {
+          if (res instanceof Error) {
+            this.mixpanel.track('LoginComponent::Register error', {
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName
+            });
+            this.showError(res.message);
+            return Observable.empty();
+          }
+          return Observable.of(res);
+        }),
+        tap(() => {
+          this.mixpanel.track('LoginComponent::Register success', {
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName
           });
-          this.showError(res.message);
-          return Observable.empty();
-        }
-        return Observable.of(res);
-      })
-      .do(() => {
-        this.mixpanel.track('LoginComponent::Register success', {
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName
-        });
-        this.loading = false;
-        this.onComplete();
-      })
+          this.loading = false;
+          this.onComplete();
+        })
+      )
       .subscribe(undefined, (err) => {
         this.mixpanel.track('LoginComponent::Register error', {
           email: user.email,

@@ -1,41 +1,21 @@
-import {Component} from "@angular/core";
+import {Component, Inject} from "@angular/core";
 import {PatientService} from "../core/patient.service";
 import {AlertController, MenuController} from "ionic-angular";
 import {Album} from "../../dto/album";
 import {AlbumService} from "../core/album.service";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs/Rx";
 import {MixpanelService} from "../../providers/analytics/mixpanel.service";
 import {Patient} from "../../dto/patient";
+import { StoryListPage } from "../storyList/storyList.component";
+import { NavController } from "ionic-angular/navigation/nav-controller";
+import { UserStory } from "../../dto/user-story";
+import { EnvironmentToken, Environment } from "../environment";
 
 @Component({
   selector: 'prisma-album-list-page',
-  styles:
-    [
-        `
-        .grid {
-          padding: 0;
-        }
-
-        .albums-menu {
-          position: absolute;
-          top: 0.2em;
-          left: 0.2em;
-          font-size: 1.7em;
-          box-shadow: none;
-          -webkit-box-shadow: none;
-        }
-
-        .button {
-          left: -0.5em
-        }
-
-        .col, [col-6] {
-          padding: 0;
-        }
-      `
-    ],
   template:
       `
+    <ion-header no-border no-shadow></ion-header>
     <ion-content>
       <div class="page-header">
         <button ion-button menuToggle class="albums-menu">
@@ -46,7 +26,14 @@ import {Patient} from "../../dto/patient";
       <ion-grid *ngIf="albums">
         <ion-row>
           <ion-col col-6 col-md-4 *ngFor="let album of albums | async">
-            <prisma-album [album]="album"></prisma-album>
+            <prisma-album-story
+              [getBackground]="getBackground" 
+              [album]="album" 
+              [story]="album.stories[album.stories.length-1]" 
+              [showDetails]="showDetails"
+              [emptyAlbum]="env.emptyAlbum"
+              [isAlbum]="true">
+            </prisma-album-story>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -65,11 +52,15 @@ export class AlbumListPage {
   albums: Observable<Album[]>;
   currentPatient: Patient;
 
-  constructor(private patientService: PatientService,
+  constructor(@Inject(EnvironmentToken) private env: Environment,
+              private patientService: PatientService,
               private menu: MenuController,
               private albumService: AlbumService,
               private alertCtrl: AlertController,
-              private mixpanel: MixpanelService) {
+              private mixpanel: MixpanelService,
+              private navCtrl: NavController) {
+    this.getBackground = this.getBackground.bind(this)
+    this.showDetails = this.showDetails.bind(this)
   }
 
 
@@ -81,6 +72,16 @@ export class AlbumListPage {
 
   ionViewWillLeave(): void {
     this.menu.enable(false);
+  }
+
+  showDetails(album:Album) {
+    this.navCtrl.push(StoryListPage, {
+      "album": album,
+    });
+  }
+
+  getBackground(story:UserStory){
+    return this.albumService.getBackground(story)
   }
 
   addAlbum(): void {

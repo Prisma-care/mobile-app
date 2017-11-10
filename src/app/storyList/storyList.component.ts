@@ -4,15 +4,16 @@ import {ActionSheetController, NavController, NavParams} from "ionic-angular";
 import {Album} from "../../dto/album";
 import {AlbumService} from "../core/album.service";
 import {PatientService} from "../core/patient.service";
-import {Subject} from "rxjs/Subject";
-import "rxjs/add/operator/takeUntil";
+import {Subject, pipe} from "rxjs/Rx";
+import {takeUntil} from 'rxjs/operators'
 import {Environment, EnvironmentToken} from "../environment";
 import { Content } from "ionic-angular/navigation/nav-interfaces";
 import { StoryListOptionsComponent } from "./component/storyListOptions.component";
 import { PopoverController } from "ionic-angular/components/popover/popover-controller";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
 import { StoryService } from "../core/story.service";
-import { createOrUpdateStoryPage } from "./createOrUpdateStory/createOrUpdateStory.component";
+import { CreateOrUpdateStoryPage } from "./createOrUpdateStory/createOrUpdateStory.component";
+import { StoryDetailsPage } from "./story/storyDetail/storyDetail.component";
 
 @Component({
   selector: 'prisma-story-list-page',
@@ -32,7 +33,14 @@ import { createOrUpdateStoryPage } from "./createOrUpdateStory/createOrUpdateSto
       <ion-grid>
         <ion-row>
           <ion-col col-6 col-md-4 *ngFor="let story of stories">
-            <prisma-story [story]="story" [album]="album"></prisma-story>
+            <prisma-album-story
+              [getBackground]="getBackground" 
+              [album]="album" 
+              [story]="story" 
+              [showDetails]="showDetails"
+              [emptyAlbum]="env.emptyAlbum"
+              [isAlbum]="false">
+            </prisma-album-story>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -54,6 +62,9 @@ export class StoryListPage implements OnInit, OnDestroy {
   album: Album;
   stories: UserStory[];
   destroy$: Subject<boolean> = new Subject<boolean>();
+  takenUntilPipe = pipe(
+    takeUntil(this.destroy$)
+  )
 
   constructor(@Inject(EnvironmentToken) private env: Environment,
               private navParams: NavParams,
@@ -64,6 +75,8 @@ export class StoryListPage implements OnInit, OnDestroy {
               private popoverCtrl: PopoverController,
               private toastCtrl: ToastController,
               private storyService: StoryService) {
+    this.getBackground = this.getBackground.bind(this)
+    this.showDetails = this.showDetails.bind(this)
   }
 
   ngOnInit(): void {
@@ -78,7 +91,7 @@ export class StoryListPage implements OnInit, OnDestroy {
 
   ionViewWillEnter(): void {
     this.albumService.getAlbum(this.patientService.getCurrentPatient().patient_id, this.album.id)
-      .takeUntil(this.destroy$)
+      .let(this.takenUntilPipe)
       .subscribe((album: Album) => {
         this.album = album as Album;
         this.stories = this.orderByFavorited();
@@ -90,6 +103,17 @@ export class StoryListPage implements OnInit, OnDestroy {
     return this.album.stories.reduce((acc, it) => {
       return it.favorited ? [it, ...acc] : [...acc, it]
     }, []);
+  }
+
+  getBackground(story:UserStory){
+    return this.storyService.getBackground(story)
+  }
+
+  showDetails(album:Album, story:UserStory) {
+    this.navCtrl.push(StoryDetailsPage, {
+      "album": album,
+      "story": story
+    });
   }
 
   openActionSheet() {
@@ -108,8 +132,10 @@ export class StoryListPage implements OnInit, OnDestroy {
             icon: 'camera',
             cssClass: 'general',
             handler: () => {
-              this.storyService.takeAPicture().takeUntil(this.destroy$).subscribe(dataUrl =>{
-                this.navCtrl.push(createOrUpdateStoryPage,
+              this.storyService.takeAPicture()
+              .let(this.takenUntilPipe)
+              .subscribe(dataUrl =>{
+                this.navCtrl.push(CreateOrUpdateStoryPage,
                   {
                     "dataUrl": dataUrl,
                     "album": this.album,
@@ -123,8 +149,10 @@ export class StoryListPage implements OnInit, OnDestroy {
             role: 'destructive',
             icon: 'image',
             handler: () => {
-              this.storyService.chooseAFile().takeUntil(this.destroy$).subscribe(dataUrl =>{
-                this.navCtrl.push(createOrUpdateStoryPage,
+              this.storyService.chooseAFile()
+              .let(this.takenUntilPipe)
+              .subscribe(dataUrl =>{
+                this.navCtrl.push(CreateOrUpdateStoryPage,
                   {
                     "dataUrl": dataUrl,
                     "album": this.album,
@@ -138,7 +166,7 @@ export class StoryListPage implements OnInit, OnDestroy {
             role: 'destructive',
             icon: 'play',
             handler: () => {
-              this.navCtrl.push(createOrUpdateStoryPage,
+              this.navCtrl.push(CreateOrUpdateStoryPage,
                 {
                   "album": this.album,
                   "method":this.env.methods.addYoutubeStory

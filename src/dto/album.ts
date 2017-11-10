@@ -6,7 +6,7 @@ export class Album {
   title: string;
   description: string;
   stories: UserStory[] = [];
-
+  hasNew: boolean;
   blobs: any[];
 
   constructor(json?) {
@@ -15,6 +15,7 @@ export class Album {
     this.id = ""+json.id;
     this.title = json.title;
     this.description = json.description;
+    this.hasNew = json.hasNew;
     json.stories.forEach((story) => this.stories.push(new UserStory(story)));
   }
 

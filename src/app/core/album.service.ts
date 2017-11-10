@@ -1,71 +1,80 @@
-import {Inject, Injectable} from "@angular/core";
-import {Environment, EnvironmentToken} from "../environment";
-import {HttpClient} from "@angular/common/http";
-import {HttpErrorResponse} from "@angular/common/http";
-import {background, getMessageFromBackendError, getThumbnails, getUrlImage} from "../utils";
-import {Observable} from "rxjs/Observable";
-import "rxjs/add/observable/of";
-import {UserStory} from "../../dto/user-story";
-import {Album} from "../../dto/album";
+import { Inject, Injectable } from "@angular/core";
+import { Environment, EnvironmentToken } from "../environment";
+import { HttpClient } from "@angular/common/http";
+import { HttpErrorResponse } from "@angular/common/http";
+import {
+  background, getMessageFromBackendError, getUrlImage,
+  getYoutubeDescriptionAndThumbnail
+} from "../utils";
+import { Observable, pipe } from "rxjs/Rx";
+import { map, catchError } from 'rxjs/operators';
+import { UserStory } from "../../dto/user-story";
+import { Album } from "../../dto/album";
 
 interface AlbumsResponse {
-  response:Album[]
+  response: Album[]
 }
 
 interface AlbumResponse {
-  response:Album
+  response: Album
 }
+
 @Injectable()
 export class AlbumService {
 
-  constructor(@Inject(EnvironmentToken) private env: Environment,
-              private http: HttpClient) {
+  albumPipe = pipe(
+    map(({ response }: AlbumResponse) => new Album(response)),
+    catchError(this.handleError)
+  )
+
+  constructor( @Inject(EnvironmentToken) private env: Environment,
+    private http: HttpClient) {
     this.handleError = this.handleError.bind(this);
   }
 
-  getAlbums(patientId: string | number): Observable<Album[]| Error >  {
+  getAlbums(patientId: string | number): Observable<Album[] | Error> {
     return this.http.get(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getAlbum}`)
-      .map(({response}:AlbumsResponse) =>  response.reduce((acc,it)=> [...acc,new Album(it)],[]))
-      .catch(err => this.handleError(err));
+      .pipe(
+        map(({ response }: AlbumsResponse) => response.reduce((acc, it) => [...acc, new Album(it)], [])),
+        catchError(this.handleError)
+      )
   }
 
-  getAlbum(patientId: string | number, albumId: string | number): Observable<Album| Error >  {
+  getAlbum(patientId: string | number, albumId: string | number): Observable<Album | Error> {
     return this.http.get(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getAlbum}/${albumId}`)
-      .map(({response}:AlbumResponse) =>  new Album(response))
-      .catch(err => this.handleError(err));
-  }
+      .let(this.albumPipe)
+    }
 
-  deleteAlbum(patientId: string | number, albumId: string | number): Observable<Object| Error >  {
+  deleteAlbum(patientId: string | number, albumId: string | number): Observable<Object | Error> {
     return this.http.delete(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getAlbum}/${albumId}`)
-      .catch(err => this.handleError(err));
-  }
-  
-
-  addAlbum(patientId: string | number, title: string): Observable<Album| Error >  {
-    return this.http.post(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getAlbum}`, {title: title})
-      .map(({response}:AlbumResponse) => new Album(response))
-      .catch(err => this.handleError(err));
+      .pipe(
+        catchError(this.handleError)
+      )
   }
 
-  getImage(filename: string): Observable<string| Error >  {
-    return getUrlImage.call(this,filename)
+
+  addAlbum(patientId: string | number, title: string): Observable<Album | Error> {
+    return this.http.post(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getAlbum}`, { title: title })
+      .let(this.albumPipe)
   }
 
-  getThumb(url):string{
-    return getThumbnails(url);
+  getImage(filename: string): Observable<string | Error> {
+    return getUrlImage.call(this, filename)
   }
 
-  getBackground(story: UserStory){
-    return background.call(this,story)
+  getThumb(url): Observable<string> {
+    return this.checkYoutubeLink(url)
+      .pipe(
+        map((res: { thumbnail: string }) => res.thumbnail)
+      )
   }
 
-  addYoutubeLinkAsset(patient_id: string, storyId: string, asset: string) {
-    return this.http.post(`${this.env.apiUrl}/${this.env.api.getPatient}/${patient_id}/${this.env.api.getStory}/${storyId}/${this.env.api.getAsset}`, {
-      "asset": asset,
-      "assetType": "youtube"
-    })
-      .catch(err => this.handleError(err));
+  checkYoutubeLink(url: string): Observable<Object | Error> {
+    return getYoutubeDescriptionAndThumbnail.call(this, url);
+  }
 
+  getBackground(story: UserStory) {
+    return background.call(this, story)
   }
 
   handleError(err: HttpErrorResponse): Observable<Error> {

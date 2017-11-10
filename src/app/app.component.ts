@@ -1,6 +1,5 @@
 import { Component, ViewChild, OnInit } from "@angular/core";
 import { Platform, Nav } from "ionic-angular";
-import { StatusBar } from "@ionic-native/status-bar";
 import { SplashScreen } from "@ionic-native/splash-screen";
 
 import { MixpanelService } from '../providers/analytics/mixpanel.service';
@@ -19,13 +18,12 @@ export class MyApp implements OnInit {
 
   @ViewChild(Nav) nav: Nav;
 
-  constructor(public platform: Platform,
-              public splashScreen: SplashScreen,
-              public patientService: PatientService,
-              public authService: AuthenticationService,
+  constructor(private platform: Platform,
+              private splashScreen: SplashScreen,
+              private patientService: PatientService,
+              private authService: AuthenticationService,
               private albumService: AlbumService,
               private mixpanel: MixpanelService,
-              private statusBar: StatusBar,
               private network: Network) {
   }
 

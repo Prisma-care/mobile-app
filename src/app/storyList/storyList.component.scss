@@ -1,4 +1,4 @@
-prisma-story-list-page, prisma-story {
+prisma-story-list-page {
 
   album-questions .topic-wrapper {
     height: 30%;
@@ -17,26 +17,9 @@ prisma-story-list-page, prisma-story {
     padding: 0;
   }
 
-  .album-thumb {
-    // settings for the description text
-    padding: 2em;
-    background-color: color($colors, white);
-    text-shadow: none;
-  }
 
   .col, [col-6] {
     padding: 0;
-  }
-
-  .album-thumb h3 {
-    display: inline-block;
-    text-align: center;
-    margin: auto;
-    color: #fff;
-    position: absolute;
-    bottom: 1em;
-    left: 0;
-    width: 100%;
   }
 
   .description-wrapper {
@@ -54,5 +37,33 @@ prisma-story-list-page, prisma-story {
 
   .star {
     font-size: 2.5em;
+    margin-bottom: 10px;
+  }
+
+  .album-thumb {
+    position: relative;
+  }
+  .album-thumb h3 {
+    padding: 0 1em;
+    display: inline-block;
+    text-align: center;
+    margin: auto;
+    color: #fff;
+    position: absolute;
+    bottom: 1em;
+    left: 0;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16px;
+
+  }
+  
+  .boxPlay{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%)
   }
 }

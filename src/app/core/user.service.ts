@@ -1,7 +1,8 @@
 import {Inject, Injectable} from "@angular/core";
 import {Environment, EnvironmentToken} from "../environment";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Observable} from "rxjs/Observable";
+import {Observable, pipe} from "rxjs/Rx";
+import {map, catchError} from 'rxjs/operators'
 import {User} from "../../dto/user";
 import {getMessageFromBackendError} from "../utils";
 
@@ -19,6 +20,12 @@ interface UserResponse {
 
 @Injectable()
 export class UserService {
+
+  userPipe = pipe(
+    map(({response}: UserResponse) => new User(response)),
+    catchError(this.handleError)
+  )
+
   constructor(@Inject(EnvironmentToken) private env: Environment,
               private http: HttpClient) {
 
@@ -27,29 +34,26 @@ export class UserService {
 
   getUser(): Observable<User | Error> {
     return this.http.get(`${this.env.apiUrl}/${this.env.api.getUser}/`)
-      .map(({response}: UserResponse) => {
-        return new User(response);
-      })
-      .catch(err => this.handleError(err));
+      .let(this.userPipe)
   }
 
 
   addUser(user: User): Observable<User | any> {
     let url: string = this.env.api.getUser;
     return this.http.post(`${this.env.apiUrl}/${url}`, user)
-      .map(({response}: UserResponse) => {
-        return new User(response);
-      }).catch(err => this.handleError(err));
+      .let(this.userPipe)
   }
 
-  inviteUser(invitationData: { inviterId: string, firstName: string, lastName: string, email: string, patientId: string }): Observable<boolean | any> {
+  inviteUser(invitationData: { inviterId: string, firstName: string, lastName: string, email: string, patientId: string }): Observable<Object | Error> {
     let url: string = this.env.api.invite;
     const copyInvitationData = {
       ...invitationData,
       patientId:invitationData.patientId.toUpperCase()
     };
     return this.http.post(`${this.env.apiUrl}/${url}`, copyInvitationData)
-      .catch(err => this.handleError(err));
+      .pipe(
+        catchError(this.handleError)
+      )
   }
 
   getCurrentUser(): User {

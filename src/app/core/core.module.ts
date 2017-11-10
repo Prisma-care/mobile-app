@@ -11,17 +11,19 @@ import {UserService} from "./user.service";
 import {AlbumService} from "./album.service";
 import {StoryService} from "./story.service";
 import {QuestionService} from "./question.service";
+import {InvalidTokenInterceptor} from "./interceptors/invalid-token.interceptor";
+import { NetworkInterceptor } from './interceptors/network.interceptor';
 
-const IMPORTS = [
+const imports = [
   HttpClientModule,
   HttpModule,
   IonicModule
 ];
-const DECLARATIONS = [];
+const declarations = [];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...IMPORTS],
+  declarations,
+  imports,
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
@@ -35,7 +37,17 @@ const DECLARATIONS = [];
     },
     {
       provide: HTTP_INTERCEPTORS,
+      useClass: InvalidTokenInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
       useClass: UnauthorizedErrorInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: NetworkInterceptor,
       multi: true,
     },
     AuthenticationService,
@@ -46,7 +58,7 @@ const DECLARATIONS = [];
     QuestionService
   ],
   exports: [
-    ...IMPORTS
+    ...imports
   ]
 })
 export class CoreModule {
