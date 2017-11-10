@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { DomSanitizer, SafeStyle } from "@angular/platform-browser";
-import { Subject, pipe } from "rxjs/Rx";
+import { Subject } from "rxjs/Rx";
 import { takeUntil } from 'rxjs/operators'
 import { UserStory } from "../../dto/user-story";
 

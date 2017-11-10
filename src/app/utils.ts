@@ -1,4 +1,4 @@
-import {Observable, pipe} from "rxjs/Rx";
+import {Observable} from "rxjs/Rx";
 import {UserStory} from "../dto/user-story";
 import { map, switchMap, catchError } from 'rxjs/operators'
 
@@ -67,15 +67,6 @@ export function background(story: UserStory): Observable<string | Error>{
       switchMap((x:Observable<string | Error>) => x)
     )
 }
-
-
-export const getThumbnails = (url):string => {
-  if (!url) {
-    return '';
-  }
-  let video = youtubeId(url)
-  return 'http://img.youtube.com/vi/' + video + '/0.jpg';
-};
 
 export const youtubeId = (url: string): string => {
   const regExp = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|watch\/|v\/)?)([\w\-]+)(\S+)?$/;

@@ -4,15 +4,17 @@ import { Observable, pipe } from "rxjs/Rx";
 import { map, catchError } from 'rxjs/operators'
 import { UserStory } from "../../dto/user-story";
 import {
-  background, getMessageFromBackendError, getThumbnails, getUrlImage, getYoutubeDescriptionAndThumbnail,
+  background,
+  getMessageFromBackendError,
+  getUrlImage,
+  getYoutubeDescriptionAndThumbnail,
   youtubeId
 } from "../utils";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Environment, EnvironmentToken } from "../environment";
 import { Camera } from "@ionic-native/camera";
-import { FilePath } from "@ionic-native/file-path";
-import { File } from "@ionic-native/file";
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/fromPromise';
 
 interface storyResponse {
   response: UserStory
@@ -25,22 +27,20 @@ interface storiesResponse {
 @Injectable()
 export class StoryService {
 
-  storyMap = map(({ response }: storyResponse) => new UserStory(response))
+  storyPipe = pipe(
+    map(({ response }: storyResponse) => new UserStory(response)),
+    catchError(this.handleError)
+  )
 
   constructor( @Inject(EnvironmentToken) private env: Environment,
     private http: HttpClient,
-    private camera: Camera,
-    private filePath: FilePath,
-    private file: File) {
+    private camera: Camera) {
     this.handleError = this.handleError.bind(this);
   }
 
   getUserStory(patientId: string, storyId: string): Observable<UserStory | Error> {
     return this.http.get(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getStory}/${storyId}`)
-      .pipe(
-        this.storyMap,
-        catchError(this.handleError)
-      )
+      .let(this.storyPipe)
   }
 
   getUserStories(): Observable<UserStory[] | Error> {
@@ -53,10 +53,7 @@ export class StoryService {
 
   addStory(patientId: number, newStory: UserStory): Observable<UserStory | Error> {
     return this.http.post(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getStory}`, newStory)
-      .pipe(
-        this.storyMap,
-        catchError(this.handleError)
-      )
+      .let(this.storyPipe)
   }
 
   deleteStory(patientId: number, storyId: number): Observable<Object | Error> {
@@ -68,10 +65,7 @@ export class StoryService {
 
   updateStory(patientId: number, newStory: UserStory): Observable<UserStory | Error> {
     return this.http.patch(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getStory}/${newStory.id}`, newStory)
-      .pipe(
-        this.storyMap,
-        catchError(this.handleError)
-      )
+      .let(this.storyPipe)
   }
 
   getImage(filename: string): Observable<string | Error> {
@@ -121,11 +115,6 @@ export class StoryService {
     };
 
     return Observable.fromPromise(this.camera.getPicture(options))
-  }
-
-  validYoutubeLink(url):Boolean{
-    const youtubeLinkRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|watch\/|v\/)?)([\w\-]+)(\S+)?$/
-    return url.toLowerCase().match(youtubeLinkRegex)
   }
 
   checkYoutubeLink(url: string): Observable<Object | Error> {

@@ -22,7 +22,10 @@ interface PatientResponse {
 @Injectable()
 export class PatientService {
 
-  patientMap = map(({response}: PatientResponse) => new Patient(response))
+  patientPipe = pipe(
+    map(({response}: PatientResponse) => new Patient(response)),
+    catchError(this.handleError)
+  )
 
   constructor(@Inject(EnvironmentToken) private env: Environment,
               private http: HttpClient) {
@@ -33,10 +36,7 @@ export class PatientService {
   getPatient(id: string): Observable<Patient | Error> {
     let url: string = this.env.api.getPatient;
     return this.http.get(`${this.env.apiUrl}/${url}/${id}`)
-      .pipe(
-        this.patientMap,
-        catchError(this.handleError)
-      )
+      .let(this.patientPipe)
   }
 
 
@@ -53,10 +53,7 @@ export class PatientService {
     };
 
     return this.http.post(`${this.env.apiUrl}/${this.env.api.getPatient}`, req)
-      .pipe(
-        this.patientMap,
-        catchError(this.handleError)
-      )
+      .let(this.patientPipe)
   }
 
   getCurrentPatient(): Patient {

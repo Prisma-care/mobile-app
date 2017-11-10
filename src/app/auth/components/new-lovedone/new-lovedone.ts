@@ -53,7 +53,7 @@ import {AlbumListPage} from "../../../albumList/albumList.component";
 })
 export class NewLovedonePage implements OnInit {
 
-  private loading: boolean = false;
+  loading: boolean = false;
   form: FormGroup;
 
   constructor(private fb: FormBuilder,

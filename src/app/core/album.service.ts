@@ -10,7 +10,6 @@ import { Observable, pipe } from "rxjs/Rx";
 import { map, catchError } from 'rxjs/operators';
 import { UserStory } from "../../dto/user-story";
 import { Album } from "../../dto/album";
-import { UnaryFunction } from "rxjs/interfaces";
 
 interface AlbumsResponse {
   response: Album[]
@@ -23,7 +22,10 @@ interface AlbumResponse {
 @Injectable()
 export class AlbumService {
 
-  albumMap = map(({ response }: AlbumResponse) => new Album(response))
+  albumPipe = pipe(
+    map(({ response }: AlbumResponse) => new Album(response)),
+    catchError(this.handleError)
+  )
 
   constructor( @Inject(EnvironmentToken) private env: Environment,
     private http: HttpClient) {
@@ -40,10 +42,7 @@ export class AlbumService {
 
   getAlbum(patientId: string | number, albumId: string | number): Observable<Album | Error> {
     return this.http.get(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getAlbum}/${albumId}`)
-      .pipe(
-        this.albumMap,
-        catchError(this.handleError)
-      )
+      .let(this.albumPipe)
     }
 
   deleteAlbum(patientId: string | number, albumId: string | number): Observable<Object | Error> {
@@ -56,10 +55,7 @@ export class AlbumService {
 
   addAlbum(patientId: string | number, title: string): Observable<Album | Error> {
     return this.http.post(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getAlbum}`, { title: title })
-      .pipe(
-        this.albumMap,
-        catchError(this.handleError)
-      )
+      .let(this.albumPipe)
   }
 
   getImage(filename: string): Observable<string | Error> {

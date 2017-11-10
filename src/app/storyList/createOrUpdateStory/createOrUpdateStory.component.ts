@@ -16,7 +16,6 @@ import { LoadingController, Loading } from "ionic-angular";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
 import { Patient } from "../../../dto/patient";
 import { User } from "../../../dto/user";
-import { pipe } from 'rxjs/Rx';
 import { map, switchMap } from 'rxjs/operators'
 import { Observable } from "rxjs/Observable";
 
@@ -161,7 +160,6 @@ export class CreateOrUpdateStoryPage implements OnInit {
   updateDescription() {
     this.storyService.updateStory(+this.currentPatient.patient_id, this.story)
       .subscribe(addedStory => {
-
         this.mixpanel.track('NewStoryComponent::updateDescription', {
           email: this.currentUser.email,
           patient_id: +this.currentPatient.patient_id,

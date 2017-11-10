@@ -62,6 +62,9 @@ export class StoryListPage implements OnInit, OnDestroy {
   album: Album;
   stories: UserStory[];
   destroy$: Subject<boolean> = new Subject<boolean>();
+  takenUntilPipe = pipe(
+    takeUntil(this.destroy$)
+  )
 
   constructor(@Inject(EnvironmentToken) private env: Environment,
               private navParams: NavParams,
@@ -88,9 +91,7 @@ export class StoryListPage implements OnInit, OnDestroy {
 
   ionViewWillEnter(): void {
     this.albumService.getAlbum(this.patientService.getCurrentPatient().patient_id, this.album.id)
-      .pipe(
-        takeUntil(this.destroy$)
-      )
+      .let(this.takenUntilPipe)
       .subscribe((album: Album) => {
         this.album = album as Album;
         this.stories = this.orderByFavorited();
@@ -132,9 +133,7 @@ export class StoryListPage implements OnInit, OnDestroy {
             cssClass: 'general',
             handler: () => {
               this.storyService.takeAPicture()
-              .pipe(
-                takeUntil(this.destroy$)
-              )
+              .let(this.takenUntilPipe)
               .subscribe(dataUrl =>{
                 this.navCtrl.push(CreateOrUpdateStoryPage,
                   {
@@ -151,9 +150,7 @@ export class StoryListPage implements OnInit, OnDestroy {
             icon: 'image',
             handler: () => {
               this.storyService.chooseAFile()
-              .pipe(
-                takeUntil(this.destroy$)
-              )
+              .let(this.takenUntilPipe)
               .subscribe(dataUrl =>{
                 this.navCtrl.push(CreateOrUpdateStoryPage,
                   {

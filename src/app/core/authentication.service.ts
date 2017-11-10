@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {Environment, EnvironmentToken} from '../environment';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Observable, pipe, BehaviorSubject} from 'rxjs/Rx';
+import {Observable, BehaviorSubject} from 'rxjs/Rx';
 import {map, catchError, switchMap} from 'rxjs/operators';
 import {User} from '../../dto/user';
 import {getMessageFromBackendError} from '../utils';

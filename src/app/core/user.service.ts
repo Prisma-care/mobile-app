@@ -21,7 +21,10 @@ interface UserResponse {
 @Injectable()
 export class UserService {
 
-  userMap = map(({response}: UserResponse) => new User(response))
+  userPipe = pipe(
+    map(({response}: UserResponse) => new User(response)),
+    catchError(this.handleError)
+  )
 
   constructor(@Inject(EnvironmentToken) private env: Environment,
               private http: HttpClient) {
@@ -31,20 +34,14 @@ export class UserService {
 
   getUser(): Observable<User | Error> {
     return this.http.get(`${this.env.apiUrl}/${this.env.api.getUser}/`)
-      .pipe(
-        this.userMap,
-        catchError(this.handleError)
-      )
+      .let(this.userPipe)
   }
 
 
   addUser(user: User): Observable<User | any> {
     let url: string = this.env.api.getUser;
     return this.http.post(`${this.env.apiUrl}/${url}`, user)
-      .pipe(
-        this.userMap,
-        catchError(this.handleError)
-      )
+      .let(this.userPipe)
   }
 
   inviteUser(invitationData: { inviterId: string, firstName: string, lastName: string, email: string, patientId: string }): Observable<Object | Error> {
