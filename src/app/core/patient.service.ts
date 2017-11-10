@@ -1,7 +1,8 @@
 import {Inject, Injectable} from "@angular/core";
 import {Environment, EnvironmentToken} from "../environment";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Observable} from "rxjs/Observable";
+import {Observable, pipe} from "rxjs/Rx";
+import { map, catchError } from 'rxjs/operators'
 import {getMessageFromBackendError} from "../utils";
 import {Patient} from "../../dto/patient";
 
@@ -20,6 +21,12 @@ interface PatientResponse {
 
 @Injectable()
 export class PatientService {
+
+  patientPipe = pipe(
+    map(({response}: PatientResponse) => new Patient(response)),
+    catchError(this.handleError)
+  )
+
   constructor(@Inject(EnvironmentToken) private env: Environment,
               private http: HttpClient) {
 
@@ -29,10 +36,7 @@ export class PatientService {
   getPatient(id: string): Observable<Patient | Error> {
     let url: string = this.env.api.getPatient;
     return this.http.get(`${this.env.apiUrl}/${url}/${id}`)
-      .map(({response}: PatientResponse) => {
-        return new Patient(response);
-      })
-      .catch(err => this.handleError(err));
+      .let(this.patientPipe)
   }
 
 
@@ -49,9 +53,7 @@ export class PatientService {
     };
 
     return this.http.post(`${this.env.apiUrl}/${this.env.api.getPatient}`, req)
-      .map(({response}: PatientResponse) => {
-        return new Patient(response);
-      }).catch(err => this.handleError(err));
+      .let(this.patientPipe)
   }
 
   getCurrentPatient(): Patient {

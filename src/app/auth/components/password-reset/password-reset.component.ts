@@ -76,7 +76,8 @@ export class PasswordResetComponent implements OnInit {
   }
 
   resetPassword({email}: { email: string }) {
-    this.authService.resetPassword(email).subscribe((data) => {
+    this.authService.resetPassword(email)
+    .subscribe((data) => {
       if (data instanceof Error) {
         this.showMessage(data.message)
       } else {

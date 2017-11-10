@@ -34,12 +34,13 @@ export class StoryListOptionsComponent {
   }
 
   deleteAlbum(): void {
-    this.albumService.deleteAlbum(+this.patientService.getCurrentPatient().patient_id,+this.navParams.get('album').id).subscribe(
-      () => {
-        this.viewCtrl.dismiss("deleteSuccess");
-      }, err => {
-        this.viewCtrl.dismiss("deleteError");
-      }
-    )
+    this.albumService.deleteAlbum(+this.patientService.getCurrentPatient().patient_id,+this.navParams.get('album').id)
+      .subscribe(
+        () => {
+          this.viewCtrl.dismiss("deleteSuccess");
+        }, err => {
+          this.viewCtrl.dismiss("deleteError");
+        }
+      )
   }
 }

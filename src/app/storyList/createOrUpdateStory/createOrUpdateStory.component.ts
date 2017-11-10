@@ -16,6 +16,8 @@ import { LoadingController, Loading } from "ionic-angular";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
 import { Patient } from "../../../dto/patient";
 import { User } from "../../../dto/user";
+import { map, switchMap } from 'rxjs/operators'
+import { Observable } from "rxjs/Observable";
 
 @Component({
   selector: 'prisma-create-update-story',
@@ -85,9 +87,10 @@ export class CreateOrUpdateStoryPage implements OnInit {
         this.isLoading = true;
       },
       send: () => {
-        this.addStory().subscribe((addedStory) => {
-          this.uploadImage(+this.currentPatient.patient_id, +addedStory.id, this.dataUrl)
-        })
+        this.addStory()
+          .subscribe((addedStory) => {
+            this.uploadImage(+this.currentPatient.patient_id, +addedStory.id, this.dataUrl)
+          })
       }
     },
     [this.env.methods.addYoutubeStory]: {
@@ -101,8 +104,10 @@ export class CreateOrUpdateStoryPage implements OnInit {
       send: () => {
         if (this.isLoading) {
           this.addStory()
-            .map((addedStory) => this.storyService.addYoutubeLinkAsset(+this.currentPatient.patient_id, +addedStory.id, this.story.source))
-            .switchMap(x => x)
+            .pipe(
+              map((addedStory: UserStory) => this.storyService.addYoutubeLinkAsset(+this.currentPatient.patient_id, +addedStory.id, this.story.source)),
+              switchMap((x:Observable<Object | Error>) => x)
+            )
             .subscribe(() => this.navCtrl.pop())
         } else {
           this.toastCtrl.create({
@@ -153,22 +158,22 @@ export class CreateOrUpdateStoryPage implements OnInit {
   }
 
   updateDescription() {
-    this.storyService.updateStory(+this.currentPatient.patient_id, this.story).subscribe(addedStory => {
+    this.storyService.updateStory(+this.currentPatient.patient_id, this.story)
+      .subscribe(addedStory => {
+        this.mixpanel.track('NewStoryComponent::updateDescription', {
+          email: this.currentUser.email,
+          patient_id: +this.currentPatient.patient_id,
+          updatedStory: this.story,
+          selectedAlbum: this.album
+        });
 
-      this.mixpanel.track('NewStoryComponent::updateDescription', {
-        email: this.currentUser.email,
-        patient_id: +this.currentPatient.patient_id,
-        updatedStory: this.story,
-        selectedAlbum: this.album
+        this.navCtrl.push(StoryDetailsPage, {
+          "album": this.album,
+          "story": this.story,
+        });
+
+        this.navCtrl.remove(this.viewCtrl.index - 1, 2)
       });
-
-      this.navCtrl.push(StoryDetailsPage, {
-        "album": this.album,
-        "story": this.story,
-      });
-
-      this.navCtrl.remove(this.viewCtrl.index - 1, 2)
-    });
   }
 
   initStory(params) {
@@ -181,15 +186,18 @@ export class CreateOrUpdateStoryPage implements OnInit {
   }
 
    addStory() {
-    return this.storyService.addStory(+this.currentPatient.patient_id, this.story).map((addedStory: UserStory) => {
-      this.mixpanel.track('NewStoryComponent::saving story', {
-        email: this.currentUser.email,
-        patient_id: +this.currentPatient.patient_id,
-        newStory: this.story,
-        selectedAlbum: this.album
-      });
-      return addedStory;
-    })
+    return this.storyService.addStory(+this.currentPatient.patient_id, this.story)
+      .pipe(
+        map((addedStory: UserStory) => {
+          this.mixpanel.track('NewStoryComponent::saving story', {
+            email: this.currentUser.email,
+            patient_id: +this.currentPatient.patient_id,
+            newStory: this.story,
+            selectedAlbum: this.album
+          });
+          return addedStory;
+        })
+      )
   }
 
   checkYoutubeLink(value) {

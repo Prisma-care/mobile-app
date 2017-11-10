@@ -16,8 +16,7 @@ export class InvitePage {
   patientId: string;
   inviterId: string;
   form: FormGroup;
-
-  private loading: boolean = false;
+  loading: boolean = false;
 
   constructor(public authService: AuthenticationService,
               public navCtrl: NavController,

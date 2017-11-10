@@ -4,8 +4,8 @@ import {ActionSheetController, NavController, NavParams} from "ionic-angular";
 import {Album} from "../../dto/album";
 import {AlbumService} from "../core/album.service";
 import {PatientService} from "../core/patient.service";
-import {Subject} from "rxjs/Subject";
-import "rxjs/add/operator/takeUntil";
+import {Subject, pipe} from "rxjs/Rx";
+import {takeUntil} from 'rxjs/operators'
 import {Environment, EnvironmentToken} from "../environment";
 import { Content } from "ionic-angular/navigation/nav-interfaces";
 import { StoryListOptionsComponent } from "./component/storyListOptions.component";
@@ -62,6 +62,9 @@ export class StoryListPage implements OnInit, OnDestroy {
   album: Album;
   stories: UserStory[];
   destroy$: Subject<boolean> = new Subject<boolean>();
+  takenUntilPipe = pipe(
+    takeUntil(this.destroy$)
+  )
 
   constructor(@Inject(EnvironmentToken) private env: Environment,
               private navParams: NavParams,
@@ -88,7 +91,7 @@ export class StoryListPage implements OnInit, OnDestroy {
 
   ionViewWillEnter(): void {
     this.albumService.getAlbum(this.patientService.getCurrentPatient().patient_id, this.album.id)
-      .takeUntil(this.destroy$)
+      .let(this.takenUntilPipe)
       .subscribe((album: Album) => {
         this.album = album as Album;
         this.stories = this.orderByFavorited();
@@ -129,7 +132,9 @@ export class StoryListPage implements OnInit, OnDestroy {
             icon: 'camera',
             cssClass: 'general',
             handler: () => {
-              this.storyService.takeAPicture().takeUntil(this.destroy$).subscribe(dataUrl =>{
+              this.storyService.takeAPicture()
+              .let(this.takenUntilPipe)
+              .subscribe(dataUrl =>{
                 this.navCtrl.push(CreateOrUpdateStoryPage,
                   {
                     "dataUrl": dataUrl,
@@ -144,7 +149,9 @@ export class StoryListPage implements OnInit, OnDestroy {
             role: 'destructive',
             icon: 'image',
             handler: () => {
-              this.storyService.chooseAFile().takeUntil(this.destroy$).subscribe(dataUrl =>{
+              this.storyService.chooseAFile()
+              .let(this.takenUntilPipe)
+              .subscribe(dataUrl =>{
                 this.navCtrl.push(CreateOrUpdateStoryPage,
                   {
                     "dataUrl": dataUrl,

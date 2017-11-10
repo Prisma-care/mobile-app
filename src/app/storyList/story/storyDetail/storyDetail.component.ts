@@ -10,8 +10,8 @@ import {StoryOptionsComponent} from "./component/storyOptions.component";
 import {YoutubeVideoPlayer} from "@ionic-native/youtube-video-player";
 import {StoryService} from "../../../core/story.service";
 import {PatientService} from "../../../core/patient.service";
-import {Subject} from "rxjs/Subject";
-import "rxjs/add/operator/takeUntil";
+import {Subject, pipe} from "rxjs/Rx";
+import {takeUntil} from 'rxjs/operators'
 import {Environment, EnvironmentToken} from "../../../environment";
 import { Content } from "ionic-angular/navigation/nav-interfaces";
 import { CreateOrUpdateStoryPage } from "../../createOrUpdateStory/createOrUpdateStory.component";
@@ -82,6 +82,9 @@ export class StoryDetailsPage implements OnInit {
   album: Album;
   story: UserStory;
   backgroundImage: SafeUrl;
+  takenUntilPipe = pipe(
+    takeUntil(this.destroy$)
+  )
 
   constructor(@Inject(EnvironmentToken) private env: Environment,
               private navParams: NavParams,
@@ -141,7 +144,7 @@ export class StoryDetailsPage implements OnInit {
   next(): void {
     const nextStory = this.album.stories[(this.album.stories.findIndex(story => this.story.id === story.id) + 1) % this.album.stories.length];
     this.storyService.getBackground(nextStory)
-      .takeUntil(this.destroy$)
+      .let(this.takenUntilPipe)
       .subscribe(imageUrl => {
         this.navCtrl.push(StoryDetailsPage, {
           "album": this.album,
@@ -158,7 +161,7 @@ export class StoryDetailsPage implements OnInit {
     const index = this.album.stories.findIndex(story => this.story.id === story.id) === 0 ? this.album.stories.length - 1 : this.album.stories.findIndex(story => this.story.id === story.id) - 1;
     const previousStory = this.album.stories[index];
     this.storyService.getBackground(previousStory)
-      .takeUntil(this.destroy$)
+      .let(this.takenUntilPipe)
       .subscribe((imageUrl) => {
         this.navCtrl.push(StoryDetailsPage, {
           "album": this.album,
@@ -174,7 +177,7 @@ export class StoryDetailsPage implements OnInit {
   toggleFavorite(): void {
     this.story.favorited = !this.story.favorited;
     this.storyService.updateStory(+this.patientService.getCurrentPatient().patient_id, this.story)
-      .takeUntil(this.destroy$)
+      .let(this.takenUntilPipe)
       .subscribe()
   }
 

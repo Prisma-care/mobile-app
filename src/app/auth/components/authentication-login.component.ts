@@ -1,15 +1,14 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthenticationService} from '../../core/authentication.service';
-import {AlertController, NavController} from 'ionic-angular';
-import {Network} from '@ionic-native/network';
-import {MixpanelService} from '../../../providers/analytics/mixpanel.service';
-import {FullstoryService} from '../../../providers/analytics/fullstory.service';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/timeout';
-import 'rxjs/add/operator/do';
-import {UserService} from "../../core/user.service";
-import {PasswordResetComponent} from "./password-reset/password-reset.component";
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthenticationService } from '../../core/authentication.service';
+import { AlertController, NavController } from 'ionic-angular';
+import { Network } from '@ionic-native/network';
+import { MixpanelService } from '../../../providers/analytics/mixpanel.service';
+import { FullstoryService } from '../../../providers/analytics/fullstory.service';
+import { Observable } from 'rxjs/Rx';
+import { switchMap, timeout, tap } from 'rxjs/operators'
+import { UserService } from "../../core/user.service";
+import { PasswordResetComponent } from "./password-reset/password-reset.component";
 
 @Component({
   selector: 'prisma-authentication-login',
@@ -92,13 +91,13 @@ export class AuthenticationLoginComponent implements OnInit {
   loading: boolean = false;
 
   constructor(private fb: FormBuilder,
-              private auth: AuthenticationService,
-              private alertCtrl: AlertController,
-              private network: Network,
-              private mixpanel: MixpanelService,
-              private fullstory: FullstoryService,
-              private userService: UserService,
-              private navCtrl: NavController) {
+    private auth: AuthenticationService,
+    private alertCtrl: AlertController,
+    private network: Network,
+    private mixpanel: MixpanelService,
+    private fullstory: FullstoryService,
+    private userService: UserService,
+    private navCtrl: NavController) {
   }
 
   // TODO: display error message
@@ -119,9 +118,9 @@ export class AuthenticationLoginComponent implements OnInit {
       ], []]
     });
 
-    setTimeout(()=>{
+    setTimeout(() => {
       this.inputEmail.setFocus()
-    },400)
+    }, 400)
   }
 
   toggleShow() {
@@ -136,31 +135,33 @@ export class AuthenticationLoginComponent implements OnInit {
 
     this.loading = true;
     this.auth.login(email, password)
-      .switchMap((res: boolean | Error) => {
-        if (res instanceof Error) {
-          this.mixpanel.track('LoginComponent::Login error', email);
-          this.showError(res.message);
-          return Observable.empty();
-        }
-        return Observable.of(res);
-      })
-      .timeout(10000)
-      .do(() => {
-        this.loading = false;
-        this.mixpanel.identify(this.userService.getCurrentUser());
-        this.fullstory.identify(this.userService.getCurrentUser());
-        this.mixpanel.track('LoginComponent::Login success', this.userService.getCurrentUser().email);
-        this.onComplete();
-      })
+      .pipe(
+        switchMap((res: boolean | Error) => {
+          if (res instanceof Error) {
+            this.mixpanel.track('LoginComponent::Login error', email);
+            this.showError(res.message);
+            return Observable.empty();
+          }
+          return Observable.of(res);
+        }),
+        timeout(10000),
+        tap(() => {
+          this.loading = false;
+          this.mixpanel.identify(this.userService.getCurrentUser());
+          this.fullstory.identify(this.userService.getCurrentUser());
+          this.mixpanel.track('LoginComponent::Login success', this.userService.getCurrentUser().email);
+          this.onComplete();
+        })
+      )
       .subscribe(undefined, (err) => {
         this.mixpanel.track('LoginComponent::Login error', email);
         this.showError(err.message);
       })
   }
 
-  goToPasswordResetPage():void{
+  goToPasswordResetPage(): void {
     this.navCtrl.push(PasswordResetComponent, {
-      "email":this.form.getRawValue().email
+      "email": this.form.getRawValue().email
     });
   }
 

@@ -24,12 +24,13 @@ export class StoryOptionsComponent {
   ) {}
 
   deleteStory(): void {
-    this.storyService.deleteStory(+this.patientService.getCurrentPatient().patient_id, +this.navParams.data.story.id).subscribe(
-      () => {
-        this.viewCtrl.dismiss("deleteSuccess");
-      }, err => {
-        this.viewCtrl.dismiss("deleteError");
-      }
-    )
+    this.storyService.deleteStory(+this.patientService.getCurrentPatient().patient_id, +this.navParams.data.story.id)
+      .subscribe(
+        () => {
+          this.viewCtrl.dismiss("deleteSuccess");
+        }, err => {
+          this.viewCtrl.dismiss("deleteError");
+        }
+      )
   }
 }
