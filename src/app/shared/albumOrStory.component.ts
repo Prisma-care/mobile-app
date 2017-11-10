@@ -1,9 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from "@angular/core";
-import { NavController } from "ionic-angular";
 import { DomSanitizer, SafeStyle } from "@angular/platform-browser";
-import "rxjs/add/operator/switchMap";
-import "rxjs/add/operator/last";
-import { Subject } from "rxjs/Subject";
+import { Subject, pipe } from "rxjs/Rx";
+import { takeUntil } from 'rxjs/operators'
 import { UserStory } from "../../dto/user-story";
 
 @Component({
@@ -77,7 +75,9 @@ export class AlbumOrStoryComponent implements OnInit, OnDestroy {
   setBackgroundImage(story: UserStory) {
     if (story) {
       this.getBackground(story)
-        .takeUntil(this.destroy$)
+        .pipe(
+          takeUntil(this.destroy$)
+        )
         .subscribe(imageUrl => {
           this.story = {
             ...this.story,

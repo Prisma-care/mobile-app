@@ -1,6 +1,7 @@
 
 import { Inject, Injectable } from "@angular/core";
-import { Observable } from "rxjs/Observable";
+import { Observable, pipe } from "rxjs/Rx";
+import { map, catchError } from 'rxjs/operators'
 import { UserStory } from "../../dto/user-story";
 import {
   background, getMessageFromBackendError, getThumbnails, getUrlImage, getYoutubeDescriptionAndThumbnail,
@@ -23,6 +24,9 @@ interface storiesResponse {
 
 @Injectable()
 export class StoryService {
+
+  storyMap = map(({ response }: storyResponse) => new UserStory(response))
+
   constructor( @Inject(EnvironmentToken) private env: Environment,
     private http: HttpClient,
     private camera: Camera,
@@ -32,34 +36,42 @@ export class StoryService {
   }
 
   getUserStory(patientId: string, storyId: string): Observable<UserStory | Error> {
-
     return this.http.get(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getStory}/${storyId}`)
-      .map(({ response }: storyResponse) => new UserStory(response))
-      .catch(err => this.handleError(err));
+      .pipe(
+        this.storyMap,
+        catchError(this.handleError)
+      )
   }
 
   getUserStories(): Observable<UserStory[] | Error> {
     return this.http.get("assets/json/stories.json")
-      .map(({ response }: storiesResponse) => response.map(story => new UserStory(story)))
-      .catch(error => this.handleError(error));
+      .pipe(
+        map(({ response }: storiesResponse) => response.map(story => new UserStory(story))),
+        catchError(this.handleError)
+      )
   }
 
   addStory(patientId: number, newStory: UserStory): Observable<UserStory | Error> {
-
     return this.http.post(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getStory}`, newStory)
-      .map(({ response }: storyResponse) => new UserStory(response))
-      .catch(err => this.handleError(err));
+      .pipe(
+        this.storyMap,
+        catchError(this.handleError)
+      )
   }
 
   deleteStory(patientId: number, storyId: number): Observable<Object | Error> {
     return this.http.delete(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getStory}/${storyId}`)
-      .catch(err => this.handleError(err));
+      .pipe(
+        catchError(this.handleError)
+      )
   }
 
   updateStory(patientId: number, newStory: UserStory): Observable<UserStory | Error> {
     return this.http.patch(`${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getStory}/${newStory.id}`, newStory)
-      .map(({ response }: storyResponse) => new UserStory(response))
-      .catch(err => this.handleError(err));
+      .pipe(
+        this.storyMap,
+        catchError(this.handleError)
+      )
   }
 
   getImage(filename: string): Observable<string | Error> {
@@ -80,12 +92,13 @@ export class StoryService {
   }
 
   addYoutubeLinkAsset(patient_id: number, storyId: number, asset: string): Observable<Object | Error> {
-
     return this.http.post(`${this.env.apiUrl}/${this.env.api.getPatient}/${patient_id}/${this.env.api.getStory}/${storyId}/${this.env.api.getAsset}`, {
       "asset": asset,
       "assetType": "youtube"
     })
-      .catch(err => this.handleError(err));
+    .pipe(
+      catchError(this.handleError)
+    )
   }
 
   takeAPicture(): Observable<string> {

@@ -33,24 +33,10 @@ export class NewLovedonePage  {
   }
 
   start() {
-    if (this.loading)
-      return;
-    this.loading = true;
-    this.createLovedOne().then((patient) => {
-      patient.patient_id = patient.id;
-        this.lovedOnes.setPatient(patient);
-        this.navCtrl.setRoot(AlbumsPage).then(res => {
-          this.loading = false;
-        });
-      }
-    ).catch(() => {
-        this.loading = false;
-        this.creationError();
-      }
-    )
+
   }
 
-  private createLovedOne(): Promise<Patient> {
+  private createLovedOne(): Promise<void | Patient> {
     return this.lovedOnes.addPatient(this.firstname, this.lastname).toPromise().then(
       (lovedOne) => {
         this.loading = false;

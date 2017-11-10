@@ -1,5 +1,6 @@
-import {Observable} from "rxjs/Observable";
+import {Observable, pipe} from "rxjs/Rx";
 import {UserStory} from "../dto/user-story";
+import { map, switchMap, catchError } from 'rxjs/operators'
 
 export interface youtubeResponse {
   items: {
@@ -47,24 +48,28 @@ export function getUrlImage(filename: string): Observable<string | Error> {
     header,
     responseType: 'blob'
   })
-    .map(blob => URL.createObjectURL(blob))
-    .catch(err => this.handleError(err));
+  .pipe(
+    map(blob => URL.createObjectURL(blob)),
+    catchError(this.handleError)
+  )
 }
 
 export function background(story: UserStory): Observable<string | Error>{
   return Observable.of(story)
-    .map(item => {
-      if (item.type !== "youtube") {
-        return this.getImage(item.source)
-      } else {
-        return this.getThumb(item.source)
-      }
-    })
-    .switchMap(x => x)
+    .pipe(
+      map((item:UserStory) => {
+        if (item.type !== "youtube") {
+          return this.getImage(item.source)
+        } else {
+          return this.getThumb(item.source)
+        }
+      }),
+      switchMap((x:Observable<string | Error>) => x)
+    )
 }
 
 
-export const getThumbnails = (url) => {
+export const getThumbnails = (url):string => {
   if (!url) {
     return '';
   }
@@ -94,17 +99,17 @@ export function getYoutubeDescriptionAndThumbnail(url): Observable<Object | Erro
     const urlId = youtubeId(url);
 
     return this.http.get(`https://www.googleapis.com/youtube/v3/videos?id=${urlId}&key=${this.env.youtubeApiKey}&part=snippet`)
-      .map((res: youtubeResponse) => ({
-        thumbnail : res.pageInfo.totalResults ? res.items[0].snippet.thumbnails :  null,
-        description: res.items[0].snippet.description
-      }))
-      .map((res) => {
-        const last = Object.keys(res.thumbnail)[Object.keys(res.thumbnail).length-1];
-        return {...res, thumbnail: res.thumbnail[last].url}
-      })
-      .catch(() => {
-        return Observable.of({})
-      })
+      .pipe(
+        map((res: youtubeResponse) => ({
+          thumbnail : res.pageInfo.totalResults ? res.items[0].snippet.thumbnails :  null,
+          description: res.items[0].snippet.description
+        })),
+        map((res :{thumbnail:Object, description:string}) => {
+          const last = Object.keys(res.thumbnail)[Object.keys(res.thumbnail).length-1];
+          return {...res, thumbnail: res.thumbnail[last].url}
+        }),
+        catchError(() =>  Observable.of({}))
+      )
   } else {
     return Observable.of(null)
   }

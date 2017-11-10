@@ -24,7 +24,7 @@ export class UtilService {
     return this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
   }
 
-  public takePicture(sourceType?): Promise<string> {
+  public takePicture(sourceType?): Promise<void|string> {
     if (!sourceType)
       sourceType = this.camera.PictureSourceType.PHOTOLIBRARY;
     // Create options for the Camera Dialog

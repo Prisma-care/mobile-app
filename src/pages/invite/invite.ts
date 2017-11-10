@@ -60,9 +60,8 @@ export class InvitePage  {
         });
       } else {
         this.mixpanel.track('InviteComponent::invite error', data);
-        const error= res.json();
+        const error= res;
         console.log('error:invitation', error);
-        this.inviteError(error.meta  ? error.meta.message.email.join('\n') : '');
         this.loading = false;
       }
     });

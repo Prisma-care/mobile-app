@@ -1,15 +1,9 @@
 import {Inject, Injectable} from '@angular/core';
 import {Environment, EnvironmentToken} from '../environment';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Observable, pipe, BehaviorSubject} from 'rxjs/Rx';
+import {map, catchError, switchMap} from 'rxjs/operators';
 import {User} from '../../dto/user';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/throw';
 import {getMessageFromBackendError} from '../utils';
 import { UserService } from "./user.service";
 
@@ -38,36 +32,42 @@ export class AuthenticationService {
 
     let url = `${this.env.apiUrl}/${this.env.api.getUser}/${this.env.api.getSignIn}`;
     return this.http.post(url, { email, password })
-      .map(({ response: { token, patients, id } }: LoginResponse) => {
-        this.setAuthenticationInfoInStorage({
-          token,
-          currentPatient: patients[0],
-          userId: id
-        });
-
-        this._isAuthenticated.next(true);
-        return this.isAuthenticatedSync;
-      })
-      // chain by getting & setting full user info (for Mixpanel)
-      .flatMap((authSync) => {
-        return this.userService.getUser()
-        .map((user) => {
-          localStorage.setItem(this.env.temp.currentUser, JSON.stringify(user))})
-        .map(() => authSync);
-      })
-      .catch(this.handleError)
-
+      .pipe(
+        map(({ response: { token, patients, id } }: LoginResponse):boolean => {
+          this.setAuthenticationInfoInStorage({
+            token,
+            currentPatient: patients[0],
+            userId: id
+          });
+  
+          this._isAuthenticated.next(true);
+          return this.isAuthenticatedSync;
+        }),
+        switchMap((authSync:boolean) => {
+          return this.userService.getUser()
+            .pipe(
+              map((user:User|Error) => {
+                localStorage.setItem(this.env.temp.currentUser, JSON.stringify(user))}),
+              map(() => authSync)
+            )
+        }),
+        catchError(this.handleError)
+      )
   }
 
   signUp(user: User): Observable<boolean | Error> {
     return this.http.post(`${this.env.apiUrl}/${this.env.api.getUser}`, user)
-      .switchMap(res => this.login(user.email, user.password))
-      .catch(this.handleError);
+      .pipe(
+        switchMap((res:Object) => this.login(user.email, user.password)),
+        catchError(this.handleError)
+      )
   }
 
-  resetPassword(email: string) : Observable<boolean | Error>{
+  resetPassword(email: string) : Observable<Object | Error>{
     return this.http.post(`${this.env.apiUrl}/reset`, {email})
-      .catch(this.handleError)
+      .pipe(
+        catchError(this.handleError)
+      )
   }
 
   setAuthenticationInfoInStorage({ token, currentPatient, userId }: { token: string, currentPatient: any, userId: string }) {
@@ -89,7 +89,9 @@ export class AuthenticationService {
 
   get isAuthenticatedSync(): boolean {
     let isLogged: boolean;
-    this.isAuthenticated.take(1).subscribe(val => isLogged = val);
+    this.isAuthenticated
+      .take(1)
+      .subscribe(val => isLogged = val);
     return isLogged;
   }
 
