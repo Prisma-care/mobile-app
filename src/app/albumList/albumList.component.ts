@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, Inject} from "@angular/core";
 import {PatientService} from "../core/patient.service";
 import {AlertController, MenuController} from "ionic-angular";
 import {Album} from "../../dto/album";
@@ -9,6 +9,7 @@ import {Patient} from "../../dto/patient";
 import { StoryListPage } from "../storyList/storyList.component";
 import { NavController } from "ionic-angular/navigation/nav-controller";
 import { UserStory } from "../../dto/user-story";
+import { EnvironmentToken, Environment } from "../environment";
 
 @Component({
   selector: 'prisma-album-list-page',
@@ -30,6 +31,7 @@ import { UserStory } from "../../dto/user-story";
               [album]="album" 
               [story]="album.stories[album.stories.length-1]" 
               [showDetails]="showDetails"
+              [emptyAlbum]="env.emptyAlbum"
               [isAlbum]="true">
             </prisma-album-story>
           </ion-col>
@@ -50,7 +52,8 @@ export class AlbumListPage {
   albums: Observable<Album[]>;
   currentPatient: Patient;
 
-  constructor(private patientService: PatientService,
+  constructor(@Inject(EnvironmentToken) private env: Environment,
+              private patientService: PatientService,
               private menu: MenuController,
               private albumService: AlbumService,
               private alertCtrl: AlertController,
