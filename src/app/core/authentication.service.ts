@@ -49,7 +49,7 @@ export class AuthenticationService {
         return this.isAuthenticatedSync;
       })
       // chain by getting & setting full user info (for Mixpanel)
-      .flatMap((authSync) => {
+      .switchMap((authSync) => {
         return this.userService.getUser()
         .map((user) => {
           localStorage.setItem(this.env.temp.currentUser, JSON.stringify(user))})

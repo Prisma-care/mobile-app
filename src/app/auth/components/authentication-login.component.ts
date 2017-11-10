@@ -6,6 +6,8 @@ import {Network} from '@ionic-native/network';
 import {MixpanelService} from '../../../providers/analytics/mixpanel.service';
 import {FullstoryService} from '../../../providers/analytics/fullstory.service';
 import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/timeout';
+import 'rxjs/add/operator/do';
 import {UserService} from "../../core/user.service";
 import {PasswordResetComponent} from "./password-reset/password-reset.component";
 

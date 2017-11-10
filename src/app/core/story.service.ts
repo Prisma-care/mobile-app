@@ -3,15 +3,17 @@ import { Inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import { UserStory } from "../../dto/user-story";
 import {
-  background, getMessageFromBackendError, getThumbnails, getUrlImage, getYoutubeDescriptionAndThumbnail,
+  background,
+  getMessageFromBackendError,
+  getUrlImage,
+  getYoutubeDescriptionAndThumbnail,
   youtubeId
 } from "../utils";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Environment, EnvironmentToken } from "../environment";
 import { Camera } from "@ionic-native/camera";
-import { FilePath } from "@ionic-native/file-path";
-import { File } from "@ionic-native/file";
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/fromPromise';
 
 interface storyResponse {
   response: UserStory
@@ -25,9 +27,7 @@ interface storiesResponse {
 export class StoryService {
   constructor( @Inject(EnvironmentToken) private env: Environment,
     private http: HttpClient,
-    private camera: Camera,
-    private filePath: FilePath,
-    private file: File) {
+    private camera: Camera) {
     this.handleError = this.handleError.bind(this);
   }
 
@@ -108,11 +108,6 @@ export class StoryService {
     };
 
     return Observable.fromPromise(this.camera.getPicture(options))
-  }
-
-  validYoutubeLink(url):Boolean{
-    const youtubeLinkRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|watch\/|v\/)?)([\w\-]+)(\S+)?$/
-    return url.toLowerCase().match(youtubeLinkRegex)
   }
 
   checkYoutubeLink(url: string): Observable<Object | Error> {
