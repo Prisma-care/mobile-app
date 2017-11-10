@@ -12,6 +12,7 @@ import {AlbumService} from "./album.service";
 import {StoryService} from "./story.service";
 import {QuestionService} from "./question.service";
 import {InvalidTokenInterceptor} from "./interceptors/invalid-token.interceptor";
+import { NetworkInterceptor } from './interceptors/network.interceptor';
 
 const IMPORTS = [
   HttpClientModule,
@@ -42,6 +43,11 @@ const DECLARATIONS = [];
     {
       provide: HTTP_INTERCEPTORS,
       useClass: UnauthorizedErrorInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: NetworkInterceptor,
       multi: true,
     },
     AuthenticationService,
