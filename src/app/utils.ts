@@ -63,15 +63,6 @@ export function background(story: UserStory): Observable<string | Error>{
     .switchMap(x => x)
 }
 
-
-export const getThumbnails = (url) => {
-  if (!url) {
-    return '';
-  }
-  let video = youtubeId(url)
-  return 'http://img.youtube.com/vi/' + video + '/0.jpg';
-};
-
 export const youtubeId = (url: string): string => {
   const regExp = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|watch\/|v\/)?)([\w\-]+)(\S+)?$/;
   const match = url.match(regExp);
