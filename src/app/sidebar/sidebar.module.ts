@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 import {SharedModule} from "../shared/shared.module";
 import {SidebarComponent} from "./sidebar.component";
-import {InvitePage} from "./invite/invite";
-import {GiveFeedbackComponent} from "./giveFeedback/giveFeedback.component";
+import {InvitePage} from "./component/invite/invite";
+import {GiveFeedbackComponent} from "./component/giveFeedback/giveFeedback.component";
 
 const IMPORTS = [
   SharedModule

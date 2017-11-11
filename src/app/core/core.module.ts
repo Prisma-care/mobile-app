@@ -13,6 +13,9 @@ import {StoryService} from "./story.service";
 import {QuestionService} from "./question.service";
 import {InvalidTokenInterceptor} from "./interceptors/invalid-token.interceptor";
 import { NetworkInterceptor } from './interceptors/network.interceptor';
+import { MixpanelService } from './mixpanel.service';
+import { FullstoryService } from './fullstory.service';
+import { Mixpanel, MixpanelPeople } from '@ionic-native/mixpanel';
 
 const imports = [
   HttpClientModule,
@@ -55,7 +58,11 @@ const declarations = [];
     UserService,
     AlbumService,
     StoryService,
-    QuestionService
+    QuestionService,
+    MixpanelService,
+    FullstoryService,
+    Mixpanel,
+    MixpanelPeople,
   ],
   exports: [
     ...imports

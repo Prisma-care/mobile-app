@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit } from "@angular/core";
 import { Platform, Nav } from "ionic-angular";
 import { SplashScreen } from "@ionic-native/splash-screen";
 
-import { MixpanelService } from '../providers/analytics/mixpanel.service';
+import { MixpanelService } from './core/mixpanel.service';
 import { AuthenticationService } from './core/authentication.service';
 import { PatientService } from "./core/patient.service";
 import { NewLovedonePage } from "./auth/components/new-lovedone/new-lovedone";

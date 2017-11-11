@@ -1,16 +1,65 @@
 import {Component} from '@angular/core';
 import {AlertController, NavController, NavParams} from 'ionic-angular';
-import {AuthenticationService} from "../../core/authentication.service";
-import {UtilService} from "../../../providers/util-service";
-import {UserService} from "../../core/user.service";
-import {AlbumListPage} from "../../albumList/albumList.component";
-import {MixpanelService} from '../../../providers/analytics/mixpanel.service';
+import {AuthenticationService} from "../../../core/authentication.service";
+import {UserService} from "../../../core/user.service";
+import {AlbumListPage} from "../../../albumList/albumList.component";
+import {MixpanelService} from '../../../core/mixpanel.service';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'page-invite',
-  templateUrl: 'invite.html',
+  selector: 'prisma-invite-page',
+  template: `
+    <ion-header>
+    <ion-navbar>
+      <ion-title>Nodig iemand uit</ion-title>
+    </ion-navbar>
+  </ion-header>
+
+  <ion-content padding>
+    <form [formGroup]="form">
+      <ion-list inset>
+        <ion-item>
+          <ion-input
+            type="text"
+            formControlName="firstName"
+            placeholder="Voornaam"
+            clearOnEdit="false"
+            clearInput>
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            type="text"
+            formControlName="lastName"
+            placeholder="Name"
+            clearOnEdit="false"
+            clearInput>
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            type="email"
+            formControlName="email"
+            placeholder="E-mail"
+            clearOnEdit="false"
+            clearInput>
+          </ion-input>
+        </ion-item>
+      </ion-list>
+
+      <button ion-button solid block full large color="general"
+              (click)="invite(form.getRawValue())"
+              [disabled]="loading || form.invalid">
+        <div *ngIf="!loading">Uitnodigen</div>
+        <div *ngIf="loading">
+          <ion-spinner item-start name="dots" color="white"></ion-spinner>
+        </div>
+      </button>
+    </form>
+  </ion-content>
+  `,
 })
+
 export class InvitePage {
 
   patientId: string;
@@ -23,7 +72,6 @@ export class InvitePage {
               public alertCtrl: AlertController,
               private userService: UserService,
               public navParams: NavParams,
-              public utilService: UtilService,
               private mixpanel: MixpanelService,
               private fb: FormBuilder) {
   }

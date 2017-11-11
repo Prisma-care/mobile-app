@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {QuestionService} from "../../core/question.service";
+import {QuestionService} from "../../../core/question.service";
 
 @Component({
   selector: 'prisma-question',

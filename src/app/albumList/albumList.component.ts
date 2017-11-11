@@ -4,7 +4,7 @@ import {AlertController, MenuController} from "ionic-angular";
 import {Album} from "../../dto/album";
 import {AlbumService} from "../core/album.service";
 import {Observable} from "rxjs/Rx";
-import {MixpanelService} from "../../providers/analytics/mixpanel.service";
+import {MixpanelService} from '../core/mixpanel.service'
 import {Patient} from "../../dto/patient";
 import { StoryListPage } from "../storyList/storyList.component";
 import { NavController } from "ionic-angular/navigation/nav-controller";

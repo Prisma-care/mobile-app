@@ -4,7 +4,7 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, BehaviorSubject} from 'rxjs/Rx';
 import {map, catchError, switchMap} from 'rxjs/operators';
 import {User} from '../../dto/user';
-import {getMessageFromBackendError} from '../utils';
+import {getMessageFromBackendError} from '../../shared/utils';
 import { UserService } from "./user.service";
 
 interface LoginResponse {

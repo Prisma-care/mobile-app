@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../core/authentication.service';
 import { AlertController, NavController } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
-import { MixpanelService } from '../../../providers/analytics/mixpanel.service';
-import { FullstoryService } from '../../../providers/analytics/fullstory.service';
+import { MixpanelService } from '../../core/mixpanel.service';
+import { FullstoryService } from '../../core/fullstory.service';
 import { Observable } from 'rxjs/Rx';
 import { switchMap, timeout, tap } from 'rxjs/operators'
 import { UserService } from "../../core/user.service";

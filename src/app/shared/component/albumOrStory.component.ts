@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { DomSanitizer, SafeStyle } from "@angular/platform-browser";
 import { Subject } from "rxjs/Rx";
 import { takeUntil } from 'rxjs/operators'
-import { UserStory } from "../../dto/user-story";
+import { UserStory } from "../../../dto/user-story";
 
 @Component({
   selector: 'prisma-album-story',

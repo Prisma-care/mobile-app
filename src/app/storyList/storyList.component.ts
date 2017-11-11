@@ -12,8 +12,8 @@ import { StoryListOptionsComponent } from "./component/storyListOptions.componen
 import { PopoverController } from "ionic-angular/components/popover/popover-controller";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
 import { StoryService } from "../core/story.service";
-import { CreateOrUpdateStoryPage } from "./createOrUpdateStory/createOrUpdateStory.component";
-import { StoryDetailsPage } from "./story/storyDetail/storyDetail.component";
+import { CreateOrUpdateStoryPage } from "./component/createOrUpdateStory/createOrUpdateStory.component";
+import { StoryDetailsPage } from "./component/storyDetail/storyDetail.component";
 
 @Component({
   selector: 'prisma-story-list-page',

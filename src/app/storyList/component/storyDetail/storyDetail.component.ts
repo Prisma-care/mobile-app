@@ -3,7 +3,7 @@ import {Album} from "../../../../dto/album";
 import {UserStory} from "../../../../dto/user-story";
 import { NavController, NavParams, PopoverController, ViewController, ToastController} from "ionic-angular";
 
-import {MixpanelService} from "../../../../providers/analytics/mixpanel.service";
+import {MixpanelService} from "../../../core/mixpanel.service";
 import {NativeTransitionOptions} from "@ionic-native/native-page-transitions";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {StoryOptionsComponent} from "./component/storyOptions.component";
@@ -14,7 +14,7 @@ import {Subject, pipe} from "rxjs/Rx";
 import {takeUntil} from 'rxjs/operators'
 import {Environment, EnvironmentToken} from "../../../environment";
 import { Content } from "ionic-angular/navigation/nav-interfaces";
-import { CreateOrUpdateStoryPage } from "../../createOrUpdateStory/createOrUpdateStory.component";
+import { CreateOrUpdateStoryPage } from "../createOrUpdateStory/createOrUpdateStory.component";
 
 @Component({
   selector: 'prisma-story-detail',

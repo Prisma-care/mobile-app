@@ -9,7 +9,7 @@ import {
   getUrlImage,
   getYoutubeDescriptionAndThumbnail,
   youtubeId
-} from "../utils";
+} from "../../shared/utils";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Environment, EnvironmentToken } from "../environment";
 import { Camera } from "@ionic-native/camera";

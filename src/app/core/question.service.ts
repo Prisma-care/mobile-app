@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {QUESTIONS} from "../../providers/question-service/questions.json";
+import {QUESTIONS} from "../../shared/question";
 
 @Injectable()
 export class QuestionService {
