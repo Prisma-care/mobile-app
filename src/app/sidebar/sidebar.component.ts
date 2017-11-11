@@ -2,9 +2,9 @@ import {Component, Input} from "@angular/core";
 import {AuthenticationPage} from "../auth/authentication.component";
 import {MenuController} from "ionic-angular";
 import {AuthenticationService} from "../core/authentication.service";
-import {InvitePage} from "./invite/invite";
+import {InvitePage} from "./component/invite/invite";
 import {PatientService} from "../core/patient.service";
-import {GiveFeedbackComponent} from "./giveFeedback/giveFeedback.component";
+import {GiveFeedbackComponent} from "./component/giveFeedback/giveFeedback.component";
 
 @Component({
   selector: 'prisma-sidebar',

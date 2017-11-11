@@ -14,7 +14,7 @@ import {Subject, pipe} from "rxjs/Rx";
 import {takeUntil} from 'rxjs/operators'
 import {Environment, EnvironmentToken} from "../../../environment";
 import { Content } from "ionic-angular/navigation/nav-interfaces";
-import { CreateOrUpdateStoryPage } from "../../createOrUpdateStory/createOrUpdateStory.component";
+import { CreateOrUpdateStoryPage } from "../createOrUpdateStory/createOrUpdateStory.component";
 
 @Component({
   selector: 'prisma-story-detail',

@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {SharedModule} from "../shared/shared.module";
 import {StoryListPage} from "./storyList.component";
-import {QuestionComponent} from "./question/question.component";
-import {StoryDetailsPage} from "./story/storyDetail/storyDetail.component";
-import {StoryOptionsComponent} from "./story/storyDetail/component/storyOptions.component";
+import {QuestionComponent} from "./component/question/question.component";
+import {StoryDetailsPage} from "./component/storyDetail/storyDetail.component";
+import {StoryOptionsComponent} from "./component/storyDetail/component/storyOptions.component";
 import { StoryListOptionsComponent } from './component/storyListOptions.component';
-import { CreateOrUpdateStoryPage } from './createOrUpdateStory/createOrUpdateStory.component';
+import { CreateOrUpdateStoryPage } from './component/createOrUpdateStory/createOrUpdateStory.component';
 
 const imports = [
   SharedModule

@@ -1,21 +1,21 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { NavParams } from "ionic-angular/navigation/nav-params";
-import { Album } from "../../../dto/album";
-import { UserStory } from "../../../dto/user-story";
-import { EnvironmentToken, Environment } from "../../environment";
+import { Album } from "../../../../dto/album";
+import { UserStory } from "../../../../dto/user-story";
+import { EnvironmentToken, Environment } from "../../../environment";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
-import { StoryService } from "../../core/story.service";
-import { MixpanelService } from "../../core/mixpanel.service";
-import { PatientService } from "../../core/patient.service";
-import { UserService } from "../../core/user.service";
-import { StoryDetailsPage } from "../story/storyDetail/storyDetail.component";
+import { StoryService } from "../../../core/story.service";
+import { MixpanelService } from "../../../core/mixpanel.service";
+import { PatientService } from "../../../core/patient.service";
+import { UserService } from "../../../core/user.service";
+import { StoryDetailsPage } from "../storyDetail/storyDetail.component";
 import { NavController } from "ionic-angular/navigation/nav-controller";
 import { ViewController } from "ionic-angular/navigation/view-controller";
 import { TransferObject, Transfer } from "@ionic-native/transfer";
 import { LoadingController, Loading } from "ionic-angular";
 import { ToastController } from "ionic-angular/components/toast/toast-controller";
-import { Patient } from "../../../dto/patient";
-import { User } from "../../../dto/user";
+import { Patient } from "../../../../dto/patient";
+import { User } from "../../../../dto/user";
 import { map, switchMap } from 'rxjs/operators'
 import { Observable } from "rxjs/Observable";
 

@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {IonicModule} from 'ionic-angular';
-import { AlbumOrStoryComponent } from './albumOrStory.component';
+import { AlbumOrStoryComponent } from './component/albumOrStory.component';
 
 const IMPORTS = [
   ReactiveFormsModule,
