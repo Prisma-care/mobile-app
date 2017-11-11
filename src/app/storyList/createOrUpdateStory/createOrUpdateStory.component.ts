@@ -5,7 +5,7 @@ import { UserStory } from "../../../dto/user-story";
 import { EnvironmentToken, Environment } from "../../environment";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { StoryService } from "../../core/story.service";
-import { MixpanelService } from "../../../providers/analytics/mixpanel.service";
+import { MixpanelService } from "../../core/mixpanel.service";
 import { PatientService } from "../../core/patient.service";
 import { UserService } from "../../core/user.service";
 import { StoryDetailsPage } from "../story/storyDetail/storyDetail.component";

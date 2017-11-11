@@ -2,7 +2,7 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../core/authentication.service';
 import {AlertController} from 'ionic-angular';
-import {MixpanelService} from '../../../providers/analytics/mixpanel.service';
+import {MixpanelService} from '../../core/mixpanel.service';
 import {User} from '../../../dto/user';
 import {Observable} from 'rxjs/Rx';
 import { switchMap, tap } from 'rxjs/operators'

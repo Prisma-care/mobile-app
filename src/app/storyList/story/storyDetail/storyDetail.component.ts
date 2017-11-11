@@ -3,7 +3,7 @@ import {Album} from "../../../../dto/album";
 import {UserStory} from "../../../../dto/user-story";
 import { NavController, NavParams, PopoverController, ViewController, ToastController} from "ionic-angular";
 
-import {MixpanelService} from "../../../../providers/analytics/mixpanel.service";
+import {MixpanelService} from "../../../core/mixpanel.service";
 import {NativeTransitionOptions} from "@ionic-native/native-page-transitions";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {StoryOptionsComponent} from "./component/storyOptions.component";

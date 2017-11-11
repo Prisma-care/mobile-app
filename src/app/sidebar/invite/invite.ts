@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
 import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {AuthenticationService} from "../../core/authentication.service";
-import {UtilService} from "../../../providers/util-service";
 import {UserService} from "../../core/user.service";
 import {AlbumListPage} from "../../albumList/albumList.component";
-import {MixpanelService} from '../../../providers/analytics/mixpanel.service';
+import {MixpanelService} from '../../core/mixpanel.service';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -23,7 +22,6 @@ export class InvitePage {
               public alertCtrl: AlertController,
               private userService: UserService,
               public navParams: NavParams,
-              public utilService: UtilService,
               private mixpanel: MixpanelService,
               private fb: FormBuilder) {
   }
