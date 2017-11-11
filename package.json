@@ -9,7 +9,9 @@
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
+    "ionic:serve": "ionic-app-scripts serve",
+    "format": "prettier --single-quote --bracket-spacing=false --write 'src/**/*.js'",
+    "precommit": "lint-staged"
   },
   "dependencies": {
     "@angular/common": "^4.4.3",
@@ -69,6 +71,7 @@
     "angular-mocks": "^1.6.5",
     "angular2-template-loader": "^0.6.2",
     "codecov": "^2.2.0",
+    "husky": "^0.14.3",
     "ionic": "3.16.0",
     "jasmine-core": "^2.6.4",
     "jasmine-spec-reporter": "^4.1.1",
@@ -79,12 +82,13 @@
     "karma-remap-istanbul": "^0.6.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^2.0.4",
+    "lint-staged": "^5.0.0",
     "null-loader": "^0.1.1",
+    "prettier": "^1.8.2",
     "sourcemap": "^0.1.0",
     "ts-loader": "^2.3.1",
     "ts-node": "^3.2.1",
-    "tslint": "^5.5.0",
-    "tslint-eslint-rules": "^4.1.1",
+    "tslint": "^5.8.0",
     "typescript": "2.6.1",
     "webpack": "^3.3.0"
   },
@@ -110,6 +114,13 @@
     "platforms": [
       "android",
       "browser"
+    ]
+  },
+  "lint-staged": {
+    "*.ts": [
+      "prettier --write --single-quote --bracket-spacing=false",
+      "tslint",
+      "git add"
     ]
   }
 }
