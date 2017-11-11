@@ -1,8 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AlertController, NavController, ToastController} from 'ionic-angular';
+import {NavController, ToastController} from 'ionic-angular';
 import {NavParams} from 'ionic-angular/navigation/nav-params';
 import {AuthenticationService} from '../../../core/authentication.service';
+import {TextInput} from 'ionic-angular/components/input/input';
 
 @Component({
   selector: 'prisma-password-reset',
@@ -47,7 +48,7 @@ export class PasswordResetComponent implements OnInit {
   form: FormGroup;
   loading = false;
 
-  @ViewChild('inputEmail') inputEmail;
+  @ViewChild('inputEmail') inputEmail: TextInput;
 
   constructor(
     private fb: FormBuilder,

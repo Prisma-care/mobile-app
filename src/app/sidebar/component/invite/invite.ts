@@ -119,7 +119,7 @@ export class InviteComponent implements OnInit {
     });
   }
 
-  invitePopup(firstName, message?: string) {
+  invitePopup(firstName: string, message?: string) {
     const messageToSend = message
       ? `${firstName} kon niet uitgenodigd worden.${message}`
       : `${firstName} ontvangt een e-mail met je uitnodiging.`;

@@ -63,10 +63,7 @@ export class AlbumService {
       .let(this.albumPipe);
   }
 
-  deleteAlbum(
-    patientId: string | number,
-    albumId: string | number
-  ): Observable<Object | Error> {
+  deleteAlbum(patientId: number, albumId: number): Observable<Object | Error> {
     return this.http
       .delete(
         `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${
@@ -76,10 +73,7 @@ export class AlbumService {
       .pipe(catchError(this.handleError));
   }
 
-  addAlbum(
-    patientId: string | number,
-    title: string
-  ): Observable<Album | Error> {
+  addAlbum(patientId: number, title: string): Observable<Album | Error> {
     return this.http
       .post(
         `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${
@@ -94,7 +88,7 @@ export class AlbumService {
     return getUrlImage.call(this, filename);
   }
 
-  getThumb(url): Observable<string> {
+  getThumb(url: string): Observable<string> {
     return this.checkYoutubeLink(url).pipe(
       map((res: {thumbnail: string}) => res.thumbnail)
     );

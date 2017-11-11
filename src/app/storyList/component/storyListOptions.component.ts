@@ -42,7 +42,7 @@ export class StoryListOptionsComponent {
         () => {
           this.viewCtrl.dismiss('deleteSuccess');
         },
-        err => {
+        () => {
           this.viewCtrl.dismiss('deleteError');
         }
       );

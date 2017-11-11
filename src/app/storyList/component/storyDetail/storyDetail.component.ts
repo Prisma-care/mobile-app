@@ -203,7 +203,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     this.youtube.openVideo(this.storyService.getYoutubeId(url));
   }
 
-  editDescription(story) {
+  editDescription(story: UserStory) {
     this.mixpanel.track('StoryDetailsPage::editDescription', {
       story
     });
@@ -216,7 +216,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  showMore(event): void {
+  showMore(event: Event): void {
     const popover = this.popoverCtrl.create(
       StoryOptionsComponent,
       {
@@ -225,7 +225,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
       {cssClass: 'storyDetail-popover'}
     );
 
-    const toast = message =>
+    const toast = (message: string) =>
       this.toastCtrl
         .create({
           message,

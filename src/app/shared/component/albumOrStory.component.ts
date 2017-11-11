@@ -1,8 +1,12 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
-import {Subject} from 'rxjs/Rx';
+import {Subject, Observable} from 'rxjs/Rx';
 import {takeUntil} from 'rxjs/operators';
 import {UserStory} from '../../../dto/user-story';
+import {Album} from '../../../dto/album';
+
+type showDetails = (album: Album, story: UserStory) => void;
+type getBackground = (story: UserStory) => Observable<string | Error>;
 
 @Component({
   selector: 'prisma-album-story',
@@ -36,12 +40,12 @@ export class AlbumOrStoryComponent implements OnInit, OnDestroy {
   backgroundColor: string;
   imageLoaded = false;
 
-  @Input() album;
-  @Input() story;
-  @Input() getBackground;
-  @Input() showDetails;
-  @Input() emptyAlbum;
-  @Input() isAlbum;
+  @Input() album: Album;
+  @Input() story: UserStory;
+  @Input() getBackground: getBackground;
+  @Input() showDetails: showDetails;
+  @Input() emptyAlbum: string;
+  @Input() isAlbum: boolean;
 
   constructor(private sanitizer: DomSanitizer) {}
 
@@ -58,7 +62,7 @@ export class AlbumOrStoryComponent implements OnInit, OnDestroy {
     if (story) {
       this.getBackground(story)
         .pipe(takeUntil(this.destroy$))
-        .subscribe(imageUrl => {
+        .subscribe((imageUrl: string) => {
           this.story = {
             ...this.story,
             backgroundImage: imageUrl
@@ -74,7 +78,7 @@ export class AlbumOrStoryComponent implements OnInit, OnDestroy {
     }
   }
 
-  typeYoutube(story): boolean {
+  typeYoutube(story: UserStory): boolean {
     return story.type === 'youtube';
   }
 }

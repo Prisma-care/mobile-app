@@ -18,10 +18,9 @@ import {FullstoryService} from './fullstory.service';
 import {Mixpanel, MixpanelPeople} from '@ionic-native/mixpanel';
 
 const imports = [HttpClientModule, HttpModule, IonicModule];
-const declarations = [];
 
 @NgModule({
-  declarations,
+  declarations: [],
   imports,
   providers: [
     {

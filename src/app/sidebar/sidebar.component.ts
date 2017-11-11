@@ -5,7 +5,7 @@ import {AuthenticationService} from '../core/authentication.service';
 import {InviteComponent} from './component/invite/invite';
 import {PatientService} from '../core/patient.service';
 import {GiveFeedbackComponent} from './component/giveFeedback/giveFeedback.component';
-
+import {NavController} from 'ionic-angular/navigation/nav-controller';
 @Component({
   selector: 'prisma-sidebar',
   template: `<ion-menu [content]="content" color="white">
@@ -39,7 +39,7 @@ import {GiveFeedbackComponent} from './component/giveFeedback/giveFeedback.compo
   ]
 })
 export class SidebarComponent {
-  @Input() nav;
+  @Input() nav: NavController;
 
   @Input() content;
 
