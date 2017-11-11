@@ -5,7 +5,7 @@ import {AlertController} from 'ionic-angular';
 import {MixpanelService} from '../../core/mixpanel.service';
 import {User} from '../../../dto/user';
 import {Observable} from 'rxjs/Rx';
-import { switchMap, tap } from 'rxjs/operators'
+import {switchMap, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'prisma-authentication-register',
@@ -52,43 +52,28 @@ import { switchMap, tap } from 'rxjs/operators'
   `
 })
 export class AuthenticationRegisterComponent implements OnInit {
-
-  @Input()
-  onLoginClick: Function = () => {
-  };
-
-  @Input()
-  onComplete: Function = () => {
-  };
-
-  @Input()
-  data: User;
-
-  @ViewChild('inputFirstname')
-  inputFirstname
-
   form: FormGroup;
-  type = "password";
+  type = 'password';
   show = false;
-  loading: boolean = false;
+  loading = false;
 
-  constructor(private fb: FormBuilder,
-              private auth: AuthenticationService,
-              private alertCtrl: AlertController,
-              private mixpanel: MixpanelService) {
-  }
+  @ViewChild('inputFirstname') inputFirstname;
+  @Input() data: User;
+  @Input() onLoginClick: Function = () => {};
+  @Input() onComplete: Function = () => {};
+
+  constructor(
+    private fb: FormBuilder,
+    private auth: AuthenticationService,
+    private alertCtrl: AlertController,
+    private mixpanel: MixpanelService
+  ) {}
 
   // TODO: display error message
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      email: [
-        null, [
-          Validators.required,
-          Validators.email
-        ],
-        []
-      ],
+      email: [null, [Validators.required, Validators.email], []],
       password: [
         null,
         [
@@ -98,26 +83,13 @@ export class AuthenticationRegisterComponent implements OnInit {
         ],
         []
       ],
-      firstName: [
-        null,
-        [
-          Validators.required,
-        ],
-        []
-      ],
-      lastName: [
-        null,
-        [
-          Validators.required,
-        ],
-        []
-      ],
-
+      firstName: [null, [Validators.required], []],
+      lastName: [null, [Validators.required], []]
     });
 
-    setTimeout(()=>{
-      this.inputFirstname.setFocus()
-    },400)
+    setTimeout(() => {
+      this.inputFirstname.setFocus();
+    }, 400);
   }
 
   toggleShow() {
@@ -127,12 +99,13 @@ export class AuthenticationRegisterComponent implements OnInit {
 
   register(credentials: User) {
     this.loading = true;
-    let user: Partial<User> = {
+    const user: Partial<User> = {
       ...new User(),
       ...credentials
     };
 
-    this.auth.signUp(user as User)
+    this.auth
+      .signUp(user as User)
       .pipe(
         switchMap((res: boolean | Error) => {
           if (res instanceof Error) {
@@ -156,19 +129,21 @@ export class AuthenticationRegisterComponent implements OnInit {
           this.onComplete();
         })
       )
-      .subscribe(undefined, (err) => {
+      .subscribe(undefined, err => {
         this.mixpanel.track('LoginComponent::Register error', {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName
         });
         this.showError(err.message);
-      })
+      });
   }
 
-  showError(errorMessage: string = 'Onmogelijk om u te registreren, neem dan contact op met de beheerder') {
+  showError(
+    errorMessage: string = 'Onmogelijk om u te registreren, neem dan contact op met de beheerder'
+  ) {
     this.loading = false;
-    let alert = this.alertCtrl.create({
+    const alert = this.alertCtrl.create({
       title: errorMessage,
       buttons: ['Ok']
     });
@@ -177,5 +152,4 @@ export class AuthenticationRegisterComponent implements OnInit {
 
     this.auth.logout();
   }
-
 }

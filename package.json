@@ -10,7 +10,7 @@
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve",
-    "format": "prettier --single-quote --bracket-spacing=false --write 'src/**/*.js'",
+    "format": "prettier --single-quote --bracket-spacing=false --write 'src/**/*.ts'",
     "precommit": "lint-staged"
   },
   "dependencies": {
@@ -71,6 +71,7 @@
     "angular-mocks": "^1.6.5",
     "angular2-template-loader": "^0.6.2",
     "codecov": "^2.2.0",
+    "codelyzer": "^4.0.1",
     "husky": "^0.14.3",
     "ionic": "3.16.0",
     "jasmine-core": "^2.6.4",

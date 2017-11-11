@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from "@angular/core";
-import {QuestionService} from "../../../core/question.service";
+import {Component, Input, OnInit} from '@angular/core';
+import {QuestionService} from '../../../core/question.service';
 
 @Component({
   selector: 'prisma-question',
@@ -18,17 +18,13 @@ import {QuestionService} from "../../../core/question.service";
     </div>
   `
 })
-
 export class QuestionComponent implements OnInit {
-
   questions: string[] = [];
-  currentQuestion: string = "";
+  currentQuestion = '';
 
-  @Input()
-  query: string;
+  @Input() query: string;
 
-  constructor(private questionService:QuestionService) {
-  }
+  constructor(private questionService: QuestionService) {}
 
   ngOnInit(): void {
     this.questions = this.questionService.getQuestions(this.query);
@@ -36,8 +32,8 @@ export class QuestionComponent implements OnInit {
   }
 
   nextQuestion() {
-    this.currentQuestion = this.questions[Math.floor(Math.random() * this.questions.length)];
+    this.currentQuestion = this.questions[
+      Math.floor(Math.random() * this.questions.length)
+    ];
   }
-
-
 }

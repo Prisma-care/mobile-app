@@ -1,14 +1,13 @@
-import { Component, Input, OnDestroy, OnInit } from "@angular/core";
-import { DomSanitizer, SafeStyle } from "@angular/platform-browser";
-import { Subject } from "rxjs/Rx";
-import { takeUntil } from 'rxjs/operators'
-import { UserStory } from "../../../dto/user-story";
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
+import {Subject} from 'rxjs/Rx';
+import {takeUntil} from 'rxjs/operators';
+import {UserStory} from '../../../dto/user-story';
 
 @Component({
   selector: 'prisma-album-story',
-  template:
-    `
-    <div *ngIf="imageLoaded" 
+  template: `
+    <div *ngIf="imageLoaded"
       class="album-thumb"
       (click)="showDetails(album, story)">
       <img class="album-thumb" [src]="backgroundImage">
@@ -17,7 +16,6 @@ import { UserStory } from "../../../dto/user-story";
           <div *ngIf="album.hasNew" class="has-new-item">NIEUW</div>
           <h3 class="hist-title">{{album.title || '?'}}</h3>
       </div>
-
       <div *ngIf="!isAlbum">
           <div class="boxPlay">
             <div *ngIf="typeYoutube(story)" class="youtube-icon movie-indicator"></div>
@@ -32,36 +30,20 @@ import { UserStory } from "../../../dto/user-story";
     </div>
   `
 })
-
 export class AlbumOrStoryComponent implements OnInit, OnDestroy {
-
   destroy$: Subject<boolean> = new Subject<boolean>();
   backgroundImage: SafeStyle;
   backgroundColor: string;
-  imageLoaded: boolean = false;
+  imageLoaded = false;
 
-  @Input()
-  album;
+  @Input() album;
+  @Input() story;
+  @Input() getBackground;
+  @Input() showDetails;
+  @Input() emptyAlbum;
+  @Input() isAlbum;
 
-  @Input()
-  story;
-
-  @Input()
-  getBackground;
-
-  @Input()
-  showDetails;
-
-  @Input()
-  emptyAlbum
-
-  @Input()
-  isAlbum;
-
-
-  constructor(private sanitizer: DomSanitizer) {
-  }
-
+  constructor(private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
     this.setBackgroundImage(this.story);
@@ -75,16 +57,15 @@ export class AlbumOrStoryComponent implements OnInit, OnDestroy {
   setBackgroundImage(story: UserStory) {
     if (story) {
       this.getBackground(story)
-        .pipe(
-          takeUntil(this.destroy$)
-        )
+        .pipe(takeUntil(this.destroy$))
         .subscribe(imageUrl => {
           this.story = {
             ...this.story,
             backgroundImage: imageUrl
-          }
-          this.backgroundImage = this.sanitizer
-            .bypassSecurityTrustUrl(imageUrl);
+          };
+          this.backgroundImage = this.sanitizer.bypassSecurityTrustUrl(
+            imageUrl
+          );
           this.imageLoaded = true;
         });
     } else {
@@ -94,6 +75,6 @@ export class AlbumOrStoryComponent implements OnInit, OnDestroy {
   }
 
   typeYoutube(story): boolean {
-    return story.type === 'youtube'
+    return story.type === 'youtube';
   }
 }

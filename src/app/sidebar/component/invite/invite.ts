@@ -1,13 +1,14 @@
 import {Component} from '@angular/core';
 import {AlertController, NavController, NavParams} from 'ionic-angular';
-import {AuthenticationService} from "../../../core/authentication.service";
-import {UserService} from "../../../core/user.service";
-import {AlbumListPage} from "../../../albumList/albumList.component";
+import {AuthenticationService} from '../../../core/authentication.service';
+import {UserService} from '../../../core/user.service';
+import {AlbumListComponent} from '../../../albumList/albumList.component';
 import {MixpanelService} from '../../../core/mixpanel.service';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {OnInit} from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
-  selector: 'prisma-invite-page',
+  selector: 'prisma-invite',
   template: `
     <ion-header>
     <ion-navbar>
@@ -46,7 +47,6 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
           </ion-input>
         </ion-item>
       </ion-list>
-
       <button ion-button solid block full large color="general"
               (click)="invite(form.getRawValue())"
               [disabled]="loading || form.invalid">
@@ -57,54 +57,46 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
       </button>
     </form>
   </ion-content>
-  `,
+  `
 })
-
-export class InvitePage {
-
-  patientId: string;
-  inviterId: string;
+export class InviteComponent implements OnInit {
+  patientId: number;
+  inviterId: number;
   form: FormGroup;
-  loading: boolean = false;
+  loading = false;
 
-  constructor(public authService: AuthenticationService,
-              public navCtrl: NavController,
-              public alertCtrl: AlertController,
-              private userService: UserService,
-              public navParams: NavParams,
-              private mixpanel: MixpanelService,
-              private fb: FormBuilder) {
-  }
-
-  ionViewDidLoad() {
-    this.patientId = this.navParams.get("patientId");
-    this.inviterId = this.userService.getCurrentUser().id;
-  }
+  constructor(
+    public authService: AuthenticationService,
+    public navCtrl: NavController,
+    public alertCtrl: AlertController,
+    private userService: UserService,
+    public navParams: NavParams,
+    private mixpanel: MixpanelService,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      firstName: [
-        null, [
-          Validators.required
-        ],
-        []
-      ],
-      lastName: [
-        null, [
-          Validators.required,
-        ]
-        , []
-      ],
-      email: [
-        null, [
-          Validators.required,
-          Validators.email
-        ], []
-      ]
+      firstName: [null, [Validators.required], []],
+      lastName: [null, [Validators.required], []],
+      email: [null, [Validators.required, Validators.email], []]
     });
   }
 
-  invite({firstName, lastName, email}: { firstName: string, lastName: string, email: string }) {
+  ionViewDidLoad() {
+    this.patientId = this.navParams.get('patientId');
+    this.inviterId = this.userService.getCurrentUser().id;
+  }
+
+  invite({
+    firstName,
+    lastName,
+    email
+  }: {
+    firstName: string;
+    lastName: string;
+    email: string;
+  }) {
     this.loading = true;
     this.mixpanel.track('InviteComponent::invite started');
     const data = {
@@ -122,16 +114,20 @@ export class InvitePage {
       } else {
         this.mixpanel.track('InviteComponent::invite success', data);
         this.invitePopup(firstName);
-        this.navCtrl.setRoot(AlbumListPage);
+        this.navCtrl.setRoot(AlbumListComponent);
       }
-    })
+    });
   }
 
   invitePopup(firstName, message?: string) {
-    const messageToSend = message ? `${firstName} kon niet uitgenodigd worden.${message}` : `${firstName} ontvangt een e-mail met je uitnodiging.`;
-    this.alertCtrl.create({
-      title: messageToSend,
-      buttons: ['Ok']
-    }).present();
+    const messageToSend = message
+      ? `${firstName} kon niet uitgenodigd worden.${message}`
+      : `${firstName} ontvangt een e-mail met je uitnodiging.`;
+    this.alertCtrl
+      .create({
+        title: messageToSend,
+        buttons: ['Ok']
+      })
+      .present();
   }
 }

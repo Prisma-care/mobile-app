@@ -1,14 +1,14 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthenticationService } from '../../core/authentication.service';
-import { AlertController, NavController } from 'ionic-angular';
-import { Network } from '@ionic-native/network';
-import { MixpanelService } from '../../core/mixpanel.service';
-import { FullstoryService } from '../../core/fullstory.service';
-import { Observable } from 'rxjs/Rx';
-import { switchMap, timeout, tap } from 'rxjs/operators'
-import { UserService } from "../../core/user.service";
-import { PasswordResetComponent } from "./password-reset/password-reset.component";
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AuthenticationService} from '../../core/authentication.service';
+import {AlertController, NavController} from 'ionic-angular';
+import {Network} from '@ionic-native/network';
+import {MixpanelService} from '../../core/mixpanel.service';
+import {FullstoryService} from '../../core/fullstory.service';
+import {Observable} from 'rxjs/Rx';
+import {switchMap, timeout, tap} from 'rxjs/operators';
+import {UserService} from '../../core/user.service';
+import {PasswordResetComponent} from './password-reset/password-reset.component';
 
 @Component({
   selector: 'prisma-authentication-login',
@@ -68,59 +68,49 @@ import { PasswordResetComponent } from "./password-reset/password-reset.componen
         </p>
       </div>
     </form>
-  `,
+  `
 })
 export class AuthenticationLoginComponent implements OnInit {
-  @Input()
-  onRegisterClick: Function = () => {
-  };
-
-  @Input()
-  onComplete: Function = () => {
-  };
-
-  @Input()
-  data: { email: string } = { email: '' };
-
-  @ViewChild('inputEmail')
-  inputEmail
-
   form: FormGroup;
-  type = "password";
+  type = 'password';
   show = false;
-  loading: boolean = false;
+  loading = false;
 
-  constructor(private fb: FormBuilder,
+  @ViewChild('inputEmail') inputEmail;
+  @Input() data: {email: string} = {email: ''};
+  @Input() onRegisterClick: Function = () => {};
+  @Input() onComplete: Function = () => {};
+
+  constructor(
+    private fb: FormBuilder,
     private auth: AuthenticationService,
     private alertCtrl: AlertController,
     private network: Network,
     private mixpanel: MixpanelService,
     private fullstory: FullstoryService,
     private userService: UserService,
-    private navCtrl: NavController) {
-  }
+    private navCtrl: NavController
+  ) {}
 
   // TODO: display error message
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      email: [
-        this.data.email, [
+      email: [this.data.email, [Validators.required, Validators.email], []],
+      password: [
+        null,
+        [
           Validators.required,
-          Validators.email
+          Validators.minLength(6),
+          Validators.maxLength(40)
         ],
         []
-      ],
-      password: [null, [
-        Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(40)
-      ], []]
+      ]
     });
 
     setTimeout(() => {
-      this.inputEmail.setFocus()
-    }, 400)
+      this.inputEmail.setFocus();
+    }, 400);
   }
 
   toggleShow() {
@@ -128,13 +118,14 @@ export class AuthenticationLoginComponent implements OnInit {
     this.type = this.show ? 'text' : 'password';
   }
 
-  login({ email, password }: { email: string, password: string }) {
-    if (this.network.type === "none") {
-      return this.showError("Je bent niet verbonden met het internet.");
+  login({email, password}: {email: string; password: string}) {
+    if (this.network.type === 'none') {
+      return this.showError('Je bent niet verbonden met het internet.');
     }
 
     this.loading = true;
-    this.auth.login(email, password)
+    this.auth
+      .login(email, password)
       .pipe(
         switchMap((res: boolean | Error) => {
           if (res instanceof Error) {
@@ -149,25 +140,30 @@ export class AuthenticationLoginComponent implements OnInit {
           this.loading = false;
           this.mixpanel.identify(this.userService.getCurrentUser());
           this.fullstory.identify(this.userService.getCurrentUser());
-          this.mixpanel.track('LoginComponent::Login success', this.userService.getCurrentUser().email);
+          this.mixpanel.track(
+            'LoginComponent::Login success',
+            this.userService.getCurrentUser().email
+          );
           this.onComplete();
         })
       )
-      .subscribe(undefined, (err) => {
+      .subscribe(undefined, err => {
         this.mixpanel.track('LoginComponent::Login error', email);
         this.showError(err.message);
-      })
+      });
   }
 
   goToPasswordResetPage(): void {
     this.navCtrl.push(PasswordResetComponent, {
-      "email": this.form.getRawValue().email
+      email: this.form.getRawValue().email
     });
   }
 
-  showError(errorMessage: string = 'Je gebruikersnaam of wachtwoord klopt niet.') {
+  showError(
+    errorMessage: string = 'Je gebruikersnaam of wachtwoord klopt niet.'
+  ) {
     this.loading = false;
-    let alert = this.alertCtrl.create({
+    const alert = this.alertCtrl.create({
       title: errorMessage,
       buttons: ['Ok']
     });

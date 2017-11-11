@@ -1,59 +1,63 @@
-import {Inject, Injectable} from "@angular/core";
-import {Environment, EnvironmentToken} from "../environment";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Observable, pipe} from "rxjs/Rx";
-import {map, catchError} from 'rxjs/operators'
-import {User} from "../../dto/user";
-import {getMessageFromBackendError} from "../../shared/utils";
+import {Inject, Injectable} from '@angular/core';
+import {Environment, EnvironmentToken} from '../environment';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Observable, pipe} from 'rxjs/Rx';
+import {map, catchError} from 'rxjs/operators';
+import {User} from '../../dto/user';
+import {getMessageFromBackendError} from '../../shared/utils';
 
 interface UserResponse {
   response: {
-    id: number,
-    firstName: string,
-    lastName: string,
-    careHome?: string,
-    dateOfBirth?: string,
-    birthPlace?: string,
-    location?: string
+    id: number;
+    firstName: string;
+    lastName: string;
+    careHome?: string;
+    dateOfBirth?: Date;
+    birthPlace?: string;
+    location?: string;
   };
 }
 
 @Injectable()
 export class UserService {
-
   userPipe = pipe(
-    map(({response}: UserResponse) => new User(response)),
+    map(({response}: UserResponse) => response as User),
     catchError(this.handleError)
-  )
+  );
 
-  constructor(@Inject(EnvironmentToken) private env: Environment,
-              private http: HttpClient) {
-
+  constructor(
+    @Inject(EnvironmentToken) private env: Environment,
+    private http: HttpClient
+  ) {
     this.handleError = this.handleError.bind(this);
   }
 
   getUser(): Observable<User | Error> {
-    return this.http.get(`${this.env.apiUrl}/${this.env.api.getUser}/`)
-      .let(this.userPipe)
+    return this.http
+      .get(`${this.env.apiUrl}/${this.env.api.getUser}/`)
+      .let(this.userPipe);
   }
-
 
   addUser(user: User): Observable<User | any> {
-    let url: string = this.env.api.getUser;
-    return this.http.post(`${this.env.apiUrl}/${url}`, user)
-      .let(this.userPipe)
+    const url: string = this.env.api.getUser;
+    return this.http.post(`${this.env.apiUrl}/${url}`, user).let(this.userPipe);
   }
 
-  inviteUser(invitationData: { inviterId: string, firstName: string, lastName: string, email: string, patientId: string }): Observable<Object | Error> {
-    let url: string = this.env.api.invite;
+  inviteUser(invitationData: {
+    patientId: number;
+    inviterId: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+  }): Observable<Object | Error> {
+    const url: string = this.env.api.invite;
     const copyInvitationData = {
       ...invitationData,
-      patientId:invitationData.patientId.toUpperCase()
+      patientId: invitationData.patientId
     };
-    return this.http.post(`${this.env.apiUrl}/${url}`, copyInvitationData)
-      .pipe(
-        catchError(this.handleError)
-      )
+    return this.http
+      .post(`${this.env.apiUrl}/${url}`, copyInvitationData)
+      .pipe(catchError(this.handleError));
   }
 
   getCurrentUser(): User {
@@ -61,8 +65,13 @@ export class UserService {
   }
 
   handleError(err: HttpErrorResponse): Observable<Error> {
-    return Observable.of(new Error(
-      `${getMessageFromBackendError(err.error && err.error.meta && err.error.meta.message)}
-      `));
+    return Observable.of(
+      new Error(
+        `${getMessageFromBackendError(
+          err.error && err.error.meta && err.error.meta.message
+        )}
+      `
+      )
+    );
   }
 }

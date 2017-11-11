@@ -1,20 +1,27 @@
-import {Component, Inject, OnInit, ViewChild} from "@angular/core";
-import {Album} from "../../../../dto/album";
-import {UserStory} from "../../../../dto/user-story";
-import { NavController, NavParams, PopoverController, ViewController, ToastController} from "ionic-angular";
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {Album} from '../../../../dto/album';
+import {UserStory} from '../../../../dto/user-story';
+import {
+  NavController,
+  NavParams,
+  PopoverController,
+  ViewController,
+  ToastController
+} from 'ionic-angular';
 
-import {MixpanelService} from "../../../core/mixpanel.service";
-import {NativeTransitionOptions} from "@ionic-native/native-page-transitions";
-import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
-import {StoryOptionsComponent} from "./component/storyOptions.component";
-import {YoutubeVideoPlayer} from "@ionic-native/youtube-video-player";
-import {StoryService} from "../../../core/story.service";
-import {PatientService} from "../../../core/patient.service";
-import {Subject, pipe} from "rxjs/Rx";
-import {takeUntil} from 'rxjs/operators'
-import {Environment, EnvironmentToken} from "../../../environment";
-import { Content } from "ionic-angular/navigation/nav-interfaces";
-import { CreateOrUpdateStoryPage } from "../createOrUpdateStory/createOrUpdateStory.component";
+import {MixpanelService} from '../../../core/mixpanel.service';
+import {NativeTransitionOptions} from '@ionic-native/native-page-transitions';
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import {StoryOptionsComponent} from './component/storyOptions.component';
+import {YoutubeVideoPlayer} from '@ionic-native/youtube-video-player';
+import {StoryService} from '../../../core/story.service';
+import {PatientService} from '../../../core/patient.service';
+import {Subject, pipe} from 'rxjs/Rx';
+import {takeUntil} from 'rxjs/operators';
+import {Environment, EnvironmentToken} from '../../../environment';
+import {Content} from 'ionic-angular/navigation/nav-interfaces';
+import {CreateOrUpdateStoryComponent} from '../createOrUpdateStory/createOrUpdateStory.component';
+import {OnDestroy} from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'prisma-story-detail',
@@ -71,41 +78,40 @@ import { CreateOrUpdateStoryPage } from "../createOrUpdateStory/createOrUpdateSt
           </div>
         </div>
     </ion-content>
-  `,
-
+  `
 })
-export class StoryDetailsPage implements OnInit {
-
+export class StoryDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('content') content: Content;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
   album: Album;
   story: UserStory;
   backgroundImage: SafeUrl;
-  takenUntilPipe = pipe(
-    takeUntil(this.destroy$)
-  )
+  takenUntilPipe = pipe(takeUntil(this.destroy$));
 
-  constructor(@Inject(EnvironmentToken) private env: Environment,
-              private navParams: NavParams,
-              private mixpanel: MixpanelService,
-              private sanitizer: DomSanitizer,
-              private popoverCtrl: PopoverController,
-              private youtube: YoutubeVideoPlayer,
-              private storyService: StoryService,
-              private patientService: PatientService,
-              private navCtrl: NavController,
-              private viewCtrl: ViewController,
-              public toastCtrl: ToastController) {
-  }
+  constructor(
+    @Inject(EnvironmentToken) private env: Environment,
+    private navParams: NavParams,
+    private mixpanel: MixpanelService,
+    private sanitizer: DomSanitizer,
+    private popoverCtrl: PopoverController,
+    private youtube: YoutubeVideoPlayer,
+    private storyService: StoryService,
+    private patientService: PatientService,
+    private navCtrl: NavController,
+    private viewCtrl: ViewController,
+    public toastCtrl: ToastController
+  ) {}
 
   ngOnInit(): void {
     this.mixpanel.track('StoryDetailsPage::view', {
-      story: this.story,
+      story: this.story
     });
-    this.album = this.navParams.get("album") as Album;
-    this.story = this.navParams.get("story") as UserStory;
-    this.backgroundImage = this.sanitizer.bypassSecurityTrustUrl(this.story.backgroundImage);
+    this.album = this.navParams.get('album') as Album;
+    this.story = this.navParams.get('story') as UserStory;
+    this.backgroundImage = this.sanitizer.bypassSecurityTrustUrl(
+      this.story.backgroundImage
+    );
   }
 
   ngOnDestroy(): void {
@@ -113,28 +119,28 @@ export class StoryDetailsPage implements OnInit {
     this.destroy$.unsubscribe();
   }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.content.resize();
   }
 
   swipeEvent(e) {
-    if(this.album.stories.length>1) {
-      let options: NativeTransitionOptions = {
+    if (this.album.stories.length > 1) {
+      const options: NativeTransitionOptions = {
         direction: 'up',
         duration: 500,
         slowdownfactor: 3,
         slidePixels: 20,
         iosdelay: 100,
-        androiddelay: 150,
+        androiddelay: 150
       };
-      //swipes left
-      if (e.direction == 4) {
+      // swipes left
+      if (e.direction === 4) {
         options.direction = 'rigth';
         this.previous();
       }
 
-      //swipes rigth
-      if (e.direction == 2) {
+      // swipes rigth
+      if (e.direction === 2) {
         options.direction = 'left';
         this.next();
       }
@@ -142,43 +148,55 @@ export class StoryDetailsPage implements OnInit {
   }
 
   next(): void {
-    const nextStory = this.album.stories[(this.album.stories.findIndex(story => this.story.id === story.id) + 1) % this.album.stories.length];
-    this.storyService.getBackground(nextStory)
+    const nextStory = this.album.stories[
+      (this.album.stories.findIndex(story => this.story.id === story.id) + 1) %
+        this.album.stories.length
+    ];
+    this.storyService
+      .getBackground(nextStory)
       .let(this.takenUntilPipe)
       .subscribe(imageUrl => {
-        this.navCtrl.push(StoryDetailsPage, {
-          "album": this.album,
-          "story": {
+        this.navCtrl.push(StoryDetailsComponent, {
+          album: this.album,
+          story: {
             ...nextStory,
-            backgroundImage:imageUrl
+            backgroundImage: imageUrl
           }
         });
-        this.navCtrl.remove(this.viewCtrl.index)
-      })
+        this.navCtrl.remove(this.viewCtrl.index);
+      });
   }
 
   previous(): void {
-    const index = this.album.stories.findIndex(story => this.story.id === story.id) === 0 ? this.album.stories.length - 1 : this.album.stories.findIndex(story => this.story.id === story.id) - 1;
+    const index =
+      this.album.stories.findIndex(story => this.story.id === story.id) === 0
+        ? this.album.stories.length - 1
+        : this.album.stories.findIndex(story => this.story.id === story.id) - 1;
     const previousStory = this.album.stories[index];
-    this.storyService.getBackground(previousStory)
+    this.storyService
+      .getBackground(previousStory)
       .let(this.takenUntilPipe)
-      .subscribe((imageUrl) => {
-        this.navCtrl.push(StoryDetailsPage, {
-          "album": this.album,
-          "story": {
+      .subscribe(imageUrl => {
+        this.navCtrl.push(StoryDetailsComponent, {
+          album: this.album,
+          story: {
             ...previousStory,
-            backgroundImage:imageUrl
+            backgroundImage: imageUrl
           }
         });
-        this.navCtrl.remove(this.viewCtrl.index)
-      })
+        this.navCtrl.remove(this.viewCtrl.index);
+      });
   }
 
   toggleFavorite(): void {
     this.story.favorited = !this.story.favorited;
-    this.storyService.updateStory(+this.patientService.getCurrentPatient().patient_id, this.story)
+    this.storyService
+      .updateStory(
+        this.patientService.getCurrentPatient().patient_id,
+        this.story
+      )
       .let(this.takenUntilPipe)
-      .subscribe()
+      .subscribe();
   }
 
   openYoutubeVideo(url: string) {
@@ -186,38 +204,43 @@ export class StoryDetailsPage implements OnInit {
   }
 
   editDescription(story) {
-
     this.mixpanel.track('StoryDetailsPage::editDescription', {
       story
     });
 
-    this.navCtrl.push(CreateOrUpdateStoryPage, {
-      "album": this.album,
-      "story": story,
-      "method": this.env.methods.replaceDescription,
-      "dataUrl": story.backgroundImage
-    })
+    this.navCtrl.push(CreateOrUpdateStoryComponent, {
+      album: this.album,
+      story: story,
+      method: this.env.methods.replaceDescription,
+      dataUrl: story.backgroundImage
+    });
   }
 
   showMore(event): void {
-    const popover = this.popoverCtrl.create(StoryOptionsComponent, {
-      story: this.story
-    },
-    { cssClass: 'storyDetail-popover'});
+    const popover = this.popoverCtrl.create(
+      StoryOptionsComponent,
+      {
+        story: this.story
+      },
+      {cssClass: 'storyDetail-popover'}
+    );
 
-    const toast = (message) => this.toastCtrl.create({
-      message,
-      duration: 3000,
-      position: 'bottom'
-    }).present();
+    const toast = message =>
+      this.toastCtrl
+        .create({
+          message,
+          duration: 3000,
+          position: 'bottom'
+        })
+        .present();
 
     popover.onDidDismiss(dismissData => {
-      if ((dismissData) === "deleteSuccess") {
+      if (dismissData === 'deleteSuccess') {
         toast('Het verhaal is verwijderd.');
         this.navCtrl.pop();
       }
-      if(dismissData === "deleteError"){
-        toast('Het verhaal kon niet verwijderd worden.')
+      if (dismissData === 'deleteError') {
+        toast('Het verhaal kon niet verwijderd worden.');
       }
     });
     popover.present({
