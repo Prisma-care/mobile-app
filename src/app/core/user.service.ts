@@ -4,7 +4,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Observable, pipe} from "rxjs/Rx";
 import {map, catchError} from 'rxjs/operators'
 import {User} from "../../dto/user";
-import {getMessageFromBackendError} from "../utils";
+import {getMessageFromBackendError} from "../../shared/utils";
 
 interface UserResponse {
   response: {

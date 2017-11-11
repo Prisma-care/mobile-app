@@ -5,7 +5,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import {
   background, getMessageFromBackendError, getUrlImage,
   getYoutubeDescriptionAndThumbnail
-} from "../utils";
+} from "../../shared/utils";
 import { Observable, pipe } from "rxjs/Rx";
 import { map, catchError } from 'rxjs/operators';
 import { UserStory } from "../../dto/user-story";
