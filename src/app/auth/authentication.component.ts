@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {AlertController, MenuController, NavController} from 'ionic-angular';
-import {NewLovedonePage} from './components/new-lovedone/new-lovedone';
-import {AlbumListPage} from "../albumList/albumList.component";
-import { NavParams } from 'ionic-angular/navigation/nav-params';
+import {NewLovedoneComponent} from './components/new-lovedone/new-lovedone';
+import {AlbumListComponent} from '../albumList/albumList.component';
+import {NavParams} from 'ionic-angular/navigation/nav-params';
 
 @Component({
-  selector: 'prisma-authentication-page',
+  selector: 'prisma-authentication',
   template: `
     <ion-header>
       <prisma-authentication-header [title]="title"></prisma-authentication-header>
@@ -23,18 +23,18 @@ import { NavParams } from 'ionic-angular/navigation/nav-params';
         [onComplete]="onRegisterComplete"
       ></prisma-authentication-register>
     </ion-content>
-  `,
+  `
 })
-export class AuthenticationPage implements OnInit{
+export class AuthenticationComponent implements OnInit {
+  isLogging = false;
+  title: string;
 
-  isLogging: boolean = false;
-  title:string;
-
-  constructor(private navCtrl: NavController,
-              private menuCtrl: MenuController,
-              private navParams: NavParams,
-              private alertCtrl: AlertController) {
-
+  constructor(
+    private navCtrl: NavController,
+    private menuCtrl: MenuController,
+    private navParams: NavParams,
+    private alertCtrl: AlertController
+  ) {
     this.toggleForm = this.toggleForm.bind(this);
     this.onLoginComplete = this.onLoginComplete.bind(this);
     this.onRegisterComplete = this.onRegisterComplete.bind(this);
@@ -42,16 +42,18 @@ export class AuthenticationPage implements OnInit{
 
   ngOnInit(): void {
     this.isLogging = this.navParams.get('isLogging');
-    this.isLogging ? this.title="Registreer" : this.title="Meld je aan";
+    this.isLogging ? (this.title = 'Registreer') : (this.title = 'Meld je aan');
   }
 
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     const error = this.navParams.get('error');
-    if(error){
-      this.alertCtrl.create({
-        title: error,
-        buttons: ['Ok']
-      }).present();
+    if (error) {
+      this.alertCtrl
+        .create({
+          title: error,
+          buttons: ['Ok']
+        })
+        .present();
     }
   }
 
@@ -65,15 +67,14 @@ export class AuthenticationPage implements OnInit{
 
   toggleForm() {
     this.isLogging = !this.isLogging;
-    this.isLogging ? this.title="Registreer" : this.title="Meld je aan"
+    this.isLogging ? (this.title = 'Registreer') : (this.title = 'Meld je aan');
   }
 
   onLoginComplete() {
-    this.navCtrl.setRoot(AlbumListPage);
+    this.navCtrl.setRoot(AlbumListComponent);
   }
 
   onRegisterComplete() {
-    this.navCtrl.setRoot(NewLovedonePage);
+    this.navCtrl.setRoot(NewLovedoneComponent);
   }
-
 }

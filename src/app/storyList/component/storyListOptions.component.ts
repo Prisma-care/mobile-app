@@ -1,12 +1,11 @@
-import { Component } from "@angular/core";
-import { NavParams } from "ionic-angular/navigation/nav-params";
-import { ViewController } from "ionic-angular/navigation/view-controller";
-import { AlbumService } from "../../core/album.service";
-import { PatientService } from "../../core/patient.service";
-
+import {Component} from '@angular/core';
+import {NavParams} from 'ionic-angular/navigation/nav-params';
+import {ViewController} from 'ionic-angular/navigation/view-controller';
+import {AlbumService} from '../../core/album.service';
+import {PatientService} from '../../core/patient.service';
 
 @Component({
-  selector:'prisma-story-list-options',
+  selector: 'prisma-story-list-options',
   template: `
     <ion-list class="list">
       <ion-item padding (click)="actionSheet()">
@@ -21,26 +20,31 @@ import { PatientService } from "../../core/patient.service";
   `
 })
 export class StoryListOptionsComponent {
+  constructor(
+    private navParams: NavParams,
+    private viewCtrl: ViewController,
+    private albumService: AlbumService,
+    private patientService: PatientService
+  ) {}
 
-  constructor(private navParams:NavParams,
-              private viewCtrl: ViewController,
-              private albumService: AlbumService,
-              private patientService: PatientService
-  ) { }
-
-  actionSheet(){
-    this.navParams.get('actionSheet')()
-    this.viewCtrl.dismiss()
+  actionSheet() {
+    this.navParams.get('actionSheet')();
+    this.viewCtrl.dismiss();
   }
 
   deleteAlbum(): void {
-    this.albumService.deleteAlbum(+this.patientService.getCurrentPatient().patient_id,+this.navParams.get('album').id)
+    this.albumService
+      .deleteAlbum(
+        this.patientService.getCurrentPatient().patient_id,
+        this.navParams.get('album').id
+      )
       .subscribe(
         () => {
-          this.viewCtrl.dismiss("deleteSuccess");
-        }, err => {
-          this.viewCtrl.dismiss("deleteError");
+          this.viewCtrl.dismiss('deleteSuccess');
+        },
+        () => {
+          this.viewCtrl.dismiss('deleteError');
         }
-      )
+      );
   }
 }

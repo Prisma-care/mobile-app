@@ -1,5 +1,5 @@
 export class UserStory {
-  id: string;
+  id: number;
   albumId: number;
   description: string;
   title: string;
@@ -9,22 +9,4 @@ export class UserStory {
   backgroundImage: any;
   source: string;
   type: string;
-
-  constructor(json?) {
-    if (!json)
-      return;
-    this.id = json.id;
-    this.albumId = json.albumId;
-    this.creatorId = json.creatorId || 1;
-    this.description = json.description;
-    this.source = json.source || json.assetSource;
-    if (this.source)
-      if (this.source.startsWith("https://api.prisma.care/storage/heritage/https"))
-        this.source = this.source.replace("https://api.prisma.care/storage/heritage/https", "https");
-
-    this.favorited = json.favorited || false;
-    if (json.happened_at)
-      this.happened_at = new Date(json.happened_at);
-    this.type = json.type;
-  }
 }

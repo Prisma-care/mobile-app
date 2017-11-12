@@ -1,33 +1,33 @@
 import {NgModule} from '@angular/core';
-import {SharedModule} from "../shared/shared.module";
-import {StoryListPage} from "./storyList.component";
-import {QuestionComponent} from "./component/question/question.component";
-import {StoryDetailsPage} from "./component/storyDetail/storyDetail.component";
-import {StoryOptionsComponent} from "./component/storyDetail/component/storyOptions.component";
-import { StoryListOptionsComponent } from './component/storyListOptions.component';
-import { CreateOrUpdateStoryPage } from './component/createOrUpdateStory/createOrUpdateStory.component';
+import {SharedModule} from '../shared/shared.module';
+import {StoryListComponent} from './storyList.component';
+import {QuestionComponent} from './component/question/question.component';
+import {StoryDetailsComponent} from './component/storyDetail/storyDetail.component';
+import {StoryOptionsComponent} from './component/storyDetail/component/storyOptions.component';
+import {StoryListOptionsComponent} from './component/storyListOptions.component';
+import {CreateOrUpdateStoryComponent} from './component/createOrUpdateStory/createOrUpdateStory.component';
 
-const imports = [
-  SharedModule
-];
+const imports = [SharedModule];
 const declarations = [
-  StoryListPage,
-  StoryDetailsPage,
+  StoryListComponent,
+  StoryDetailsComponent,
   StoryOptionsComponent,
   QuestionComponent,
   StoryListOptionsComponent,
-  CreateOrUpdateStoryPage,
+  CreateOrUpdateStoryComponent
 ];
 
 @NgModule({
   declarations,
   imports,
   providers: [],
-  entryComponents: [StoryListPage, StoryDetailsPage, StoryOptionsComponent, StoryListOptionsComponent, CreateOrUpdateStoryPage],
-  exports: [
-    ...imports,
-    ...declarations
-  ]
+  entryComponents: [
+    StoryListComponent,
+    StoryDetailsComponent,
+    StoryOptionsComponent,
+    StoryListOptionsComponent,
+    CreateOrUpdateStoryComponent
+  ],
+  exports: [...imports, ...declarations]
 })
-export class StoryModule {
-}
+export class StoryModule {}

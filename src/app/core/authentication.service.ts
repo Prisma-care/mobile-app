@@ -5,82 +5,113 @@ import {Observable, BehaviorSubject} from 'rxjs/Rx';
 import {map, catchError, switchMap} from 'rxjs/operators';
 import {User} from '../../dto/user';
 import {getMessageFromBackendError} from '../../shared/utils';
-import { UserService } from "./user.service";
+import {UserService} from './user.service';
+import {Patient} from '../../dto/patient';
 
 interface LoginResponse {
   response: {
-    token: string,
-    patients: any[], // TODO: type patients
-    id: string
+    token: string;
+    patients: Patient[];
+    id: string;
   };
 }
 
 @Injectable()
 export class AuthenticationService {
-  private _isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private _isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject(
+    false
+  );
 
-  constructor(@Inject(EnvironmentToken) private env: Environment,
-              private http: HttpClient, private userService: UserService) {
-
+  constructor(
+    @Inject(EnvironmentToken) private env: Environment,
+    private http: HttpClient,
+    private userService: UserService
+  ) {
     this.handleError = this.handleError.bind(this);
   }
 
   login(email: string, password: string): Observable<boolean | Error> {
     if (!email || !password) {
-      return Observable.throw(new Error('E-mail of wachtwoord zijn niet voorzien'))
+      return Observable.throw(
+        new Error('E-mail of wachtwoord zijn niet voorzien')
+      );
     }
 
-    let url = `${this.env.apiUrl}/${this.env.api.getUser}/${this.env.api.getSignIn}`;
-    return this.http.post(url, { email, password })
-      .pipe(
-        map(({ response: { token, patients, id } }: LoginResponse):boolean => {
-          this.setAuthenticationInfoInStorage({
-            token,
-            currentPatient: patients[0],
-            userId: id
-          });
-  
-          this._isAuthenticated.next(true);
-          return this.isAuthenticatedSync;
-        }),
-        switchMap((authSync:boolean) => {
-          return this.userService.getUser()
-            .pipe(
-              map((user:User|Error) => {
-                localStorage.setItem(this.env.temp.currentUser, JSON.stringify(user))}),
-              map(() => authSync)
-            )
-        }),
-        catchError(this.handleError)
-      )
+    const url = `${this.env.apiUrl}/${this.env.api.getUser}/${
+      this.env.api.getSignIn
+    }`;
+    return this.http.post(url, {email, password}).pipe(
+      map(({response: {token, patients, id}}: LoginResponse): boolean => {
+        this.setAuthenticationInfoInStorage({
+          token,
+          currentPatient: patients[0],
+          userId: id
+        });
+
+        this._isAuthenticated.next(true);
+        return this.isAuthenticatedSync;
+      }),
+      switchMap((authSync: boolean) => {
+        return this.userService.getUser().pipe(
+          map((user: User | Error) => {
+            localStorage.setItem(
+              this.env.temp.currentUser,
+              JSON.stringify(user)
+            );
+          }),
+          map(() => authSync)
+        );
+      }),
+      catchError(this.handleError)
+    );
   }
 
   signUp(user: User): Observable<boolean | Error> {
-    return this.http.post(`${this.env.apiUrl}/${this.env.api.getUser}`, user)
+    return this.http
+      .post(`${this.env.apiUrl}/${this.env.api.getUser}`, user)
       .pipe(
-        switchMap((res:Object) => this.login(user.email, user.password)),
+        switchMap((res: Object) => this.login(user.email, user.password)),
         catchError(this.handleError)
-      )
+      );
   }
 
-  resetPassword(email: string) : Observable<Object | Error>{
-    return this.http.post(`${this.env.apiUrl}/reset`, {email})
-      .pipe(
-        catchError(this.handleError)
-      )
+  resetPassword(email: string): Observable<Object | Error> {
+    return this.http
+      .post(`${this.env.apiUrl}/reset`, {email})
+      .pipe(catchError(this.handleError));
   }
 
-  setAuthenticationInfoInStorage({ token, currentPatient, userId }: { token: string, currentPatient: any, userId: string }) {
+  setAuthenticationInfoInStorage({
+    token,
+    currentPatient,
+    userId
+  }: {
+    token: string;
+    currentPatient: any;
+    userId: string;
+  }) {
     localStorage.setItem(this.env.jwtToken, token);
-    localStorage.setItem(this.env.temp.currentPatient, JSON.stringify(currentPatient || ''));
-    localStorage.setItem(this.env.temp.currentUser, JSON.stringify({ id: userId }));
+    localStorage.setItem(
+      this.env.temp.currentPatient,
+      JSON.stringify(currentPatient || '')
+    );
+    localStorage.setItem(
+      this.env.temp.currentUser,
+      JSON.stringify({id: userId})
+    );
   }
 
   handleError(err: HttpErrorResponse): Observable<Error> {
+    console.log('err', err);
     this._isAuthenticated.next(false);
-    return Observable.of(new Error(
-      `${getMessageFromBackendError(err.error && err.error.meta && err.error.meta.message)}
-      `));
+    return Observable.of(
+      new Error(
+        `${getMessageFromBackendError(
+          err.error && err.error.meta && err.error.meta.message
+        )}
+      `
+      )
+    );
   }
 
   get isAuthenticated(): Observable<boolean> {
@@ -89,9 +120,7 @@ export class AuthenticationService {
 
   get isAuthenticatedSync(): boolean {
     let isLogged: boolean;
-    this.isAuthenticated
-      .take(1)
-      .subscribe(val => isLogged = val);
+    this.isAuthenticated.take(1).subscribe(val => (isLogged = val));
     return isLogged;
   }
 
@@ -100,9 +129,9 @@ export class AuthenticationService {
     return this.isAuthenticatedSync;
   }
 
-  autoLoad(){
-    if(localStorage.getItem(this.env.jwtToken)){
-      this._isAuthenticated.next(true)
+  autoLoad() {
+    if (localStorage.getItem(this.env.jwtToken)) {
+      this._isAuthenticated.next(true);
     }
   }
 
@@ -114,5 +143,4 @@ export class AuthenticationService {
   private clearTokens() {
     localStorage.clear();
   }
-
 }

@@ -1,10 +1,10 @@
-import {NavParams, ViewController} from "ionic-angular";
-import {Component} from "@angular/core";
-import {StoryService} from "../../../../core/story.service";
-import {PatientService} from "../../../../core/patient.service";
+import {NavParams, ViewController} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {StoryService} from '../../../../core/story.service';
+import {PatientService} from '../../../../core/patient.service';
 
 @Component({
-  selector:'prisma-story-options',
+  selector: 'prisma-story-options',
   template: `
     <ion-list class="list">
       <ion-item (click)="deleteStory()">
@@ -15,22 +15,26 @@ import {PatientService} from "../../../../core/patient.service";
   `
 })
 export class StoryOptionsComponent {
-
-
-  constructor(public viewCtrl: ViewController,
-              public storyService: StoryService,
-              public navParams: NavParams,
-              private patientService: PatientService
+  constructor(
+    public viewCtrl: ViewController,
+    public storyService: StoryService,
+    public navParams: NavParams,
+    private patientService: PatientService
   ) {}
 
   deleteStory(): void {
-    this.storyService.deleteStory(+this.patientService.getCurrentPatient().patient_id, +this.navParams.data.story.id)
+    this.storyService
+      .deleteStory(
+        this.patientService.getCurrentPatient().patient_id,
+        this.navParams.data.story.id
+      )
       .subscribe(
         () => {
-          this.viewCtrl.dismiss("deleteSuccess");
-        }, err => {
-          this.viewCtrl.dismiss("deleteError");
+          this.viewCtrl.dismiss('deleteSuccess');
+        },
+        () => {
+          this.viewCtrl.dismiss('deleteError');
         }
-      )
+      );
   }
 }

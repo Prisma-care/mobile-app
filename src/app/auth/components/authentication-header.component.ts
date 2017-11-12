@@ -11,6 +11,5 @@ import {Component, Input} from '@angular/core';
   `
 })
 export class AuthenticationHeaderComponent {
-  @Input()
-  title
+  @Input() title: string;
 }

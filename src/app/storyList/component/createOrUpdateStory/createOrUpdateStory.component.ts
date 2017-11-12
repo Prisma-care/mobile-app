@@ -1,23 +1,23 @@
-import { Component, OnInit, Inject } from "@angular/core";
-import { NavParams } from "ionic-angular/navigation/nav-params";
-import { Album } from "../../../../dto/album";
-import { UserStory } from "../../../../dto/user-story";
-import { EnvironmentToken, Environment } from "../../../environment";
-import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
-import { StoryService } from "../../../core/story.service";
-import { MixpanelService } from "../../../core/mixpanel.service";
-import { PatientService } from "../../../core/patient.service";
-import { UserService } from "../../../core/user.service";
-import { StoryDetailsPage } from "../storyDetail/storyDetail.component";
-import { NavController } from "ionic-angular/navigation/nav-controller";
-import { ViewController } from "ionic-angular/navigation/view-controller";
-import { TransferObject, Transfer } from "@ionic-native/transfer";
-import { LoadingController, Loading } from "ionic-angular";
-import { ToastController } from "ionic-angular/components/toast/toast-controller";
-import { Patient } from "../../../../dto/patient";
-import { User } from "../../../../dto/user";
-import { map, switchMap } from 'rxjs/operators'
-import { Observable } from "rxjs/Observable";
+import {Component, OnInit, Inject} from '@angular/core';
+import {NavParams} from 'ionic-angular/navigation/nav-params';
+import {Album} from '../../../../dto/album';
+import {UserStory} from '../../../../dto/user-story';
+import {EnvironmentToken, Environment} from '../../../environment';
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import {StoryService} from '../../../core/story.service';
+import {MixpanelService} from '../../../core/mixpanel.service';
+import {PatientService} from '../../../core/patient.service';
+import {UserService} from '../../../core/user.service';
+import {StoryDetailsComponent} from '../storyDetail/storyDetail.component';
+import {NavController} from 'ionic-angular/navigation/nav-controller';
+import {ViewController} from 'ionic-angular/navigation/view-controller';
+import {TransferObject, Transfer} from '@ionic-native/transfer';
+import {LoadingController, Loading} from 'ionic-angular';
+import {ToastController} from 'ionic-angular/components/toast/toast-controller';
+import {Patient} from '../../../../dto/patient';
+import {User} from '../../../../dto/user';
+import {map, switchMap} from 'rxjs/operators';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'prisma-create-update-story',
@@ -40,8 +40,11 @@ import { Observable } from "rxjs/Observable";
                         clearInput></ion-textarea>
         </ion-item>
         <ion-item *ngIf="method===env.methods.addYoutubeStory" style="padding-left: 0">
-            <ion-textarea autofocus class="story-text" placeholder="{{youtubeLinkPlaceHolder}}" (ngModelChange)="checkYoutubeLink($event)" [(ngModel)]="story.source" rows="3" style="padding-left: 0"
-                        clearInput></ion-textarea>
+            <ion-textarea autofocus class="story-text" placeholder="{{youtubeLinkPlaceHolder}}"
+            (ngModelChange)="checkYoutubeLink($event)"
+            [(ngModel)]="story.source"
+            rows="3" style="padding-left: 0"
+            clearInput></ion-textarea>
         </ion-item>
           <ion-thumbnail class="thumbnail" style="padding-left: 7%;" *ngIf="method===env.methods.addYoutubeStory">
               <img *ngIf="isLoading" [src]="image">
@@ -59,22 +62,19 @@ import { Observable } from "rxjs/Observable";
 
   `
 })
-
-
-export class CreateOrUpdateStoryPage implements OnInit {
-
+export class CreateOrUpdateStoryComponent implements OnInit {
   method: string;
   dataUrl: string;
   image: SafeUrl;
   album: Album;
   story: UserStory;
-  title: string = 'Vul het verhaal aan';
+  title = 'Vul het verhaal aan';
 
-  placeHolder: string = `Schrijf het verhaal.\nHoe meer details hoe beter.`;
-  youtubeLinkPlaceHolder: string = "https://www.youtube.com/watch?v=ffSnk4v3aeg";
+  placeHolder = `Schrijf het verhaal.\nHoe meer details hoe beter.`;
+  youtubeLinkPlaceHolder = 'https://www.youtube.com/watch?v=ffSnk4v3aeg';
 
   loading: Loading;
-  isLoading: Boolean = false
+  isLoading: Boolean = false;
   currentPatient: Patient;
   currentUser: User;
 
@@ -82,15 +82,18 @@ export class CreateOrUpdateStoryPage implements OnInit {
     [this.env.methods.addNewStory]: {
       init: () => {
         this.story = this.initStory({
-          type:'image'
-        })
+          type: 'image'
+        });
         this.isLoading = true;
       },
       send: () => {
-        this.addStory()
-          .subscribe((addedStory) => {
-            this.uploadImage(+this.currentPatient.patient_id, +addedStory.id, this.dataUrl)
-          })
+        this.addStory().subscribe((addedStory: UserStory) => {
+          this.uploadImage(
+            this.currentPatient.patient_id,
+            addedStory.id,
+            this.dataUrl
+          );
+        });
       }
     },
     [this.env.methods.addYoutubeStory]: {
@@ -99,22 +102,30 @@ export class CreateOrUpdateStoryPage implements OnInit {
         this.story = this.initStory({
           type: 'youtube',
           description: 'Video van Youtube'
-        })
+        });
       },
       send: () => {
         if (this.isLoading) {
           this.addStory()
             .pipe(
-              map((addedStory: UserStory) => this.storyService.addYoutubeLinkAsset(+this.currentPatient.patient_id, +addedStory.id, this.story.source)),
-              switchMap((x:Observable<Object | Error>) => x)
+              map((addedStory: UserStory) =>
+                this.storyService.addYoutubeLinkAsset(
+                  this.currentPatient.patient_id,
+                  addedStory.id,
+                  this.story.source
+                )
+              ),
+              switchMap((x: Observable<Object | Error>) => x)
             )
-            .subscribe(() => this.navCtrl.pop())
+            .subscribe(() => this.navCtrl.pop());
         } else {
-          this.toastCtrl.create({
-            message: 'Bad youtube link',
-            duration: 3000,
-            position: 'bottom'
-          }).present()
+          this.toastCtrl
+            .create({
+              message: 'Bad youtube link',
+              duration: 3000,
+              position: 'bottom'
+            })
+            .present();
         }
       }
     },
@@ -123,12 +134,13 @@ export class CreateOrUpdateStoryPage implements OnInit {
         this.isLoading = true;
       },
       send: () => {
-        this.updateDescription()
+        this.updateDescription();
       }
     }
-  }
+  };
 
-  constructor( @Inject(EnvironmentToken) private env: Environment,
+  constructor(
+    @Inject(EnvironmentToken) private env: Environment,
     private navParams: NavParams,
     private sanitizer: DomSanitizer,
     private storyService: StoryService,
@@ -139,40 +151,40 @@ export class CreateOrUpdateStoryPage implements OnInit {
     private viewCtrl: ViewController,
     private transfer: Transfer,
     private loadingCtrl: LoadingController,
-    private toastCtrl: ToastController) {
-  }
+    private toastCtrl: ToastController
+  ) {}
 
   ngOnInit(): void {
-
-    this.method = this.navParams.get("method");
-    this.dataUrl = this.navParams.get("dataUrl");
-    this.album = this.navParams.get("album") as Album;
-    this.story = { ...this.navParams.get("story") } as UserStory;
+    this.method = this.navParams.get('method');
+    this.dataUrl = this.navParams.get('dataUrl');
+    this.album = this.navParams.get('album') as Album;
+    this.story = {...this.navParams.get('story')} as UserStory;
     this.currentPatient = this.patientService.getCurrentPatient();
-    this.currentUser = this.userService.getCurrentUser()
+    this.currentUser = this.userService.getCurrentUser();
     this.methods[this.method].init();
   }
 
   commit() {
-    this.methods[this.method].send()
+    this.methods[this.method].send();
   }
 
   updateDescription() {
-    this.storyService.updateStory(+this.currentPatient.patient_id, this.story)
-      .subscribe(addedStory => {
+    this.storyService
+      .updateStory(this.currentPatient.patient_id, this.story)
+      .subscribe(() => {
         this.mixpanel.track('NewStoryComponent::updateDescription', {
           email: this.currentUser.email,
-          patient_id: +this.currentPatient.patient_id,
+          patient_id: this.currentPatient.patient_id,
           updatedStory: this.story,
           selectedAlbum: this.album
         });
 
-        this.navCtrl.push(StoryDetailsPage, {
-          "album": this.album,
-          "story": this.story,
+        this.navCtrl.push(StoryDetailsComponent, {
+          album: this.album,
+          story: this.story
         });
 
-        this.navCtrl.remove(this.viewCtrl.index - 1, 2)
+        this.navCtrl.remove(this.viewCtrl.index - 1, 2);
       });
   }
 
@@ -180,29 +192,31 @@ export class CreateOrUpdateStoryPage implements OnInit {
     return {
       ...this.story,
       ...params,
-      albumId: +this.album.id,
-      creatorId: +this.currentUser.id
-    }
+      albumId: this.album.id,
+      creatorId: this.currentUser.id
+    };
   }
 
-   addStory() {
-    return this.storyService.addStory(+this.currentPatient.patient_id, this.story)
+  addStory() {
+    return this.storyService
+      .addStory(this.currentPatient.patient_id, this.story)
       .pipe(
         map((addedStory: UserStory) => {
           this.mixpanel.track('NewStoryComponent::saving story', {
             email: this.currentUser.email,
-            patient_id: +this.currentPatient.patient_id,
+            patient_id: this.currentPatient.patient_id,
             newStory: this.story,
             selectedAlbum: this.album
           });
           return addedStory;
         })
-      )
+      );
   }
 
   checkYoutubeLink(value) {
-    this.storyService.checkYoutubeLink(value)
-      .subscribe((res: {thumbnail: string, description: string}) => {
+    this.storyService
+      .checkYoutubeLink(value)
+      .subscribe((res: {thumbnail: string; description: string}) => {
         if (res) {
           this.image = this.sanitizer.bypassSecurityTrustUrl(res.thumbnail);
           this.story = {...this.story, description: res.description};
@@ -211,37 +225,41 @@ export class CreateOrUpdateStoryPage implements OnInit {
           this.image = '';
           this.isLoading = false;
         }
-      })
+      });
   }
 
   uploadImage(patientId: number, storyId: number, lastImage: string) {
-
-    const url = `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${this.env.api.getStory}/${storyId}/${this.env.api.getAsset}`;
+    const url = `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${
+      this.env.api.getStory
+    }/${storyId}/${this.env.api.getAsset}`;
 
     const options = {
-      fileKey: "asset",
-      fileName: "asset",
-      mimeType: "image/jpeg",
+      fileKey: 'asset',
+      fileName: 'asset',
+      mimeType: 'image/jpeg',
       headers: {
-        "Connection": "close",
-        "Authorization": "Bearer " + localStorage.getItem(this.env.jwtToken)
+        Connection: 'close',
+        Authorization: 'Bearer ' + localStorage.getItem(this.env.jwtToken)
       }
     };
 
     const fileTransfer: TransferObject = this.transfer.create();
 
     this.loading = this.loadingCtrl.create({
-      content: 'Uploading...',
+      content: 'Uploading...'
     });
     this.loading.present();
     const targetPath = lastImage;
 
-    fileTransfer.upload(targetPath, url, options).then(data => {
-      this.loading.dismissAll();
-      this.navCtrl.pop();
-    }, err => {
-      this.loading.dismissAll()
-      this.navCtrl.pop();
-    });
+    fileTransfer.upload(targetPath, url, options).then(
+      () => {
+        this.loading.dismissAll();
+        this.navCtrl.pop();
+      },
+      () => {
+        this.loading.dismissAll();
+        this.navCtrl.pop();
+      }
+    );
   }
 }

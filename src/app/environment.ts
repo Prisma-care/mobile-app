@@ -5,10 +5,10 @@ export interface Environment {
   apiUrl: string;
   currentVersion: string;
   production: boolean;
-  youtubeApiKey:string;
+  youtubeApiKey: string;
   jwtToken: string;
   lastestUsedVersion: string;
-  localstorage: { LOCALSTORAGE_SELECTEDLANG: string };
+  localstorage: {LOCALSTORAGE_SELECTEDLANG: string};
   privateImagesRegex: string;
   loadingImage: string;
   emptyAlbum: string;
@@ -21,36 +21,32 @@ export interface Environment {
     getAsset: string;
     getUser: string;
     invite: string;
-  },
+  };
   temp: {
     albums: string;
     currentUser: string;
     currentPatient: string;
-  },
+  };
   methods: {
     addNewStory: string;
     addYoutubeStory: string;
     replaceDescription: string;
     replaceImage: string;
-  }
+  };
 }
 
-export const BACKEND: string = 'https://api.prisma.care';
-export const API_URL: string = BACKEND + '/v1';
-export const CURENT_VERSION: string = '0.3.2';
-
 export const env: Environment = {
-  backendUrl: BACKEND,
-  apiUrl: API_URL,
+  backendUrl: 'https://api.prisma.care',
+  apiUrl: 'https://api.prisma.care/v1',
   currentVersion: '0.3.2',
   production: false,
-  youtubeApiKey:'AIzaSyBGA18_O8NWLDbu2nRPRc_FRMcK0DTQs80',
+  youtubeApiKey: 'AIzaSyBGA18_O8NWLDbu2nRPRc_FRMcK0DTQs80',
   jwtToken: 'id_token',
   lastestUsedVersion: 'version',
-  localstorage: { LOCALSTORAGE_SELECTEDLANG: "langs" },
+  localstorage: {LOCALSTORAGE_SELECTEDLANG: 'langs'},
   privateImagesRegex: '/asset/',
-  loadingImage: "assets/img/homePage/loading.png",
-  emptyAlbum: "assets/img/empty-album.png",
+  loadingImage: 'assets/img/homePage/loading.png',
+  emptyAlbum: 'assets/img/empty-album.png',
   supportMailAddress: 'info@prisma.care',
   api: {
     getSignIn: 'signin',
@@ -62,9 +58,9 @@ export const env: Environment = {
     invite: 'invite'
   },
   temp: {
-    albums: "albums",
-    currentUser: "user",
-    currentPatient: "patient"
+    albums: 'albums',
+    currentUser: 'user',
+    currentPatient: 'patient'
   },
   methods: {
     addNewStory: 'addNewStory',
@@ -73,7 +69,6 @@ export const env: Environment = {
     replaceImage: 'replaceImage'
   }
 };
-
 
 export const EnvironmentToken = new InjectionToken<Environment>('environment');
 export const EnvironmentProvider: Provider = {

@@ -1,11 +1,11 @@
-import {Component, Input} from "@angular/core";
-import {AuthenticationPage} from "../auth/authentication.component";
-import {MenuController} from "ionic-angular";
-import {AuthenticationService} from "../core/authentication.service";
-import {InvitePage} from "./component/invite/invite";
-import {PatientService} from "../core/patient.service";
-import {GiveFeedbackComponent} from "./component/giveFeedback/giveFeedback.component";
-
+import {Component, Input} from '@angular/core';
+import {AuthenticationComponent} from '../auth/authentication.component';
+import {MenuController} from 'ionic-angular';
+import {AuthenticationService} from '../core/authentication.service';
+import {InviteComponent} from './component/invite/invite';
+import {PatientService} from '../core/patient.service';
+import {GiveFeedbackComponent} from './component/giveFeedback/giveFeedback.component';
+import {NavController} from 'ionic-angular/navigation/nav-controller';
 @Component({
   selector: 'prisma-sidebar',
   template: `<ion-menu [content]="content" color="white">
@@ -30,7 +30,7 @@ import {GiveFeedbackComponent} from "./component/giveFeedback/giveFeedback.compo
     </ion-content>
   </ion-menu>
   `,
-  styles:[
+  styles: [
     `
       .ion-title-color {
         color: #FFABAEB4
@@ -39,32 +39,30 @@ import {GiveFeedbackComponent} from "./component/giveFeedback/giveFeedback.compo
   ]
 })
 export class SidebarComponent {
-  @Input()
-  nav;
+  @Input() nav: NavController;
 
-  @Input()
-  content;
+  @Input() content;
 
   constructor(
     public menu: MenuController,
     public authService: AuthenticationService,
-    public patientService: PatientService) {
-  }
+    public patientService: PatientService
+  ) {}
 
   logout() {
     this.menu.close();
     this.authService.logout();
-    this.nav.setRoot(AuthenticationPage);
+    this.nav.setRoot(AuthenticationComponent);
   }
 
   invite() {
     this.menu.close();
-    this.nav.push(InvitePage, {
-      "patientId": this.patientService.getCurrentPatient().patient_id.toString()
+    this.nav.push(InviteComponent, {
+      patientId: this.patientService.getCurrentPatient().patient_id
     });
   }
 
-  goToFeedbackPage(){
-    this.nav.push(GiveFeedbackComponent)
+  goToFeedbackPage() {
+    this.nav.push(GiveFeedbackComponent);
   }
 }

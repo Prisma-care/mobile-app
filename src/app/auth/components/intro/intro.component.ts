@@ -1,10 +1,9 @@
-import { Component } from "@angular/core";
-import { NavController } from "ionic-angular/navigation/nav-controller";
-import { AuthenticationPage } from "../../authentication.component";
-
+import {Component} from '@angular/core';
+import {NavController} from 'ionic-angular/navigation/nav-controller';
+import {AuthenticationComponent} from '../../authentication.component';
 
 @Component({
-  selector: 'prisma-intro-page',
+  selector: 'prisma-intro',
   template: `
     <ion-content>
         <img src="assets/img/introPage/intro.jpg"/>
@@ -18,18 +17,14 @@ import { AuthenticationPage } from "../../authentication.component";
       </p>
     </ion-content>
 
-  `,
+  `
 })
-export class IntroPage {
+export class IntroComponent {
+  constructor(private navCtrl: NavController) {}
 
-  constructor(private navCtrl: NavController) {
-
+  onRegister(value: boolean) {
+    this.navCtrl.push(AuthenticationComponent, {
+      isLogging: value
+    });
   }
-
-  onRegister(value:boolean){
-    this.navCtrl.push(AuthenticationPage, {
-      "isLogging":value
-    })
-  }
-
 }

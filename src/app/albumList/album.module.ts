@@ -1,23 +1,15 @@
 import {NgModule} from '@angular/core';
-import {AlbumListPage} from "./albumList.component";
-import {SharedModule} from "../shared/shared.module";
+import {AlbumListComponent} from './albumList.component';
+import {SharedModule} from '../shared/shared.module';
 
-const IMPORTS = [
-  SharedModule
-];
-const DECLARATIONS = [
-  AlbumListPage
-];
+const imports = [SharedModule];
+const declarations = [AlbumListComponent];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...IMPORTS],
+  declarations,
+  imports,
   providers: [],
-  entryComponents: [AlbumListPage],
-  exports: [
-    ...IMPORTS,
-    ...DECLARATIONS
-  ]
+  entryComponents: [AlbumListComponent],
+  exports: [...imports, ...declarations]
 })
-export class AlbumModule {
-}
+export class AlbumModule {}
