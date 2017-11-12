@@ -107,7 +107,7 @@ export function getYoutubeDescriptionAndThumbnail(
           ];
           return {...res, thumbnail: res.thumbnail[last].url};
         }),
-        catchError(() => Observable.of({}))
+        catchError(() => Observable.of(null))
       );
   } else {
     return Observable.of(null);
