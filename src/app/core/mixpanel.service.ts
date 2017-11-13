@@ -23,10 +23,7 @@ export class MixpanelService {
   }
 
   initMixpanel(): Promise<any> {
-    return this.mixpanel.init(this.token).catch(err => {
-      console.log('Error mixpanel.init', err);
-      this.isInit = false;
-    });
+    return this.mixpanel.init(this.token).catch(err => (this.isInit = false));
   }
 
   track(eventName, props?: any) {
@@ -52,16 +49,15 @@ export class MixpanelService {
             $created: user.createdAt,
             $email: user.email
           };
-          console.log('user = ' + JSON.stringify(user));
           // setOnce will not overwrite an already existing profile
           this.mixpanelPeople.setOnce(mixProps).catch(err => {
-            console.log(
+            console.error(
               'Error at binding user info to mixpanel identification.',
               err
             );
           });
         })
-        .catch(err => console.log('Mixpanel user identification error', err));
+        .catch(err => console.error('Mixpanel user identification error', err));
 
     if (this.isInit) {
       mixpanelIdentify();
