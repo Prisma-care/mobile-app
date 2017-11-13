@@ -112,8 +112,8 @@ export class StoryListComponent implements OnInit, OnDestroy {
 
   showDetails(album: Album, story: UserStory) {
     this.navCtrl.push(StoryDetailsComponent, {
-      album: album,
-      story: story
+      album,
+      story
     });
   }
 

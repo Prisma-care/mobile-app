@@ -210,7 +210,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
 
     this.navCtrl.push(CreateOrUpdateStoryComponent, {
       album: this.album,
-      story: story,
+      story,
       method: this.env.methods.replaceDescription,
       dataUrl: story.backgroundImage
     });
