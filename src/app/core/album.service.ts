@@ -10,8 +10,7 @@ import {
 } from '../../shared/utils';
 import {Observable, pipe} from 'rxjs/Rx';
 import {map, catchError} from 'rxjs/operators';
-import {UserStory} from '../../dto/user-story';
-import {Album} from '../../dto/album';
+import {Story, Album} from '../../shared/types';
 
 interface AlbumsResponse {
   response: Album[];
@@ -98,7 +97,7 @@ export class AlbumService {
     return getYoutubeDescriptionAndThumbnail.call(this, url);
   }
 
-  getBackground(story: UserStory) {
+  getBackground(story: Story) {
     return background.call(this, story);
   }
 
