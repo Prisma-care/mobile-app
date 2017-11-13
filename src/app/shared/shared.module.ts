@@ -1,25 +1,15 @@
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {IonicModule} from 'ionic-angular';
-import { AlbumOrStoryComponent } from './component/albumOrStory.component';
+import {AlbumOrStoryComponent} from './component/albumOrStory.component';
 
-const IMPORTS = [
-  ReactiveFormsModule,
-  FormsModule,
-  IonicModule,
-];
-const DECLARATIONS = [
-  AlbumOrStoryComponent,
-];
+const imports = [ReactiveFormsModule, FormsModule, IonicModule];
+const declarations = [AlbumOrStoryComponent];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...IMPORTS],
+  declarations,
+  imports,
   providers: [],
-  exports: [
-    ...IMPORTS,
-    ...DECLARATIONS
-  ]
+  exports: [...imports, ...declarations]
 })
-export class SharedModule {
-}
+export class SharedModule {}

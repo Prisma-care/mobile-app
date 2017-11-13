@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AlertController, NavController, ToastController} from 'ionic-angular';
 import {NavParams} from 'ionic-angular/navigation/nav-params';
-import {AuthenticationService} from "../../../core/authentication.service";
+import {AuthenticationService} from '../../../core/authentication.service';
 
 @Component({
   selector: 'prisma-password-reset',
@@ -31,7 +31,6 @@ import {AuthenticationService} from "../../../core/authentication.service";
             </ion-input>
           </ion-item>
         </ion-list>
-
         <button ion-button solid block full large color="general"
                 (click)="resetPassword(form.getRawValue())"
                 [disabled]="form.invalid || loading">
@@ -42,59 +41,59 @@ import {AuthenticationService} from "../../../core/authentication.service";
         </button>
       </form>
     </ion-content>
-  `,
+  `
 })
 export class PasswordResetComponent implements OnInit {
-
-  @ViewChild('inputEmail')
-  inputEmail;
-
   form: FormGroup;
-  loading: boolean = false;
+  loading = false;
 
-  constructor(private fb: FormBuilder,
-              public toastCtrl: ToastController,
-              private navParams: NavParams,
-              private authService: AuthenticationService,
-              private navCtrl: NavController) {
-  }
+  @ViewChild('inputEmail') inputEmail;
+
+  constructor(
+    private fb: FormBuilder,
+    public toastCtrl: ToastController,
+    private navParams: NavParams,
+    private authService: AuthenticationService,
+    private navCtrl: NavController
+  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
       email: [
-        this.navParams.get('email'), [
-          Validators.required,
-          Validators.email
-        ],
+        this.navParams.get('email'),
+        [Validators.required, Validators.email],
         []
       ]
     });
 
     setTimeout(() => {
-      this.inputEmail.setFocus()
-    }, 400)
+      this.inputEmail.setFocus();
+    }, 400);
   }
 
-  resetPassword({email}: { email: string }) {
-    this.loading=true;
-    this.authService.resetPassword(email)
-    .subscribe((data) => {
+  resetPassword({email}: {email: string}) {
+    this.loading = true;
+    this.authService.resetPassword(email).subscribe(data => {
       if (data instanceof Error) {
-        this.showMessage(data.message)
-        this.loading=false;
+        this.showMessage(data.message);
+        this.loading = false;
       } else {
-        this.showMessage('Check je email inbox om een nieuw wachtwoord in te stellen.');
-        this.navCtrl.pop()
+        this.showMessage(
+          'Check je email inbox om een nieuw wachtwoord in te stellen.'
+        );
+        this.navCtrl.pop();
       }
-    })
+    });
   }
 
   showMessage(message: string) {
     this.loading = false;
-    this.toastCtrl.create({
-      message,
-      duration: 5000,
-      position: 'bottom'
-    }).present();
+    this.toastCtrl
+      .create({
+        message,
+        duration: 5000,
+        position: 'bottom'
+      })
+      .present();
   }
 }

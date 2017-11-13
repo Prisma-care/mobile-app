@@ -1,5 +1,5 @@
-import {Component, Inject} from "@angular/core";
-import {Environment, EnvironmentToken} from "../../../environment";
+import {Component, Inject} from '@angular/core';
+import {Environment, EnvironmentToken} from '../../../environment';
 
 @Component({
   selector: 'prisma-give-feedback',
@@ -38,9 +38,5 @@ import {Environment, EnvironmentToken} from "../../../environment";
   `
 })
 export class GiveFeedbackComponent {
-
-  constructor(@Inject(EnvironmentToken) private env: Environment) {
-  }
-
-
+  constructor(@Inject(EnvironmentToken) private env: Environment) {}
 }
