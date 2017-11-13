@@ -113,14 +113,3 @@ export function getYoutubeDescriptionAndThumbnail(
     return Observable.of(null);
   }
 }
-
-export function groupBy<T>(arr: T[], key: string) {
-  const objAfterReduce = arr.reduce((acc: {}, val: T) => {
-    acc[val[key]] = acc[val[key]] || [];
-    acc[val[key]] = key ? [val, ...acc[val[key]]] : [...acc[val[key]], val];
-    return acc;
-  }, {});
-  return Object.keys(objAfterReduce).map(
-    objectkey => objAfterReduce[objectkey]
-  );
-}

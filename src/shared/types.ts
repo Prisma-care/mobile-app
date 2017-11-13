@@ -25,8 +25,8 @@ export class Story {
   source: string;
   backgroundImage: string;
   type: string;
-  createAt: {date: string};
-  updateAt: {date: string};
+  createdAt: {date: string};
+  updatedAt: {date: string};
 }
 
 export class Album {
