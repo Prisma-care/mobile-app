@@ -3,10 +3,9 @@ import {Environment, EnvironmentToken} from '../environment';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, BehaviorSubject} from 'rxjs/Rx';
 import {map, catchError, switchMap} from 'rxjs/operators';
-import {User} from '../../dto/user';
+import {User, Patient, UserRegister} from '../../shared/types';
 import {getMessageFromBackendError} from '../../shared/utils';
 import {UserService} from './user.service';
-import {Patient} from '../../dto/patient';
 
 interface LoginResponse {
   response: {
@@ -31,12 +30,6 @@ export class AuthenticationService {
   }
 
   login(email: string, password: string): Observable<boolean | Error> {
-    if (!email || !password) {
-      return Observable.throw(
-        new Error('E-mail of wachtwoord zijn niet voorzien')
-      );
-    }
-
     const url = `${this.env.apiUrl}/${this.env.api.getUser}/${
       this.env.api.getSignIn
     }`;
@@ -66,7 +59,7 @@ export class AuthenticationService {
     );
   }
 
-  signUp(user: User): Observable<boolean | Error> {
+  signUp(user: UserRegister): Observable<boolean | Error> {
     return this.http
       .post(`${this.env.apiUrl}/${this.env.api.getUser}`, user)
       .pipe(

@@ -1,7 +1,6 @@
 import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {UserStory} from '../../dto/user-story';
+import {Story, Album} from '../../shared/types';
 import {ActionSheetController, NavController, NavParams} from 'ionic-angular';
-import {Album} from '../../dto/album';
 import {AlbumService} from '../core/album.service';
 import {PatientService} from '../core/patient.service';
 import {Subject, pipe} from 'rxjs/Rx';
@@ -55,7 +54,7 @@ import {StoryDetailsComponent} from './component/storyDetail/storyDetail.compone
 })
 export class StoryListComponent implements OnInit, OnDestroy {
   album: Album;
-  stories: UserStory[];
+  stories: Story[];
   destroy$: Subject<boolean> = new Subject<boolean>();
   takenUntilPipe = pipe(takeUntil(this.destroy$));
 
@@ -101,16 +100,16 @@ export class StoryListComponent implements OnInit, OnDestroy {
   }
 
   orderByFavorited() {
-    return this.album.stories.reduce((acc: UserStory[], it: UserStory) => {
+    return this.album.stories.reduce((acc: Story[], it: Story) => {
       return it.favorited ? [it, ...acc] : [...acc, it];
     }, []);
   }
 
-  getBackground(story: UserStory) {
+  getBackground(story: Story) {
     return this.storyService.getBackground(story);
   }
 
-  showDetails(album: Album, story: UserStory) {
+  showDetails(album: Album, story: Story) {
     this.navCtrl.push(StoryDetailsComponent, {
       album,
       story

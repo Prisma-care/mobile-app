@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../core/authentication.service';
 import {AlertController, TextInput} from 'ionic-angular';
 import {MixpanelService} from '../../core/mixpanel.service';
-import {User} from '../../../dto/user';
+import {User, UserRegister} from '../../../shared/types';
 import {Observable} from 'rxjs/Rx';
 import {switchMap, tap} from 'rxjs/operators';
 
@@ -60,7 +60,6 @@ export class AuthenticationRegisterComponent implements OnInit {
   loading = false;
 
   @ViewChild('inputFirstname') inputFirstname: TextInput;
-  @Input() data: User;
   @Input() onLoginClick: authFunction;
   @Input() onComplete: authFunction;
 
@@ -99,15 +98,11 @@ export class AuthenticationRegisterComponent implements OnInit {
     this.type = this.show ? 'text' : 'password';
   }
 
-  register(credentials: User) {
+  register(user: UserRegister) {
     this.loading = true;
-    const user: Partial<User> = {
-      ...new User(),
-      ...credentials
-    };
 
     this.auth
-      .signUp(user as User)
+      .signUp(user)
       .pipe(
         switchMap((res: boolean | Error) => {
           if (res instanceof Error) {

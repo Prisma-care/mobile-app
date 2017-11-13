@@ -2,11 +2,10 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
 import {Subject, Observable} from 'rxjs/Rx';
 import {takeUntil} from 'rxjs/operators';
-import {UserStory} from '../../../dto/user-story';
-import {Album} from '../../../dto/album';
+import {Story, Album} from '../../../shared/types';
 
-type showDetails = (album: Album, story: UserStory) => void;
-type getBackground = (story: UserStory) => Observable<string | Error>;
+type showDetails = (album: Album, story: Story) => void;
+type getBackground = (story: Story) => Observable<string | Error>;
 
 @Component({
   selector: 'prisma-album-story',
@@ -41,7 +40,7 @@ export class AlbumOrStoryComponent implements OnInit, OnDestroy {
   imageLoaded = false;
 
   @Input() album: Album;
-  @Input() story: UserStory;
+  @Input() story: Story;
   @Input() getBackground: getBackground;
   @Input() showDetails: showDetails;
   @Input() emptyAlbum: string;
@@ -58,7 +57,7 @@ export class AlbumOrStoryComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  setBackgroundImage(story: UserStory) {
+  setBackgroundImage(story: Story) {
     if (story) {
       this.getBackground(story)
         .pipe(takeUntil(this.destroy$))
@@ -78,7 +77,7 @@ export class AlbumOrStoryComponent implements OnInit, OnDestroy {
     }
   }
 
-  typeYoutube(story: UserStory): boolean {
+  typeYoutube(story: Story): boolean {
     return story.type === 'youtube';
   }
 }

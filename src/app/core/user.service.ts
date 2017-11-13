@@ -3,19 +3,19 @@ import {Environment, EnvironmentToken} from '../environment';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, pipe} from 'rxjs/Rx';
 import {map, catchError} from 'rxjs/operators';
-import {User} from '../../dto/user';
+import {User} from '../../shared/types';
 import {getMessageFromBackendError} from '../../shared/utils';
 
 interface UserResponse {
-  response: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    careHome?: string;
-    dateOfBirth?: Date;
-    birthPlace?: string;
-    location?: string;
-  };
+  response: User;
+}
+
+interface InvitationData {
+  patientId: number;
+  inviterId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
 }
 
 @Injectable()
@@ -43,13 +43,7 @@ export class UserService {
     return this.http.post(`${this.env.apiUrl}/${url}`, user).let(this.userPipe);
   }
 
-  inviteUser(invitationData: {
-    patientId: number;
-    inviterId: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-  }): Observable<Object | Error> {
+  inviteUser(invitationData: InvitationData): Observable<Object | Error> {
     const url: string = this.env.api.invite;
     const copyInvitationData = {
       ...invitationData,

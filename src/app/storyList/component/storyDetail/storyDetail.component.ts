@@ -1,6 +1,5 @@
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {Album} from '../../../../dto/album';
-import {UserStory} from '../../../../dto/user-story';
+import {Album, Story} from '../../../../shared/types';
 import {
   NavController,
   NavParams,
@@ -85,7 +84,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
 
   destroy$: Subject<boolean> = new Subject<boolean>();
   album: Album;
-  story: UserStory;
+  story: Story;
   backgroundImage: SafeUrl;
   takenUntilPipe = pipe(takeUntil(this.destroy$));
 
@@ -108,7 +107,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
       story: this.story
     });
     this.album = this.navParams.get('album') as Album;
-    this.story = this.navParams.get('story') as UserStory;
+    this.story = this.navParams.get('story') as Story;
     this.backgroundImage = this.sanitizer.bypassSecurityTrustUrl(
       this.story.backgroundImage
     );
@@ -203,7 +202,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     this.youtube.openVideo(this.storyService.getYoutubeId(url));
   }
 
-  editDescription(story: UserStory) {
+  editDescription(story: Story) {
     this.mixpanel.track('StoryDetailsPage::editDescription', {
       story
     });

@@ -1,7 +1,6 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {NavParams} from 'ionic-angular/navigation/nav-params';
-import {Album} from '../../../../dto/album';
-import {UserStory} from '../../../../dto/user-story';
+import {Album, Story, User, Patient} from '../../../../shared/types';
 import {EnvironmentToken, Environment} from '../../../environment';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {StoryService} from '../../../core/story.service';
@@ -14,8 +13,6 @@ import {ViewController} from 'ionic-angular/navigation/view-controller';
 import {TransferObject, Transfer} from '@ionic-native/transfer';
 import {LoadingController, Loading} from 'ionic-angular';
 import {ToastController} from 'ionic-angular/components/toast/toast-controller';
-import {Patient} from '../../../../dto/patient';
-import {User} from '../../../../dto/user';
 import {map, switchMap} from 'rxjs/operators';
 import {Observable} from 'rxjs/Observable';
 
@@ -67,7 +64,7 @@ export class CreateOrUpdateStoryComponent implements OnInit {
   dataUrl: string;
   image: SafeUrl;
   album: Album;
-  story: UserStory;
+  story: Story;
   title = 'Vul het verhaal aan';
 
   placeHolder = `Schrijf het verhaal.\nHoe meer details hoe beter.`;
@@ -87,7 +84,7 @@ export class CreateOrUpdateStoryComponent implements OnInit {
         this.isLoading = true;
       },
       send: () => {
-        this.addStory().subscribe((addedStory: UserStory) => {
+        this.addStory().subscribe((addedStory: Story) => {
           this.uploadImage(
             this.currentPatient.patient_id,
             addedStory.id,
@@ -108,7 +105,7 @@ export class CreateOrUpdateStoryComponent implements OnInit {
         if (this.isLoading) {
           this.addStory()
             .pipe(
-              map((addedStory: UserStory) =>
+              map((addedStory: Story) =>
                 this.storyService.addYoutubeLinkAsset(
                   this.currentPatient.patient_id,
                   addedStory.id,
@@ -158,7 +155,7 @@ export class CreateOrUpdateStoryComponent implements OnInit {
     this.method = this.navParams.get('method');
     this.dataUrl = this.navParams.get('dataUrl');
     this.album = this.navParams.get('album') as Album;
-    this.story = {...this.navParams.get('story')} as UserStory;
+    this.story = {...this.navParams.get('story')} as Story;
     this.currentPatient = this.patientService.getCurrentPatient();
     this.currentUser = this.userService.getCurrentUser();
     this.methods[this.method].init();
@@ -201,7 +198,7 @@ export class CreateOrUpdateStoryComponent implements OnInit {
     return this.storyService
       .addStory(this.currentPatient.patient_id, this.story)
       .pipe(
-        map((addedStory: UserStory) => {
+        map((addedStory: Story) => {
           this.mixpanel.track('NewStoryComponent::saving story', {
             email: this.currentUser.email,
             patient_id: this.currentPatient.patient_id,

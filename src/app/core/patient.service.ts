@@ -4,17 +4,13 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, pipe} from 'rxjs/Rx';
 import {map, catchError} from 'rxjs/operators';
 import {getMessageFromBackendError} from '../../shared/utils';
-import {Patient} from '../../dto/patient';
+import {Patient} from '../../shared/types';
 
 interface PatientResponse {
   response: {
     patient_id: number;
     firstName: string;
     lastName: string;
-    careHome?: string;
-    dateOfBirth?: string;
-    birthPlace?: string;
-    location?: string;
   };
 }
 
@@ -32,33 +28,18 @@ export class PatientService {
     this.handleError = this.handleError.bind(this);
   }
 
-  getPatient(id: string): Observable<Patient | Error> {
-    const url: string = this.env.api.getPatient;
+  getPatient(id: number): Observable<Patient | Error> {
     return this.http
-      .get(`${this.env.apiUrl}/${url}/${id}`)
+      .get(`${this.env.apiUrl}/${this.env.api.getPatient}/${id}`)
       .let(this.patientPipe);
   }
 
-  addPatient(
-    firstName: string,
-    lastName: string,
-    careHome?: string,
-    dateOfBirth?: Date,
-    birthPlace?: string,
-    location?: string
-  ): Observable<Patient | Error> {
-    // TODO: convert date to "yyyy-mm-dd"
-    const req = {
-      firstName,
-      lastName,
-      careHome,
-      dateOfBirth,
-      birthPlace,
-      location
-    };
-
+  addPatient(firstName: string, lastName: string): Observable<Patient | Error> {
     return this.http
-      .post(`${this.env.apiUrl}/${this.env.api.getPatient}`, req)
+      .post(`${this.env.apiUrl}/${this.env.api.getPatient}`, {
+        firstName,
+        lastName
+      })
       .let(this.patientPipe);
   }
 
