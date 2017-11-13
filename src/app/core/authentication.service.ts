@@ -102,7 +102,6 @@ export class AuthenticationService {
   }
 
   handleError(err: HttpErrorResponse): Observable<Error> {
-    console.log('err', err);
     this._isAuthenticated.next(false);
     return Observable.of(
       new Error(
