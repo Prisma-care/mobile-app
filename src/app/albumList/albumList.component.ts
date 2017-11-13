@@ -9,7 +9,7 @@ import {MixpanelService} from '../core/mixpanel.service';
 import {StoryListComponent} from '../storyList/storyList.component';
 import {NavController} from 'ionic-angular/navigation/nav-controller';
 import {EnvironmentToken, Environment} from '../environment';
-import {groupBy} from '../../shared/utils';
+import _sortBy from 'lodash/sortBy';
 
 @Component({
   selector: 'prisma-album-list',
@@ -65,42 +65,18 @@ export class AlbumListComponent {
   ionViewWillEnter(): void {
     this.menu.enable(true);
     this.currentPatient = this.patientService.getCurrentPatient();
-    this.albums = this.albumService
-      .getAlbums(this.currentPatient.patient_id)
-      .map((albumArray: Album[]) => groupBy<Album>(albumArray, 'patientId'))
-      .map((albumArrayOfArray: Album[][]) => {
-        return albumArrayOfArray.map(arr =>
-          [...arr].sort((a: Album, b: Album) => {
-            const aLoweredCase = a.title.toLowerCase();
-            const bLoweredCase = b.title.toLowerCase();
-            if (aLoweredCase < bLoweredCase) {
-              return -1;
-            }
-            if (aLoweredCase > bLoweredCase) {
-              return 1;
-            }
-            return 0;
-          })
-        );
-      })
-      .map(arrays => arrays.reduce((acc, val) => [...acc, ...val], []))
-      .map((albumArr: Album[]) => {
-        return albumArr.map((album: Album) => ({
-          ...album,
-          stories: groupBy<UserStory>(album.stories, 'favorited')
-            .map((storiesArrayOfArray: UserStory[]) => {
-              return [...storiesArrayOfArray].sort(
-                (story1: UserStory, story2: UserStory) => {
-                  return (
-                    new Date(story2.updatedAt.date).getTime() -
-                    new Date(story1.updatedAt.date).getTime()
-                  );
-                }
-              );
-            })
-            .reduce((acc, val) => [...acc, ...val], [])
-        }));
-      });
+    this.albums = this.sortAlbumArrayByOwnerAndTitle(
+      this.albumService.getAlbums(this.currentPatient.patient_id)
+    );
+  }
+
+  sortAlbumArrayByOwnerAndTitle(albums: Observable<Album>): Observable<Album> {
+    return albums.map((albumArray: Album[]) =>
+      _sortBy(albumArray, [
+        item => item.patientId,
+        item => item.title.toLowerCase()
+      ])
+    );
   }
 
   ionViewWillLeave(): void {
@@ -155,9 +131,11 @@ export class AlbumListComponent {
                       title: data.title
                     });
 
-                    this.albums = this.albumService.getAlbums(
-                      this.currentPatient.patient_id
-                    ) as Observable<Album[]>;
+                    this.albums = this.sortAlbumArrayByOwnerAndTitle(
+                      this.albumService.getAlbums(
+                        this.currentPatient.patient_id
+                      )
+                    );
                   },
                   () => {
                     this.mixpanel.track('AlbumsComponent::add album error', {
