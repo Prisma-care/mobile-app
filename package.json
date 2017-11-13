@@ -39,6 +39,7 @@
     "@ionic/storage": "^2.0.1",
     "@ngx-translate/core": "^7.1.0",
     "@ngx-translate/http-loader": "^0.1.0",
+    "@types/lodash": "^4.14.85",
     "com.telerik.plugins.nativepagetransitions": "^0.6.5",
     "cordova-android": "^6.2.3",
     "cordova-browser": "^4.1.0",
@@ -59,6 +60,7 @@
     "ionic-angular": "3.9.2",
     "ionic-plugin-keyboard": "^2.2.1",
     "ionicons": "3.0.0",
+    "lodash": "^4.17.4",
     "rxjs": "^5.5.2",
     "sw-toolbox": "3.6.0",
     "zone.js": "^0.8.17"
