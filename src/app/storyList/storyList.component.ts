@@ -13,6 +13,7 @@ import {ToastController} from 'ionic-angular/components/toast/toast-controller';
 import {StoryService} from '../core/story.service';
 import {CreateOrUpdateStoryComponent} from './component/createOrUpdateStory/createOrUpdateStory.component';
 import {StoryDetailsComponent} from './component/storyDetail/storyDetail.component';
+import _sortBy from 'lodash/sortBy';
 
 @Component({
   selector: 'prisma-story-list',
@@ -76,7 +77,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.album = this.navParams.get('album') as Album;
+    this.album = this.navParams.get('album');
     this.openActionSheet = this.openActionSheet.bind(this);
   }
 
@@ -94,15 +95,12 @@ export class StoryListComponent implements OnInit, OnDestroy {
       .let(this.takenUntilPipe)
       .subscribe(album => {
         this.album = album as Album;
-        this.stories = this.orderByFavorited();
+        this.stories = _sortBy(this.album.stories, [
+          item => !item.favorited,
+          item => -new Date(item.updatedAt.date).getTime()
+        ]);
       });
     this.content.resize();
-  }
-
-  orderByFavorited() {
-    return this.album.stories.reduce((acc: Story[], it: Story) => {
-      return it.favorited ? [it, ...acc] : [...acc, it];
-    }, []);
   }
 
   getBackground(story: Story) {
