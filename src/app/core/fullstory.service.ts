@@ -19,8 +19,6 @@ export class FullstoryService {
         displayName: `${user.firstName} ${user.lastName}`,
         email: user.email
       });
-    } else {
-      console.log(`FullStory's global variable is not accessible.`);
     }
   }
 }
