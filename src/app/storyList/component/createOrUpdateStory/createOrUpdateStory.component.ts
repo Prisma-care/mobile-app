@@ -171,7 +171,7 @@ export class CreateOrUpdateStoryComponent implements OnInit {
   updateDescription() {
     this.storyService
       .updateStory(this.currentPatient.patient_id, this.story)
-      .subscribe(addedStory => {
+      .subscribe(() => {
         this.mixpanel.track('NewStoryComponent::updateDescription', {
           email: this.currentUser.email,
           patient_id: this.currentPatient.patient_id,
@@ -252,11 +252,11 @@ export class CreateOrUpdateStoryComponent implements OnInit {
     const targetPath = lastImage;
 
     fileTransfer.upload(targetPath, url, options).then(
-      data => {
+      () => {
         this.loading.dismissAll();
         this.navCtrl.pop();
       },
-      err => {
+      () => {
         this.loading.dismissAll();
         this.navCtrl.pop();
       }

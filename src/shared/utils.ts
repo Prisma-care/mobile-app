@@ -83,8 +83,8 @@ export const validYoutubeLink = (url): Boolean => {
 };
 
 export function getYoutubeDescriptionAndThumbnail(
-  url
-): Observable<Object | Error> {
+  url: string
+): Observable<Object | null> {
   if (validYoutubeLink(url)) {
     const urlId = youtubeId(url);
 
@@ -107,7 +107,7 @@ export function getYoutubeDescriptionAndThumbnail(
           ];
           return {...res, thumbnail: res.thumbnail[last].url};
         }),
-        catchError(() => Observable.of({}))
+        catchError(() => Observable.of(null))
       );
   } else {
     return Observable.of(null);

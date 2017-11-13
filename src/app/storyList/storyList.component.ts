@@ -93,7 +93,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
         this.album.id
       )
       .let(this.takenUntilPipe)
-      .subscribe((album: Album) => {
+      .subscribe(album => {
         this.album = album as Album;
         this.stories = this.orderByFavorited();
       });
@@ -101,7 +101,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
   }
 
   orderByFavorited() {
-    return this.album.stories.reduce((acc, it) => {
+    return this.album.stories.reduce((acc: UserStory[], it: UserStory) => {
       return it.favorited ? [it, ...acc] : [...acc, it];
     }, []);
   }
@@ -112,8 +112,8 @@ export class StoryListComponent implements OnInit, OnDestroy {
 
   showDetails(album: Album, story: UserStory) {
     this.navCtrl.push(StoryDetailsComponent, {
-      album: album,
-      story: story
+      album,
+      story
     });
   }
 
@@ -184,7 +184,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
     actionSheet.present();
   }
 
-  showMore(event): void {
+  showMore(event: Event): void {
     const popover = this.popoverCtrl.create(
       StoryListOptionsComponent,
       {
@@ -194,7 +194,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
       {cssClass: 'storyList-popover'}
     );
 
-    const toast = message =>
+    const toast = (message: string) =>
       this.toastCtrl
         .create({
           message,

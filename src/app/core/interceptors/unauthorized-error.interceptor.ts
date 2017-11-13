@@ -14,7 +14,7 @@ import {catchError} from 'rxjs/operators/catchError';
 
 @Injectable()
 export class UnauthorizedErrorInterceptor implements HttpInterceptor {
-  private AUTHENTICATION_PAGE_NAME = 'AuthenticationPage';
+  private AUTHENTICATION_PAGE_NAME = 'AuthenticationComponent';
 
   constructor(
     public app: App,

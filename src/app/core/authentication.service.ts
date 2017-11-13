@@ -6,11 +6,12 @@ import {map, catchError, switchMap} from 'rxjs/operators';
 import {User} from '../../dto/user';
 import {getMessageFromBackendError} from '../../shared/utils';
 import {UserService} from './user.service';
+import {Patient} from '../../dto/patient';
 
 interface LoginResponse {
   response: {
     token: string;
-    patients: any[]; // TODO: type patients
+    patients: Patient[];
     id: string;
   };
 }

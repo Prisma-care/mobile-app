@@ -9,6 +9,9 @@ import {Observable} from 'rxjs/Rx';
 import {switchMap, timeout, tap} from 'rxjs/operators';
 import {UserService} from '../../core/user.service';
 import {PasswordResetComponent} from './password-reset/password-reset.component';
+import {TextInput} from 'ionic-angular/components/input/input';
+
+type authFunction = () => void;
 
 @Component({
   selector: 'prisma-authentication-login',
@@ -76,10 +79,10 @@ export class AuthenticationLoginComponent implements OnInit {
   show = false;
   loading = false;
 
-  @ViewChild('inputEmail') inputEmail;
+  @ViewChild('inputEmail') inputEmail: TextInput;
   @Input() data: {email: string} = {email: ''};
-  @Input() onRegisterClick: Function = () => {};
-  @Input() onComplete: Function = () => {};
+  @Input() onRegisterClick: authFunction;
+  @Input() onComplete: authFunction;
 
   constructor(
     private fb: FormBuilder,

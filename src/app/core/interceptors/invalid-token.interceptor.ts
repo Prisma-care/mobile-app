@@ -24,6 +24,7 @@ export class InvalidTokenInterceptor implements HttpInterceptor {
         // Check if we had 400 response and if the error is about the token
         if (
           httpError.status === 400 &&
+          typeof httpError.error.meta.message === 'string' &&
           httpError.error.meta.message.includes('token is invalid')
         ) {
           this.clearTokens();

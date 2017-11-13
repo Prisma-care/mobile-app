@@ -1,11 +1,13 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../core/authentication.service';
-import {AlertController} from 'ionic-angular';
+import {AlertController, TextInput} from 'ionic-angular';
 import {MixpanelService} from '../../core/mixpanel.service';
 import {User} from '../../../dto/user';
 import {Observable} from 'rxjs/Rx';
 import {switchMap, tap} from 'rxjs/operators';
+
+type authFunction = () => void;
 
 @Component({
   selector: 'prisma-authentication-register',
@@ -57,10 +59,10 @@ export class AuthenticationRegisterComponent implements OnInit {
   show = false;
   loading = false;
 
-  @ViewChild('inputFirstname') inputFirstname;
+  @ViewChild('inputFirstname') inputFirstname: TextInput;
   @Input() data: User;
-  @Input() onLoginClick: Function = () => {};
-  @Input() onComplete: Function = () => {};
+  @Input() onLoginClick: authFunction;
+  @Input() onComplete: authFunction;
 
   constructor(
     private fb: FormBuilder,

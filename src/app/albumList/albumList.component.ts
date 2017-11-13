@@ -76,7 +76,7 @@ export class AlbumListComponent {
 
   showDetails(album: Album) {
     this.navCtrl.push(StoryListComponent, {
-      album: album
+      album
     });
   }
 
