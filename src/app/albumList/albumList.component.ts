@@ -10,6 +10,7 @@ import {StoryListComponent} from '../storyList/storyList.component';
 import {NavController} from 'ionic-angular/navigation/nav-controller';
 import {UserStory} from '../../dto/user-story';
 import {EnvironmentToken, Environment} from '../environment';
+import {groupBy} from '../../shared/utils';
 
 @Component({
   selector: 'prisma-album-list',
@@ -65,9 +66,42 @@ export class AlbumListComponent {
   ionViewWillEnter(): void {
     this.menu.enable(true);
     this.currentPatient = this.patientService.getCurrentPatient();
-    this.albums = this.albumService.getAlbums(
-      this.currentPatient.patient_id
-    ) as Observable<Album[]>;
+    this.albums = this.albumService
+      .getAlbums(this.currentPatient.patient_id)
+      .map((albumArray: Album[]) => groupBy<Album>(albumArray, 'patientId'))
+      .map((albumArrayOfArray: Album[][]) => {
+        return albumArrayOfArray.map(arr =>
+          [...arr].sort((a: Album, b: Album) => {
+            const aLoweredCase = a.title.toLowerCase();
+            const bLoweredCase = b.title.toLowerCase();
+            if (aLoweredCase < bLoweredCase) {
+              return -1;
+            }
+            if (aLoweredCase > bLoweredCase) {
+              return 1;
+            }
+            return 0;
+          })
+        );
+      })
+      .map(arrays => arrays.reduce((acc, val) => [...acc, ...val], []))
+      .map((albumArr: Album[]) => {
+        return albumArr.map((album: Album) => ({
+          ...album,
+          stories: groupBy<UserStory>(album.stories, 'favorited')
+            .map((storiesArrayOfArray: UserStory[]) => {
+              return [...storiesArrayOfArray].sort(
+                (story1: UserStory, story2: UserStory) => {
+                  return (
+                    new Date(story2.updatedAt.date).getTime() -
+                    new Date(story1.updatedAt.date).getTime()
+                  );
+                }
+              );
+            })
+            .reduce((acc, val) => [...acc, ...val], [])
+        }));
+      });
   }
 
   ionViewWillLeave(): void {
