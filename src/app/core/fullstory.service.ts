@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
-import {User} from '../../dto/user';
+import {User} from '../../shared/types';
 
 /*
   Generated class for the FullstoryProvider provider.

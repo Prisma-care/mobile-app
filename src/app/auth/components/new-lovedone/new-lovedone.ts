@@ -2,8 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {AlertController, NavController} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PatientService} from '../../../core/patient.service';
-import {Patient} from '../../../../dto/patient';
+import {Patient} from '../../../../shared/types';
 import {AlbumListComponent} from '../../../albumList/albumList.component';
+
+interface PatientResponse extends Patient {
+  id: number;
+}
 
 @Component({
   selector: 'prisma-new-lovedone',
@@ -70,11 +74,11 @@ export class NewLovedoneComponent implements OnInit {
   start({firstName, lastName}: {firstName: string; lastName: string}) {
     this.loading = true;
     this.lovedOnes.addPatient(firstName.trim(), lastName.trim()).subscribe(
-      (patient: Patient) => {
+      (patient: PatientResponse) => {
         this.patientService.setPatient({
           ...patient,
           patient_id: patient.id
-        });
+        } as Patient);
         this.navCtrl.setRoot(AlbumListComponent);
       },
       () => {

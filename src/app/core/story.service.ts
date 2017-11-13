@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {Observable, pipe} from 'rxjs/Rx';
 import {map, catchError} from 'rxjs/operators';
-import {UserStory} from '../../dto/user-story';
+import {Story} from '../../shared/types';
 import {
   background,
   getMessageFromBackendError,
@@ -16,17 +16,17 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/fromPromise';
 
 interface StoryResponse {
-  response: UserStory;
+  response: Story;
 }
 
 interface StoriesResponse {
-  response: UserStory[];
+  response: Story[];
 }
 
 @Injectable()
 export class StoryService {
   storyPipe = pipe(
-    map(({response}: StoryResponse) => response as UserStory),
+    map(({response}: StoryResponse) => response as Story),
     catchError(this.handleError)
   );
 
@@ -38,10 +38,7 @@ export class StoryService {
     this.handleError = this.handleError.bind(this);
   }
 
-  getUserStory(
-    patientId: string,
-    storyId: string
-  ): Observable<UserStory | Error> {
+  getUserStory(patientId: string, storyId: string): Observable<Story | Error> {
     return this.http
       .get(
         `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${
@@ -51,21 +48,18 @@ export class StoryService {
       .let(this.storyPipe);
   }
 
-  getUserStories(): Observable<UserStory[] | Error> {
+  getUserStories(): Observable<Story[] | Error> {
     return this.http
       .get('assets/json/stories.json')
       .pipe(
         map(({response}: StoriesResponse) =>
-          response.map(story => story as UserStory)
+          response.map(story => story as Story)
         ),
         catchError(this.handleError)
       );
   }
 
-  addStory(
-    patientId: number,
-    newStory: UserStory
-  ): Observable<UserStory | Error> {
+  addStory(patientId: number, newStory: Story): Observable<Story | Error> {
     return this.http
       .post(
         `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${
@@ -86,10 +80,7 @@ export class StoryService {
       .pipe(catchError(this.handleError));
   }
 
-  updateStory(
-    patientId: number,
-    newStory: UserStory
-  ): Observable<UserStory | Error> {
+  updateStory(patientId: number, newStory: Story): Observable<Story | Error> {
     return this.http
       .patch(
         `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${
@@ -114,7 +105,7 @@ export class StoryService {
     });
   }
 
-  getBackground(story: UserStory): Observable<string | Error> {
+  getBackground(story: Story): Observable<string | Error> {
     return background.call(this, story);
   }
 

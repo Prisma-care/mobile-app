@@ -1,5 +1,5 @@
 import {Observable} from 'rxjs/Rx';
-import {UserStory} from '../dto/user-story';
+import {Story} from '../shared/types';
 import {map, switchMap, catchError} from 'rxjs/operators';
 
 export interface YoutubeResponse {
@@ -53,9 +53,9 @@ export function getUrlImage(filename: string): Observable<string | Error> {
     .pipe(map(blob => URL.createObjectURL(blob)), catchError(this.handleError));
 }
 
-export function background(story: UserStory): Observable<string | Error> {
+export function background(story: Story): Observable<string | Error> {
   return Observable.of(story).pipe(
-    map((item: UserStory) => {
+    map((item: Story) => {
       if (item.type !== 'youtube') {
         return this.getImage(item.source);
       } else {
