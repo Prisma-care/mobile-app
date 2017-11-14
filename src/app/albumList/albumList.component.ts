@@ -73,12 +73,12 @@ export class AlbumListComponent {
   sortAlbumArrayByOwnerAndTitle(
     albums: Observable<Album[] | Error>
   ): Observable<Album[]> {
-    return albums.map((albumArray: Album[]) =>
-      _sortBy(albumArray, [
+    return albums.map((albumArray: Album[]) => {
+      return _sortBy<Album>(albumArray, [
         item => item.patientId,
         item => item.title.toLowerCase()
-      ])
-    );
+      ]);
+    });
   }
 
   ionViewWillLeave(): void {
