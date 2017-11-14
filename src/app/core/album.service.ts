@@ -1,5 +1,5 @@
 import {Inject, Injectable} from '@angular/core';
-import {Environment, EnvironmentToken} from '../environment';
+import {ConstantToken} from '../di';
 import {HttpClient} from '@angular/common/http';
 import {HttpErrorResponse} from '@angular/common/http';
 import {
@@ -10,7 +10,7 @@ import {
 } from '../../shared/utils';
 import {Observable, pipe} from 'rxjs/Rx';
 import {map, catchError} from 'rxjs/operators';
-import {Story, Album} from '../../shared/types';
+import {Story, Album, Constant} from '../../shared/types';
 
 interface AlbumsResponse {
   response: Album[];
@@ -28,7 +28,7 @@ export class AlbumService {
   );
 
   constructor(
-    @Inject(EnvironmentToken) private env: Environment,
+    @Inject(ConstantToken) private constant: Constant,
     private http: HttpClient
   ) {
     this.handleError = this.handleError.bind(this);
@@ -37,8 +37,8 @@ export class AlbumService {
   getAlbums(patientId: number): Observable<Album[] | Error> {
     return this.http
       .get(
-        `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${
-          this.env.api.getAlbum
+        `${this.constant.apiUrl}/${this.constant.api.getPatient}/${patientId}/${
+          this.constant.api.getAlbum
         }`
       )
       .pipe(
@@ -55,8 +55,8 @@ export class AlbumService {
   ): Observable<Album | Error> {
     return this.http
       .get(
-        `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${
-          this.env.api.getAlbum
+        `${this.constant.apiUrl}/${this.constant.api.getPatient}/${patientId}/${
+          this.constant.api.getAlbum
         }/${albumId}`
       )
       .let(this.albumPipe);
@@ -65,8 +65,8 @@ export class AlbumService {
   deleteAlbum(patientId: number, albumId: number): Observable<Object | Error> {
     return this.http
       .delete(
-        `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${
-          this.env.api.getAlbum
+        `${this.constant.apiUrl}/${this.constant.api.getPatient}/${patientId}/${
+          this.constant.api.getAlbum
         }/${albumId}`
       )
       .pipe(catchError(this.handleError));
@@ -75,8 +75,8 @@ export class AlbumService {
   addAlbum(patientId: number, title: string): Observable<Album | Error> {
     return this.http
       .post(
-        `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${
-          this.env.api.getAlbum
+        `${this.constant.apiUrl}/${this.constant.api.getPatient}/${patientId}/${
+          this.constant.api.getAlbum
         }`,
         {title: title}
       )

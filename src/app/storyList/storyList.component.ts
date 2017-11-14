@@ -1,11 +1,11 @@
 import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Story, Album} from '../../shared/types';
+import {Story, Album, Constant} from '../../shared/types';
 import {ActionSheetController, NavController, NavParams} from 'ionic-angular';
 import {AlbumService} from '../core/album.service';
 import {PatientService} from '../core/patient.service';
 import {Subject, pipe} from 'rxjs/Rx';
 import {takeUntil} from 'rxjs/operators';
-import {Environment, EnvironmentToken} from '../environment';
+import {ConstantToken} from '../di';
 import {Content} from 'ionic-angular/navigation/nav-interfaces';
 import {StoryListOptionsComponent} from './component/storyListOptions.component';
 import {PopoverController} from 'ionic-angular/components/popover/popover-controller';
@@ -37,7 +37,7 @@ import _sortBy from 'lodash/sortBy';
               [album]="album"
               [story]="story"
               [showDetails]="showDetails"
-              [emptyAlbum]="env.emptyAlbum"
+              [emptyAlbum]="constant.emptyAlbum"
               [isAlbum]="false">
             </prisma-album-story>
           </ion-col>
@@ -62,7 +62,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
   @ViewChild('content') content: Content;
 
   constructor(
-    @Inject(EnvironmentToken) private env: Environment,
+    @Inject(ConstantToken) private constant: Constant,
     private navParams: NavParams,
     private albumService: AlbumService,
     private patientService: PatientService,
@@ -137,7 +137,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
                 this.navCtrl.push(CreateOrUpdateStoryComponent, {
                   dataUrl: dataUrl,
                   album: this.album,
-                  method: this.env.methods.addNewStory
+                  method: this.constant.methods.addNewStory
                 });
               });
           }
@@ -154,7 +154,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
                 this.navCtrl.push(CreateOrUpdateStoryComponent, {
                   dataUrl: dataUrl,
                   album: this.album,
-                  method: this.env.methods.addNewStory
+                  method: this.constant.methods.addNewStory
                 });
               });
           }
@@ -166,7 +166,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
           handler: () => {
             this.navCtrl.push(CreateOrUpdateStoryComponent, {
               album: this.album,
-              method: this.env.methods.addYoutubeStory
+              method: this.constant.methods.addYoutubeStory
             });
           }
         },

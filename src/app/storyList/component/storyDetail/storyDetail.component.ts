@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {Album, Story} from '../../../../shared/types';
+import {Album, Story, Constant} from '../../../../shared/types';
 import {
   NavController,
   NavParams,
@@ -17,7 +17,7 @@ import {StoryService} from '../../../core/story.service';
 import {PatientService} from '../../../core/patient.service';
 import {Subject, pipe} from 'rxjs/Rx';
 import {takeUntil} from 'rxjs/operators';
-import {Environment, EnvironmentToken} from '../../../environment';
+import {ConstantToken} from '../../../di';
 import {Content} from 'ionic-angular/navigation/nav-interfaces';
 import {CreateOrUpdateStoryComponent} from '../createOrUpdateStory/createOrUpdateStory.component';
 import {OnDestroy} from '@angular/core/src/metadata/lifecycle_hooks';
@@ -89,7 +89,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   takenUntilPipe = pipe(takeUntil(this.destroy$));
 
   constructor(
-    @Inject(EnvironmentToken) private env: Environment,
+    @Inject(ConstantToken) private constant: Constant,
     private navParams: NavParams,
     private mixpanel: MixpanelService,
     private sanitizer: DomSanitizer,
@@ -210,7 +210,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     this.navCtrl.push(CreateOrUpdateStoryComponent, {
       album: this.album,
       story,
-      method: this.env.methods.replaceDescription,
+      method: this.constant.methods.replaceDescription,
       dataUrl: story.backgroundImage
     });
   }

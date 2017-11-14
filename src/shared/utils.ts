@@ -91,7 +91,7 @@ export function getYoutubeDescriptionAndThumbnail(
     return this.http
       .get(
         `https://www.googleapis.com/youtube/v3/videos?id=${urlId}&key=${
-          this.env.youtubeApiKey
+          this.constant.youtubeApiKey
         }&part=snippet`
       )
       .pipe(
