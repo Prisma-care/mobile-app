@@ -1,10 +1,10 @@
 import {Inject, Injectable} from '@angular/core';
-import {Environment, EnvironmentToken} from '../environment';
+import {ConstantToken} from '../di';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, pipe} from 'rxjs/Rx';
 import {map, catchError} from 'rxjs/operators';
 import {getMessageFromBackendError} from '../../shared/utils';
-import {Patient} from '../../shared/types';
+import {Patient, Constant} from '../../shared/types';
 
 interface PatientResponse {
   response: {
@@ -22,7 +22,7 @@ export class PatientService {
   );
 
   constructor(
-    @Inject(EnvironmentToken) private env: Environment,
+    @Inject(ConstantToken) private constant: Constant,
     private http: HttpClient
   ) {
     this.handleError = this.handleError.bind(this);
@@ -30,13 +30,13 @@ export class PatientService {
 
   getPatient(id: number): Observable<Patient | Error> {
     return this.http
-      .get(`${this.env.apiUrl}/${this.env.api.getPatient}/${id}`)
+      .get(`${this.constant.apiUrl}/${this.constant.api.getPatient}/${id}`)
       .let(this.patientPipe);
   }
 
   addPatient(firstName: string, lastName: string): Observable<Patient | Error> {
     return this.http
-      .post(`${this.env.apiUrl}/${this.env.api.getPatient}`, {
+      .post(`${this.constant.apiUrl}/${this.constant.api.getPatient}`, {
         firstName,
         lastName
       })
@@ -45,12 +45,15 @@ export class PatientService {
 
   getCurrentPatient(): Patient {
     return JSON.parse(
-      localStorage.getItem(this.env.temp.currentPatient)
+      localStorage.getItem(this.constant.temp.currentPatient)
     ) as Patient;
   }
 
   setPatient(patient: Patient): void {
-    localStorage.setItem(this.env.temp.currentPatient, JSON.stringify(patient));
+    localStorage.setItem(
+      this.constant.temp.currentPatient,
+      JSON.stringify(patient)
+    );
   }
 
   handleError(err: HttpErrorResponse): Observable<Error> {

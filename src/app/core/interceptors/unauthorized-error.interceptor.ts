@@ -9,8 +9,9 @@ import {Injectable, Inject} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {App} from 'ionic-angular';
 import {AuthenticationComponent} from '../../auth/authentication.component';
-import {EnvironmentToken, Environment} from '../../environment';
+import {ConstantToken} from '../../di';
 import {catchError} from 'rxjs/operators/catchError';
+import {Constant} from '../../../shared/types';
 
 @Injectable()
 export class UnauthorizedErrorInterceptor implements HttpInterceptor {
@@ -18,7 +19,7 @@ export class UnauthorizedErrorInterceptor implements HttpInterceptor {
 
   constructor(
     public app: App,
-    @Inject(EnvironmentToken) private env: Environment
+    @Inject(ConstantToken) private constant: Constant
   ) {}
 
   intercept(
@@ -28,7 +29,10 @@ export class UnauthorizedErrorInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((httpError: HttpErrorResponse) => {
         // Check if we had 401 response
-        if (httpError.status === 401 && req.url.includes(this.env.apiUrl)) {
+        if (
+          httpError.status === 401 &&
+          req.url.includes(this.constant.apiUrl)
+        ) {
           this.clearTokens();
           const nav = this.app.getActiveNav();
           const activeNavName = nav.getActive().name;

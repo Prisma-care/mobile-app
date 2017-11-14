@@ -1,7 +1,7 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {NavParams} from 'ionic-angular/navigation/nav-params';
-import {Album, Story, User, Patient} from '../../../../shared/types';
-import {EnvironmentToken, Environment} from '../../../environment';
+import {Album, Story, User, Patient, Constant} from '../../../../shared/types';
+import {ConstantToken} from '../../../di';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {StoryService} from '../../../core/story.service';
 import {MixpanelService} from '../../../core/mixpanel.service';
@@ -28,22 +28,22 @@ import {Observable} from 'rxjs/Observable';
     <ion-content padding>
     <ion-item-group>
         <br>
-        <h2 class="plak-een-youtube-lin" *ngIf="method===env.methods.addYoutubeStory">Plak een Youtube link om de
+        <h2 class="plak-een-youtube-lin" *ngIf="method===constant.methods.addYoutubeStory">Plak een Youtube link om de
         video toe te voegen.</h2>
 
         <ion-item style="padding-left: 0">
-        <ion-item *ngIf="method !== env.methods.addYoutubeStory">
+        <ion-item *ngIf="method !== constant.methods.addYoutubeStory">
             <ion-textarea autofocus class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="story.description" rows="7"
                         clearInput></ion-textarea>
         </ion-item>
-        <ion-item *ngIf="method===env.methods.addYoutubeStory" style="padding-left: 0">
+        <ion-item *ngIf="method===constant.methods.addYoutubeStory" style="padding-left: 0">
             <ion-textarea autofocus class="story-text" placeholder="{{youtubeLinkPlaceHolder}}"
             (ngModelChange)="checkYoutubeLink($event)"
             [(ngModel)]="story.source"
             rows="3" style="padding-left: 0"
             clearInput></ion-textarea>
         </ion-item>
-          <ion-thumbnail class="thumbnail" style="padding-left: 7%;" *ngIf="method===env.methods.addYoutubeStory">
+          <ion-thumbnail class="thumbnail" style="padding-left: 7%;" *ngIf="method===constant.methods.addYoutubeStory">
               <img *ngIf="isLoading" [src]="image">
               <ion-spinner *ngIf="!isLoading" item-start name="dots" color="grey"></ion-spinner>
           </ion-thumbnail>
@@ -76,7 +76,7 @@ export class CreateOrUpdateStoryComponent implements OnInit {
   currentUser: User;
 
   methods = {
-    [this.env.methods.addNewStory]: {
+    [this.constant.methods.addNewStory]: {
       init: () => {
         this.story = this.initStory({
           type: 'image'
@@ -93,7 +93,7 @@ export class CreateOrUpdateStoryComponent implements OnInit {
         });
       }
     },
-    [this.env.methods.addYoutubeStory]: {
+    [this.constant.methods.addYoutubeStory]: {
       init: () => {
         this.title = 'Kies video van Youtube';
         this.story = this.initStory({
@@ -126,7 +126,7 @@ export class CreateOrUpdateStoryComponent implements OnInit {
         }
       }
     },
-    [this.env.methods.replaceDescription]: {
+    [this.constant.methods.replaceDescription]: {
       init: () => {
         this.isLoading = true;
       },
@@ -137,7 +137,7 @@ export class CreateOrUpdateStoryComponent implements OnInit {
   };
 
   constructor(
-    @Inject(EnvironmentToken) private env: Environment,
+    @Inject(ConstantToken) private constant: Constant,
     private navParams: NavParams,
     private sanitizer: DomSanitizer,
     private storyService: StoryService,
@@ -226,9 +226,9 @@ export class CreateOrUpdateStoryComponent implements OnInit {
   }
 
   uploadImage(patientId: number, storyId: number, lastImage: string) {
-    const url = `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${
-      this.env.api.getStory
-    }/${storyId}/${this.env.api.getAsset}`;
+    const url = `${this.constant.apiUrl}/${this.constant.api.getPatient}/${
+      patientId
+    }/${this.constant.api.getStory}/${storyId}/${this.constant.api.getAsset}`;
 
     const options = {
       fileKey: 'asset',
@@ -236,7 +236,7 @@ export class CreateOrUpdateStoryComponent implements OnInit {
       mimeType: 'image/jpeg',
       headers: {
         Connection: 'close',
-        Authorization: 'Bearer ' + localStorage.getItem(this.env.jwtToken)
+        Authorization: 'Bearer ' + localStorage.getItem(this.constant.jwtToken)
       }
     };
 

@@ -37,3 +37,36 @@ export class Album {
   stories: Story[] = [];
   hasNew: boolean;
 }
+
+export interface Constant {
+  apiUrl: string;
+  currentVersion: string;
+  youtubeApiKey: string;
+  jwtToken: string;
+  lastestUsedVersion: string;
+  localstorage: {LOCALSTORAGE_SELECTEDLANG: string};
+  privateImagesRegex: string;
+  loadingImage: string;
+  emptyAlbum: string;
+  supportMailAddress: string;
+  api: {
+    getSignIn: string;
+    getPatient: string;
+    getAlbum: string;
+    getStory: string;
+    getAsset: string;
+    getUser: string;
+    invite: string;
+  };
+  temp: {
+    albums: string;
+    currentUser: string;
+    currentPatient: string;
+  };
+  methods: {
+    addNewStory: string;
+    addYoutubeStory: string;
+    replaceDescription: string;
+    replaceImage: string;
+  };
+}

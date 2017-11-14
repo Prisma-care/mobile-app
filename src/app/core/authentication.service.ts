@@ -1,9 +1,9 @@
 import {Inject, Injectable} from '@angular/core';
-import {Environment, EnvironmentToken} from '../environment';
+import {ConstantToken} from '../di';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, BehaviorSubject} from 'rxjs/Rx';
 import {map, catchError, switchMap} from 'rxjs/operators';
-import {User, Patient, UserRegister} from '../../shared/types';
+import {User, Patient, UserRegister, Constant} from '../../shared/types';
 import {getMessageFromBackendError} from '../../shared/utils';
 import {UserService} from './user.service';
 
@@ -22,7 +22,7 @@ export class AuthenticationService {
   );
 
   constructor(
-    @Inject(EnvironmentToken) private env: Environment,
+    @Inject(ConstantToken) private constant: Constant,
     private http: HttpClient,
     private userService: UserService
   ) {
@@ -30,8 +30,8 @@ export class AuthenticationService {
   }
 
   login(email: string, password: string): Observable<boolean | Error> {
-    const url = `${this.env.apiUrl}/${this.env.api.getUser}/${
-      this.env.api.getSignIn
+    const url = `${this.constant.apiUrl}/${this.constant.api.getUser}/${
+      this.constant.api.getSignIn
     }`;
     return this.http.post(url, {email, password}).pipe(
       map(({response: {token, patients, id}}: LoginResponse): boolean => {
@@ -48,7 +48,7 @@ export class AuthenticationService {
         return this.userService.getUser().pipe(
           map((user: User | Error) => {
             localStorage.setItem(
-              this.env.temp.currentUser,
+              this.constant.temp.currentUser,
               JSON.stringify(user)
             );
           }),
@@ -61,7 +61,7 @@ export class AuthenticationService {
 
   signUp(user: UserRegister): Observable<boolean | Error> {
     return this.http
-      .post(`${this.env.apiUrl}/${this.env.api.getUser}`, user)
+      .post(`${this.constant.apiUrl}/${this.constant.api.getUser}`, user)
       .pipe(
         switchMap((res: Object) => this.login(user.email, user.password)),
         catchError(this.handleError)
@@ -70,7 +70,7 @@ export class AuthenticationService {
 
   resetPassword(email: string): Observable<Object | Error> {
     return this.http
-      .post(`${this.env.apiUrl}/reset`, {email})
+      .post(`${this.constant.apiUrl}/reset`, {email})
       .pipe(catchError(this.handleError));
   }
 
@@ -83,13 +83,13 @@ export class AuthenticationService {
     currentPatient: any;
     userId: string;
   }) {
-    localStorage.setItem(this.env.jwtToken, token);
+    localStorage.setItem(this.constant.jwtToken, token);
     localStorage.setItem(
-      this.env.temp.currentPatient,
+      this.constant.temp.currentPatient,
       JSON.stringify(currentPatient || '')
     );
     localStorage.setItem(
-      this.env.temp.currentUser,
+      this.constant.temp.currentUser,
       JSON.stringify({id: userId})
     );
   }
@@ -122,7 +122,7 @@ export class AuthenticationService {
   }
 
   autoLoad() {
-    if (localStorage.getItem(this.env.jwtToken)) {
+    if (localStorage.getItem(this.constant.jwtToken)) {
       this._isAuthenticated.next(true);
     }
   }

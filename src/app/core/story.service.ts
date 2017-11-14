@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {Observable, pipe} from 'rxjs/Rx';
 import {map, catchError} from 'rxjs/operators';
-import {Story} from '../../shared/types';
+import {Story, Constant} from '../../shared/types';
 import {
   background,
   getMessageFromBackendError,
@@ -10,7 +10,7 @@ import {
   youtubeId
 } from '../../shared/utils';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Environment, EnvironmentToken} from '../environment';
+import {ConstantToken} from '../di';
 import {Camera} from '@ionic-native/camera';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/fromPromise';
@@ -31,7 +31,7 @@ export class StoryService {
   );
 
   constructor(
-    @Inject(EnvironmentToken) private env: Environment,
+    @Inject(ConstantToken) private constant: Constant,
     private http: HttpClient,
     private camera: Camera
   ) {
@@ -41,8 +41,8 @@ export class StoryService {
   getUserStory(patientId: string, storyId: string): Observable<Story | Error> {
     return this.http
       .get(
-        `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${
-          this.env.api.getStory
+        `${this.constant.apiUrl}/${this.constant.api.getPatient}/${patientId}/${
+          this.constant.api.getStory
         }/${storyId}`
       )
       .let(this.storyPipe);
@@ -62,8 +62,8 @@ export class StoryService {
   addStory(patientId: number, newStory: Story): Observable<Story | Error> {
     return this.http
       .post(
-        `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${
-          this.env.api.getStory
+        `${this.constant.apiUrl}/${this.constant.api.getPatient}/${patientId}/${
+          this.constant.api.getStory
         }`,
         newStory
       )
@@ -73,8 +73,8 @@ export class StoryService {
   deleteStory(patientId: number, storyId: number): Observable<Object | Error> {
     return this.http
       .delete(
-        `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${
-          this.env.api.getStory
+        `${this.constant.apiUrl}/${this.constant.api.getPatient}/${patientId}/${
+          this.constant.api.getStory
         }/${storyId}`
       )
       .pipe(catchError(this.handleError));
@@ -83,8 +83,8 @@ export class StoryService {
   updateStory(patientId: number, newStory: Story): Observable<Story | Error> {
     return this.http
       .patch(
-        `${this.env.apiUrl}/${this.env.api.getPatient}/${patientId}/${
-          this.env.api.getStory
+        `${this.constant.apiUrl}/${this.constant.api.getPatient}/${patientId}/${
+          this.constant.api.getStory
         }/${newStory.id}`,
         newStory
       )
@@ -116,9 +116,11 @@ export class StoryService {
   ): Observable<Object | Error> {
     return this.http
       .post(
-        `${this.env.apiUrl}/${this.env.api.getPatient}/${patient_id}/${
-          this.env.api.getStory
-        }/${storyId}/${this.env.api.getAsset}`,
+        `${this.constant.apiUrl}/${this.constant.api.getPatient}/${
+          patient_id
+        }/${this.constant.api.getStory}/${storyId}/${
+          this.constant.api.getAsset
+        }`,
         {
           asset: asset,
           assetType: 'youtube'

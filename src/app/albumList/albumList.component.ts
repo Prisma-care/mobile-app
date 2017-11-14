@@ -1,14 +1,14 @@
 import {Component, Inject} from '@angular/core';
 import {PatientService} from '../core/patient.service';
 import {AlertController, MenuController} from 'ionic-angular';
-import {Album, Patient, Story} from '../../shared/types';
+import {Album, Patient, Story, Constant} from '../../shared/types';
 import {AlbumService} from '../core/album.service';
 import {Observable} from 'rxjs/Rx';
 import {MixpanelService} from '../core/mixpanel.service';
 
 import {StoryListComponent} from '../storyList/storyList.component';
 import {NavController} from 'ionic-angular/navigation/nav-controller';
-import {EnvironmentToken, Environment} from '../environment';
+import {ConstantToken} from '../di';
 import _sortBy from 'lodash/sortBy';
 
 @Component({
@@ -30,7 +30,7 @@ import _sortBy from 'lodash/sortBy';
               [album]="album"
               [story]="album.stories[album.stories.length-1]"
               [showDetails]="showDetails"
-              [emptyAlbum]="env.emptyAlbum"
+              [emptyAlbum]="constant.emptyAlbum"
               [isAlbum]="true">
             </prisma-album-story>
           </ion-col>
@@ -50,7 +50,7 @@ export class AlbumListComponent {
   currentPatient: Patient;
 
   constructor(
-    @Inject(EnvironmentToken) private env: Environment,
+    @Inject(ConstantToken) private constant: Constant,
     private patientService: PatientService,
     private menu: MenuController,
     private albumService: AlbumService,

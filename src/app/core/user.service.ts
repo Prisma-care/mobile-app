@@ -1,9 +1,9 @@
 import {Inject, Injectable} from '@angular/core';
-import {Environment, EnvironmentToken} from '../environment';
+import {ConstantToken} from '../di';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, pipe} from 'rxjs/Rx';
 import {map, catchError} from 'rxjs/operators';
-import {User} from '../../shared/types';
+import {User, Constant} from '../../shared/types';
 import {getMessageFromBackendError} from '../../shared/utils';
 
 interface UserResponse {
@@ -26,7 +26,7 @@ export class UserService {
   );
 
   constructor(
-    @Inject(EnvironmentToken) private env: Environment,
+    @Inject(ConstantToken) private constant: Constant,
     private http: HttpClient
   ) {
     this.handleError = this.handleError.bind(this);
@@ -34,28 +34,32 @@ export class UserService {
 
   getUser(): Observable<User | Error> {
     return this.http
-      .get(`${this.env.apiUrl}/${this.env.api.getUser}/`)
+      .get(`${this.constant.apiUrl}/${this.constant.api.getUser}/`)
       .let(this.userPipe);
   }
 
   addUser(user: User): Observable<User | any> {
-    const url: string = this.env.api.getUser;
-    return this.http.post(`${this.env.apiUrl}/${url}`, user).let(this.userPipe);
+    const url: string = this.constant.api.getUser;
+    return this.http
+      .post(`${this.constant.apiUrl}/${url}`, user)
+      .let(this.userPipe);
   }
 
   inviteUser(invitationData: InvitationData): Observable<Object | Error> {
-    const url: string = this.env.api.invite;
+    const url: string = this.constant.api.invite;
     const copyInvitationData = {
       ...invitationData,
       patientId: invitationData.patientId
     };
     return this.http
-      .post(`${this.env.apiUrl}/${url}`, copyInvitationData)
+      .post(`${this.constant.apiUrl}/${url}`, copyInvitationData)
       .pipe(catchError(this.handleError));
   }
 
   getCurrentUser(): User {
-    return JSON.parse(localStorage.getItem(this.env.temp.currentUser)) as User;
+    return JSON.parse(
+      localStorage.getItem(this.constant.temp.currentUser)
+    ) as User;
   }
 
   handleError(err: HttpErrorResponse): Observable<Error> {
