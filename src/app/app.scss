@@ -178,15 +178,25 @@ ion-navbar ion-buttons[end] button {
 
 .album-thumb {
   height: 50vw; // todo: dynamic - set to width of comonent?
-  background-size: cover;
-  background-position: center;
   background-color: color($colors, dark-gray);
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
   text-shadow: rgba(0, 0, 0, .6) 1px 1px 0;
+  overflow: hidden;
 }
+
+
+#album-img{
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    max-width: none;
+    min-width: 100%;
+  }  
 
 .album-thumb > ion-spinner {
   display: block;
