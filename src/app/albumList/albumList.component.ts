@@ -70,7 +70,9 @@ export class AlbumListComponent {
     );
   }
 
-  sortAlbumArrayByOwnerAndTitle(albums: Observable<Album>): Observable<Album> {
+  sortAlbumArrayByOwnerAndTitle(
+    albums: Observable<Album[] | Error>
+  ): Observable<Album[]> {
     return albums.map((albumArray: Album[]) =>
       _sortBy(albumArray, [
         item => item.patientId,
