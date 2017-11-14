@@ -9,6 +9,7 @@ import {MixpanelService} from '../core/mixpanel.service';
 import {StoryListComponent} from '../storyList/storyList.component';
 import {NavController} from 'ionic-angular/navigation/nav-controller';
 import {EnvironmentToken, Environment} from '../environment';
+import _sortBy from 'lodash/sortBy';
 
 @Component({
   selector: 'prisma-album-list',
@@ -64,9 +65,20 @@ export class AlbumListComponent {
   ionViewWillEnter(): void {
     this.menu.enable(true);
     this.currentPatient = this.patientService.getCurrentPatient();
-    this.albums = this.albumService.getAlbums(
-      this.currentPatient.patient_id
-    ) as Observable<Album[]>;
+    this.albums = this.sortAlbumArrayByOwnerAndTitle(
+      this.albumService.getAlbums(this.currentPatient.patient_id)
+    );
+  }
+
+  sortAlbumArrayByOwnerAndTitle(
+    albums: Observable<Album[] | Error>
+  ): Observable<Album[]> {
+    return albums.map((albumArray: Album[]) =>
+      _sortBy(albumArray, [
+        item => item.patientId,
+        item => item.title.toLowerCase()
+      ])
+    );
   }
 
   ionViewWillLeave(): void {
@@ -121,9 +133,11 @@ export class AlbumListComponent {
                       title: data.title
                     });
 
-                    this.albums = this.albumService.getAlbums(
-                      this.currentPatient.patient_id
-                    ) as Observable<Album[]>;
+                    this.albums = this.sortAlbumArrayByOwnerAndTitle(
+                      this.albumService.getAlbums(
+                        this.currentPatient.patient_id
+                      )
+                    );
                   },
                   () => {
                     this.mixpanel.track('AlbumsComponent::add album error', {
