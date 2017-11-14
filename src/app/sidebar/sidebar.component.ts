@@ -1,11 +1,12 @@
 import {Component, Input} from '@angular/core';
-import {AuthenticationComponent} from '../auth/authentication.component';
 import {MenuController} from 'ionic-angular';
 import {AuthenticationService} from '../core/authentication.service';
 import {InviteComponent} from './component/invite/invite';
 import {PatientService} from '../core/patient.service';
 import {GiveFeedbackComponent} from './component/giveFeedback/giveFeedback.component';
 import {NavController} from 'ionic-angular/navigation/nav-controller';
+import {IntroComponent} from '../auth/components/intro/intro.component';
+
 @Component({
   selector: 'prisma-sidebar',
   template: `<ion-menu [content]="content" color="white">
@@ -52,7 +53,7 @@ export class SidebarComponent {
   logout() {
     this.menu.close();
     this.authService.logout();
-    this.nav.setRoot(AuthenticationComponent);
+    this.nav.setRoot(IntroComponent);
   }
 
   invite() {
