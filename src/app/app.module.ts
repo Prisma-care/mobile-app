@@ -17,7 +17,7 @@ import {NativePageTransitions} from '@ionic-native/native-page-transitions';
 
 import {CoreModule} from './core/core.module';
 import {AuthModule} from './auth/auth.module';
-import {EnvironmentProvider} from './environment';
+import {ConstantProvider} from './di';
 import {AlbumModule} from './albumList/album.module';
 import {StoryModule} from './storyList/story.module';
 import {SidebarModule} from './sidebar/sidebar.module';
@@ -37,7 +37,7 @@ import {SidebarModule} from './sidebar/sidebar.module';
   bootstrap: [IonicApp],
   entryComponents: [AppComponent],
   providers: [
-    EnvironmentProvider,
+    ConstantProvider,
     StatusBar,
     SplashScreen,
     Camera,
