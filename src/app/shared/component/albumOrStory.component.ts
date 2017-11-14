@@ -11,9 +11,9 @@ type getBackground = (story: Story) => Observable<string | Error>;
   selector: 'prisma-album-story',
   template: `
     <div *ngIf="imageLoaded"
-      class="album-thumb"
+      class="album-thumb test"
       (click)="showDetails(album, story)">
-      <img class="album-thumb" [src]="backgroundImage">
+      <img id="album-img" [src]="backgroundImage">
       <div *ngIf="isAlbum">
           <div class="tile-overlay-gradient"></div>
           <div *ngIf="album.hasNew" class="has-new-item">NIEUW</div>
