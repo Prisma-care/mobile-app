@@ -3,6 +3,7 @@ import {Constant} from './types';
 
 export const constant: Constant = {
   apiUrl: environment.apiUrl,
+  tracking: environment.tracking,
   currentVersion: '0.3.2',
   youtubeApiKey: environment.youtubeApiKey,
   jwtToken: 'id_token',

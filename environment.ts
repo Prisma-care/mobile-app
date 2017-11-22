@@ -5,7 +5,12 @@ export interface Environment {
 }
 
 export const environment = {
+  // @if ENV == 'develop'
   tracking: false,
+  // @endif
+  // @if ENV = 'production'
+  tracking: true,
+  // @endif
   apiUrl: 'XXXXX',
   youtubeApiKey: 'XXXXX'
 };

@@ -40,6 +40,7 @@ export class Album {
 
 export interface Constant {
   apiUrl: string;
+  tracking: boolean;
   currentVersion: string;
   youtubeApiKey: string;
   jwtToken: string;
