@@ -4,6 +4,8 @@ import {Constant} from './types';
 export const constant: Constant = {
   apiUrl: environment.apiUrl,
   tracking: environment.tracking,
+  trackingExcluded: environment.trackingExcluded,
+  currentEnv: environment.currentEnv,
   currentVersion: '0.3.2',
   youtubeApiKey: environment.youtubeApiKey,
   jwtToken: 'id_token',

@@ -12,7 +12,7 @@ The project is architectured like the following
 For the code part, each folder in the app folder is a module.
   - The albumList is the module that handles the list of albums
   - auth contains everything related to the authentication part of the application (all the screens before getting to the albumList screen)
-    - The intro component 
+    - The intro component
     - The password reset page
     - The newLoveDone screen
   - core contains all the services and the interceptors used in the app
@@ -29,9 +29,9 @@ For the code part, each folder in the app folder is a module.
     - storyDetail is used to display the details of a story
   - The app component is the one responsible for the autoLogin
 
-## Important points for the dev part 
+## Important points for the dev part
 
-In order to develop/build/release the app, you'll need to modify the `src/app/environment/environment` file to add the youtube api key and the address of the backend, that is done in order to not publish those information publicly.
+In order to develop/build/release the app, you'll need to modify the 'environment.ts' file in the root. Add a YouTube API key and the address of the backend. These are not included for reasons of security. Then run either `gulp develop` or `gulp production`. This will export the desired environment to `src/app/environment/environment.ts`. 
 
 We added Prettier as a precommit hook which will, when you try to commit, prettify the code you're trying to push to have a unified code base.
 
@@ -44,5 +44,3 @@ Almost all the forms that were in the app are now transformed to reactive forms.
 We used interceptors to handle headers on request and http errors and removed the backed service that was in place.
 
 We removed the authGaurd that was extended by every component, since we have interceptors that will check the token on each request.
-
-
