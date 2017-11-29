@@ -30,6 +30,9 @@ www/*
 !www/mock-api
 $RECYCLE.BIN/
 
+src/environments/environment.ts
+environment.ts
+
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate

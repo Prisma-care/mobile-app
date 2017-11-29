@@ -3,6 +3,7 @@
   "app_id": "b524aabd",
   "type": "ionic-angular",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "gulp": {}
   }
 }

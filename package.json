@@ -74,6 +74,8 @@
     "angular2-template-loader": "^0.6.2",
     "codecov": "^2.2.0",
     "codelyzer": "^4.0.1",
+    "gulp": "^3.9.1",
+    "gulp-preprocess": "^2.0.0",
     "husky": "^0.14.3",
     "ionic": "3.16.0",
     "jasmine-core": "^2.6.4",

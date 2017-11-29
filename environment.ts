@@ -10,8 +10,15 @@ export const environment = {
   // These statements are preprocessed by gulp
   // eg. run 'gulp develop' to export this part as the environment.
 
+  // @if ENV == 'develop'
   currentEnv: 'develop',
   tracking: false,
+  // @endif
+
+  // @if ENV = 'production'
+  currentEnv: 'production',
+  tracking: true,
+  // @endif
 
   // insert email addresses you want to exclude from
   // mixpanel tracking in your build here
