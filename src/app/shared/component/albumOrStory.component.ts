@@ -19,13 +19,21 @@ type getBackground = (story: Story) => Observable<string | Error>;
           <div *ngIf="album.hasNew" class="has-new-item">NIEUW</div>
           <h3 class="hist-title">{{album.title || '?'}}</h3>
       </div>
-      <div *ngIf="!isAlbum">
+      <div *ngIf="!isAlbum && story.source">
           <div class="boxPlay">
             <div *ngIf="typeYoutube(story)" class="youtube-icon movie-indicator"></div>
           </div>
           <ion-icon *ngIf="story.favorited" class="star" name="star"
             [class.favorited]="isFavorited"></ion-icon>
           <h3 *ngIf="typeYoutube(story)">{{story.description}}</h3>
+      </div>
+      <!-- If no story source -->
+      <div *ngIf="!isAlbum && !story.source">
+          <div class="tile-overlay-gradient"></div>
+          <div *ngIf="album.hasNew" class="has-new-item">NIEUW</div>
+          <div class="text-story-container">
+            <span class="text-story">{{story.description || ''}}</span>
+          </div>
       </div>
     </div>
     <div *ngIf="!imageLoaded" class="album-thumb">

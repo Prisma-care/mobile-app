@@ -25,8 +25,8 @@ export const environment = {
   trackingExcluded: [],
 
   // insert a valid Prisma API URL
-  apiUrl: 'XXXXX',
+  apiUrl: 'XXX',
 
   // insert a valid YouTube API key
-  youtubeApiKey: 'XXXXX'
+  youtubeApiKey: 'XXX'
 };

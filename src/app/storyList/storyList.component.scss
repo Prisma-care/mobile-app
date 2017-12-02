@@ -1,7 +1,28 @@
 prisma-story-list {
 
-  album-questions .topic-wrapper {
-    height: 30%;
+  @media screen and (min-width: map-get($grid-breakpoints, "md") ) {
+    ion-scroll.split-height {
+      height: 15%;
+    }
+    prisma-question.split-height .topic-wrapper {
+      height: 85%;
+    }
+  }
+
+  ion-scroll.split-height {
+    height: 80%;
+    white-space: nowrap;
+  }
+
+  prisma-question.split-height .topic-wrapper {
+    height: 20%;
+  }
+
+  ion-scroll.full-height {
+    height: 100%;
+  }
+
+  prisma-question .topic-wrapper {
     position: fixed;
     left: 0;
     right: 0;
@@ -39,7 +60,7 @@ prisma-story-list {
     font-size: 2.5em;
     margin-bottom: 10px;
   }
-  
+
   .album-thumb h3 {
     padding: 0 1em;
     display: inline-block;
@@ -56,7 +77,7 @@ prisma-story-list {
     font-size: 16px;
 
   }
-  
+
   .boxPlay{
     position: absolute;
     top:50%;

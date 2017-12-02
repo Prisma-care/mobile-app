@@ -101,6 +101,46 @@ a[disabled], button[disabled], [ion-button][disabled] {
   display: block;
 }
 
+// PAGE HEADER
+
+.page-header {
+  .button-ios{
+    height: 3.6rem;
+  }
+  padding: 2em 3em;
+  height: 50vw;
+  background-color: color($colors, primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+@media screen and (min-width: map-get($grid-breakpoints, "md") ) {
+  .page-header {
+    max-height: 33vw;
+  }
+
+  #page-header-break {
+    display: none;
+  }
+}
+
+@media screen and (min-width: map-get($grid-breakpoints, "md") ) {
+  .page-header {
+    max-height: 25vw;
+  }
+}
+
+.page-header h2 {
+  font-size: map-get($sizes, 'extra-large');
+  margin: 0;
+  //line-height: 33px;
+  text-align: center;
+  font-family: $prisma-ff;
+  // color: map-get($colors, 'dark-gray');
+  color: #fff;
+}
 
 // TOOLBAR
 
@@ -141,13 +181,14 @@ ion-navbar ion-buttons[end] button {
 // ADD NEW STORY/ALBUM header
 
 .add-new-container {
-  background-color: map-get($colors, 'primary');
-  color: #fff;
-  width: 100%;
-  height: 50vw;
-  display: flex;
+  @extend .page-header;
+  //background-color: map-get($colors, 'primary');
+  color: color($colors, white);
+  //width: 100%;
+  //height: 50vw;
+  //display: flex;
   align-items: center;
-  justify-content: center;
+  //justify-content: center;
 }
 
 .add-new > * {
@@ -182,7 +223,9 @@ ion-navbar ion-buttons[end] button {
 }
 
 .album-thumb {
-  height: 50vw; // todo: dynamic - set to width of comonent?
+  height: 50vw;
+  background-size: cover;
+  background-position: center;
   background-color: color($colors, dark-gray);
   display: flex;
   flex-direction: column;
@@ -192,8 +235,20 @@ ion-navbar ion-buttons[end] button {
   overflow: hidden;
 }
 
+@media screen and (min-width: map-get($grid-breakpoints, "md") ) {
+  .album-thumb {
+    height: 33vw;
+  }
+}
+
+@media screen and (min-width: map-get($grid-breakpoints, "lg") ) {
+  .album-thumb {
+    height: 25vw;
+  }
+}
 
 #album-img{
+    /*
     position:absolute;
     top: 50%;
     left: 50%;
@@ -201,7 +256,15 @@ ion-navbar ion-buttons[end] button {
     height: 100%;
     max-width: none;
     min-width: 100%;
-  }  
+    */
+    
+    // see https://stackoverflow.com/questions/11670874/is-there-an-equivalent-to-background-size-cover-and-contain-for-image-elements#26967278
+    // browser support seems adequate in https://caniuse.com/#feat=object-fit
+    // we're not targetting Windows Phone yet.
+
+    object-fit: cover;
+    min-height: 100%;
+  }
 
 .album-thumb > ion-spinner {
   display: block;
@@ -234,7 +297,7 @@ ion-navbar ion-buttons[end] button {
     transform: translate(-50%, -50%);
 
   }
-  
+
 }
 
 .add-icon{

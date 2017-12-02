@@ -7,8 +7,7 @@ export interface Environment {
 }
 
 export const environment = {
-  // These statements are preprocessed by gulp
-  // eg. run 'gulp develop' to export this part as the environment.
+  // See environment.ts in the root for more info.
 
   currentEnv: 'develop',
   tracking: false,
@@ -18,8 +17,8 @@ export const environment = {
   trackingExcluded: [],
 
   // insert a valid Prisma API URL
-  apiUrl: 'XXXXX',
+  apiUrl: 'XXX',
 
   // insert a valid YouTube API key
-  youtubeApiKey: 'XXXXX'
+  youtubeApiKey: 'XXX'
 };

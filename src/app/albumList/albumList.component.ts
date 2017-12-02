@@ -20,11 +20,11 @@ import _sortBy from 'lodash/sortBy';
         <button ion-button menuToggle class="albums-menu">
           <ion-icon color="black" name='menu'></ion-icon>
         </button>
-        <h2>Waarover babbelen<br/> we vandaag?</h2>
+        <h2>Waarover babbelen<span id="page-header-break"><br/></span> we vandaag?</h2>
       </div>
       <ion-grid *ngIf="albums">
         <ion-row>
-          <ion-col col-6 col-md-4 *ngFor="let album of albums | async">
+          <ion-col col-6 col-md-4 col-lg-3 *ngFor="let album of albums | async">
             <prisma-album-story
               [getBackground]="getBackground"
               [album]="album"
