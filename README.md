@@ -48,14 +48,15 @@ If you have some command line & git experience, this is a more flexible way to g
 
 2. Install [npm](https://nodejs.org/en/) if you haven't already.
 
-3. On the command line inside the repository directory, install Cordova & Ionic. Then install the dependencies.
+3. On the command line inside the repository directory, install Cordova, Ionic and Gulp. Then install the dependencies.
 
    ```bash
-   npm install -g cordova ionic
+   npm install -g cordova ionic gulp
    npm install
    ```
-
-These commands can take a while to finish.
+   These commands can take a while to finish.
+   
+4. Set up your environment with API keys. Acquire a valid Prisma API key & YouTube API key (ask us!) and modify `environment.ts` with these values. Run `gulp develop` in the root to initialize the development environment.
 
 Now you can run the app in various ways. Option a is used to test the app quickly in a web browser. Option b almost does the same, but adds in support for more features. Option c allows you to test the app on an Android device.
 
