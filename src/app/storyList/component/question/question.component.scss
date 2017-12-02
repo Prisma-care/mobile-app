@@ -24,7 +24,7 @@ prisma-question {
 
     .topic-other {
       position: absolute;
-      bottom: 0;
+      bottom: $topic-padding;
       font-size: map-get($sizes, 'medium');
       color: color($colors, blue);
     }

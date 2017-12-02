@@ -1,0 +1,27 @@
+prisma-album-story {
+
+  .text-story-container {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+  }
+
+  .text-story {
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: map-get($sizes, "medium");
+    color: color($colors, white);
+
+    white-space: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    overflow-wrap: break-word;
+  }
+}

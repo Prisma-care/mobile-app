@@ -69,10 +69,12 @@ import {OnDestroy} from '@angular/core/src/metadata/lifecycle_hooks';
                 <ion-icon name="md-create" color="general"></ion-icon>
                 <p>Vul het verhaal aan</p>
               </div>
+              <!--
               <div class="story-action" (click)="replaceOrAddImage()" *ngIf="!story.source">
                 <ion-icon name="camera" color="general"></ion-icon>
                 <p>Voeg een foto toe</p>
               </div>
+              -->
             </div>
           </div>
         </div>

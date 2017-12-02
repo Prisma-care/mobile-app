@@ -1,4 +1,5 @@
 import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {NgClass} from '@angular/common';
 import {Story, Album, Constant} from '../../shared/types';
 import {ActionSheetController, NavController, NavParams} from 'ionic-angular';
 import {AlbumService} from '../core/album.service';
@@ -29,27 +30,31 @@ import _sortBy from 'lodash/sortBy';
       </ion-navbar>
     </ion-header>
     <ion-content #content no-bounce>
-      <ion-grid>
-        <ion-row>
-          <ion-col col-6 col-md-4 *ngFor="let story of stories">
-            <prisma-album-story
-              [getBackground]="getBackground"
-              [album]="album"
-              [story]="story"
-              [showDetails]="showDetails"
-              [emptyAlbum]="constant.emptyAlbum"
-              [isAlbum]="false">
-            </prisma-album-story>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <div (click)="openActionSheet()" class="add-new-container">
-        <div class="add-new">
-          <ion-icon class="add-icon" name="md-add"></ion-icon>
-          <span>Voeg verhaal toe</span>
+      <ion-scroll scrollY="true"
+          [class.full-height]="!questions.hasTopics()"
+          [class.split-height]="questions.hasTopics()">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-6 col-md-4 col-lg-3 *ngFor="let story of stories">
+              <prisma-album-story
+                [getBackground]="getBackground"
+                [album]="album"
+                [story]="story"
+                [showDetails]="showDetails"
+                [emptyAlbum]="constant.emptyAlbum"
+                [isAlbum]="false">
+              </prisma-album-story>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <div (click)="openActionSheet()" class="add-new-container">
+          <div class="add-new">
+            <ion-icon class="add-icon" name="md-add"></ion-icon>
+            <span>Voeg verhaal toe</span>
+          </div>
         </div>
-      </div>
-      <prisma-question [query]="album.title"></prisma-question>
+      </ion-scroll>
+      <prisma-question #questions [query]="album.title"></prisma-question>
     </ion-content>
   `
 })
