@@ -59,9 +59,8 @@ export class MixpanelService {
         this.mixpanel
           .identify(String(user.id))
           .then(() => {
-            // setOnce will not overwrite an already existing profile
             this.mixpanelPeople
-              .setOnce({
+              .set({
                 $first_name: user.firstName,
                 $last_name: user.lastName,
                 $created: null,
