@@ -9,7 +9,7 @@ import {
   getYoutubeDescriptionAndThumbnail
 } from '../../shared/utils';
 import {Observable, pipe} from 'rxjs/Rx';
-import {map, catchError} from 'rxjs/operators';
+import {map, catchError, tap} from 'rxjs/operators';
 import {Story, Album, Constant} from '../../shared/types';
 
 interface AlbumsResponse {
@@ -27,6 +27,8 @@ export class AlbumService {
     catchError(this.handleError)
   );
 
+  hasNewCache: any;
+
   constructor(
     @Inject(ConstantToken) private constant: Constant,
     private http: HttpClient
@@ -35,6 +37,10 @@ export class AlbumService {
   }
 
   getAlbums(patientId: number): Observable<Album[] | Error> {
+    if (localStorage.getItem('hasNewCache')) {
+      this.hasNewCache = JSON.parse(localStorage.getItem('hasNewCache'));
+    }
+
     return this.http
       .get(
         `${this.constant.apiUrl}/${this.constant.api.getPatient}/${patientId}/${
@@ -43,10 +49,36 @@ export class AlbumService {
       )
       .pipe(
         map(({response}: AlbumsResponse) =>
-          response.reduce((acc, it) => [...acc, it as Album], [])
+          response.reduce(
+            (acc, it) => [...acc, this.getOrSetHasNewCache(it as Album)],
+            []
+          )
         ),
+        tap(() => {
+          localStorage.setItem('hasNewCache', JSON.stringify(this.hasNewCache));
+        }),
         catchError(this.handleError)
       );
+  }
+
+  getOrSetHasNewCache(album: Album): Album {
+    const expirationMs: number = 24 * 3600 * 1000;
+    if (album.hasNew) {
+      this.hasNewCache[album.id] = Date.now();
+    } else {
+      // exists in cache
+      if (this.hasNewCache[album.id]) {
+        // expired - remove from cache
+        if (Date.now() - this.hasNewCache[album.id] > expirationMs) {
+          delete this.hasNewCache[album.id];
+        } else {
+          album.hasNew = true;
+        }
+      } else {
+        // not in cache -> change nothing
+      }
+    }
+    return album;
   }
 
   getAlbum(
