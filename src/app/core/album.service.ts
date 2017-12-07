@@ -24,6 +24,8 @@ interface AlbumResponse {
 export class AlbumService {
   albumPipe = pipe(
     map(({response}: AlbumResponse) => response as Album),
+    // when a specific album is requested, it's assumed new
+    tap(res => this.removeHasNew(res)),
     catchError(this.handleError)
   );
 
@@ -79,6 +81,10 @@ export class AlbumService {
       }
     }
     return album;
+  }
+
+  removeHasNew(album): void {
+    delete this.hasNewCache[album.id];
   }
 
   getAlbum(
