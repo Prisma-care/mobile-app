@@ -24,21 +24,13 @@ The app was conceived in a one-month collaborative design project in a care home
 
 ## Installation
 
-We aim to have the app available for download in the Play Store soon. However, if you want to try it out right now, there are several options.
+The latest release version can be downloaded for Android on the [Google Play Store](https://play.google.com/store/apps/details?id=care.prisma.familyapp). An iOS version is coming soon!
 
-### 1. Prepackaged application
+With some command line & git knowledge, you can also build the development version of the app yourself. See the following section.
 
-The easiest way is by downloading a binary release package and installing it on your device:
+##  Building the app
 
-1. Download the latest Android package (.apk) from our [releases page](https://github.com/Prisma/mobile-app/releases).
-2. In your Android device, look for the setting "Unknown sources" (probably in your security settings), and check/allow it.
-3. Transfer the .apk file to your Android device. Now you can install Prisma from there using your file manager of choice.
-
-### 2. Using the development tools 
-
-If you have some command line & git experience, this is a more flexible way to get the latest version of the app. 
-
-#### Setting up the development environment
+### Setting up the development environment
 
 1. Clone the repository
 
@@ -83,24 +75,33 @@ Note: `cordova run browser` defaults to Google Chrome and will crash if it is no
 
 #### Option c - Android live build
 
-This method will build, transfer & start the app on your Android device. You'll need to connect it to your PC with a USB cable beforehand. The device needs to be in developer mode with USB Debugging enabled (search on how to do this for you device if you don't know).
+This method will build, transfer & start the app on your Android device. You'll need to connect it to your PC with a USB cable beforehand. The device needs to be in developer mode with USB Debugging enabled (search how to do this for your device).
 
-On your PC, you'll need to have the [Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html) and [Android Studio](https://developer.android.com/studio/index.html) installed. Additionally, make sure the right Android SDK Platform tools are installed. You can do this in the Android Studio settings: in the Welcome screen, go to Configure -> SDK Platforms & check the platform that matches your device's Android version.
+On your PC, you'll need the [Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) (note: Cordova doesn't work with Java 1.9 yet, install 1.8) and [Android Studio](https://developer.android.com/studio/index.html). Additionally, make sure the right Android SDK Platform tools are installed. Do this in the Android Studio settings: in the Welcome screen, go to Configure -> SDK Platforms & check the platform that matches your device's Android version.
 
 Now, make sure that the necessary folders are in your `PATH` so that the build executables can be found in your CLI environment.
 
-On a Linux system with a default Android Studio install the following lines need to be added to the terminal configuration file (~/.bashrc, ~/.zshrc, ...). The locations might be different on your system, depending on where you installed Android studio.
+On a MacOS/Linux system with a default Android Studio install the following lines need to be added to the shell configuration file (~/.bashrc, ~/.zshrc, ...). The locations might be different on your system, depending on where you installed Android Studio. More info [here](https://cordova.apache.org/docs/en/latest/guide/platforms/android/#setting-environment-variables).
 
 ```bash
+# Substitute with the correct paths & Gradle version for your system 
+
+# Linux 
 PATH=$PATH:$HOME/Android/Sdk/platform-tools:$HOME/Android/Sdk/tools
 ANDROID_HOME=$HOME/Android/Sdk
 PATH=$PATH:/opt/android-studio/gradle/gradle-3.2/bin
+
+# Mac OS 
+PATH=$PATH:/Applications/Android\ Studio.app/Contents/gradle/gradle-4.1/bin
+# Make gradle accessible for the cli user (needs to be executed only once)
+chmod 766 /Applications/Android\ Studio.app/Contents/gradle/gradle-4.1/bin/gradle
 ```
 
 Now you can build & transfer the project to your device using the Cordova `run` command.
 
 ```bash
-ionic cordova platform add android
 ionic cordova run android
 ```
+
+The first time you run this command it installs all used cordova plugin commads. This can take a while.
 
