@@ -29,7 +29,7 @@ export class AlbumService {
     catchError(this.handleError)
   );
 
-  hasNewCache: any;
+  hasNewCache: any = {};
 
   constructor(
     @Inject(ConstantToken) private constant: Constant,
@@ -40,7 +40,11 @@ export class AlbumService {
 
   getAlbums(patientId: number): Observable<Album[] | Error> {
     if (localStorage.getItem('hasNewCache')) {
-      this.hasNewCache = JSON.parse(localStorage.getItem('hasNewCache'));
+      try {
+        this.hasNewCache = JSON.parse(localStorage.getItem('hasNewCache'));
+      } catch {
+        this.hasNewCache = {};
+      }
     }
 
     return this.http
@@ -85,6 +89,7 @@ export class AlbumService {
 
   removeHasNew(album): void {
     delete this.hasNewCache[album.id];
+    localStorage.setItem('hasNewCache', JSON.stringify(this.hasNewCache));
   }
 
   getAlbum(
