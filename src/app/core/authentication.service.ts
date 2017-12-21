@@ -2,10 +2,12 @@ import {Inject, Injectable} from '@angular/core';
 import {ConstantToken} from '../di';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, BehaviorSubject} from 'rxjs/Rx';
-import {map, catchError, switchMap} from 'rxjs/operators';
+import {map, catchError, switchMap, tap} from 'rxjs/operators';
 import {User, Patient, UserRegister, Constant} from '../../shared/types';
 import {getMessageFromBackendError} from '../../shared/utils';
 import {UserService} from './user.service';
+import {MixpanelService} from './mixpanel.service';
+import {FullstoryService} from './fullstory.service';
 
 interface LoginResponse {
   response: {
@@ -24,7 +26,9 @@ export class AuthenticationService {
   constructor(
     @Inject(ConstantToken) private constant: Constant,
     private http: HttpClient,
-    private userService: UserService
+    private userService: UserService,
+    private mixpanel: MixpanelService,
+    private fullstory: FullstoryService
   ) {
     this.handleError = this.handleError.bind(this);
   }
@@ -55,8 +59,16 @@ export class AuthenticationService {
           map(() => authSync)
         );
       }),
+      tap(() => this.identify()),
       catchError(this.handleError)
     );
+  }
+
+  identify(): void {
+    if (this.userService.getCurrentUser()) {
+      this.mixpanel.identify(this.userService.getCurrentUser());
+      this.fullstory.identify(this.userService.getCurrentUser());
+    }
   }
 
   signUp(user: UserRegister): Observable<boolean | Error> {
@@ -123,6 +135,7 @@ export class AuthenticationService {
 
   autoLoad() {
     if (localStorage.getItem(this.constant.jwtToken)) {
+      this.identify();
       this._isAuthenticated.next(true);
     }
   }

@@ -31,12 +31,18 @@ export class AppComponent implements OnInit {
     this.nav.setRoot(IntroComponent);
     this.authService.autoLoad();
     if (this.authService.isLoggedIn() && this.network.type !== 'none') {
+      // Why a call for albums here?
+      // To make a random HTTP request. If the sent auth token is invalid, this will be intercepted
+      // & we will be redirected to the login page.
       this.albumService.getAlbums(
         this.patientService.getCurrentPatient().patient_id
       );
+
       this.patientService.getCurrentPatient()
         ? this.nav.setRoot(AlbumListComponent)
         : this.nav.setRoot(NewLovedoneComponent);
+
+      this.mixpanel.track('LoginComponent::Login success');
     }
 
     this.platform.ready().then(() => {

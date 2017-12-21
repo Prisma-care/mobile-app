@@ -90,7 +90,6 @@ export class AuthenticationLoginComponent implements OnInit {
     private alertCtrl: AlertController,
     private network: Network,
     private mixpanel: MixpanelService,
-    private fullstory: FullstoryService,
     private userService: UserService,
     private navCtrl: NavController
   ) {}
@@ -141,8 +140,6 @@ export class AuthenticationLoginComponent implements OnInit {
         timeout(10000),
         tap(() => {
           this.loading = false;
-          this.mixpanel.identify(this.userService.getCurrentUser());
-          this.fullstory.identify(this.userService.getCurrentUser());
           this.mixpanel.track(
             'LoginComponent::Login success',
             this.userService.getCurrentUser().email
