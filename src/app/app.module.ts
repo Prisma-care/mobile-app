@@ -21,6 +21,7 @@ import {ConstantProvider} from './di';
 import {AlbumModule} from './albumList/album.module';
 import {StoryModule} from './storyList/story.module';
 import {SidebarModule} from './sidebar/sidebar.module';
+import {LoaderModule} from './loader/loader.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +32,7 @@ import {SidebarModule} from './sidebar/sidebar.module';
     CoreModule,
     AuthModule,
     SidebarModule,
+    LoaderModule,
     AlbumModule,
     StoryModule
   ],

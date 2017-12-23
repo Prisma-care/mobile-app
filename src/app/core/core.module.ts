@@ -16,6 +16,7 @@ import {NetworkInterceptor} from './interceptors/network.interceptor';
 import {MixpanelService} from './mixpanel.service';
 import {FullstoryService} from './fullstory.service';
 import {Mixpanel, MixpanelPeople} from '@ionic-native/mixpanel';
+import {LoaderService} from './loader.service';
 
 const imports = [HttpClientModule, HttpModule, IonicModule];
 
@@ -57,7 +58,8 @@ const imports = [HttpClientModule, HttpModule, IonicModule];
     MixpanelService,
     FullstoryService,
     Mixpanel,
-    MixpanelPeople
+    MixpanelPeople,
+    LoaderService
   ],
   exports: [...imports]
 })
