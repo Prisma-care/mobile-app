@@ -35,7 +35,7 @@ import _sortBy from 'lodash/sortBy';
           [class.split-height]="questions.hasTopics()">
         <ion-grid>
           <ion-row>
-            <ion-col col-6 col-md-4 col-lg-3 *ngFor="let story of stories">
+            <ion-col col-3 *ngFor="let story of stories">
               <prisma-album-story
                 [getBackground]="getBackground"
                 [album]="album"

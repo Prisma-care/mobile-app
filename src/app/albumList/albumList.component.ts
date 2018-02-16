@@ -14,17 +14,20 @@ import _sortBy from 'lodash/sortBy';
 @Component({
   selector: 'prisma-album-list',
   template: `
-    <ion-header no-border no-shadow></ion-header>
+    <ion-header>
+     <ion-navbar>
+        <ion-title>Waarover babbelen we vandaag?</ion-title>
+        <ion-buttons left>
+          <button ion-button menuToggle class="albums-menu">
+            <ion-icon color="black" name='menu'></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-navbar>
+    </ion-header>
     <ion-content>
-      <div class="page-header">
-        <button ion-button menuToggle class="albums-menu">
-          <ion-icon color="black" name='menu'></ion-icon>
-        </button>
-        <h2>Waarover babbelen<span id="page-header-break"><br/></span> we vandaag?</h2>
-      </div>
       <ion-grid *ngIf="albums">
         <ion-row>
-          <ion-col col-6 col-md-4 col-lg-3 *ngFor="let album of albums | async">
+          <ion-col col-3 *ngFor="let album of albums | async">
             <prisma-album-story
               [getBackground]="getBackground"
               [album]="album"
