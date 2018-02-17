@@ -24,56 +24,7 @@ import {OnDestroy} from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'prisma-story-detail',
-  template: `
-    <ion-content #content no-bounce>
-      <ion-navbar class="detail-nav">
-        <ion-buttons end>
-          <button ion-button icon-only (click)="showMore($event)">
-            <ion-icon name="more"></ion-icon>
-          </button>
-        </ion-buttons>
-      </ion-navbar>
-      <div (swipe)="swipeEvent($event)">
-          <div class="image-container"
-               *ngIf="story.type !== 'youtube'">
-              <img id="{{story.id}}" [src]="backgroundImage"
-                   class="detail-img">
-              <ion-icon class="star" name="{{story.favorited ? 'star' : 'star-outline'}}"
-                        [class.favorited]="story.favorited" (click)="toggleFavorite()"></ion-icon>
-          </div>
-          <div class="image-container"
-               *ngIf="story.type === 'youtube'">
-            <img id="{{'video-'+story.id}}" [src]="backgroundImage"
-                 (click)="openYoutubeVideo(story.source)"
-                 style="width:100%; max-width:100%"
-                 class="detail-img">
-            <div (click)="openYoutubeVideo(story.source)"
-              style=" position: absolute;display: block;font-size: 50px;top: 35%;left: 45%;"
-              class="youtube-icon movie-indicator"></div>
-            <ion-icon class="star" name="{{story.favorited ? 'star' : 'star-outline'}}"
-                      [class.favorited]="story.favorited" (click)="toggleFavorite()"></ion-icon>
-          </div>
-          <div class="description" color="general" *ngIf="story.description">
-            <p class="description-text">{{story.description}}</p>
-          </div>
-
-          <div class="row">
-            <div class="detail-button">
-              <div class="story-action" (click)="editDescription(story)">
-                <ion-icon name="md-create" color="general"></ion-icon>
-                <p>Vul het verhaal aan</p>
-              </div>
-              <!--
-              <div class="story-action" (click)="replaceOrAddImage()" *ngIf="!story.source">
-                <ion-icon name="camera" color="general"></ion-icon>
-                <p>Voeg een foto toe</p>
-              </div>
-              -->
-            </div>
-          </div>
-        </div>
-    </ion-content>
-  `
+  templateUrl: `./storyDetail.component.html`
 })
 export class StoryDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('content') content: Content;

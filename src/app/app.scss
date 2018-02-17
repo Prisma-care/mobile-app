@@ -174,13 +174,16 @@ ion-navbar {
 $detail-shadow: 1px 2px 2px hsla(0, 0%, 15%, 0.4); 
 //   STARS
 .star {
+  color: color($colors, yellow);
+  text-shadow: $detail-shadow;
+}
+
+.tile-star {
   display: block;
   position: absolute;
   right: 0.7em;
   bottom: 0.7em;
   font-size: 3em;
-  color: color($colors, yellow);
-  text-shadow: $detail-shadow;
 }
 
 // ADD NEW STORY/ALBUM header

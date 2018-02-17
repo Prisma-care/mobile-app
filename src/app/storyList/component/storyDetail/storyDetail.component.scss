@@ -1,12 +1,23 @@
 prisma-story-detail {
 
+  ion-content {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  ion-content.dark-content {
+    background-color: color($colors, dark-gray);
+  }
+
+  .no-scroll .scroll-content{
+    overflow: hidden;
+}
+
   .detail-title {
     float: left;
   }
 
-  .detail-nav {
-    position: absolute;
-    top: 0;
+  .overlay-nav {
     z-index: 2;
     color: #fff;
 
@@ -18,7 +29,12 @@ prisma-story-detail {
       color: #fff;
       text-shadow: $detail-shadow;
     }
+  }
 
+  .detail-nav {
+    @extend .overlay-nav;
+    position: absolute;
+    top: 0;
   }
 
   .description {
@@ -26,6 +42,18 @@ prisma-story-detail {
     color: #fff;
     background-color: color($colors, general);
     font-size: map-get($sizes, 'medium');
+
+    display: none;
+  }
+
+  .bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .description .show {
+    display: block;
   }
 
   .description-text {

@@ -1,0 +1,50 @@
+<ion-content #content class="no-scroll dark-content" >
+    <ion-navbar class="detail-nav controls">
+      <ion-buttons end>
+        <button ion-button icon-only (click)="showMore($event)">
+          <ion-icon name="more"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+    <div (swipe)="swipeEvent($event)">
+        <div class="image-container"
+             *ngIf="story.type !== 'youtube'">
+            <img id="{{story.id}}" [src]="backgroundImage"
+                 class="detail-img">
+        </div>
+        <div class="image-container"
+             *ngIf="story.type === 'youtube'">
+          <img id="{{'video-'+story.id}}" [src]="backgroundImage"
+               (click)="openYoutubeVideo(story.source)"
+               class="detail-img">
+          <div (click)="openYoutubeVideo(story.source)"
+            style=" position: absolute;display: block;font-size: 50px;top: 35%;left: 45%;"
+            class="youtube-icon movie-indicator"></div>
+        </div>
+        <ion-toolbar class="bottom overlay-nav controls">
+          <ion-buttons left>
+            <button ion-button icon-only (click)="showMore($event)">
+              <ion-icon name="information-circle"></ion-icon>
+            </button>
+          </ion-buttons>
+          <ion-buttons end>
+            <button ion-button icon-only (click)="toggleFavorite()">
+              <ion-icon class="star" name="{{story.favorited ? 'star' : 'star-outline'}}"
+              [class.favorited]="story.favorited" ></ion-icon>
+            </button>
+           </ion-buttons>
+        </ion-toolbar>
+        <div class="description bottom" color="general" *ngIf="story.description" [class.show]='true'>
+          <p class="description-text">{{story.description}}</p>
+        </div>
+        <!--
+        <div class="row">
+          <div class="detail-button">
+            <div class="story-action" (click)="editDescription(story)">
+              <ion-icon name="md-create" color="general"></ion-icon>
+              <p>Vul het verhaal aan</p>
+            </div>
+          </div>
+        </div>-->
+    </div>
+  </ion-content>
