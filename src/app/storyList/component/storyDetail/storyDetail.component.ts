@@ -25,26 +25,19 @@ import {OnDestroy} from '@angular/core/src/metadata/lifecycle_hooks';
 @Component({
   selector: 'prisma-story-detail',
   template: `
-    <ion-header>
-      <ion-navbar>
-        <ion-title class="detail-title">
-          {{album.title}}
-        </ion-title>
+    <ion-content #content no-bounce>
+      <ion-navbar class="detail-nav">
         <ion-buttons end>
           <button ion-button icon-only (click)="showMore($event)">
             <ion-icon name="more"></ion-icon>
           </button>
         </ion-buttons>
-
       </ion-navbar>
-    </ion-header>
-
-    <ion-content #content no-bounce>
       <div (swipe)="swipeEvent($event)">
           <div class="image-container"
                *ngIf="story.type !== 'youtube'">
               <img id="{{story.id}}" [src]="backgroundImage"
-                   style="width:100%; max-width:100%">
+                   class="detail-img">
               <ion-icon class="star" name="{{story.favorited ? 'star' : 'star-outline'}}"
                         [class.favorited]="story.favorited" (click)="toggleFavorite()"></ion-icon>
           </div>
@@ -52,7 +45,8 @@ import {OnDestroy} from '@angular/core/src/metadata/lifecycle_hooks';
                *ngIf="story.type === 'youtube'">
             <img id="{{'video-'+story.id}}" [src]="backgroundImage"
                  (click)="openYoutubeVideo(story.source)"
-                 style="width:100%; max-width:100%">
+                 style="width:100%; max-width:100%"
+                 class="detail-img">
             <div (click)="openYoutubeVideo(story.source)"
               style=" position: absolute;display: block;font-size: 50px;top: 35%;left: 45%;"
               class="youtube-icon movie-indicator"></div>

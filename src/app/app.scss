@@ -167,6 +167,11 @@ ion-navbar ion-buttons[end] button {
   font-size: 1.5rem;
 }
 
+ion-navbar {
+  min-height: 40px;
+}
+
+$detail-shadow: 1px 2px 2px hsla(0, 0%, 15%, 0.4); 
 //   STARS
 .star {
   display: block;
@@ -175,7 +180,7 @@ ion-navbar ion-buttons[end] button {
   bottom: 0.7em;
   font-size: 3em;
   color: color($colors, yellow);
-  text-shadow: 1px 2px 2px hsla(0, 0%, 15%, 0.4);
+  text-shadow: $detail-shadow;
 }
 
 // ADD NEW STORY/ALBUM header

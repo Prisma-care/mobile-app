@@ -4,6 +4,23 @@ prisma-story-detail {
     float: left;
   }
 
+  .detail-nav {
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    color: #fff;
+
+    .toolbar-background {
+      background: none;
+    }
+
+    .bar-button {
+      color: #fff;
+      text-shadow: $detail-shadow;
+    }
+
+  }
+
   .description {
     padding: 1em;
     color: #fff;
@@ -44,8 +61,16 @@ prisma-story-detail {
 
   .image-container {
     position: relative;
+    background-color: color($colors, dark-gray);
   }
 
+  .detail-img {
+    margin: auto;
+    max-height: 100vh;
+    position: relative;
+
+    top: 0;
+  }
   .star2 {
     font-size: 2em;
     color: color($colors, dark-gray);
