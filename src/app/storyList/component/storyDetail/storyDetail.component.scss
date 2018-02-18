@@ -52,8 +52,16 @@ prisma-story-detail {
     width: 100%;
   }
 
-  .description .show {
+  .controls {
+    display: none;
+  }
+
+  .show {
     display: block;
+  }
+
+  .controls.show {
+    display: flex; 
   }
 
   .description-text {

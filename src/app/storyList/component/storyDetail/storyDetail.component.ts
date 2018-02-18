@@ -34,6 +34,8 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   story: Story;
   backgroundImage: SafeUrl;
   takenUntilPipe = pipe(takeUntil(this.destroy$));
+  showControls = true;
+  showDescription = false;
 
   constructor(
     @Inject(ConstantToken) private constant: Constant,
@@ -143,6 +145,18 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
       )
       .let(this.takenUntilPipe)
       .subscribe();
+  }
+
+  toggleControls(): void {
+    if (this.showDescription) {
+      this.toggleDescription();
+    } else {
+      this.showControls = !this.showControls;
+    }
+  }
+
+  toggleDescription(): void {
+    this.showDescription = !this.showDescription;
   }
 
   openYoutubeVideo(url: string) {

@@ -1,5 +1,5 @@
 <ion-content #content class="no-scroll dark-content" >
-    <ion-navbar class="detail-nav controls">
+    <ion-navbar class="detail-nav controls" [class.show]="showControls">
       <ion-buttons end>
         <button ion-button icon-only (click)="showMore($event)">
           <ion-icon name="more"></ion-icon>
@@ -7,23 +7,23 @@
       </ion-buttons>
     </ion-navbar>
     <div (swipe)="swipeEvent($event)">
-        <div class="image-container"
+        <div class="image-container" (click)="toggleControls()"
              *ngIf="story.type !== 'youtube'">
             <img id="{{story.id}}" [src]="backgroundImage"
                  class="detail-img">
         </div>
-        <div class="image-container"
+        <div class="image-container" (click)="toggleControls()"
              *ngIf="story.type === 'youtube'">
           <img id="{{'video-'+story.id}}" [src]="backgroundImage"
                (click)="openYoutubeVideo(story.source)"
                class="detail-img">
           <div (click)="openYoutubeVideo(story.source)"
-            style=" position: absolute;display: block;font-size: 50px;top: 35%;left: 45%;"
+            style="position: absolute;display: block;font-size: 50px;top: 35%;left: 45%;"
             class="youtube-icon movie-indicator"></div>
         </div>
-        <ion-toolbar class="bottom overlay-nav controls">
-          <ion-buttons left>
-            <button ion-button icon-only (click)="showMore($event)">
+        <ion-toolbar class="bottom overlay-nav controls" [class.show]="showControls">
+          <ion-buttons left *ngIf="!showDescription">
+            <button ion-button icon-only (click)="toggleDescription()">
               <ion-icon name="information-circle"></ion-icon>
             </button>
           </ion-buttons>
@@ -34,7 +34,7 @@
             </button>
            </ion-buttons>
         </ion-toolbar>
-        <div class="description bottom" color="general" *ngIf="story.description" [class.show]='true'>
+        <div class="description bottom" color="general" *ngIf="story.description" [class.show]='showDescription'>
           <p class="description-text">{{story.description}}</p>
         </div>
         <!--
