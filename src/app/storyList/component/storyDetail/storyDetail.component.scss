@@ -37,13 +37,19 @@ prisma-story-detail {
     top: 0;
   }
 
+  %transition-from {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.7s, opacity ease 0.7s; 
+  }
+
   .description {
     padding: 1em;
     color: #fff;
     background-color: color($colors, general);
     font-size: map-get($sizes, 'medium');
 
-    display: none;
+    @extend %transition-from;
   }
 
   .bottom {
@@ -53,15 +59,13 @@ prisma-story-detail {
   }
 
   .controls {
-    display: none;
+    @extend %transition-from;
   }
 
   .show {
-    display: block;
-  }
-
-  .controls.show {
-    display: flex; 
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity ease 0.7s;
   }
 
   .description-text {
