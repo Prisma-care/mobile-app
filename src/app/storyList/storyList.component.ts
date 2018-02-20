@@ -56,7 +56,6 @@ import _sortBy from 'lodash/sortBy';
       <ion-fab left bottom (click)="openTopics()">
         <button ion-fab class="topic-icon"><ion-icon name="sunny"></ion-icon></button>
       </ion-fab>
-      <!-- <prisma-question #questions [query]="album.title"></prisma-question> -->
     </ion-content>
   `
 })
@@ -65,6 +64,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
   stories: Story[];
   destroy$: Subject<boolean> = new Subject<boolean>();
   takenUntilPipe = pipe(takeUntil(this.destroy$));
+  hasQuestions = true;
 
   @ViewChild('content') content: Content;
 

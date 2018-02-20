@@ -6,11 +6,11 @@ import {QuestionService} from '../../../core/question.service';
   template: `
     <div *ngIf="hasTopics()">
       <div class="clear">
-      <div class="topic-wrapper" *ngIf="hasTopics()">
+      <div class="topic-wrapper" *ngIf="hasTopics()" (click)="nextQuestion()">
         <div class="topic-container" *ngIf="currentQuestion">
           <span class="topic-sub">Onderwerp</span>
           <span class="topic-title">{{currentQuestion}}</span>
-          <span (click)="nextQuestion()" class="topic-other">
+          <span class="topic-other">
             <ion-icon name="refresh"></ion-icon>
             &nbsp;Ander onderwerp
           </span>

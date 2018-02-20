@@ -88,4 +88,9 @@ prisma-story-list {
   .toolbar-content-md {
     margin-right: 16px;
   }
+
+  // hacky override
+  .popover-md .popover-content {
+    width: auto;
+  }
 }
