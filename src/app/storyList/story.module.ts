@@ -6,6 +6,7 @@ import {StoryDetailsComponent} from './component/storyDetail/storyDetail.compone
 import {StoryOptionsComponent} from './component/storyDetail/component/storyOptions.component';
 import {StoryListOptionsComponent} from './component/storyListOptions.component';
 import {CreateOrUpdateStoryComponent} from './component/createOrUpdateStory/createOrUpdateStory.component';
+import {TopicPopoverComponent} from './component/topic-popover/topic-popover.component';
 
 const imports = [SharedModule];
 const declarations = [
@@ -14,7 +15,8 @@ const declarations = [
   StoryOptionsComponent,
   QuestionComponent,
   StoryListOptionsComponent,
-  CreateOrUpdateStoryComponent
+  CreateOrUpdateStoryComponent,
+  TopicPopoverComponent
 ];
 
 @NgModule({
@@ -26,7 +28,8 @@ const declarations = [
     StoryDetailsComponent,
     StoryOptionsComponent,
     StoryListOptionsComponent,
-    CreateOrUpdateStoryComponent
+    CreateOrUpdateStoryComponent,
+    TopicPopoverComponent
   ],
   exports: [...imports, ...declarations]
 })

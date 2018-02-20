@@ -14,6 +14,7 @@ import {ToastController} from 'ionic-angular/components/toast/toast-controller';
 import {StoryService} from '../core/story.service';
 import {CreateOrUpdateStoryComponent} from './component/createOrUpdateStory/createOrUpdateStory.component';
 import {StoryDetailsComponent} from './component/storyDetail/storyDetail.component';
+import {TopicPopoverComponent} from './component/topic-popover/topic-popover.component';
 import _sortBy from 'lodash/sortBy';
 
 @Component({
@@ -52,7 +53,7 @@ import _sortBy from 'lodash/sortBy';
           </div>
         </div>
       </ion-scroll>
-      <ion-fab left bottom>
+      <ion-fab left bottom (click)="openTopics()">
         <button ion-fab class="topic-icon"><ion-icon name="sunny"></ion-icon></button>
       </ion-fab>
       <!-- <prisma-question #questions [query]="album.title"></prisma-question> -->
@@ -120,7 +121,14 @@ export class StoryListComponent implements OnInit, OnDestroy {
     });
   }
 
-  openActionSheet() {
+  openTopics(): void {
+    const popover = this.popoverCtrl.create(TopicPopoverComponent, {
+      topicQuery: this.album.title
+    });
+    popover.present();
+  }
+
+  openActionSheet(): void {
     const text2 = 'Maak foto';
     const text3 = 'Kies foto van camerarol';
     const text4 = 'Kies video van Youtube';
