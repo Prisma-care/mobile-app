@@ -30,9 +30,7 @@ import _sortBy from 'lodash/sortBy';
       </ion-navbar>
     </ion-header>
     <ion-content #content no-bounce>
-      <ion-scroll scrollY="true"
-          [class.full-height]="!questions.hasTopics()"
-          [class.split-height]="questions.hasTopics()">
+      <ion-scroll scrollY="true" class="full-height">
         <ion-grid>
           <ion-row>
             <ion-col col-3 *ngFor="let story of stories">
@@ -54,7 +52,10 @@ import _sortBy from 'lodash/sortBy';
           </div>
         </div>
       </ion-scroll>
-      <prisma-question #questions [query]="album.title"></prisma-question>
+      <ion-fab left bottom>
+        <button ion-fab class="topic-icon"><ion-icon name="sunny"></ion-icon></button>
+      </ion-fab>
+      <!-- <prisma-question #questions [query]="album.title"></prisma-question> -->
     </ion-content>
   `
 })
