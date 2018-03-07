@@ -14,14 +14,16 @@
         </div>
         <div class="image-container" (click)="toggleControls()"
              *ngIf="story.type === 'youtube'">
-          <img id="{{'video-'+story.id}}" [src]="backgroundImage"
+             <iframe width="560" height="315" [src]="getYoutubeUrl(story.source)" 
+             frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width:100%;height:100vh"></iframe>
+          <!-- <img id="{{'video-'+story.id}}" [src]="backgroundImage"
                (click)="openYoutubeVideo(story.source)"
-               class="detail-img">
-          <div (click)="openYoutubeVideo(story.source)"
+               class="detail-img"> -->
+          <!-- <div (click)="openYoutubeVideo(story.source)"
             style="position: absolute;display: block;font-size: 50px;top: 35%;left: 45%;"
-            class="youtube-icon movie-indicator"></div>
+            class="youtube-icon movie-indicator"></div> -->
         </div>
-        <ion-toolbar class="bottom overlay-nav controls" [class.show]="showControls">
+        <ion-toolbar style="pointer-events: none;" class="bottom overlay-nav controls" [class.show]="showControls">
           <ion-buttons left *ngIf="!showDescription">
             <button ion-button icon-only (click)="toggleDescription()">
               <ion-icon name="information-circle"></ion-icon>

@@ -33,6 +33,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   album: Album;
   story: Story;
   backgroundImage: SafeUrl;
+  source: SafeUrl;
   takenUntilPipe = pipe(takeUntil(this.destroy$));
   showControls = true;
   showDescription = false;
@@ -60,6 +61,11 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     this.backgroundImage = this.sanitizer.bypassSecurityTrustUrl(
       this.story.backgroundImage
     );
+    if (this.story.type === 'youtube') {
+      this.source = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.story.source
+      );
+    }
   }
 
   ngOnDestroy(): void {
@@ -161,6 +167,13 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
 
   openYoutubeVideo(url: string) {
     this.youtube.openVideo(this.storyService.getYoutubeId(url));
+  }
+
+  getYoutubeUrl(url: string): SafeUrl {
+    const resourceUrl = `https://www.youtube.com/embed/${this.storyService.getYoutubeId(
+      url
+    )}?autoplay=1&rel=0`;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(resourceUrl);
   }
 
   editDescription(story: Story) {
