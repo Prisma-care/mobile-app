@@ -37,6 +37,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   takenUntilPipe = pipe(takeUntil(this.destroy$));
   showControls = true;
   showDescription = false;
+  keyf: (() => void);
 
   constructor(
     @Inject(ConstantToken) private constant: Constant,
@@ -69,12 +70,30 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    document.removeEventListener('keyup', this.keyEvent.bind(this));
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
 
   ionViewWillEnter() {
     this.content.resize();
+  }
+
+  ionViewDidEnter() {
+    this.keyf = this.keyEvent.bind(this);
+    document.addEventListener('keyup', this.keyf);
+  }
+
+  ionViewWillLeave() {
+    document.removeEventListener('keyup', this.keyf);
+  }
+
+  keyEvent(e) {
+    if (e.keyCode === 37) {
+      this.previous();
+    } else if (e.keyCode === 39) {
+      this.next();
+    }
   }
 
   swipeEvent(e) {
@@ -89,11 +108,11 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
       };
       // swipes left
       if (e.direction === 4) {
-        options.direction = 'rigth';
+        options.direction = 'right';
         this.previous();
       }
 
-      // swipes rigth
+      // swipes right
       if (e.direction === 2) {
         options.direction = 'left';
         this.next();

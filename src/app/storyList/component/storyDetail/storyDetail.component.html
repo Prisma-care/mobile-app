@@ -1,4 +1,4 @@
-<ion-content #content class="no-scroll dark-content" >
+<ion-content #content class="no-scroll dark-content" (keydown)="keyEvent($event)" >
     <ion-navbar class="detail-nav controls" [class.show]="showControls">
       <ion-buttons end>
         <button ion-button icon-only (click)="showMore($event)">
