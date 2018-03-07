@@ -191,7 +191,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   getYoutubeUrl(url: string): SafeUrl {
     const resourceUrl = `https://www.youtube.com/embed/${this.storyService.getYoutubeId(
       url
-    )}?autoplay=1&rel=0`;
+    )}?autoplay=1&rel=0&showinfo=0&disablekb=1`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(resourceUrl);
   }
 
