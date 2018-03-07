@@ -27,7 +27,7 @@ import _sortBy from 'lodash/sortBy';
     <ion-content>
       <ion-grid *ngIf="albums">
         <ion-row>
-          <ion-col col-3 *ngFor="let album of albums | async">
+          <ion-col col-6 col-md-4 col-lg-3 *ngFor="let album of albums | async">
             <prisma-album-story
               [getBackground]="getBackground"
               [album]="album"

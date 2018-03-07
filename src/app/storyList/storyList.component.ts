@@ -34,7 +34,7 @@ import _sortBy from 'lodash/sortBy';
       <ion-scroll scrollY="true" class="full-height">
         <ion-grid>
           <ion-row>
-            <ion-col col-3 *ngFor="let story of stories">
+            <ion-col col-6 col-md-4 col-lg-3 *ngFor="let story of stories">
               <prisma-album-story
                 [getBackground]="getBackground"
                 [album]="album"
