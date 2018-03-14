@@ -71,5 +71,6 @@ export interface Constant {
     addYoutubeStory: string;
     replaceDescription: string;
     replaceImage: string;
+    addFileStory: string;
   };
 }

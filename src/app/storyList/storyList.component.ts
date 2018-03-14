@@ -16,6 +16,8 @@ import {CreateOrUpdateStoryComponent} from './component/createOrUpdateStory/crea
 import {StoryDetailsComponent} from './component/storyDetail/storyDetail.component';
 import {TopicPopoverComponent} from './component/topic-popover/topic-popover.component';
 import _sortBy from 'lodash/sortBy';
+import {Platform} from 'ionic-angular/platform/platform';
+import {platform} from 'os';
 
 @Component({
   selector: 'prisma-story-list',
@@ -77,7 +79,8 @@ export class StoryListComponent implements OnInit, OnDestroy {
     private actionsheetCtrl: ActionSheetController,
     private popoverCtrl: PopoverController,
     private toastCtrl: ToastController,
-    private storyService: StoryService
+    private storyService: StoryService,
+    private plt: Platform
   ) {
     this.getBackground = this.getBackground.bind(this);
     this.showDetails = this.showDetails.bind(this);
@@ -134,15 +137,33 @@ export class StoryListComponent implements OnInit, OnDestroy {
     const text4 = 'Kies video van Youtube';
     const text5 = 'Annuleer';
 
-    const actionSheet = this.actionsheetCtrl.create({
-      title: 'Voeg verhaal toe',
-      cssClass: 'action-sheets-basic-page',
-      buttons: [
+    let btns = [
+      {
+        text: text4,
+        role: 'destructive',
+        icon: 'play',
+        handler: () => {
+          this.navCtrl.push(CreateOrUpdateStoryComponent, {
+            album: this.album,
+            method: this.constant.methods.addYoutubeStory
+          });
+        }
+      },
+      {
+        text: text5,
+        role: 'cancel',
+        icon: 'md-arrow-back',
+        handler: () => {}
+      }
+    ];
+
+    // if on mobile, allow taking a picture (cordova) or camera roll
+    if (this.plt.is('mobile')) {
+      btns = [
         {
           text: text2,
           role: 'destructive',
           icon: 'camera',
-          cssClass: 'general',
           handler: () => {
             this.storyService
               .takeAPicture()
@@ -173,24 +194,31 @@ export class StoryListComponent implements OnInit, OnDestroy {
               });
           }
         },
+        ...btns
+      ];
+    }
+
+    if (this.plt.is('core')) {
+      btns = [
         {
-          text: text4,
+          text: 'Upload een foto',
           role: 'destructive',
           icon: 'play',
           handler: () => {
             this.navCtrl.push(CreateOrUpdateStoryComponent, {
               album: this.album,
-              method: this.constant.methods.addYoutubeStory
+              method: this.constant.methods.addFileStory
             });
           }
         },
-        {
-          text: text5,
-          role: 'cancel',
-          icon: 'md-arrow-back',
-          handler: () => {}
-        }
-      ]
+        ...btns
+      ];
+    }
+
+    const actionSheet = this.actionsheetCtrl.create({
+      title: 'Voeg verhaal toe',
+      cssClass: 'action-sheets-basic-page',
+      buttons: btns
     });
     actionSheet.present();
   }

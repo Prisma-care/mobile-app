@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject} from '@angular/core';
+import {Component, OnInit, Inject, ChangeDetectorRef} from '@angular/core';
 import {NavParams} from 'ionic-angular/navigation/nav-params';
 import {Album, Story, User, Patient, Constant} from '../../../../shared/types';
 import {ConstantToken} from '../../../di';
@@ -28,14 +28,18 @@ import {Observable} from 'rxjs/Observable';
     <ion-content padding>
     <ion-item-group>
         <br>
+        <!-- Add Youtube story -->
         <h2 class="plak-een-youtube-lin" *ngIf="method===constant.methods.addYoutubeStory">Plak een Youtube link om de
         video toe te voegen.</h2>
+        <h2 class="plak-een-youtube-lin" *ngIf="method===constant.methods.addFileStory">Upload een foto van je toestel</h2>
 
-        <ion-item style="padding-left: 0">
+        <!-- Add description story -->
+        <ion-item style="padding-left: 0"></ion-item>
         <ion-item *ngIf="method !== constant.methods.addYoutubeStory">
             <ion-textarea autofocus class="story-text" placeholder="{{placeHolder}}" [(ngModel)]="story.description" rows="7"
                         clearInput></ion-textarea>
         </ion-item>
+        <!-- Add Youtube Story -->
         <ion-item *ngIf="method===constant.methods.addYoutubeStory" style="padding-left: 0">
             <ion-textarea autofocus class="story-text" placeholder="{{youtubeLinkPlaceHolder}}"
             (ngModelChange)="checkYoutubeLink($event)"
@@ -43,6 +47,12 @@ import {Observable} from 'rxjs/Observable';
             rows="3" style="padding-left: 0"
             clearInput></ion-textarea>
         </ion-item>
+        <!-- Add File Story -->
+        <ion-item *ngIf="method===constant.methods.addFileStory" >
+          <input type="file" accept=".jpg,.jpeg,.png,.gif" name="asset" #fileselector
+            (change)="registerFile(fileselector.files[0])" style="padding-left: 0" />
+        </ion-item>
+        <ion-item>
           <ion-thumbnail class="thumbnail" style="padding-left: 7%;" *ngIf="method===constant.methods.addYoutubeStory">
               <img *ngIf="isLoading" [src]="image">
               <ion-spinner *ngIf="!isLoading" item-start name="dots" color="grey"></ion-spinner>
@@ -60,14 +70,16 @@ import {Observable} from 'rxjs/Observable';
   `
 })
 export class CreateOrUpdateStoryComponent implements OnInit {
+  file: any;
   method: string;
   dataUrl: string;
   image: SafeUrl;
   album: Album;
   story: Story;
   title = 'Vul het verhaal aan';
+  assetEndpoint: string;
 
-  placeHolder = `Schrijf het verhaal.\nHoe meer details hoe beter.`;
+  placeHolder = `Schrijf het verhaal.\n Hoe meer details hoe beter.`;
   youtubeLinkPlaceHolder = 'https://www.youtube.com/watch?v=ffSnk4v3aeg';
 
   loading: Loading;
@@ -90,6 +102,31 @@ export class CreateOrUpdateStoryComponent implements OnInit {
             addedStory.id,
             this.dataUrl
           );
+        });
+      }
+    },
+    [this.constant.methods.addFileStory]: {
+      init: () => {
+        this.title = 'Upload een foto';
+        this.story = this.initStory({
+          type: 'image'
+        });
+        this.isLoading = true;
+      },
+      send: () => {
+        this.addStory().subscribe((addedStory: Story) => {
+          const fd = new FormData();
+          fd.append('asset', this.file);
+          this.loading = this.loadingCtrl.create({
+            content: 'Uploading...'
+          });
+          this.loading.present();
+          this.storyService
+            .addFile(this.currentPatient.patient_id, addedStory.id, fd)
+            .subscribe(() => {
+              this.loading.dismissAll();
+              this.navCtrl.pop();
+            });
         });
       }
     },
@@ -148,7 +185,8 @@ export class CreateOrUpdateStoryComponent implements OnInit {
     private viewCtrl: ViewController,
     private transfer: Transfer,
     private loadingCtrl: LoadingController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private changeDetect: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -225,11 +263,20 @@ export class CreateOrUpdateStoryComponent implements OnInit {
       });
   }
 
-  uploadImage(patientId: number, storyId: number, lastImage: string) {
-    const url = `${this.constant.apiUrl}/${this.constant.api.getPatient}/${
-      patientId
-    }/${this.constant.api.getStory}/${storyId}/${this.constant.api.getAsset}`;
+  registerFile(file) {
+    this.file = file;
+  }
 
+  private getAssetEndpoint(storyId: number, patientId: number): string {
+    return `${this.constant.apiUrl}/${
+      this.constant.api.getPatient
+    }/${patientId}/${this.constant.api.getStory}/${storyId}/${
+      this.constant.api.getAsset
+    }`;
+  }
+
+  uploadImage(patientId: number, storyId: number, lastImage: string) {
+    const url = this.getAssetEndpoint(storyId, patientId);
     const options = {
       fileKey: 'asset',
       fileName: 'asset',

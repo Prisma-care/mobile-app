@@ -33,6 +33,7 @@ export const constant: Constant = {
     addNewStory: 'addNewStory',
     addYoutubeStory: 'addYoutubeStory',
     replaceDescription: 'replaceDescription',
-    replaceImage: 'replaceImage'
+    replaceImage: 'replaceImage',
+    addFileStory: 'addFileStory'
   }
 };

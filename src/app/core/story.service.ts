@@ -14,6 +14,7 @@ import {ConstantToken} from '../di';
 import {Camera} from '@ionic-native/camera';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/fromPromise';
+import {errorHandler} from '@angular/platform-browser/src/browser';
 
 interface StoryResponse {
   response: Story;
@@ -70,6 +71,21 @@ export class StoryService {
       .let(this.storyPipe);
   }
 
+  addFile(
+    patientId: number,
+    storyId: number,
+    formData: FormData
+  ): Observable<any | Error> {
+    return this.http
+      .post(
+        `${this.constant.apiUrl}/${this.constant.api.getPatient}/${patientId}/${
+          this.constant.api.getStory
+        }/${storyId}/${this.constant.api.getAsset}`,
+        formData
+      )
+      .pipe(catchError(this.handleError));
+  }
+
   deleteStory(patientId: number, storyId: number): Observable<Object | Error> {
     return this.http
       .delete(
@@ -116,9 +132,9 @@ export class StoryService {
   ): Observable<Object | Error> {
     return this.http
       .post(
-        `${this.constant.apiUrl}/${this.constant.api.getPatient}/${
-          patient_id
-        }/${this.constant.api.getStory}/${storyId}/${
+        `${this.constant.apiUrl}/${
+          this.constant.api.getPatient
+        }/${patient_id}/${this.constant.api.getStory}/${storyId}/${
           this.constant.api.getAsset
         }`,
         {
