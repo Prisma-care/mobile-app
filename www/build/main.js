@@ -265,7 +265,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 var CreateOrUpdateStoryComponent = /** @class */ (function () {
-    function CreateOrUpdateStoryComponent(constant, navParams, sanitizer, storyService, mixpanel, patientService, userService, navCtrl, viewCtrl, transfer, loadingCtrl, toastCtrl) {
+    function CreateOrUpdateStoryComponent(constant, navParams, sanitizer, storyService, mixpanel, patientService, userService, navCtrl, viewCtrl, transfer, loadingCtrl, toastCtrl, changeDetect) {
         var _this = this;
         this.constant = constant;
         this.navParams = navParams;
@@ -279,8 +279,9 @@ var CreateOrUpdateStoryComponent = /** @class */ (function () {
         this.transfer = transfer;
         this.loadingCtrl = loadingCtrl;
         this.toastCtrl = toastCtrl;
+        this.changeDetect = changeDetect;
         this.title = 'Vul het verhaal aan';
-        this.placeHolder = "Schrijf het verhaal.\nHoe meer details hoe beter.";
+        this.placeHolder = "Schrijf het verhaal.\n Hoe meer details hoe beter.";
         this.youtubeLinkPlaceHolder = 'https://www.youtube.com/watch?v=ffSnk4v3aeg';
         this.isLoading = false;
         this.methods = (_a = {},
@@ -294,6 +295,31 @@ var CreateOrUpdateStoryComponent = /** @class */ (function () {
                 send: function () {
                     _this.addStory().subscribe(function (addedStory) {
                         _this.uploadImage(_this.currentPatient.patient_id, addedStory.id, _this.dataUrl);
+                    });
+                }
+            },
+            _a[this.constant.methods.addFileStory] = {
+                init: function () {
+                    _this.title = 'Upload een foto';
+                    _this.story = _this.initStory({
+                        type: 'image'
+                    });
+                    _this.isLoading = true;
+                },
+                send: function () {
+                    _this.addStory().subscribe(function (addedStory) {
+                        var fd = new FormData();
+                        fd.append('asset', _this.file);
+                        _this.loading = _this.loadingCtrl.create({
+                            content: 'Uploading...'
+                        });
+                        _this.loading.present();
+                        _this.storyService
+                            .addFile(_this.currentPatient.patient_id, addedStory.id, fd)
+                            .subscribe(function () {
+                            _this.loading.dismissAll();
+                            _this.navCtrl.pop();
+                        });
                     });
                 }
             },
@@ -398,9 +424,15 @@ var CreateOrUpdateStoryComponent = /** @class */ (function () {
             }
         });
     };
+    CreateOrUpdateStoryComponent.prototype.registerFile = function (file) {
+        this.file = file;
+    };
+    CreateOrUpdateStoryComponent.prototype.getAssetEndpoint = function (storyId, patientId) {
+        return this.constant.apiUrl + "/" + this.constant.api.getPatient + "/" + patientId + "/" + this.constant.api.getStory + "/" + storyId + "/" + this.constant.api.getAsset;
+    };
     CreateOrUpdateStoryComponent.prototype.uploadImage = function (patientId, storyId, lastImage) {
         var _this = this;
-        var url = this.constant.apiUrl + "/" + this.constant.api.getPatient + "/" + patientId + "/" + this.constant.api.getStory + "/" + storyId + "/" + this.constant.api.getAsset;
+        var url = this.getAssetEndpoint(storyId, patientId);
         var options = {
             fileKey: 'asset',
             fileName: 'asset',
@@ -427,7 +459,7 @@ var CreateOrUpdateStoryComponent = /** @class */ (function () {
     CreateOrUpdateStoryComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'prisma-create-update-story',
-            template: "\n    <ion-header>\n    <ion-navbar>\n        <ion-title>{{title}}</ion-title>\n    </ion-navbar>\n    </ion-header>\n\n    <ion-content padding>\n    <ion-item-group>\n        <br>\n        <h2 class=\"plak-een-youtube-lin\" *ngIf=\"method===constant.methods.addYoutubeStory\">Plak een Youtube link om de\n        video toe te voegen.</h2>\n\n        <ion-item style=\"padding-left: 0\">\n        <ion-item *ngIf=\"method !== constant.methods.addYoutubeStory\">\n            <ion-textarea autofocus class=\"story-text\" placeholder=\"{{placeHolder}}\" [(ngModel)]=\"story.description\" rows=\"7\"\n                        clearInput></ion-textarea>\n        </ion-item>\n        <ion-item *ngIf=\"method===constant.methods.addYoutubeStory\" style=\"padding-left: 0\">\n            <ion-textarea autofocus class=\"story-text\" placeholder=\"{{youtubeLinkPlaceHolder}}\"\n            (ngModelChange)=\"checkYoutubeLink($event)\"\n            [(ngModel)]=\"story.source\"\n            rows=\"3\" style=\"padding-left: 0\"\n            clearInput></ion-textarea>\n        </ion-item>\n          <ion-thumbnail class=\"thumbnail\" style=\"padding-left: 7%;\" *ngIf=\"method===constant.methods.addYoutubeStory\">\n              <img *ngIf=\"isLoading\" [src]=\"image\">\n              <ion-spinner *ngIf=\"!isLoading\" item-start name=\"dots\" color=\"grey\"></ion-spinner>\n          </ion-thumbnail>\n        </ion-item>\n\n        <button ion-button solid block full large color=\"primary\" (click)=\"commit()\"\n          [disabled]=\"!isLoading\">\n          <ion-icon name=\"checkmark\"></ion-icon>\n        </button>\n\n    </ion-item-group>\n    </ion-content>\n\n  "
+            template: "\n    <ion-header>\n    <ion-navbar>\n        <ion-title>{{title}}</ion-title>\n    </ion-navbar>\n    </ion-header>\n\n    <ion-content padding>\n    <ion-item-group>\n        <br>\n        <!-- Add Youtube story -->\n        <h2 class=\"plak-een-youtube-lin\" *ngIf=\"method===constant.methods.addYoutubeStory\">Plak een Youtube link om de\n        video toe te voegen.</h2>\n        <h2 class=\"plak-een-youtube-lin\" *ngIf=\"method===constant.methods.addFileStory\">Upload een foto van je toestel</h2>\n\n        <!-- Add description story -->\n        <ion-item style=\"padding-left: 0\"></ion-item>\n        <ion-item *ngIf=\"method !== constant.methods.addYoutubeStory\">\n            <ion-textarea autofocus class=\"story-text\" placeholder=\"{{placeHolder}}\" [(ngModel)]=\"story.description\" rows=\"7\"\n                        clearInput></ion-textarea>\n        </ion-item>\n        <!-- Add Youtube Story -->\n        <ion-item *ngIf=\"method===constant.methods.addYoutubeStory\" style=\"padding-left: 0\">\n            <ion-textarea autofocus class=\"story-text\" placeholder=\"{{youtubeLinkPlaceHolder}}\"\n            (ngModelChange)=\"checkYoutubeLink($event)\"\n            [(ngModel)]=\"story.source\"\n            rows=\"3\" style=\"padding-left: 0\"\n            clearInput></ion-textarea>\n        </ion-item>\n        <!-- Add File Story -->\n        <ion-item *ngIf=\"method===constant.methods.addFileStory\" >\n          <input type=\"file\" accept=\".jpg,.jpeg,.png,.gif\" name=\"asset\" #fileselector\n            (change)=\"registerFile(fileselector.files[0])\" style=\"padding-left: 0\" />\n        </ion-item>\n        <ion-item>\n          <ion-thumbnail class=\"thumbnail\" style=\"padding-left: 7%;\" *ngIf=\"method===constant.methods.addYoutubeStory\">\n              <img *ngIf=\"isLoading\" [src]=\"image\">\n              <ion-spinner *ngIf=\"!isLoading\" item-start name=\"dots\" color=\"grey\"></ion-spinner>\n          </ion-thumbnail>\n        </ion-item>\n\n        <button ion-button solid block full large color=\"primary\" (click)=\"commit()\"\n          [disabled]=\"!isLoading\">\n          <ion-icon name=\"checkmark\"></ion-icon>\n        </button>\n\n    </ion-item-group>\n    </ion-content>\n\n  "
         }),
         __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Inject */])(__WEBPACK_IMPORTED_MODULE_2__di__["b" /* ConstantToken */])),
         __metadata("design:paramtypes", [Object, __WEBPACK_IMPORTED_MODULE_1_ionic_angular_navigation_nav_params__["a" /* NavParams */],
@@ -440,7 +472,8 @@ var CreateOrUpdateStoryComponent = /** @class */ (function () {
             __WEBPACK_IMPORTED_MODULE_10_ionic_angular_navigation_view_controller__["a" /* ViewController */],
             __WEBPACK_IMPORTED_MODULE_11__ionic_native_transfer__["a" /* Transfer */],
             __WEBPACK_IMPORTED_MODULE_12_ionic_angular__["g" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_13_ionic_angular_components_toast_toast_controller__["a" /* ToastController */]])
+            __WEBPACK_IMPORTED_MODULE_13_ionic_angular_components_toast_toast_controller__["a" /* ToastController */],
+            __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */]])
     ], CreateOrUpdateStoryComponent);
     return CreateOrUpdateStoryComponent;
 }());
@@ -455,22 +488,19 @@ var CreateOrUpdateStoryComponent = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StoryDetailsComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_types__ = __webpack_require__(859);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_mixpanel_service__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__component_storyOptions_component__ = __webpack_require__(391);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_youtube_video_player__ = __webpack_require__(392);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__core_story_service__ = __webpack_require__(78);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__core_patient_service__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_Rx__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_rxjs_Rx__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_operators__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_rxjs_operators__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__di__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ionic_angular_navigation_nav_interfaces__ = __webpack_require__(865);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ionic_angular_navigation_nav_interfaces___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_ionic_angular_navigation_nav_interfaces__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__createOrUpdateStory_createOrUpdateStory_component__ = __webpack_require__(185);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_mixpanel_service__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__component_storyOptions_component__ = __webpack_require__(391);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_youtube_video_player__ = __webpack_require__(392);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__core_story_service__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__core_patient_service__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_Rx__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_Rx__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_operators__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_rxjs_operators__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__di__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__createOrUpdateStory_createOrUpdateStory_component__ = __webpack_require__(185);
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -503,8 +533,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 
-
-
 var StoryDetailsComponent = /** @class */ (function () {
     function StoryDetailsComponent(constant, navParams, mixpanel, sanitizer, popoverCtrl, youtube, storyService, patientService, navCtrl, viewCtrl, toastCtrl) {
         this.constant = constant;
@@ -518,8 +546,8 @@ var StoryDetailsComponent = /** @class */ (function () {
         this.navCtrl = navCtrl;
         this.viewCtrl = viewCtrl;
         this.toastCtrl = toastCtrl;
-        this.destroy$ = new __WEBPACK_IMPORTED_MODULE_9_rxjs_Rx__["Subject"]();
-        this.takenUntilPipe = Object(__WEBPACK_IMPORTED_MODULE_9_rxjs_Rx__["pipe"])(Object(__WEBPACK_IMPORTED_MODULE_10_rxjs_operators__["takeUntil"])(this.destroy$));
+        this.destroy$ = new __WEBPACK_IMPORTED_MODULE_8_rxjs_Rx__["Subject"]();
+        this.takenUntilPipe = Object(__WEBPACK_IMPORTED_MODULE_8_rxjs_Rx__["pipe"])(Object(__WEBPACK_IMPORTED_MODULE_9_rxjs_operators__["takeUntil"])(this.destroy$));
         this.showControls = true;
         this.showDescription = false;
     }
@@ -534,18 +562,23 @@ var StoryDetailsComponent = /** @class */ (function () {
         if (this.story.type === 'youtube') {
             this.source = this.sanitizer.bypassSecurityTrustResourceUrl(this.story.source);
         }
-        document.addEventListener('keyup', this.keyEvent.bind(this));
     };
     StoryDetailsComponent.prototype.ngOnDestroy = function () {
+        document.removeEventListener('keyup', this.keyEvent.bind(this));
         this.destroy$.next(true);
         this.destroy$.unsubscribe();
-        //document.removeEventListener('keyup', this.keyEvent.bind(this));
     };
     StoryDetailsComponent.prototype.ionViewWillEnter = function () {
         this.content.resize();
     };
+    StoryDetailsComponent.prototype.ionViewDidEnter = function () {
+        this.keyf = this.keyEvent.bind(this);
+        document.addEventListener('keyup', this.keyf);
+    };
+    StoryDetailsComponent.prototype.ionViewWillLeave = function () {
+        document.removeEventListener('keyup', this.keyf);
+    };
     StoryDetailsComponent.prototype.keyEvent = function (e) {
-        console.log('keyevent!' + e.keyCode);
         if (e.keyCode === 37) {
             this.previous();
         }
@@ -629,14 +662,14 @@ var StoryDetailsComponent = /** @class */ (function () {
         this.youtube.openVideo(this.storyService.getYoutubeId(url));
     };
     StoryDetailsComponent.prototype.getYoutubeUrl = function (url) {
-        var resourceUrl = "https://www.youtube.com/embed/" + this.storyService.getYoutubeId(url) + "?autoplay=1&rel=0";
+        var resourceUrl = "https://www.youtube.com/embed/" + this.storyService.getYoutubeId(url) + "?autoplay=1&rel=0&showinfo=0&disablekb=1";
         return this.sanitizer.bypassSecurityTrustResourceUrl(resourceUrl);
     };
     StoryDetailsComponent.prototype.editDescription = function (story) {
         this.mixpanel.track('StoryDetailsPage::editDescription', {
             story: story
         });
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_13__createOrUpdateStory_createOrUpdateStory_component__["a" /* CreateOrUpdateStoryComponent */], {
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_11__createOrUpdateStory_createOrUpdateStory_component__["a" /* CreateOrUpdateStoryComponent */], {
             album: this.album,
             story: story,
             method: this.constant.methods.replaceDescription,
@@ -645,7 +678,7 @@ var StoryDetailsComponent = /** @class */ (function () {
     };
     StoryDetailsComponent.prototype.showMore = function (event) {
         var _this = this;
-        var popover = this.popoverCtrl.create(__WEBPACK_IMPORTED_MODULE_5__component_storyOptions_component__["a" /* StoryOptionsComponent */], {
+        var popover = this.popoverCtrl.create(__WEBPACK_IMPORTED_MODULE_4__component_storyOptions_component__["a" /* StoryOptionsComponent */], {
             story: this.story
         }, { cssClass: 'storyDetail-popover' });
         var toast = function (message) {
@@ -672,17 +705,26 @@ var StoryDetailsComponent = /** @class */ (function () {
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_13" /* ViewChild */])('content'),
-        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_12_ionic_angular_navigation_nav_interfaces__["Content"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12_ionic_angular_navigation_nav_interfaces__["Content"]) === "function" && _a || Object)
+        __metadata("design:type", Object)
     ], StoryDetailsComponent.prototype, "content", void 0);
     StoryDetailsComponent = StoryDetailsComponent_1 = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'prisma-story-detail',template:/*ion-inline-start:"/Users/thor/Webdev/mobile-app/src/app/storyList/component/storyDetail/storyDetail.component.html"*/'<ion-content #content class="no-scroll dark-content" (keydown)="keyEvent($event)" >\n    <ion-navbar class="detail-nav controls" [class.show]="showControls">\n      <ion-buttons end>\n        <button ion-button icon-only (click)="showMore($event)">\n          <ion-icon name="more"></ion-icon>\n        </button>\n      </ion-buttons>\n    </ion-navbar>\n    <div (swipe)="swipeEvent($event)">\n        <div class="image-container" (click)="toggleControls()"\n             *ngIf="story.type !== \'youtube\'">\n            <img id="{{story.id}}" [src]="backgroundImage"\n                 class="detail-img">\n        </div>\n        <div class="image-container" (click)="toggleControls()"\n             *ngIf="story.type === \'youtube\'">\n             <iframe width="560" height="315" [src]="getYoutubeUrl(story.source)" \n             frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width:100%;height:100vh"></iframe>\n          <!-- <img id="{{\'video-\'+story.id}}" [src]="backgroundImage"\n               (click)="openYoutubeVideo(story.source)"\n               class="detail-img"> -->\n          <!-- <div (click)="openYoutubeVideo(story.source)"\n            style="position: absolute;display: block;font-size: 50px;top: 35%;left: 45%;"\n            class="youtube-icon movie-indicator"></div> -->\n        </div>\n        <ion-toolbar style="pointer-events: none;" class="bottom overlay-nav controls" [class.show]="showControls">\n          <ion-buttons left *ngIf="!showDescription">\n            <button ion-button icon-only (click)="toggleDescription()">\n              <ion-icon name="information-circle"></ion-icon>\n            </button>\n          </ion-buttons>\n          <ion-buttons end>\n            <button ion-button icon-only (click)="toggleFavorite()">\n              <ion-icon class="star" name="{{story.favorited ? \'star\' : \'star-outline\'}}"\n              [class.favorited]="story.favorited" ></ion-icon>\n            </button>\n           </ion-buttons>\n        </ion-toolbar>\n        <div class="description bottom" color="general" *ngIf="story.description" [class.show]=\'showDescription\'>\n          <p class="description-text">{{story.description}}</p>\n        </div>\n        <!--\n        <div class="row">\n          <div class="detail-button">\n            <div class="story-action" (click)="editDescription(story)">\n              <ion-icon name="md-create" color="general"></ion-icon>\n              <p>Vul het verhaal aan</p>\n            </div>\n          </div>\n        </div>-->\n    </div>\n  </ion-content>'/*ion-inline-end:"/Users/thor/Webdev/mobile-app/src/app/storyList/component/storyDetail/storyDetail.component.html"*/
         }),
-        __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Inject */])(__WEBPACK_IMPORTED_MODULE_11__di__["b" /* ConstantToken */])),
-        __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__shared_types__["Constant"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__shared_types__["Constant"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["k" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["k" /* NavParams */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__core_mixpanel_service__["a" /* MixpanelService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__core_mixpanel_service__["a" /* MixpanelService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__["c" /* DomSanitizer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__["c" /* DomSanitizer */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["m" /* PopoverController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["m" /* PopoverController */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_6__ionic_native_youtube_video_player__["a" /* YoutubeVideoPlayer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__ionic_native_youtube_video_player__["a" /* YoutubeVideoPlayer */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_7__core_story_service__["a" /* StoryService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__core_story_service__["a" /* StoryService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_8__core_patient_service__["a" /* PatientService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__core_patient_service__["a" /* PatientService */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["j" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["j" /* NavController */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* ViewController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* ViewController */]) === "function" && _l || Object, typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["o" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["o" /* ToastController */]) === "function" && _m || Object])
+        __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Inject */])(__WEBPACK_IMPORTED_MODULE_10__di__["b" /* ConstantToken */])),
+        __metadata("design:paramtypes", [Object, __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_2__core_mixpanel_service__["a" /* MixpanelService */],
+            __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__["c" /* DomSanitizer */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* PopoverController */],
+            __WEBPACK_IMPORTED_MODULE_5__ionic_native_youtube_video_player__["a" /* YoutubeVideoPlayer */],
+            __WEBPACK_IMPORTED_MODULE_6__core_story_service__["a" /* StoryService */],
+            __WEBPACK_IMPORTED_MODULE_7__core_patient_service__["a" /* PatientService */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* ViewController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["o" /* ToastController */]])
     ], StoryDetailsComponent);
     return StoryDetailsComponent;
-    var StoryDetailsComponent_1, _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+    var StoryDetailsComponent_1;
 }());
 
 //# sourceMappingURL=storyDetail.component.js.map
@@ -910,6 +952,7 @@ var PatientService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__component_topic_popover_topic_popover_component__ = __webpack_require__(394);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_lodash_sortBy__ = __webpack_require__(395);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_lodash_sortBy___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_lodash_sortBy__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_ionic_angular_platform_platform__ = __webpack_require__(5);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -937,8 +980,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 
+
 var StoryListComponent = /** @class */ (function () {
-    function StoryListComponent(constant, navParams, albumService, patientService, navCtrl, actionsheetCtrl, popoverCtrl, toastCtrl, storyService) {
+    function StoryListComponent(constant, navParams, albumService, patientService, navCtrl, actionsheetCtrl, popoverCtrl, toastCtrl, storyService, plt) {
         this.constant = constant;
         this.navParams = navParams;
         this.albumService = albumService;
@@ -948,6 +992,7 @@ var StoryListComponent = /** @class */ (function () {
         this.popoverCtrl = popoverCtrl;
         this.toastCtrl = toastCtrl;
         this.storyService = storyService;
+        this.plt = plt;
         this.destroy$ = new __WEBPACK_IMPORTED_MODULE_4_rxjs_Rx__["Subject"]();
         this.takenUntilPipe = Object(__WEBPACK_IMPORTED_MODULE_4_rxjs_Rx__["pipe"])(Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_operators__["takeUntil"])(this.destroy$));
         this.hasQuestions = true;
@@ -997,15 +1042,32 @@ var StoryListComponent = /** @class */ (function () {
         var text3 = 'Kies foto van camerarol';
         var text4 = 'Kies video van Youtube';
         var text5 = 'Annuleer';
-        var actionSheet = this.actionsheetCtrl.create({
-            title: 'Voeg verhaal toe',
-            cssClass: 'action-sheets-basic-page',
-            buttons: [
+        var btns = [
+            {
+                text: text4,
+                role: 'destructive',
+                icon: 'play',
+                handler: function () {
+                    _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_11__component_createOrUpdateStory_createOrUpdateStory_component__["a" /* CreateOrUpdateStoryComponent */], {
+                        album: _this.album,
+                        method: _this.constant.methods.addYoutubeStory
+                    });
+                }
+            },
+            {
+                text: text5,
+                role: 'cancel',
+                icon: 'md-arrow-back',
+                handler: function () { }
+            }
+        ];
+        // if on mobile, allow taking a picture (cordova) or camera roll
+        if (this.plt.is('mobile')) {
+            btns = [
                 {
                     text: text2,
                     role: 'destructive',
                     icon: 'camera',
-                    cssClass: 'general',
                     handler: function () {
                         _this.storyService
                             .takeAPicture()
@@ -1035,25 +1097,28 @@ var StoryListComponent = /** @class */ (function () {
                             });
                         });
                     }
-                },
+                }
+            ].concat(btns);
+        }
+        if (this.plt.is('core')) {
+            btns = [
                 {
-                    text: text4,
+                    text: 'Upload een foto',
                     role: 'destructive',
-                    icon: 'play',
+                    icon: 'cloud-upload',
                     handler: function () {
                         _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_11__component_createOrUpdateStory_createOrUpdateStory_component__["a" /* CreateOrUpdateStoryComponent */], {
                             album: _this.album,
-                            method: _this.constant.methods.addYoutubeStory
+                            method: _this.constant.methods.addFileStory
                         });
                     }
-                },
-                {
-                    text: text5,
-                    role: 'cancel',
-                    icon: 'md-arrow-back',
-                    handler: function () { }
                 }
-            ]
+            ].concat(btns);
+        }
+        var actionSheet = this.actionsheetCtrl.create({
+            title: 'Voeg verhaal toe',
+            cssClass: 'action-sheets-basic-page',
+            buttons: btns
         });
         actionSheet.present();
     };
@@ -1092,7 +1157,7 @@ var StoryListComponent = /** @class */ (function () {
     StoryListComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'prisma-story-list',
-            template: "\n    <ion-header>\n      <ion-navbar>\n        <ion-title>{{album.title}}</ion-title>\n        <ion-buttons end>\n          <button ion-button icon-only (click)=\"showMore($event)\">\n            <ion-icon name=\"more\"></ion-icon>\n          </button>\n        </ion-buttons>\n      </ion-navbar>\n    </ion-header>\n    <ion-content #content no-bounce>\n      <ion-scroll scrollY=\"true\" class=\"full-height\">\n        <ion-grid>\n          <ion-row>\n            <ion-col col-3 *ngFor=\"let story of stories\">\n              <prisma-album-story\n                [getBackground]=\"getBackground\"\n                [album]=\"album\"\n                [story]=\"story\"\n                [showDetails]=\"showDetails\"\n                [emptyAlbum]=\"constant.emptyAlbum\"\n                [isAlbum]=\"false\">\n              </prisma-album-story>\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n        <div (click)=\"openActionSheet()\" class=\"add-new-container\">\n          <div class=\"add-new\">\n            <ion-icon class=\"add-icon\" name=\"md-add\"></ion-icon>\n            <span>Voeg verhaal toe</span>\n          </div>\n        </div>\n      </ion-scroll>\n      <ion-fab left bottom (click)=\"openTopics()\">\n        <button ion-fab class=\"topic-icon\"><ion-icon name=\"sunny\"></ion-icon></button>\n      </ion-fab>\n    </ion-content>\n  "
+            template: "\n    <ion-header>\n      <ion-navbar>\n        <ion-title>{{album.title}}</ion-title>\n        <ion-buttons end>\n          <button ion-button icon-only (click)=\"showMore($event)\">\n            <ion-icon name=\"more\"></ion-icon>\n          </button>\n        </ion-buttons>\n      </ion-navbar>\n    </ion-header>\n    <ion-content #content no-bounce>\n      <ion-scroll scrollY=\"true\" class=\"full-height\">\n        <ion-grid>\n          <ion-row>\n            <ion-col col-6 col-md-4 col-lg-3 *ngFor=\"let story of stories\">\n              <prisma-album-story\n                [getBackground]=\"getBackground\"\n                [album]=\"album\"\n                [story]=\"story\"\n                [showDetails]=\"showDetails\"\n                [emptyAlbum]=\"constant.emptyAlbum\"\n                [isAlbum]=\"false\">\n              </prisma-album-story>\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n        <div (click)=\"openActionSheet()\" class=\"add-new-container\">\n          <div class=\"add-new\">\n            <ion-icon class=\"add-icon\" name=\"md-add\"></ion-icon>\n            <span>Voeg verhaal toe</span>\n          </div>\n        </div>\n      </ion-scroll>\n      <ion-fab left bottom (click)=\"openTopics()\">\n        <button ion-fab class=\"topic-icon\"><ion-icon name=\"sunny\"></ion-icon></button>\n      </ion-fab>\n    </ion-content>\n  "
         }),
         __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Inject */])(__WEBPACK_IMPORTED_MODULE_6__di__["b" /* ConstantToken */])),
         __metadata("design:paramtypes", [Object, __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */],
@@ -1102,7 +1167,8 @@ var StoryListComponent = /** @class */ (function () {
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */],
             __WEBPACK_IMPORTED_MODULE_8_ionic_angular_components_popover_popover_controller__["a" /* PopoverController */],
             __WEBPACK_IMPORTED_MODULE_9_ionic_angular_components_toast_toast_controller__["a" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_10__core_story_service__["a" /* StoryService */]])
+            __WEBPACK_IMPORTED_MODULE_10__core_story_service__["a" /* StoryService */],
+            __WEBPACK_IMPORTED_MODULE_15_ionic_angular_platform_platform__["a" /* Platform */]])
     ], StoryListComponent);
     return StoryListComponent;
 }());
@@ -1951,7 +2017,8 @@ var constant = {
         addNewStory: 'addNewStory',
         addYoutubeStory: 'addYoutubeStory',
         replaceDescription: 'replaceDescription',
-        replaceImage: 'replaceImage'
+        replaceImage: 'replaceImage',
+        addFileStory: 'addFileStory'
     }
 };
 //# sourceMappingURL=constant.js.map
@@ -2381,7 +2448,7 @@ var AlbumListComponent = /** @class */ (function () {
     AlbumListComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'prisma-album-list',
-            template: "\n    <ion-header>\n     <ion-navbar>\n        <ion-title>Waarover babbelen we vandaag?</ion-title>\n        <ion-buttons left>\n          <button ion-button menuToggle class=\"albums-menu\">\n            <ion-icon color=\"black\" name='menu'></ion-icon>\n          </button>\n        </ion-buttons>\n      </ion-navbar>\n    </ion-header>\n    <ion-content>\n      <ion-grid *ngIf=\"albums\">\n        <ion-row>\n          <ion-col col-3 *ngFor=\"let album of albums | async\">\n            <prisma-album-story\n              [getBackground]=\"getBackground\"\n              [album]=\"album\"\n              [story]=\"album.stories[album.stories.length-1]\"\n              [showDetails]=\"showDetails\"\n              [emptyAlbum]=\"constant.emptyAlbum\"\n              [isAlbum]=\"true\">\n            </prisma-album-story>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n      <div class=\"add-new-container\">\n        <div class=\"add-new\" (click)=\"addAlbum()\">\n          <ion-icon class=\"add-icon\" name=\"md-add\"></ion-icon>\n          <span>Voeg album toe</span>\n        </div>\n      </div>\n    </ion-content>\n  "
+            template: "\n    <ion-header>\n     <ion-navbar>\n        <ion-title>Waarover babbelen we vandaag?</ion-title>\n        <ion-buttons left>\n          <button ion-button menuToggle class=\"albums-menu\">\n            <ion-icon color=\"black\" name='menu'></ion-icon>\n          </button>\n        </ion-buttons>\n      </ion-navbar>\n    </ion-header>\n    <ion-content>\n      <ion-grid *ngIf=\"albums\">\n        <ion-row>\n          <ion-col col-6 col-md-4 col-lg-3 *ngFor=\"let album of albums | async\">\n            <prisma-album-story\n              [getBackground]=\"getBackground\"\n              [album]=\"album\"\n              [story]=\"album.stories[album.stories.length-1]\"\n              [showDetails]=\"showDetails\"\n              [emptyAlbum]=\"constant.emptyAlbum\"\n              [isAlbum]=\"true\">\n            </prisma-album-story>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n      <div class=\"add-new-container\">\n        <div class=\"add-new\" (click)=\"addAlbum()\">\n          <ion-icon class=\"add-icon\" name=\"md-add\"></ion-icon>\n          <span>Voeg album toe</span>\n        </div>\n      </div>\n    </ion-content>\n  "
         }),
         __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Inject */])(__WEBPACK_IMPORTED_MODULE_7__di__["b" /* ConstantToken */])),
         __metadata("design:paramtypes", [Object, __WEBPACK_IMPORTED_MODULE_1__core_patient_service__["a" /* PatientService */],
@@ -2597,6 +2664,11 @@ var StoryService = /** @class */ (function () {
         return this.http
             .post(this.constant.apiUrl + "/" + this.constant.api.getPatient + "/" + patientId + "/" + this.constant.api.getStory, newStory)
             .let(this.storyPipe);
+    };
+    StoryService.prototype.addFile = function (patientId, storyId, formData) {
+        return this.http
+            .post(this.constant.apiUrl + "/" + this.constant.api.getPatient + "/" + patientId + "/" + this.constant.api.getStory + "/" + storyId + "/" + this.constant.api.getAsset, formData)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["catchError"])(this.handleError));
     };
     StoryService.prototype.deleteStory = function (patientId, storyId) {
         return this.http
@@ -3682,7 +3754,7 @@ var AlbumOrStoryComponent = /** @class */ (function () {
     ], AlbumOrStoryComponent.prototype, "album", void 0);
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_4__shared_types__["c" /* Story */])
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_4__shared_types__["b" /* Story */])
     ], AlbumOrStoryComponent.prototype, "story", void 0);
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
@@ -3721,7 +3793,7 @@ var AlbumOrStoryComponent = /** @class */ (function () {
 /* unused harmony export User */
 /* unused harmony export UserRegister */
 /* unused harmony export Patient */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Story; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Story; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Album; });
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||

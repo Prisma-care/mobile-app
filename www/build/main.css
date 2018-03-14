@@ -70800,7 +70800,7 @@ ion-navbar {
 }
 
 .album-thumb {
-  height: 25vw;
+  height: 50vw;
   background-size: cover;
   background-position: center;
   background-color: #545B6E;
@@ -70822,19 +70822,18 @@ ion-navbar {
   overflow: hidden;
 }
 
-/*
-@media screen and (min-width: map-get($grid-breakpoints, "md") ) {
+@media screen and (min-width: 768px) {
   .album-thumb {
     height: 33vw;
   }
 }
 
-@media screen and (min-width: map-get($grid-breakpoints, "lg") ) {
+@media screen and (min-width: 992px) {
   .album-thumb {
     height: 25vw;
   }
 }
-*/
+
 #album-img {
   /*
     position:absolute;
