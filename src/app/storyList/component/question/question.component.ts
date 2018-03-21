@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {QuestionService} from '../../../core/question.service';
+import {TopicService} from '../../../core/topic.service';
 
 @Component({
   selector: 'prisma-question',
@@ -30,7 +30,7 @@ export class QuestionComponent implements OnInit {
     return this.questions.length > 0;
   }
 
-  constructor(private questionService: QuestionService) {}
+  constructor(private questionService: TopicService) {}
 
   ngOnInit(): void {
     this.questions = this.questionService.getQuestions(this.query);

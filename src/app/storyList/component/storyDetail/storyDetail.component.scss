@@ -102,15 +102,20 @@ prisma-story-detail {
   .image-container {
     position: relative;
     background-color: color($colors, dark-gray);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
   }
 
   .detail-img {
-    margin: auto;
-    height: 100vh;
+    width: 100%;
+    max-height: 100vh;
     position: relative;
-
-    top: 0;
+    object-fit: contain;
+    display: block;
   }
+
   .star2 {
     font-size: 2em;
     color: color($colors, dark-gray);

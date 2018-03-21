@@ -10,7 +10,7 @@ import {PatientService} from './patient.service';
 import {UserService} from './user.service';
 import {AlbumService} from './album.service';
 import {StoryService} from './story.service';
-import {QuestionService} from './question.service';
+import {TopicService} from './topic.service';
 import {InvalidTokenInterceptor} from './interceptors/invalid-token.interceptor';
 import {NetworkInterceptor} from './interceptors/network.interceptor';
 import {MixpanelService} from './mixpanel.service';
@@ -53,7 +53,7 @@ const imports = [HttpClientModule, HttpModule, IonicModule];
     UserService,
     AlbumService,
     StoryService,
-    QuestionService,
+    TopicService,
     MixpanelService,
     FullstoryService,
     Mixpanel,

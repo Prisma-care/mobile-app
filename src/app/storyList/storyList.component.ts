@@ -18,6 +18,7 @@ import {TopicPopoverComponent} from './component/topic-popover/topic-popover.com
 import _sortBy from 'lodash/sortBy';
 import {Platform} from 'ionic-angular/platform/platform';
 import {platform} from 'os';
+import {TopicService} from '../core/topic.service';
 
 @Component({
   selector: 'prisma-story-list',
@@ -55,8 +56,8 @@ import {platform} from 'os';
           </div>
         </div>
       </ion-scroll>
-      <ion-fab left bottom (click)="openTopics()">
-        <button ion-fab class="topic-icon"><ion-icon name="sunny"></ion-icon></button>
+      <ion-fab left bottom (click)="openTopics()" *ngIf="hasTopics">
+        <button ion-fab class="topic-icon"><img src="assets/icon/icon-bulb.svg" style="width:70%;"/></button>
       </ion-fab>
     </ion-content>
   `
@@ -66,7 +67,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
   stories: Story[];
   destroy$: Subject<boolean> = new Subject<boolean>();
   takenUntilPipe = pipe(takeUntil(this.destroy$));
-  hasQuestions = true;
+  hasTopics = true;
 
   @ViewChild('content') content: Content;
 
@@ -75,6 +76,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
     private navParams: NavParams,
     private albumService: AlbumService,
     private patientService: PatientService,
+    private topicService: TopicService,
     private navCtrl: NavController,
     private actionsheetCtrl: ActionSheetController,
     private popoverCtrl: PopoverController,
@@ -89,6 +91,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.album = this.navParams.get('album');
     this.openActionSheet = this.openActionSheet.bind(this);
+    this.hasTopics = this.topicService.hasQuestions(this.album.title);
   }
 
   ngOnDestroy(): void {
@@ -203,7 +206,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
         {
           text: 'Upload een foto',
           role: 'destructive',
-          icon: 'play',
+          icon: 'cloud-upload',
           handler: () => {
             this.navCtrl.push(CreateOrUpdateStoryComponent, {
               album: this.album,

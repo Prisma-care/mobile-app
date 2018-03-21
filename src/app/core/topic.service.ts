@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {QUESTIONS} from '../../shared/question';
 
 @Injectable()
-export class QuestionService {
+export class TopicService {
   private questions = QUESTIONS;
 
   constructor() {}
@@ -17,6 +17,10 @@ export class QuestionService {
     } else {
       return [];
     }
+  }
+
+  hasQuestions(query: string): boolean {
+    return this.getQuestions(query).length > 0;
   }
 
   containsQuery(query: string, keywords: string[]): boolean {
