@@ -15,12 +15,13 @@ interface PatientResponse extends Patient {
   <ion-header>
     <ion-navbar>
       <ion-title>
-        Kies persoon
+        <!-- Kies persoon -->
+        Account wordt aangemaakt...
       </ion-title>
     </ion-navbar>
   </ion-header>
   <ion-content no-bounce>
-    <form [formGroup]="form">
+    <form *ngIf="false" [formGroup]="form">
       <h1 class="prisma-title">Voor welke persoon verzamel<br/> je verhalen?</h1>
       <ion-list class="list">
         <ion-item padding>
@@ -69,6 +70,8 @@ export class NewLovedoneComponent implements OnInit {
       firstName: [null, [Validators.required, Validators.minLength(2)]],
       lastName: [null, [Validators.required, Validators.minLength(2)]]
     });
+    // Prisma TV: use a default patient
+    this.start({firstName: 'Default', lastName: 'Patient'});
   }
 
   start({firstName, lastName}: {firstName: string; lastName: string}) {
