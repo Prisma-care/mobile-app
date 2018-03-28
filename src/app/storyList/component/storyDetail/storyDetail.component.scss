@@ -44,7 +44,7 @@ prisma-story-detail {
   }
 
   .description {
-    padding: 1em;
+    padding: 1em 1em 56px 1em;
     color: #fff;
     background-color: color($colors, general);
     font-size: map-get($sizes, 'medium');
@@ -72,6 +72,7 @@ prisma-story-detail {
     margin: 0;
   }
 
+  // todo: not used anymore?
   .detail-button {
     width: 100%;
     font-size: map-get($sizes, 'medium');
@@ -93,6 +94,15 @@ prisma-story-detail {
 
   .detail-button * {
     display: inline-block;
+  }
+
+  .detail-controls {
+    margin: auto 1em;
+  }
+
+  .edit-story-label {
+    margin: auto 0.5em;
+    text-transform: none;
   }
 
   img {

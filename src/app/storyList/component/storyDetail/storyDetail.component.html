@@ -24,13 +24,18 @@
             class="youtube-icon movie-indicator"></div> -->
         </div>
         <ion-toolbar style="pointer-events: none;" class="bottom overlay-nav controls" [class.show]="showControls">
-          <ion-buttons left *ngIf="!showDescription">
-            <button ion-button icon-only (click)="toggleDescription()">
+          <ion-buttons left class="detail-controls">
+            <button *ngIf="!showDescription && story.description" ion-button icon-only (click)="toggleDescription()">
               <ion-icon name="information-circle"></ion-icon>
+            </button>
+            <!-- Show story edit when there is no description, or when the description is being viewed -->
+            <button *ngIf="!story.description || showDescription" ion-button icon-only (click)="editDescription(story)">
+              <ion-icon name="md-create"></ion-icon>
+              <span class="edit-story-label">Vul het verhaal aan</span>
             </button>
           </ion-buttons>
           <ion-buttons end>
-            <button ion-button icon-only (click)="toggleFavorite()">
+            <button ion-button icon-only class="detail-controls" (click)="toggleFavorite()">
               <ion-icon class="star" name="{{story.favorited ? 'star' : 'star-outline'}}"
               [class.favorited]="story.favorited" ></ion-icon>
             </button>
