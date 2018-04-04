@@ -12,7 +12,7 @@ type authFunction = () => void;
 @Component({
   selector: 'prisma-authentication-register',
   template: `
-    <form [formGroup]="form">
+    <form [formGroup]="form" (ngSubmit)="register(form.getRawValue())">
       <ion-list class="list">
         <ion-item padding>
           <ion-input #inputFirstname type="text" value="" formControlName="firstName" placeholder="Voornaam"
@@ -32,14 +32,14 @@ type authFunction = () => void;
             formControlName="password"
             placeholder="Wachtwoord"
             clearOnEdit="false" clearInput></ion-input>
-          <button ion-button icon-only (click)="toggleShow()" clear item-right>
+          <button ion-button icon-only (click)="toggleShow()" type="button" clear item-right>
             <ion-icon *ngIf="!show" name="eye" color="medium-gray"></ion-icon>
             <ion-icon *ngIf="show" name="eye-off" color="medium-gray"></ion-icon>
           </button>
         </ion-item>
       </ion-list>
 
-      <button ion-button solid block full large color="primary" (click)="register(form.getRawValue())"
+      <button type="submit" ion-button solid block full large color="primary"
               [disabled]="form.invalid">
         <div *ngIf="!loading">Maak account</div>
         <div *ngIf="loading">

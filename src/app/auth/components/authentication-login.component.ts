@@ -16,7 +16,7 @@ type authFunction = () => void;
 @Component({
   selector: 'prisma-authentication-login',
   template: `
-    <form [formGroup]="form">
+    <form [formGroup]="form" (ngSubmit)="login(form.getRawValue())">
       <ion-list class="list">
         <ion-item padding>
           <ion-input
@@ -41,15 +41,14 @@ type authFunction = () => void;
 
           <button
             ion-button icon-only clear item-right
-            (click)="toggleShow()">
+            (click)="toggleShow()" type="button">
             <ion-icon *ngIf="!show" name="eye" color="medium-gray"></ion-icon>
             <ion-icon *ngIf="show" name="eye-off" color="medium-gray"></ion-icon>
           </button>
         </ion-item>
       </ion-list>
 
-      <button ion-button solid block full large color="general"
-              (click)="login(form.getRawValue())"
+      <button type="submit" ion-button solid block full large color="general"
               [disabled]="form.invalid">
         <div *ngIf="!loading">Aanmelden</div>
         <div *ngIf="loading">

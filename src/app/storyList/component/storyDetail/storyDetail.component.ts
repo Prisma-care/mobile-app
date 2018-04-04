@@ -39,6 +39,9 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   showControls = true;
   showDescription = false;
   keyf: (() => void);
+  // needs a bound variable in order to avoid change detection that re-inserts the YouTube src
+  // on a random page modification
+  safeYoutubeUrl: SafeUrl;
 
   constructor(
     @Inject(ConstantToken) private constant: Constant,
@@ -67,6 +70,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
       this.source = this.sanitizer.bypassSecurityTrustResourceUrl(
         this.story.source
       );
+      this.setYoutubeUrl(this.story.source);
     }
     if (screenfull.enabled) {
       screenfull.request();
@@ -192,11 +196,13 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     this.youtube.openVideo(this.storyService.getYoutubeId(url));
   }
 
-  getYoutubeUrl(url: string): SafeUrl {
+  setYoutubeUrl(url: string): void {
     const resourceUrl = `https://www.youtube.com/embed/${this.storyService.getYoutubeId(
       url
-    )}?autoplay=1&rel=0&showinfo=0&disablekb=1`;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(resourceUrl);
+    )}?fs=0&autoplay=1&rel=0&showinfo=0&disablekb=1`;
+    this.safeYoutubeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+      resourceUrl
+    );
   }
 
   editDescription(story: Story) {
