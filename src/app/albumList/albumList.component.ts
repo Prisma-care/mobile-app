@@ -9,6 +9,7 @@ import {MixpanelService} from '../core/mixpanel.service';
 import {StoryListComponent} from '../storyList/storyList.component';
 import {NavController} from 'ionic-angular/navigation/nav-controller';
 import {ConstantToken} from '../di';
+import {ToggleFullscreenDirective} from '../shared/directive/fullscreen.directive';
 import _sortBy from 'lodash/sortBy';
 
 @Component({
@@ -21,6 +22,9 @@ import _sortBy from 'lodash/sortBy';
           <button ion-button menuToggle class="albums-menu">
             <ion-icon color="black" name='menu'></ion-icon>
           </button>
+        </ion-buttons>
+        <ion-buttons right>
+          <prisma-fullscreen-button></prisma-fullscreen-button>
         </ion-buttons>
       </ion-navbar>
     </ion-header>

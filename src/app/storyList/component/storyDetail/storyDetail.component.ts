@@ -21,6 +21,7 @@ import {ConstantToken} from '../../../di';
 import {Content} from 'ionic-angular/navigation/nav-interfaces';
 import {CreateOrUpdateStoryComponent} from '../createOrUpdateStory/createOrUpdateStory.component';
 import {OnDestroy} from '@angular/core/src/metadata/lifecycle_hooks';
+import * as screenfull from 'screenfull';
 
 @Component({
   selector: 'prisma-story-detail',
@@ -66,6 +67,9 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
       this.source = this.sanitizer.bypassSecurityTrustResourceUrl(
         this.story.source
       );
+    }
+    if (screenfull.enabled) {
+      screenfull.request();
     }
   }
 

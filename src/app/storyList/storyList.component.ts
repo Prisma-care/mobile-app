@@ -161,7 +161,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
     ];
 
     // if on mobile, allow taking a picture (cordova) or camera roll
-    if (this.plt.is('mobile')) {
+    if (this.plt.is('cordova')) {
       btns = [
         {
           text: text2,
@@ -199,9 +199,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
         },
         ...btns
       ];
-    }
-
-    if (this.plt.is('core')) {
+    } else {
       btns = [
         {
           text: 'Upload een foto',
