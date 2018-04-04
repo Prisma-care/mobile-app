@@ -3,6 +3,9 @@ import {NavParams} from 'ionic-angular/navigation/nav-params';
 import {ViewController} from 'ionic-angular/navigation/view-controller';
 import {AlbumService} from '../../core/album.service';
 import {PatientService} from '../../core/patient.service';
+import {IfFullscreenDirective} from '../../shared/directive/ifFullscreen.directive';
+import {ToggleFullscreenDirective} from '../../shared/directive/toggleFullscreen.directive';
+import {IfPlatformDirective} from '../../shared/directive/ifPlatform.directive';
 
 @Component({
   selector: 'prisma-story-list-options',
@@ -15,6 +18,12 @@ import {PatientService} from '../../core/patient.service';
       <ion-item padding (click)="deleteAlbum()">
         <ion-icon class="trash-icon" name="md-trash"></ion-icon>
         <p class="contenu">Verwijder album</p>
+      </ion-item>
+      <ion-item padding *prismaIfPlatform='"notCordova"' prismaToggleFullscreen (click)="dismiss()">
+        <ion-icon *prismaIfFullscreen="false" class="trash-icon" name="md-expand"></ion-icon>
+        <ion-icon *prismaIfFullscreen="true" class="trash-icon" name="md-contract"></ion-icon>
+        <p *prismaIfFullscreen="false" class="contenu">Volledig scherm</p>
+        <p *prismaIfFullscreen="true" class="contenu">Terug klein scherm</p>
       </ion-item>
     </ion-list>
   `
@@ -29,6 +38,10 @@ export class StoryListOptionsComponent {
 
   actionSheet() {
     this.navParams.get('actionSheet')();
+    this.viewCtrl.dismiss();
+  }
+
+  dismiss(): void {
     this.viewCtrl.dismiss();
   }
 

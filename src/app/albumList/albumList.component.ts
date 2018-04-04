@@ -9,7 +9,7 @@ import {MixpanelService} from '../core/mixpanel.service';
 import {StoryListComponent} from '../storyList/storyList.component';
 import {NavController} from 'ionic-angular/navigation/nav-controller';
 import {ConstantToken} from '../di';
-import {ToggleFullscreenDirective} from '../shared/directive/fullscreen.directive';
+import {ToggleFullscreenDirective} from '../shared/directive/toggleFullscreen.directive';
 import _sortBy from 'lodash/sortBy';
 
 @Component({
