@@ -4062,11 +4062,10 @@ var IfPlatformDirective = /** @class */ (function () {
     ], IfPlatformDirective.prototype, "prismaIfPlatform", null);
     IfPlatformDirective = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* Directive */])({ selector: '[prismaIfPlatform]' }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* TemplateRef */],
-            __WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* ViewContainerRef */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular_platform_platform__["a" /* Platform */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* TemplateRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* TemplateRef */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* ViewContainerRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* ViewContainerRef */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular_platform_platform__["a" /* Platform */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular_platform_platform__["a" /* Platform */]) === "function" && _c || Object])
     ], IfPlatformDirective);
     return IfPlatformDirective;
+    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=ifPlatform.directive.js.map
@@ -4100,7 +4099,7 @@ var FullscreenButtonComponent = /** @class */ (function () {
     };
     FullscreenButtonComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            template: "\n        <button *prismaIfPlatform=\"'notCordova'\" class=\"prisma-fs-button\" (click)=\"toggleFullscreen()\">\n            <img *ngIf=\"!isFullscreen()\" src=\"assets/icon/fs-icon.svg\"/>\n            <img *ngIf=\"isFullscreen()\" src=\"assets/icon/fs-icon-back.svg\"/>\n        </button>\n    ",
+            template: "\n        <button *prismaIfPlatform='\"notCordova\"' class=\"prisma-fs-button\" (click)=\"toggleFullscreen()\">\n            <img *ngIf=\"!isFullscreen()\" src=\"assets/icon/fs-icon.svg\"/>\n            <img *ngIf=\"isFullscreen()\" src=\"assets/icon/fs-icon-back.svg\"/>\n        </button>\n    ",
             styles: [
                 "\n        .prisma-fs-button {\n            background: none;\n            width: 3.5rem;\n        }\n    "
             ],
