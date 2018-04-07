@@ -889,8 +889,8 @@ webpackEmptyAsyncContext.id = 208;
 var environment = {
     // These statements are preprocessed by gulp
     // eg. run 'gulp develop' to export this part as the environment.
-    currentEnv: 'develop',
-    tracking: false,
+    currentEnv: 'production',
+    tracking: true,
     // insert email addresses you want to exclude from
     // mixpanel tracking in your build here
     trackingExcluded: [
