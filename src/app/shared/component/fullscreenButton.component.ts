@@ -1,14 +1,11 @@
 import {Component} from '@angular/core';
 import * as screenfull from 'screenfull';
-import {IfFullscreenDirective} from '../directive/ifFullscreen.directive';
-import {ToggleFullscreenDirective} from '../directive/toggleFullscreen.directive';
-import {IfPlatformDirective} from '../directive/ifPlatform.directive';
 
 @Component({
   template: `
-        <button class="prisma-fs-button" *prismaIfPlatform='"notCordova"' prismaToggleFullscreen>
-            <img *prismaIfFullscreen="false" src="assets/icon/fs-icon.svg"/>
-            <img *prismaIfFullscreen="true" src="assets/icon/fs-icon-back.svg"/>
+        <button class="prisma-fs-button" (click)="toggleFullscreen()">
+            <img *ngIf="!isFullscreen()" src="assets/icon/fs-icon.svg"/>
+            <img *ngIf="isFullscreen()" src="assets/icon/fs-icon-back.svg"/>
         </button>
     `,
   styles: [
@@ -21,4 +18,12 @@ import {IfPlatformDirective} from '../directive/ifPlatform.directive';
   ],
   selector: 'prisma-fullscreen-button'
 })
-export class FullscreenButtonComponent {}
+export class FullscreenButtonComponent {
+  isFullscreen(): boolean {
+    return screenfull.isFullscreen;
+  }
+
+  toggleFullscreen(): void {
+    screenfull.toggle();
+  }
+}

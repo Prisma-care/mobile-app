@@ -22,6 +22,6 @@ export class IfFullscreenDirective {
   }
 
   private fullscreenIs(condition: boolean): boolean {
-    return screenfull.isFullscreen === condition;
+    return screenfull.enabled ? screenfull.isFullscreen === condition : false;
   }
 }

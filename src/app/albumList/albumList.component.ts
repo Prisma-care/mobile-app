@@ -17,7 +17,7 @@ import _sortBy from 'lodash/sortBy';
   template: `
     <ion-header>
      <ion-navbar>
-        <ion-title>Waarover babbelen we vandaag?</ion-title>
+        <ion-title>Waarover babbelen we?</ion-title>
         <ion-buttons left>
           <button ion-button menuToggle class="albums-menu">
             <ion-icon color="black" name='menu'></ion-icon>

@@ -7,7 +7,7 @@ import {PatientService} from '../core/patient.service';
 import {Subject, pipe} from 'rxjs/Rx';
 import {takeUntil} from 'rxjs/operators';
 import {ConstantToken} from '../di';
-import {Content} from 'ionic-angular/navigation/nav-interfaces';
+import {Content} from 'ionic-angular';
 import {StoryListOptionsComponent} from './component/storyListOptions.component';
 import {PopoverController} from 'ionic-angular/components/popover/popover-controller';
 import {ToastController} from 'ionic-angular/components/toast/toast-controller';
@@ -69,8 +69,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
   takenUntilPipe = pipe(takeUntil(this.destroy$));
   hasTopics = true;
 
-  @ViewChild('content') content: Content;
-
+  @ViewChild(Content) content: Content;
   constructor(
     @Inject(ConstantToken) private constant: Constant,
     private navParams: NavParams,
@@ -114,6 +113,10 @@ export class StoryListComponent implements OnInit, OnDestroy {
         ]);
       });
     this.content.resize();
+  }
+
+  ionViewDidEnter(): void {
+    this.content.scrollToTop();
   }
 
   getBackground(story: Story) {

@@ -151,11 +151,27 @@ export class CreateOrUpdateStoryComponent implements OnInit {
               ),
               switchMap((x: Observable<Object | Error>) => x)
             )
-            .subscribe(() => this.navCtrl.pop());
+            .subscribe(() => {
+              let truncatedDescription = '';
+              if (this.story.description) {
+                truncatedDescription = `'${this.story.description.substring(
+                  0,
+                  Math.min(this.story.description.length, 30)
+                )}...'`;
+              }
+              this.toastCtrl
+                .create({
+                  message: `YouTube-video ${truncatedDescription} toegevoegd`,
+                  duration: 3000,
+                  position: 'bottom'
+                })
+                .present();
+              this.navCtrl.pop();
+            });
         } else {
           this.toastCtrl
             .create({
-              message: 'Bad youtube link',
+              message: 'Ongeldige YouTube link',
               duration: 3000,
               position: 'bottom'
             })
