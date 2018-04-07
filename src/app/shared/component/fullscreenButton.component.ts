@@ -4,7 +4,7 @@ import {IfPlatformDirective} from '../directive/ifPlatform.directive';
 
 @Component({
   template: `
-        <button *prismaIfPlatform="notCordova" class="prisma-fs-button" (click)="toggleFullscreen()">
+        <button *prismaIfPlatform="'notCordova'" class="prisma-fs-button" (click)="toggleFullscreen()">
             <img *ngIf="!isFullscreen()" src="assets/icon/fs-icon.svg"/>
             <img *ngIf="isFullscreen()" src="assets/icon/fs-icon-back.svg"/>
         </button>

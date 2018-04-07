@@ -4100,7 +4100,7 @@ var FullscreenButtonComponent = /** @class */ (function () {
     };
     FullscreenButtonComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            template: "\n        <button *prismaIfPlatform=\"notCordova\" class=\"prisma-fs-button\" (click)=\"toggleFullscreen()\">\n            <img *ngIf=\"!isFullscreen()\" src=\"assets/icon/fs-icon.svg\"/>\n            <img *ngIf=\"isFullscreen()\" src=\"assets/icon/fs-icon-back.svg\"/>\n        </button>\n    ",
+            template: "\n        <button *prismaIfPlatform=\"'notCordova'\" class=\"prisma-fs-button\" (click)=\"toggleFullscreen()\">\n            <img *ngIf=\"!isFullscreen()\" src=\"assets/icon/fs-icon.svg\"/>\n            <img *ngIf=\"isFullscreen()\" src=\"assets/icon/fs-icon-back.svg\"/>\n        </button>\n    ",
             styles: [
                 "\n        .prisma-fs-button {\n            background: none;\n            width: 3.5rem;\n        }\n    "
             ],
