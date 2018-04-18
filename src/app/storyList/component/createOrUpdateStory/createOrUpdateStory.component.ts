@@ -267,16 +267,18 @@ export class CreateOrUpdateStoryComponent implements OnInit {
   checkYoutubeLink(value) {
     this.storyService
       .checkYoutubeLink(value)
-      .subscribe((res: {thumbnail: string; description: string}) => {
-        if (res) {
-          this.image = this.sanitizer.bypassSecurityTrustUrl(res.thumbnail);
-          this.story = {...this.story, description: res.description};
-          this.isLoading = true;
-        } else {
-          this.image = '';
-          this.isLoading = false;
+      .subscribe(
+        (res: {thumbnail: string; description: string; title: string}) => {
+          if (res) {
+            this.image = this.sanitizer.bypassSecurityTrustUrl(res.thumbnail);
+            this.story = {...this.story, description: res.title};
+            this.isLoading = true;
+          } else {
+            this.image = '';
+            this.isLoading = false;
+          }
         }
-      });
+      );
   }
 
   registerFile(file) {

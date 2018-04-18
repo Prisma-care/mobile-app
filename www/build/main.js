@@ -231,20 +231,21 @@ var NewLovedoneComponent = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CreateOrUpdateStoryComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular_navigation_nav_params__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__di__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_story_service__ = __webpack_require__(78);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__core_mixpanel_service__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__core_patient_service__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__core_user_service__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__storyDetail_storyDetail_component__ = __webpack_require__(187);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ionic_angular_navigation_nav_controller__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_ionic_angular_navigation_view_controller__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_transfer__ = __webpack_require__(395);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ionic_angular__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_ionic_angular_components_toast_toast_controller__ = __webpack_require__(96);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_rxjs_operators__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_rxjs_operators__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_types__ = __webpack_require__(860);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__di__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__core_story_service__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__core_mixpanel_service__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__core_patient_service__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__core_user_service__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__storyDetail_storyDetail_component__ = __webpack_require__(187);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_ionic_angular_navigation_nav_controller__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_ionic_angular_navigation_view_controller__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ionic_native_transfer__ = __webpack_require__(395);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_ionic_angular__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_ionic_angular_components_toast_toast_controller__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rxjs_operators__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15_rxjs_operators__);
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -265,6 +266,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+
 
 
 
@@ -350,9 +352,9 @@ var CreateOrUpdateStoryComponent = /** @class */ (function () {
                 send: function () {
                     if (_this.isLoading) {
                         _this.addStory()
-                            .pipe(Object(__WEBPACK_IMPORTED_MODULE_14_rxjs_operators__["map"])(function (addedStory) {
+                            .pipe(Object(__WEBPACK_IMPORTED_MODULE_15_rxjs_operators__["map"])(function (addedStory) {
                             return _this.storyService.addYoutubeLinkAsset(_this.currentPatient.patient_id, addedStory.id, _this.story.source);
-                        }), Object(__WEBPACK_IMPORTED_MODULE_14_rxjs_operators__["switchMap"])(function (x) { return x; }))
+                        }), Object(__WEBPACK_IMPORTED_MODULE_15_rxjs_operators__["switchMap"])(function (x) { return x; }))
                             .subscribe(function () {
                             var truncatedDescription = '';
                             if (_this.story.description) {
@@ -413,7 +415,7 @@ var CreateOrUpdateStoryComponent = /** @class */ (function () {
                 updatedStory: _this.story,
                 selectedAlbum: _this.album
             });
-            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_8__storyDetail_storyDetail_component__["a" /* StoryDetailsComponent */], {
+            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_9__storyDetail_storyDetail_component__["a" /* StoryDetailsComponent */], {
                 album: _this.album,
                 story: _this.story
             });
@@ -427,7 +429,7 @@ var CreateOrUpdateStoryComponent = /** @class */ (function () {
         var _this = this;
         return this.storyService
             .addStory(this.currentPatient.patient_id, this.story)
-            .pipe(Object(__WEBPACK_IMPORTED_MODULE_14_rxjs_operators__["map"])(function (addedStory) {
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_15_rxjs_operators__["map"])(function (addedStory) {
             _this.mixpanel.track('NewStoryComponent::saving story', {
                 email: _this.currentUser.email,
                 patient_id: _this.currentPatient.patient_id,
@@ -444,7 +446,7 @@ var CreateOrUpdateStoryComponent = /** @class */ (function () {
             .subscribe(function (res) {
             if (res) {
                 _this.image = _this.sanitizer.bypassSecurityTrustUrl(res.thumbnail);
-                _this.story = __assign({}, _this.story, { description: res.description });
+                _this.story = __assign({}, _this.story, { description: res.title });
                 _this.isLoading = true;
             }
             else {
@@ -490,21 +492,11 @@ var CreateOrUpdateStoryComponent = /** @class */ (function () {
             selector: 'prisma-create-update-story',
             template: "\n    <ion-header>\n    <ion-navbar>\n        <ion-title>{{title}}</ion-title>\n    </ion-navbar>\n    </ion-header>\n\n    <ion-content padding>\n    <ion-item-group>\n        <br>\n        <!-- Add Youtube story -->\n        <h2 class=\"plak-een-youtube-lin\" *ngIf=\"method===constant.methods.addYoutubeStory\">Plak een Youtube link om de\n        video toe te voegen.</h2>\n        <h2 class=\"plak-een-youtube-lin\" *ngIf=\"method===constant.methods.addFileStory\">Upload een foto van je toestel</h2>\n\n        <!-- Add description story -->\n        <ion-item style=\"padding-left: 0\"></ion-item>\n        <ion-item *ngIf=\"method !== constant.methods.addYoutubeStory\">\n            <ion-textarea autofocus class=\"story-text\" placeholder=\"{{placeHolder}}\" [(ngModel)]=\"story.description\" rows=\"7\"\n                        clearInput></ion-textarea>\n        </ion-item>\n        <!-- Add Youtube Story -->\n        <ion-item *ngIf=\"method===constant.methods.addYoutubeStory\" style=\"padding-left: 0\">\n            <ion-textarea autofocus class=\"story-text\" placeholder=\"{{youtubeLinkPlaceHolder}}\"\n            (ngModelChange)=\"checkYoutubeLink($event)\"\n            [(ngModel)]=\"story.source\"\n            rows=\"3\" style=\"padding-left: 0\"\n            clearInput></ion-textarea>\n        </ion-item>\n        <!-- Add File Story -->\n        <ion-item *ngIf=\"method===constant.methods.addFileStory\" >\n          <input type=\"file\" accept=\".jpg,.jpeg,.png,.gif\" name=\"asset\" #fileselector\n            (change)=\"registerFile(fileselector.files[0])\" style=\"padding-left: 0\" />\n        </ion-item>\n        <ion-item>\n          <ion-thumbnail class=\"thumbnail\" style=\"padding-left: 7%;\" *ngIf=\"method===constant.methods.addYoutubeStory\">\n              <img *ngIf=\"isLoading\" [src]=\"image\">\n              <ion-spinner *ngIf=\"!isLoading\" item-start name=\"dots\" color=\"grey\"></ion-spinner>\n          </ion-thumbnail>\n        </ion-item>\n\n        <button ion-button solid block full large color=\"primary\" (click)=\"commit()\"\n          [disabled]=\"!isLoading\">\n          <ion-icon name=\"checkmark\"></ion-icon>\n        </button>\n\n    </ion-item-group>\n    </ion-content>\n\n  "
         }),
-        __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Inject */])(__WEBPACK_IMPORTED_MODULE_2__di__["b" /* ConstantToken */])),
-        __metadata("design:paramtypes", [Object, __WEBPACK_IMPORTED_MODULE_1_ionic_angular_navigation_nav_params__["a" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__["c" /* DomSanitizer */],
-            __WEBPACK_IMPORTED_MODULE_4__core_story_service__["a" /* StoryService */],
-            __WEBPACK_IMPORTED_MODULE_5__core_mixpanel_service__["a" /* MixpanelService */],
-            __WEBPACK_IMPORTED_MODULE_6__core_patient_service__["a" /* PatientService */],
-            __WEBPACK_IMPORTED_MODULE_7__core_user_service__["a" /* UserService */],
-            __WEBPACK_IMPORTED_MODULE_9_ionic_angular_navigation_nav_controller__["a" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_10_ionic_angular_navigation_view_controller__["a" /* ViewController */],
-            __WEBPACK_IMPORTED_MODULE_11__ionic_native_transfer__["a" /* Transfer */],
-            __WEBPACK_IMPORTED_MODULE_12_ionic_angular__["h" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_13_ionic_angular_components_toast_toast_controller__["a" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */]])
+        __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Inject */])(__WEBPACK_IMPORTED_MODULE_3__di__["b" /* ConstantToken */])),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__shared_types__["Constant"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__shared_types__["Constant"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular_navigation_nav_params__["a" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular_navigation_nav_params__["a" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__["c" /* DomSanitizer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__["c" /* DomSanitizer */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_5__core_story_service__["a" /* StoryService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__core_story_service__["a" /* StoryService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_6__core_mixpanel_service__["a" /* MixpanelService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__core_mixpanel_service__["a" /* MixpanelService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_7__core_patient_service__["a" /* PatientService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__core_patient_service__["a" /* PatientService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_8__core_user_service__["a" /* UserService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__core_user_service__["a" /* UserService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_10_ionic_angular_navigation_nav_controller__["a" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_10_ionic_angular_navigation_nav_controller__["a" /* NavController */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_11_ionic_angular_navigation_view_controller__["a" /* ViewController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_11_ionic_angular_navigation_view_controller__["a" /* ViewController */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_12__ionic_native_transfer__["a" /* Transfer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__ionic_native_transfer__["a" /* Transfer */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_13_ionic_angular__["h" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_13_ionic_angular__["h" /* LoadingController */]) === "function" && _l || Object, typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_14_ionic_angular_components_toast_toast_controller__["a" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_14_ionic_angular_components_toast_toast_controller__["a" /* ToastController */]) === "function" && _m || Object, typeof (_o = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */]) === "function" && _o || Object])
     ], CreateOrUpdateStoryComponent);
     return CreateOrUpdateStoryComponent;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
 }());
 
 //# sourceMappingURL=createOrUpdateStory.component.js.map
@@ -2275,10 +2267,12 @@ function getYoutubeDescriptionAndThumbnail(url) {
         return this.http
             .get("https://www.googleapis.com/youtube/v3/videos?id=" + urlId + "&key=" + this.constant.youtubeApiKey + "&part=snippet")
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_operators__["map"])(function (res) { return ({
+            // TODO: YT description not used anymore, but might be useful at some point
             thumbnail: res.pageInfo.totalResults
                 ? res.items[0].snippet.thumbnails
                 : null,
-            description: res.items[0].snippet.description
+            description: res.items[0].snippet.description,
+            title: res.items[0].snippet.title
         }); }), Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_operators__["map"])(function (res) {
             var last = Object.keys(res.thumbnail)[Object.keys(res.thumbnail).length - 1];
             return __assign({}, res, { thumbnail: res.thumbnail[last].url });
@@ -3806,7 +3800,7 @@ var AlbumOrStoryComponent = /** @class */ (function () {
     ], AlbumOrStoryComponent.prototype, "album", void 0);
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_4__shared_types__["b" /* Story */])
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_4__shared_types__["c" /* Story */])
     ], AlbumOrStoryComponent.prototype, "story", void 0);
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
@@ -3845,7 +3839,7 @@ var AlbumOrStoryComponent = /** @class */ (function () {
 /* unused harmony export User */
 /* unused harmony export UserRegister */
 /* unused harmony export Patient */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Story; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Story; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Album; });
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||

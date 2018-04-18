@@ -21,6 +21,7 @@ export interface YoutubeResponse {
           };
         };
         description: string;
+        title: string;
       };
     };
   };
@@ -96,12 +97,14 @@ export function getYoutubeDescriptionAndThumbnail(
       )
       .pipe(
         map((res: YoutubeResponse) => ({
+          // TODO: YT description not used anymore, but might be useful at some point
           thumbnail: res.pageInfo.totalResults
             ? res.items[0].snippet.thumbnails
             : null,
-          description: res.items[0].snippet.description
+          description: res.items[0].snippet.description,
+          title: res.items[0].snippet.title
         })),
-        map((res: {thumbnail: Object; description: string}) => {
+        map((res: {thumbnail: Object; description: string; title: string}) => {
           const last = Object.keys(res.thumbnail)[
             Object.keys(res.thumbnail).length - 1
           ];
