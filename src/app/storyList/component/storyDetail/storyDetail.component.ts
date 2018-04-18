@@ -186,7 +186,8 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   toggleControls(): void {
     if (this.showDescription) {
       this.toggleDescription();
-    } else {
+    } else if (!(this.story.type === 'youtube')) {
+      // only hide controls when it is not a YouTube video
       this.showControls = !this.showControls;
     }
   }

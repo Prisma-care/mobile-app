@@ -287,14 +287,6 @@ $detail-shadow: 1px 2px 2px hsla(0, 0%, 15%, 0.4);
 }
 
 .circle-icon {
-  position: absolute;
-  display: block;
-  font-size: 50px;
-  // centering code 
-  top: 50%;
-  left: 50%;
-  margin: -0.5em 0 0 -0.5em;
-
   height:1em;
   width:1em;
   background: color($colors, primary);
@@ -315,6 +307,16 @@ $detail-shadow: 1px 2px 2px hsla(0, 0%, 15%, 0.4);
     box-sizing: border-box;
     transform: translate(-50%, -50%);
   }
+}
+
+.circle-icon.youtube-icon {
+  // centering code 
+  position: absolute;
+  display: block;
+  font-size: 50px;
+  top: 50%;
+  left: 50%;
+  margin: -0.5em 0 0 -0.5em;
 }
 
 .add-icon{
