@@ -70579,7 +70579,7 @@ prisma-story-detail .description, prisma-story-detail .controls {
 prisma-story-detail .description {
   padding: 1em 1em 56px 1em;
   color: #fff;
-  background-color: #647FC6;
+  background-color: #545B6E;
   font-size: 20px;
 }
 
@@ -70591,7 +70591,7 @@ prisma-story-detail .bottom {
 
 prisma-story-detail ion-toolbar.bottom {
   height: 56px;
-  background-color: #637DC8;
+  background-color: #545B6E;
 }
 
 prisma-story-detail .show {
@@ -70669,6 +70669,14 @@ prisma-story-detail .image-container {
   right: 0;
   top: 0;
   bottom: 56px;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+prisma-story-detail .expanded {
+  bottom: 0;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
 
 prisma-story-detail .detail-img {
@@ -70678,6 +70686,16 @@ prisma-story-detail .detail-img {
   -o-object-fit: contain;
   object-fit: contain;
   display: block;
+}
+
+prisma-story-detail .bg-img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  -webkit-filter: blur(20px);
+  filter: blur(20px);
+  position: absolute;
 }
 
 prisma-story-detail .star2 {
