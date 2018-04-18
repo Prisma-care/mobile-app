@@ -6,9 +6,9 @@ import {AuthenticationComponent} from '../../authentication.component';
   selector: 'prisma-intro',
   template: `
     <ion-content>
-        <img src="assets/img/introPage/intro.jpg"/>
-        <h1>Kleur jullie <br/> herinneringen</h1>
-        <button ion-button full large (click)="onRegister(true)">Registreer</button>
+        <img class="intro-img" src="assets/img/introPage/intro.jpg"/>
+        <h1>Kleur jullie herinneringen</h1>
+        <button class="intro-btn" ion-button large (click)="onRegister(true)">Registreer</button>
         <p class="alternate-option" (click)="onRegister(false)">
          Al een account?
         <a color="general">

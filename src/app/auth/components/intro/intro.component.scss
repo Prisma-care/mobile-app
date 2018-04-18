@@ -4,6 +4,7 @@ prisma-intro {
        font-size: 2em;
        color: #A9A9A9;
        margin-bottom:1.5em;
+       padding: 0 2em;
     }
 
     .alternate-option {
@@ -11,4 +12,19 @@ prisma-intro {
         text-align: center;
         margin-top:1.5em;
       }
+
+    .intro-img {
+        display: block;
+        position: relative;
+        margin: 10vh auto 0 auto;
+        max-height: 50%;
+        max-width: 80%;
+    }
+
+    .intro-btn {
+        display: block;
+        margin: auto;
+        position: relative;
+        padding: 0 4em;
+    }
 }

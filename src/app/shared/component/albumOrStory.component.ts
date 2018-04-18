@@ -21,7 +21,7 @@ type getBackground = (story: Story) => Observable<string | Error>;
       </div>
       <div *ngIf="!isAlbum && story.source">
           <div class="boxPlay">
-            <div *ngIf="typeYoutube(story)" class="youtube-icon movie-indicator"></div>
+            <div *ngIf="typeYoutube(story)" class="youtube-icon circle-icon movie-indicator"></div>
           </div>
           <ion-icon *ngIf="story.favorited" class="star tile-star" name="star"
             [class.favorited]="isFavorited"></ion-icon>

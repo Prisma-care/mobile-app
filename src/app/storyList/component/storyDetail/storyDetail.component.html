@@ -22,8 +22,7 @@
                (click)="openYoutubeVideo(story.source)"
                class="detail-img">
           <div *prismaIfPlatform="'cordova'" (click)="openYoutubeVideo(story.source)"
-            style="position: absolute;display: block;font-size: 50px;top: 50%;left: 50%; margin: -0.5em 0 0 -0.5em;"
-            class="youtube-icon movie-indicator"></div>
+            class="youtube-icon circle-icon movie-indicator"></div>
         </div>
         <ion-toolbar style="pointer-events: none;" class="bottom overlay-nav controls" [class.show]="showControls">
           <ion-buttons left class="detail-controls">
@@ -45,6 +44,9 @@
         </ion-toolbar>
         <div class="description bottom" color="general" *ngIf="story.description" [class.show]='showDescription'>
           <p class="description-text">{{story.description}}</p>
+          <button ion-button basic color="white" round class="description-close" (click)="toggleDescription()">
+            <ion-icon name="close" color="primary"></ion-icon>
+          </button>
         </div>
         <!--
         <div class="row">

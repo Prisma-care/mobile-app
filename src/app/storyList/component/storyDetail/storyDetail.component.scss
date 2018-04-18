@@ -1,5 +1,7 @@
 prisma-story-detail {
 
+  $toolbar-height: 56px;
+
   ion-content {
     height: 100vh;
     overflow: hidden;
@@ -58,6 +60,11 @@ prisma-story-detail {
     width: 100%;
   }
 
+  ion-toolbar.bottom {
+    height: $toolbar-height;
+    background-color: color($colors, 'primary');
+  }
+
   .controls {
     @extend %transition-from;
   }
@@ -70,6 +77,17 @@ prisma-story-detail {
 
   .description-text {
     margin: 0;
+  }
+
+  .description-close {
+    $button-size: 3.2rem;
+    position: absolute;
+    right: 1.1em;
+    top: - $button-size / 2;
+    margin-top: 0;
+    padding: 0;
+    width: $button-size;
+    height: $button-size;
   }
 
   // todo: not used anymore?
@@ -110,12 +128,15 @@ prisma-story-detail {
   }
 
   .image-container {
-    position: relative;
+    position: absolute;
     background-color: color($colors, dark-gray);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 100vh;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: $toolbar-height;
   }
 
   .detail-img {
