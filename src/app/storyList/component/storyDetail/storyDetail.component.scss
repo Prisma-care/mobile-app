@@ -48,7 +48,7 @@ prisma-story-detail {
   .description {
     padding: 1em 1em 56px 1em;
     color: #fff;
-    background-color: color($colors, general);
+    background-color: color($colors, dark-gray);
     font-size: map-get($sizes, 'medium');
 
     @extend %transition-from;
@@ -62,7 +62,7 @@ prisma-story-detail {
 
   ion-toolbar.bottom {
     height: $toolbar-height;
-    background-color: color($colors, 'primary');
+    background-color: color($colors, dark-gray);
   }
 
   .controls {
@@ -137,6 +137,12 @@ prisma-story-detail {
     right: 0;
     top: 0;
     bottom: $toolbar-height;
+    transition: 0.5s;
+  }
+
+  .expanded {
+    bottom: 0;
+    transition: 0.5s;
   }
 
   .detail-img {
@@ -145,6 +151,14 @@ prisma-story-detail {
     position: relative;
     object-fit: contain;
     display: block;
+  }
+
+  .bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(20px);
+    position: absolute;
   }
 
   .star2 {

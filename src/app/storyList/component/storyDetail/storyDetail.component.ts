@@ -71,6 +71,9 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
         this.story.source
       );
       this.setYoutubeUrl(this.story.source);
+      this.showControls = true;
+    } else {
+      this.showControls = false;
     }
     if (screenfull.enabled) {
       screenfull.request();
