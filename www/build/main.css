@@ -70012,7 +70012,13 @@ ion-navbar {
   right: 0;
 }
 
-.youtube-icon {
+.circle-icon {
+  position: absolute;
+  display: block;
+  font-size: 50px;
+  top: 50%;
+  left: 50%;
+  margin: -0.5em 0 0 -0.5em;
   height: 1em;
   width: 1em;
   background: #637DC8;
@@ -70020,7 +70026,7 @@ ion-navbar {
   position: relative;
 }
 
-.youtube-icon:before {
+.circle-icon.youtube-icon:before {
   content: "";
   position: absolute;
   left: 50%;
@@ -70201,12 +70207,28 @@ prisma-intro h1 {
   font-size: 2em;
   color: #A9A9A9;
   margin-bottom: 1.5em;
+  padding: 0 2em;
 }
 
 prisma-intro .alternate-option {
   color: #ABAEB4;
   text-align: center;
   margin-top: 1.5em;
+}
+
+prisma-intro .intro-img {
+  display: block;
+  position: relative;
+  margin: 10vh auto 0 auto;
+  max-height: 50%;
+  max-width: 80%;
+}
+
+prisma-intro .intro-btn {
+  display: block;
+  margin: auto;
+  position: relative;
+  padding: 0 4em;
 }
 
 prisma-new-lovedone .prisma-title {
@@ -70567,6 +70589,11 @@ prisma-story-detail .bottom {
   width: 100%;
 }
 
+prisma-story-detail ion-toolbar.bottom {
+  height: 56px;
+  background-color: #637DC8;
+}
+
 prisma-story-detail .show {
   visibility: visible;
   opacity: 1;
@@ -70576,6 +70603,16 @@ prisma-story-detail .show {
 
 prisma-story-detail .description-text {
   margin: 0;
+}
+
+prisma-story-detail .description-close {
+  position: absolute;
+  right: 1.1em;
+  top: -1.6rem;
+  margin-top: 0;
+  padding: 0;
+  width: 3.2rem;
+  height: 3.2rem;
 }
 
 prisma-story-detail .detail-button {
@@ -70613,7 +70650,7 @@ prisma-story-detail img {
 }
 
 prisma-story-detail .image-container {
-  position: relative;
+  position: absolute;
   background-color: #545B6E;
   display: -webkit-box;
   display: -webkit-flex;
@@ -70628,7 +70665,10 @@ prisma-story-detail .image-container {
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 100vh;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 56px;
 }
 
 prisma-story-detail .detail-img {
