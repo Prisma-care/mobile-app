@@ -7,10 +7,12 @@ import {StoryOptionsComponent} from './component/storyDetail/component/storyOpti
 import {StoryListOptionsComponent} from './component/storyListOptions.component';
 import {CreateOrUpdateStoryComponent} from './component/createOrUpdateStory/createOrUpdateStory.component';
 import {TopicPopoverComponent} from './component/topic-popover/topic-popover.component';
+import {PrintListComponent} from './printList.component';
 
 const imports = [SharedModule];
 const declarations = [
   StoryListComponent,
+  PrintListComponent,
   StoryDetailsComponent,
   StoryOptionsComponent,
   QuestionComponent,
@@ -25,6 +27,7 @@ const declarations = [
   providers: [],
   entryComponents: [
     StoryListComponent,
+    PrintListComponent,
     StoryDetailsComponent,
     StoryOptionsComponent,
     StoryListOptionsComponent,

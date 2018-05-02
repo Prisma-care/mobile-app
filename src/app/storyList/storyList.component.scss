@@ -9,6 +9,37 @@ prisma-story-list {
     }
   }
 
+  @media print {
+    body {
+      position: static;
+      overflow: visible;
+    }
+
+    ion-header, ion-fab, .boxPlay, .star, h3 {
+      display: none;
+    }
+
+    .scroll-content {
+      overflow-y: visible;
+      position: static;
+      bottom: auto;
+    }
+
+    ion-app, ion-nav, ion-tab, ion-tabs, .app-root {
+      left: 0;
+      top: 0;
+      /* position: absolute; */
+      z-index: 0;
+      /* display: block; */
+      width: 100%;
+      /* height: 100%; */
+    }
+    
+    @page {
+      size: A4;
+    }
+  }
+
   ion-scroll.split-height {
     height: 80%;
     white-space: nowrap;

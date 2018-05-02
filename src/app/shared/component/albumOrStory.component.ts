@@ -4,6 +4,8 @@ import {Subject, Observable} from 'rxjs/Rx';
 import {takeUntil} from 'rxjs/operators';
 import {Story, Album} from '../../../shared/types';
 
+import {environment} from '../../../environments/environment';
+
 type showDetails = (album: Album, story: Story) => void;
 type getBackground = (story: Story) => Observable<string | Error>;
 
@@ -13,7 +15,7 @@ type getBackground = (story: Story) => Observable<string | Error>;
     <div *ngIf="imageLoaded"
       class="album-thumb test"
       (click)="showDetails(album, story)">
-      <img id="album-img" [src]="backgroundImage">
+      <img class="album-img" [src]="backgroundImage">
       <div *ngIf="isAlbum">
           <div class="tile-overlay-gradient"></div>
           <div *ngIf="album.hasNew" class="has-new-item">NIEUW</div>
@@ -66,6 +68,11 @@ export class AlbumOrStoryComponent implements OnInit, OnDestroy {
   }
 
   setBackgroundImage(story: Story) {
+    if (environment.currentEnv === 'test') {
+      this.backgroundImage = '/assets/img/laadtijd.jpg';
+      this.imageLoaded = true;
+      return;
+    }
     if (story) {
       this.getBackground(story)
         .pipe(takeUntil(this.destroy$))

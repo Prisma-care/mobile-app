@@ -258,7 +258,7 @@ $detail-shadow: 1px 2px 2px hsla(0, 0%, 15%, 0.4);
 }
 
 
-#album-img{
+.album-img {
     /*
     position:absolute;
     top: 50%;
@@ -367,4 +367,38 @@ $detail-shadow: 1px 2px 2px hsla(0, 0%, 15%, 0.4);
   width:215px;
   height:45px;
   border-radius: 10px;
+}
+
+@media print {
+  body {
+      position: static;
+      overflow: visible;
+      
+      }
+    
+  ion-header, ion-fab, .boxPlay, .star, h3 {
+      display: none;
+  }
+  
+  .scroll-content {
+    overflow-y: visible;
+    position: static;
+    bottom: auto;
+  }
+  
+  ion-app, ion-nav, ion-tab, ion-tabs, .app-root {
+    left: 0;
+    top: 0;
+    position: static;
+    z-index: 0;
+    display: inline;
+    width: 100%;
+    max-height: auto;
+    height: auto;
+  }
+
+  @page {
+    size: A4;
+  }
+  
 }

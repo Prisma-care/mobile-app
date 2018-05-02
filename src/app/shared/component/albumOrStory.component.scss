@@ -24,4 +24,12 @@ prisma-album-story {
     overflow: hidden;
     overflow-wrap: break-word;
   }
+
+  @media print {
+    
+    .album-thumb {
+      height: auto;
+    }
+  
+  }
 }

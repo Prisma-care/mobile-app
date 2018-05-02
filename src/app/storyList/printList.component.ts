@@ -19,54 +19,47 @@ import _sortBy from 'lodash/sortBy';
 import {Platform} from 'ionic-angular/platform/platform';
 import {platform} from 'os';
 import {TopicService} from '../core/topic.service';
-import {PrintListComponent} from './printList.component';
+import {StoryListComponent} from './storyList.component';
+import {ViewEncapsulation} from '@angular/core';
 
 @Component({
-  selector: 'prisma-story-list',
+  selector: 'prisma-print-list',
   template: `
-    <ion-header>
-      <ion-navbar>
-        <ion-title>{{album.title}}</ion-title>
-        <ion-buttons end>
-          <button ion-button icon-only (click)="showPrint()">
-            <ion-icon name="print"></ion-icon>
-          </button>
-          <button ion-button icon-only (click)="showMore($event)">
-            <ion-icon name="more"></ion-icon>
-          </button>
-        </ion-buttons>
-      </ion-navbar>
-    </ion-header>
-    <ion-content #content no-bounce>
-      <ion-scroll scrollY="true" class="full-height">
-        <ion-grid>
-          <ion-row>
-            <ion-col col-6 col-md-4 col-lg-3 *ngFor="let story of stories">
-              <prisma-album-story
-                [getBackground]="getBackground"
-                [album]="album"
-                [story]="story"
-                [showDetails]="showDetails"
-                [emptyAlbum]="constant.emptyAlbum"
-                [isAlbum]="false">
-              </prisma-album-story>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        <div (click)="openActionSheet()" class="add-new-container">
-          <div class="add-new">
-            <ion-icon class="add-icon" name="md-add"></ion-icon>
-            <span>Voeg verhaal toe</span>
-          </div>
-        </div>
-      </ion-scroll>
-      <ion-fab left bottom (click)="openTopics()" *ngIf="hasTopics">
-        <button ion-fab class="topic-icon"><img src="assets/icon/icon-bulb.svg" style="width:70%;"/></button>
-      </ion-fab>
-    </ion-content>
-  `
+    <div class="print-tile" *ngFor="let story of stories">
+        <prisma-album-story
+            [getBackground]="getBackground"
+            [album]="album"
+            [story]="story"
+            [showDetails]="showDetails"
+            [emptyAlbum]="constant.emptyAlbum"
+            [isAlbum]="false">
+        </prisma-album-story>
+        <p *ngIf="story.description">{{story.description | slice:0:200}}{{story.description.length > 200 ? '...' : ''}}</p>
+    </div>
+    `,
+  styles: [
+    `
+      prisma-print-list > div {
+        display: block;
+        float: left;
+        width: 50%;
+        padding: 1em 1em 0 0;
+      }
+
+      .print-tile {
+
+      }
+      `
+  ],
+  encapsulation: ViewEncapsulation.None
 })
-export class StoryListComponent implements OnInit, OnDestroy {
+export class PrintListComponent implements OnInit, OnDestroy {
+  /*
+
+    TODO: inheritance seems to be broken somehow,
+            so this is a copy-paste
+
+    */
   album: Album;
   stories: Story[];
   destroy$: Subject<boolean> = new Subject<boolean>();
@@ -74,6 +67,7 @@ export class StoryListComponent implements OnInit, OnDestroy {
   hasTopics = true;
 
   @ViewChild(Content) content: Content;
+
   constructor(
     @Inject(ConstantToken) private constant: Constant,
     private navParams: NavParams,
