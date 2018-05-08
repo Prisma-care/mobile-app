@@ -69988,7 +69988,7 @@ ion-navbar {
   }
 }
 
-#album-img {
+.album-img {
   /*
     position:absolute;
     top: 50%;
@@ -70013,12 +70013,6 @@ ion-navbar {
 }
 
 .circle-icon {
-  position: absolute;
-  display: block;
-  font-size: 50px;
-  top: 50%;
-  left: 50%;
-  margin: -0.5em 0 0 -0.5em;
   height: 1em;
   width: 1em;
   background: #637DC8;
@@ -70039,6 +70033,15 @@ ion-navbar {
   box-sizing: border-box;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+
+.circle-icon.youtube-icon {
+  position: absolute;
+  display: block;
+  font-size: 50px;
+  top: 50%;
+  left: 50%;
+  margin: -0.5em 0 0 -0.5em;
 }
 
 .add-icon {
@@ -70090,6 +70093,34 @@ ion-navbar {
   width: 215px;
   height: 45px;
   border-radius: 10px;
+}
+
+@media print {
+  body {
+    position: static;
+    overflow: visible;
+  }
+  ion-header, ion-fab, .boxPlay, .star, h3 {
+    display: none;
+  }
+  .scroll-content {
+    overflow-y: visible;
+    position: static;
+    bottom: auto;
+  }
+  ion-app, ion-nav, ion-tab, ion-tabs, .app-root {
+    left: 0;
+    top: 0;
+    position: static;
+    z-index: 0;
+    display: inline;
+    width: 100%;
+    max-height: auto;
+    height: auto;
+  }
+  @page {
+    size: A4;
+  }
 }
 
 prisma-album-list {
@@ -70302,6 +70333,12 @@ prisma-album-story .text-story {
   overflow-wrap: break-word;
 }
 
+@media print {
+  prisma-album-story .album-thumb {
+    height: auto;
+  }
+}
+
 prisma-give-feedback {
   background: white;
 }
@@ -70339,6 +70376,35 @@ prisma-invite .wie-kan-mee-het-digi {
   }
   prisma-story-list prisma-question.split-height .topic-wrapper {
     height: 85%;
+  }
+}
+
+@media print {
+  prisma-story-list body {
+    position: static;
+    overflow: visible;
+  }
+  prisma-story-list ion-header, prisma-story-list ion-fab, prisma-story-list .boxPlay, prisma-story-list .star, prisma-story-list h3 {
+    display: none;
+  }
+  prisma-story-list .scroll-content {
+    overflow-y: visible;
+    position: static;
+    bottom: auto;
+  }
+  prisma-story-list ion-app, prisma-story-list ion-nav, prisma-story-list ion-tab, prisma-story-list ion-tabs, prisma-story-list .app-root {
+    left: 0;
+    top: 0;
+    /* position: absolute; */
+    z-index: 0;
+    /* display: block; */
+    width: 100%;
+    /* height: 100%; */
+  }
+  @page {
+    prisma-story-list {
+      size: A4;
+    }
   }
 }
 
