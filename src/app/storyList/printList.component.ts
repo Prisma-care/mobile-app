@@ -25,6 +25,10 @@ import {ViewEncapsulation} from '@angular/core';
 @Component({
   selector: 'prisma-print-list',
   template: `
+    <div class="print-info">
+      <h1>Print het album {{album ? album.title : ''}}</h1>
+      <p>Druk op Ctrl+P om het printdialoog te openen.
+    </div>
     <div class="print-tile" *ngFor="let story of stories">
         <prisma-album-story
             [getBackground]="getBackground"
@@ -34,20 +38,36 @@ import {ViewEncapsulation} from '@angular/core';
             [emptyAlbum]="constant.emptyAlbum"
             [isAlbum]="false">
         </prisma-album-story>
-        <p *ngIf="story.description">{{story.description | slice:0:200}}{{story.description.length > 200 ? '...' : ''}}</p>
+        <p class="print-description" *ngIf="story.description"
+          >{{story.description | slice:0:200}}{{story.description.length > 200 ? '...' : ''}}</p>
     </div>
     `,
   styles: [
     `
-      prisma-print-list > div {
-        display: block;
+      prisma-print-list > div:not(.print-info) {
         float: left;
         width: 50%;
         padding: 1em 1em 0 0;
       }
 
-      .print-tile {
+      .print-info {
+        padding-top: 20%;
+        text-align: center;
+      }
 
+      @media print {
+        .print-info {
+          display: none;
+        }
+        .print-description {
+          padding: 0 1em;
+        }
+      }
+
+      @media screen {
+        .print-tile {
+          display: none;
+         }
       }
       `
   ],
@@ -66,7 +86,7 @@ export class PrintListComponent implements OnInit, OnDestroy {
   takenUntilPipe = pipe(takeUntil(this.destroy$));
   hasTopics = true;
 
-  @ViewChild(Content) content: Content;
+  // @ViewChild(Content) content: Content;
 
   constructor(
     @Inject(ConstantToken) private constant: Constant,
@@ -110,11 +130,11 @@ export class PrintListComponent implements OnInit, OnDestroy {
           item => -new Date(item.updatedAt.date).getTime()
         ]);
       });
-    this.content.resize();
+    // this.content.resize();
   }
 
   ionViewDidEnter(): void {
-    this.content.scrollToTop();
+    // this.content.scrollToTop();
   }
 
   getBackground(story: Story) {
