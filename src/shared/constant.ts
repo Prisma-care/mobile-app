@@ -10,6 +10,8 @@ export const constant: Constant = {
   youtubeApiKey: environment.youtubeApiKey,
   jwtToken: 'id_token',
   lastestUsedVersion: 'version',
+  defaultUsername: environment.defaultUsername,
+  defaultPassword: environment.defaultPassword,
   localstorage: {LOCALSTORAGE_SELECTEDLANG: 'langs'},
   privateImagesRegex: '/asset/',
   loadingImage: 'assets/img/homePage/loading.png',

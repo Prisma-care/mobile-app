@@ -47,6 +47,8 @@ export interface Constant {
   youtubeApiKey: string;
   jwtToken: string;
   lastestUsedVersion: string;
+  defaultUsername: string;
+  defaultPassword: string;
   localstorage: {LOCALSTORAGE_SELECTEDLANG: string};
   privateImagesRegex: string;
   loadingImage: string;

@@ -34,7 +34,9 @@ export class AuthenticationService {
       this.constant.api.getSignIn
     }`;
     return this.http.post(url, {email, password}).pipe(
-      map(({response: {token, patients, id}}: LoginResponse): boolean => {
+      switchMap(({response: {token, patients, id}}: LoginResponse): Observable<
+        boolean | Error
+      > => {
         this.setAuthenticationInfoInStorage({
           token,
           currentPatient: patients[0],
@@ -42,9 +44,9 @@ export class AuthenticationService {
         });
 
         this._isAuthenticated.next(true);
-        return this.isAuthenticatedSync;
+        return this._isAuthenticated.asObservable();
       }),
-      switchMap((authSync: boolean) => {
+      switchMap(isAuthenticated => {
         return this.userService.getUser().pipe(
           map((user: User | Error) => {
             localStorage.setItem(
@@ -52,7 +54,7 @@ export class AuthenticationService {
               JSON.stringify(user)
             );
           }),
-          map(() => authSync)
+          map(() => isAuthenticated)
         );
       }),
       catchError(this.handleError)
@@ -108,17 +110,6 @@ export class AuthenticationService {
 
   get isAuthenticated(): Observable<boolean> {
     return this._isAuthenticated.asObservable();
-  }
-
-  get isAuthenticatedSync(): boolean {
-    let isLogged: boolean;
-    this.isAuthenticated.take(1).subscribe(val => (isLogged = val));
-    return isLogged;
-  }
-
-  // TODO: to replace by isAuthenticatedSync
-  isLoggedIn(): boolean {
-    return this.isAuthenticatedSync;
   }
 
   autoLoad() {
