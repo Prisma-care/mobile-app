@@ -43,6 +43,11 @@ export class PatientService {
       .let(this.patientPipe);
   }
 
+  patientExists(): boolean {
+    // return Boolean(this.constant.temp.currentPatient);
+    return Boolean(localStorage.getItem(this.constant.temp.currentPatient));
+  }
+
   getCurrentPatient(): Patient {
     return JSON.parse(
       localStorage.getItem(this.constant.temp.currentPatient)

@@ -6,6 +6,10 @@ import {PatientService} from '../core/patient.service';
 import {GiveFeedbackComponent} from './component/giveFeedback/giveFeedback.component';
 import {NavController} from 'ionic-angular/navigation/nav-controller';
 import {IntroComponent} from '../auth/components/intro/intro.component';
+import {UserService} from '../core/user.service';
+import {AppComponent} from '../app.component';
+import {App} from 'ionic-angular/components/app/app';
+import {RootComponent} from '../root.component';
 
 @Component({
   selector: 'prisma-sidebar',
@@ -23,9 +27,13 @@ import {IntroComponent} from '../auth/components/intro/intro.component';
           <ion-icon name="mail" color="general"></ion-icon>
           Geef feedback
         </button>
-        <button ion-item (click)="logout()" class="ion-menu-buttons">
+        <button *ngIf="isRegistered"ion-item (click)="logout()" class="ion-menu-buttons">
           <ion-icon name="exit" color="general"></ion-icon>
           Afmelden
+        </button>
+        <button *ngIf="!isRegistered"ion-item (click)="logout()" class="ion-menu-buttons">
+        <ion-icon name="exit" color="general"></ion-icon>
+          Aanmelden of registeren
         </button>
       </ion-list>
     </ion-content>
@@ -44,16 +52,24 @@ export class SidebarComponent {
 
   @Input() content;
 
+  isRegistered: boolean;
+
   constructor(
     public menu: MenuController,
     public authService: AuthenticationService,
-    public patientService: PatientService
-  ) {}
+    public userService: UserService,
+    public patientService: PatientService,
+    public appCtrl: App
+  ) {
+    this.userService.isRegistered.subscribe(bool => {
+      this.isRegistered = bool;
+    });
+  }
 
   logout() {
     this.menu.close();
     this.authService.logout();
-    this.nav.setRoot(IntroComponent);
+    this.nav.setRoot(RootComponent, {isLogging: true});
   }
 
   invite() {

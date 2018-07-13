@@ -21,9 +21,10 @@ import {ConstantProvider} from './di';
 import {AlbumModule} from './albumList/album.module';
 import {StoryModule} from './storyList/story.module';
 import {SidebarModule} from './sidebar/sidebar.module';
+import {RootComponent} from './root.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, RootComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(AppComponent, {statusbarPadding: false}),
@@ -35,7 +36,7 @@ import {SidebarModule} from './sidebar/sidebar.module';
     StoryModule
   ],
   bootstrap: [IonicApp],
-  entryComponents: [AppComponent],
+  entryComponents: [AppComponent, RootComponent],
   providers: [
     ConstantProvider,
     StatusBar,

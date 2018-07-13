@@ -1,4 +1,4 @@
-<prisma-sidebar [nav]="nav" [content]="content">
+<prisma-sidebar [nav]="rootNavController" [content]="content">
 </prisma-sidebar>
-<ion-nav id="nav" #content #rootNavController [root]="rootPage" swipeBackEnabled="false">
+<ion-nav id="nav" #content #rootNavController [root]="rootPage" [rootParams]="rootParams" swipeBackEnabled="false">
 </ion-nav>

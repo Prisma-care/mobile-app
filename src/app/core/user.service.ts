@@ -1,10 +1,11 @@
 import {Inject, Injectable} from '@angular/core';
 import {ConstantToken} from '../di';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Observable, pipe} from 'rxjs/Rx';
+import {Observable, Subject, pipe} from 'rxjs/Rx';
 import {map, catchError} from 'rxjs/operators';
 import {User, Constant} from '../../shared/types';
 import {getMessageFromBackendError} from '../../shared/utils';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 interface UserResponse {
   response: User;
@@ -25,11 +26,16 @@ export class UserService {
     catchError(this.handleError)
   );
 
+  _isRegistered: Subject<boolean> = new BehaviorSubject<boolean>(false);
   constructor(
     @Inject(ConstantToken) private constant: Constant,
     private http: HttpClient
   ) {
     this.handleError = this.handleError.bind(this);
+  }
+
+  get isRegistered(): Observable<boolean> {
+    return this._isRegistered.asObservable();
   }
 
   getUser(): Observable<User | Error> {
@@ -60,6 +66,17 @@ export class UserService {
     return JSON.parse(
       localStorage.getItem(this.constant.temp.currentUser)
     ) as User;
+  }
+
+  setRegistered(): void {
+    const user = this.getCurrentUser();
+    if (user) {
+      if (user.email === this.constant.defaultUsername) {
+        this._isRegistered.next(false);
+      } else {
+        this._isRegistered.next(true);
+      }
+    }
   }
 
   handleError(err: HttpErrorResponse): Observable<Error> {
