@@ -836,19 +836,18 @@ var RootComponent = /** @class */ (function () {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.constants = constants;
+        this.authObs = this.authService.isAuthenticated;
     }
     RootComponent.prototype.ionViewWillEnter = function () {
         var _this = this;
         // this.navCtrl.setRoot(IntroComponent);
-        if (!this.navParams.get('isLogging')) {
+        if (!this.navParams.get('isLogging') && this.userService.isRegisteredSync) {
             this.authService.autoLoad();
         }
-        console.log(this.navParams.get('isLogging'));
-        var sub = this.authService.isAuthenticated
-            .subscribe(function (isAuthenticated) {
-            if (_this.network.type !== 'none'
-                && !_this.navParams.get('isLogging')
-                && _this.patientService.patientExists()) {
+        this.authSub = this.authObs.subscribe(function (isAuthenticated) {
+            if (_this.network.type !== 'none' &&
+                !_this.navParams.get('isLogging') &&
+                _this.patientService.patientExists()) {
                 _this.albumService.getAlbums(_this.patientService.getCurrentPatient().patient_id);
                 if (_this.patientService.getCurrentPatient()) {
                     _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_7__albumList_albumList_component__["a" /* AlbumListComponent */]);
@@ -856,7 +855,7 @@ var RootComponent = /** @class */ (function () {
                 // : this.navCtrl.setRoot(NewLovedoneComponent); // logged in, but no Loved One yet? then above would fail...
             }
             else if (!_this.navParams.get('isLogging')) {
-                // not authenticated, use default
+                // not authenticated, use default account
                 var subAuth_1 = _this.authService
                     .login(_this.constants.defaultUsername, _this.constants.defaultPassword)
                     .pipe(Object(__WEBPACK_IMPORTED_MODULE_13_rxjs_operators__["switchMap"])(function (res) {
@@ -866,9 +865,7 @@ var RootComponent = /** @class */ (function () {
                         return __WEBPACK_IMPORTED_MODULE_12_rxjs_Rx__["Observable"].empty();
                     }
                     return __WEBPACK_IMPORTED_MODULE_12_rxjs_Rx__["Observable"].of(res);
-                }), 
-                //timeout(10000),
-                Object(__WEBPACK_IMPORTED_MODULE_13_rxjs_operators__["tap"])(function () {
+                }), Object(__WEBPACK_IMPORTED_MODULE_13_rxjs_operators__["timeout"])(10000), Object(__WEBPACK_IMPORTED_MODULE_13_rxjs_operators__["tap"])(function () {
                     _this.mixpanel.identify(_this.userService.getCurrentUser());
                     _this.fullstory.identify(_this.userService.getCurrentUser());
                     _this.mixpanel.track('LoginComponent::Login success', _this.userService.getCurrentUser().email);
@@ -887,6 +884,9 @@ var RootComponent = /** @class */ (function () {
             });
         });
         this.mixpanel.track('AppComponent::Prisma launched');
+    };
+    RootComponent.prototype.ionViewWillLeave = function () {
+        this.authSub.unsubscribe();
     };
     RootComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -1121,7 +1121,6 @@ webpackEmptyAsyncContext.id = 256;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operators__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_operators__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__shared_utils__ = __webpack_require__(78);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__shared_types__ = __webpack_require__(862);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1134,7 +1133,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-
 
 
 
@@ -1180,10 +1178,9 @@ var PatientService = /** @class */ (function () {
     PatientService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
         __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Inject */])(__WEBPACK_IMPORTED_MODULE_1__di__["b" /* ConstantToken */])),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_6__shared_types__["Constant"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__shared_types__["Constant"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["b" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["b" /* HttpClient */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [Object, __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["b" /* HttpClient */]])
     ], PatientService);
     return PatientService;
-    var _a, _b;
 }());
 
 //# sourceMappingURL=patient.service.js.map
@@ -2513,6 +2510,7 @@ var AuthenticationService = /** @class */ (function () {
         }), Object(__WEBPACK_IMPORTED_MODULE_4_rxjs_operators__["switchMap"])(function (isAuthenticated) {
             return _this.userService.getUser().pipe(Object(__WEBPACK_IMPORTED_MODULE_4_rxjs_operators__["map"])(function (user) {
                 localStorage.setItem(_this.constant.temp.currentUser, JSON.stringify(user));
+                _this.userService.setRegistered();
             }), Object(__WEBPACK_IMPORTED_MODULE_4_rxjs_operators__["map"])(function () { return isAuthenticated; }));
         }), Object(__WEBPACK_IMPORTED_MODULE_4_rxjs_operators__["catchError"])(this.handleError));
     };
@@ -2615,6 +2613,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 var UserService = /** @class */ (function () {
     function UserService(constant, http) {
+        var _this = this;
         this.constant = constant;
         this.http = http;
         this.userPipe = Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__["pipe"])(Object(__WEBPACK_IMPORTED_MODULE_4_rxjs_operators__["map"])(function (_a) {
@@ -2623,10 +2622,18 @@ var UserService = /** @class */ (function () {
         }), Object(__WEBPACK_IMPORTED_MODULE_4_rxjs_operators__["catchError"])(this.handleError));
         this._isRegistered = new __WEBPACK_IMPORTED_MODULE_7_rxjs_BehaviorSubject__["BehaviorSubject"](false);
         this.handleError = this.handleError.bind(this);
+        this._isRegistered.subscribe(function (reg) { return (_this.registered = reg); });
     }
     Object.defineProperty(UserService.prototype, "isRegistered", {
         get: function () {
             return this._isRegistered.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(UserService.prototype, "isRegisteredSync", {
+        get: function () {
+            return this.registered;
         },
         enumerable: true,
         configurable: true
@@ -4759,9 +4766,7 @@ var SidebarComponent = /** @class */ (function () {
         this.userService = userService;
         this.patientService = patientService;
         this.appCtrl = appCtrl;
-        this.userService.isRegistered.subscribe(function (bool) {
-            _this.isRegistered = bool;
-        });
+        this.userService.isRegistered.subscribe(function (bool) { return (_this.isRegistered = bool); });
     }
     SidebarComponent.prototype.logout = function () {
         this.menu.close();

@@ -27,15 +27,22 @@ export class UserService {
   );
 
   _isRegistered: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  registered: boolean;
+
   constructor(
     @Inject(ConstantToken) private constant: Constant,
     private http: HttpClient
   ) {
     this.handleError = this.handleError.bind(this);
+    this._isRegistered.subscribe(reg => (this.registered = reg));
   }
 
   get isRegistered(): Observable<boolean> {
     return this._isRegistered.asObservable();
+  }
+
+  get isRegisteredSync(): boolean {
+    return this.registered;
   }
 
   getUser(): Observable<User | Error> {

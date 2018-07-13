@@ -61,9 +61,7 @@ export class SidebarComponent {
     public patientService: PatientService,
     public appCtrl: App
   ) {
-    this.userService.isRegistered.subscribe(bool => {
-      this.isRegistered = bool;
-    });
+    this.userService.isRegistered.subscribe(bool => (this.isRegistered = bool));
   }
 
   logout() {

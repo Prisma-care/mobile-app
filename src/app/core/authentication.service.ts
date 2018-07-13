@@ -53,6 +53,7 @@ export class AuthenticationService {
               this.constant.temp.currentUser,
               JSON.stringify(user)
             );
+            this.userService.setRegistered();
           }),
           map(() => isAuthenticated)
         );
