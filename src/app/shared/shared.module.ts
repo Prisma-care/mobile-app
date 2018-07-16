@@ -6,6 +6,7 @@ import {ToggleFullscreenDirective} from './directive/toggleFullscreen.directive'
 import {IfFullscreenDirective} from './directive/ifFullscreen.directive';
 import {IfPlatformDirective} from './directive/ifPlatform.directive';
 import {FullscreenButtonComponent} from './component/fullscreenButton.component';
+import {UtilService} from './provider/util.service';
 
 const imports = [ReactiveFormsModule, FormsModule, IonicModule];
 const declarations = [
@@ -19,7 +20,7 @@ const declarations = [
 @NgModule({
   declarations,
   imports,
-  providers: [],
+  providers: [UtilService],
   exports: [...imports, ...declarations]
 })
 export class SharedModule {}
