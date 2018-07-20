@@ -20,6 +20,10 @@ import {Platform} from 'ionic-angular/platform/platform';
 import {platform} from 'os';
 import {TopicService} from '../core/topic.service';
 import {PrintListComponent} from './printList.component';
+import {AlertController} from 'ionic-angular/components/alert/alert-controller';
+import {AuthenticationService} from '../core/authentication.service';
+import {RootComponent} from '../root.component';
+import {UserService} from '../core/user.service';
 
 @Component({
   selector: 'prisma-story-list',
@@ -53,7 +57,9 @@ import {PrintListComponent} from './printList.component';
             </ion-col>
           </ion-row>
         </ion-grid>
-        <div (click)="openActionSheet()" class="add-new-container">
+        <div class="add-new-container"
+          (click)="this.userService.registrationGuard(this.openActionSheet.bind(this),
+          this.showRegisterPrompt.bind(this, 'een verhaal toe te voegen'))">
           <div class="add-new">
             <ion-icon class="add-icon" name="md-add"></ion-icon>
             <span>Voeg verhaal toe</span>
@@ -79,13 +85,16 @@ export class StoryListComponent implements OnInit, OnDestroy {
     private navParams: NavParams,
     private albumService: AlbumService,
     private patientService: PatientService,
+    private authService: AuthenticationService,
     private topicService: TopicService,
     private navCtrl: NavController,
     private actionsheetCtrl: ActionSheetController,
     private popoverCtrl: PopoverController,
     private toastCtrl: ToastController,
     private storyService: StoryService,
-    private plt: Platform
+    private plt: Platform,
+    private alertCtrl: AlertController,
+    private userService: UserService
   ) {
     this.getBackground = this.getBackground.bind(this);
     this.showDetails = this.showDetails.bind(this);
@@ -242,7 +251,8 @@ export class StoryListComponent implements OnInit, OnDestroy {
       StoryListOptionsComponent,
       {
         album: this.album,
-        actionSheet: this.openActionSheet
+        actionSheet: this.openActionSheet,
+        navCtrl: this.navCtrl
       },
       {cssClass: 'storyList-popover'}
     );
@@ -268,5 +278,25 @@ export class StoryListComponent implements OnInit, OnDestroy {
     popover.present({
       ev: event
     });
+  }
+
+  showRegisterPrompt(intentionText): void {
+    const alert = this.alertCtrl.create({
+      title: 'Meld je aan',
+      subTitle: `Meld je aan om ${intentionText}. Zo kan je je bewerkingen bijhouden.`,
+      buttons: [
+        {
+          text: 'Ga terug'
+        },
+        {
+          text: 'Meld je aan',
+          handler: () => {
+            this.authService.logout();
+            this.navCtrl.setRoot(RootComponent, {isLogging: true});
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 }

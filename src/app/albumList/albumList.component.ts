@@ -11,6 +11,11 @@ import {NavController} from 'ionic-angular/navigation/nav-controller';
 import {ConstantToken} from '../di';
 import {ToggleFullscreenDirective} from '../shared/directive/toggleFullscreen.directive';
 import _sortBy from 'lodash/sortBy';
+import {UtilService} from '../shared/provider/util.service';
+import {UserService} from '../core/user.service';
+import {AuthenticationComponent} from '../auth/authentication.component';
+import {AuthenticationService} from '../core/authentication.service';
+import {RootComponent} from '../root.component';
 
 @Component({
   selector: 'prisma-album-list',
@@ -43,8 +48,10 @@ import _sortBy from 'lodash/sortBy';
           </ion-col>
         </ion-row>
       </ion-grid>
-      <div class="add-new-container">
-        <div class="add-new" (click)="addAlbum()">
+      <div class="add-new-container"
+        (click)="this.userService.registrationGuard(this.addAlbum.bind(this),
+          this.showRegisterPrompt.bind(this, 'een album toe te voegen'))">
+        <div class="add-new">
           <ion-icon class="add-icon" name="md-add"></ion-icon>
           <span>Voeg album toe</span>
         </div>
@@ -59,11 +66,14 @@ export class AlbumListComponent {
   constructor(
     @Inject(ConstantToken) private constant: Constant,
     private patientService: PatientService,
+    private authService: AuthenticationService,
     private menu: MenuController,
     private albumService: AlbumService,
-    private alertCtrl: AlertController,
     private mixpanel: MixpanelService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private utilService: UtilService,
+    private userService: UserService,
+    private alertCtrl: AlertController
   ) {
     this.getBackground = this.getBackground.bind(this);
     this.showDetails = this.showDetails.bind(this);
@@ -71,10 +81,14 @@ export class AlbumListComponent {
 
   ionViewWillEnter(): void {
     this.menu.enable(true);
-    this.currentPatient = this.patientService.getCurrentPatient();
-    this.albums = this.sortAlbumArrayByOwnerAndTitle(
-      this.albumService.getAlbums(this.currentPatient.patient_id)
-    );
+    this.patientService.patientExists().subscribe(bool => {
+      if (bool && this.patientService.patientExistsSync()) {
+        this.currentPatient = this.patientService.getCurrentPatient();
+        this.albums = this.sortAlbumArrayByOwnerAndTitle(
+          this.albumService.getAlbums(this.currentPatient.patient_id)
+        );
+      }
+    });
   }
 
   sortAlbumArrayByOwnerAndTitle(
@@ -160,5 +174,25 @@ export class AlbumListComponent {
         ]
       })
       .present();
+  }
+
+  showRegisterPrompt(intentionText): void {
+    const alert = this.alertCtrl.create({
+      title: 'Meld je aan',
+      subTitle: `Meld je aan om ${intentionText}. Zo kan je je bewerkingen bijhouden.`,
+      buttons: [
+        {
+          text: 'Ga terug'
+        },
+        {
+          text: 'Meld je aan',
+          handler: () => {
+            this.authService.logout();
+            this.navCtrl.setRoot(RootComponent, {isLogging: true});
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 }

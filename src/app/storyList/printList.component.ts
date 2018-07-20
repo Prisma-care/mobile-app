@@ -256,7 +256,8 @@ export class PrintListComponent implements OnInit, OnDestroy {
       StoryListOptionsComponent,
       {
         album: this.album,
-        actionSheet: this.openActionSheet
+        actionSheet: this.openActionSheet,
+        navCtrl: this.navCtrl
       },
       {cssClass: 'storyList-popover'}
     );

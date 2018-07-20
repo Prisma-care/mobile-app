@@ -6,6 +6,7 @@ import {map, catchError, switchMap} from 'rxjs/operators';
 import {User, Patient, UserRegister, Constant} from '../../shared/types';
 import {getMessageFromBackendError} from '../../shared/utils';
 import {UserService} from './user.service';
+import {PatientService} from './patient.service';
 
 interface LoginResponse {
   response: {
@@ -24,7 +25,8 @@ export class AuthenticationService {
   constructor(
     @Inject(ConstantToken) private constant: Constant,
     private http: HttpClient,
-    private userService: UserService
+    private userService: UserService,
+    private patientService: PatientService
   ) {
     this.handleError = this.handleError.bind(this);
   }
@@ -91,6 +93,9 @@ export class AuthenticationService {
       this.constant.temp.currentPatient,
       JSON.stringify(currentPatient || '')
     );
+    if (currentPatient) {
+      this.patientService.setPatientExists(true);
+    }
     localStorage.setItem(
       this.constant.temp.currentUser,
       JSON.stringify({id: userId})
@@ -126,5 +131,6 @@ export class AuthenticationService {
 
   private clearTokens() {
     localStorage.clear();
+    this.patientService.setPatientExists(false);
   }
 }

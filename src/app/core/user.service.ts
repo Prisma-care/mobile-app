@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {ConstantToken} from '../di';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Observable, Subject, pipe} from 'rxjs/Rx';
+import {Observable, pipe} from 'rxjs/Rx';
 import {map, catchError} from 'rxjs/operators';
 import {User, Constant} from '../../shared/types';
 import {getMessageFromBackendError} from '../../shared/utils';
@@ -26,7 +26,7 @@ export class UserService {
     catchError(this.handleError)
   );
 
-  _isRegistered: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  _isRegistered: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   registered: boolean;
 
   constructor(
@@ -42,7 +42,7 @@ export class UserService {
   }
 
   get isRegisteredSync(): boolean {
-    return this.registered;
+    return this._isRegistered.getValue();
   }
 
   getUser(): Observable<User | Error> {
@@ -83,6 +83,14 @@ export class UserService {
       } else {
         this._isRegistered.next(true);
       }
+    }
+  }
+
+  registrationGuard(intendedAction, redirectAction) {
+    if (this.isRegisteredSync) {
+      intendedAction();
+    } else {
+      redirectAction();
     }
   }
 

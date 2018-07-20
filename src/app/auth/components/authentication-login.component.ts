@@ -10,6 +10,7 @@ import {switchMap, timeout, tap} from 'rxjs/operators';
 import {UserService} from '../../core/user.service';
 import {PasswordResetComponent} from './password-reset/password-reset.component';
 import {TextInput} from 'ionic-angular/components/input/input';
+import {RootComponent} from '../../root.component';
 
 type authFunction = () => void;
 
@@ -126,33 +127,37 @@ export class AuthenticationLoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.auth
-      .login(email, password)
-      .pipe(
-        switchMap((res: boolean | Error) => {
-          if (res instanceof Error) {
-            this.mixpanel.track('LoginComponent::Login error', email);
-            this.showError(res.message);
-            return Observable.empty();
-          }
-          return Observable.of(res);
-        }),
-        timeout(10000),
-        tap(() => {
-          this.loading = false;
-          this.mixpanel.identify(this.userService.getCurrentUser());
-          this.fullstory.identify(this.userService.getCurrentUser());
-          this.mixpanel.track(
-            'LoginComponent::Login success',
-            this.userService.getCurrentUser().email
-          );
-          this.onComplete();
-        })
-      )
-      .subscribe(undefined, err => {
-        this.mixpanel.track('LoginComponent::Login error', email);
-        this.showError(err.message);
-      });
+    const obs = this.auth.login(email, password).pipe(
+      switchMap((res: boolean | Error) => {
+        if (res instanceof Error) {
+          this.mixpanel.track('LoginComponent::Login error', email);
+          this.showError(res.message);
+          return Observable.empty();
+        }
+        return Observable.of(res);
+      }),
+      /* timeout(10000),
+        TODO this gave problems in re-login.
+        Login succeeds, but the timeout still happens. This triggers showError, which does a logout...
+        maybe the switchmap must complete ?
+
+        */
+      tap(() => {
+        this.loading = false;
+        this.mixpanel.identify(this.userService.getCurrentUser());
+        this.fullstory.identify(this.userService.getCurrentUser());
+        this.mixpanel.track(
+          'LoginComponent::Login success',
+          this.userService.getCurrentUser().email
+        );
+        this.onComplete();
+      })
+    );
+
+    obs.subscribe(undefined, err => {
+      this.mixpanel.track('LoginComponent::Login error', email);
+      this.showError(err.message);
+    });
   }
 
   goToPasswordResetPage(): void {
@@ -173,5 +178,6 @@ export class AuthenticationLoginComponent implements OnInit {
     alert.present();
 
     this.auth.logout();
+    this.navCtrl.setRoot(RootComponent, {isLogging: true});
   }
 }

@@ -226,7 +226,8 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     const popover = this.popoverCtrl.create(
       StoryOptionsComponent,
       {
-        story: this.story
+        story: this.story,
+        navCtrl: this.navCtrl
       },
       {cssClass: 'storyDetail-popover'}
     );

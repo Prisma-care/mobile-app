@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular/navigation/nav-controller';
 import {AuthenticationComponent} from '../../authentication.component';
+import {RootComponent} from '../../../root.component';
 
 @Component({
   selector: 'prisma-intro',
@@ -15,6 +16,7 @@ import {AuthenticationComponent} from '../../authentication.component';
           Meld je aan.
         </a>
       </p>
+      <p class="alternate-option" (click)="toRoot()">Of <a>ga terug naar de versie zonder aanmelden.</a></p>
     </ion-content>
 
   `
@@ -26,5 +28,9 @@ export class IntroComponent {
     this.navCtrl.push(AuthenticationComponent, {
       isLogging: value
     });
+  }
+
+  toRoot(): void {
+    this.navCtrl.setRoot(RootComponent, {isLogging: false});
   }
 }

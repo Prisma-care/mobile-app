@@ -57,10 +57,15 @@ export function getUrlImage(filename: string): Observable<string | Error> {
 export function background(story: Story): Observable<string | Error> {
   return Observable.of(story).pipe(
     map((item: Story) => {
-      if (item.type !== 'youtube') {
+      if (item.type === 'image') {
         return this.getImage(item.source);
-      } else {
+      } else if (item.type === 'youtube') {
         return this.getThumb(item.source);
+      } else {
+        // probably text
+        return Observable.of(
+          new Error('story type does not have a background image')
+        );
       }
     }),
     switchMap((x: Observable<string | Error>) => x)

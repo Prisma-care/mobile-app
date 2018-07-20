@@ -54,7 +54,8 @@ export class RootComponent {
       if (
         this.network.type !== 'none' &&
         !this.navParams.get('isLogging') &&
-        this.patientService.patientExists()
+        this.patientService.patientExistsSync() &&
+        this.patientService._patientExists.getValue()
       ) {
         this.albumService.getAlbums(
           this.patientService.getCurrentPatient().patient_id
@@ -79,7 +80,7 @@ export class RootComponent {
               }
               return Observable.of(res);
             }),
-            timeout(10000),
+            // timeout(10000),
             tap(() => {
               this.mixpanel.identify(this.userService.getCurrentUser());
               this.fullstory.identify(this.userService.getCurrentUser());

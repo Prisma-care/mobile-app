@@ -5,6 +5,7 @@ import {Observable, pipe} from 'rxjs/Rx';
 import {map, catchError} from 'rxjs/operators';
 import {getMessageFromBackendError} from '../../shared/utils';
 import {Patient, Constant} from '../../shared/types';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 interface PatientResponse {
   response: {
@@ -20,6 +21,8 @@ export class PatientService {
     map(({response}: PatientResponse) => response as Patient),
     catchError(this.handleError)
   );
+
+  _patientExists = new BehaviorSubject<boolean>(false);
 
   constructor(
     @Inject(ConstantToken) private constant: Constant,
@@ -43,9 +46,17 @@ export class PatientService {
       .let(this.patientPipe);
   }
 
-  patientExists(): boolean {
+  patientExistsSync(): boolean {
     // return Boolean(this.constant.temp.currentPatient);
     return Boolean(localStorage.getItem(this.constant.temp.currentPatient));
+  }
+
+  patientExists(): Observable<boolean> {
+    return this._patientExists.asObservable();
+  }
+
+  setPatientExists(bool): void {
+    this._patientExists.next(bool);
   }
 
   getCurrentPatient(): Patient {
@@ -59,6 +70,9 @@ export class PatientService {
       this.constant.temp.currentPatient,
       JSON.stringify(patient)
     );
+    if (patient) {
+      this.setPatientExists(true);
+    }
   }
 
   handleError(err: HttpErrorResponse): Observable<Error> {

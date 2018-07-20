@@ -1,7 +1,11 @@
 prisma-story-list-options, prisma-story-options {
    .contenu {
-    color:color($colors, primary);
+    color: color($colors, primary);
 
+  }
+
+  .unregistered-story-option {
+    color: color($colors, dark-gray);
   }
 
   .trash-icon{
