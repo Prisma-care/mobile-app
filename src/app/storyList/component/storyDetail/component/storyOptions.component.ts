@@ -12,9 +12,8 @@ import {NavController} from 'ionic-angular/navigation/nav-controller';
   selector: 'prisma-story-options',
   template: `
     <ion-list class="list">
-      <ion-item (click)="deleteStory()">
-      this.userService.registrationGuard(this.deleteStory.bind(this),
-      this.showRegisterPrompt.bind(this, 'een verhaal te verwijderen'))
+      <ion-item (click)="this.userService.registrationGuard(this.deleteStory.bind(this),
+        this.showRegisterPrompt.bind(this, 'een verhaal te verwijderen'))">
         <ion-icon class="trash-icon" name="md-trash"></ion-icon>
         <p class="contenu">Verwijder dit verhaal</p>
       </ion-item>
@@ -22,7 +21,7 @@ import {NavController} from 'ionic-angular/navigation/nav-controller';
   `
 })
 export class StoryOptionsComponent {
-  navCtrl: any;
+  navCtrl: NavController = undefined;
   constructor(
     public viewCtrl: ViewController,
     public storyService: StoryService,
@@ -31,7 +30,9 @@ export class StoryOptionsComponent {
     private authService: AuthenticationService,
     private userService: UserService,
     private alertCtrl: AlertController
-  ) {}
+  ) {
+    this.navCtrl = this.navParams.get('navCtrl');
+  }
 
   deleteStory(): void {
     this.storyService

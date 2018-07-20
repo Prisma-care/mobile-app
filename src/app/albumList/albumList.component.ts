@@ -81,10 +81,14 @@ export class AlbumListComponent {
 
   ionViewWillEnter(): void {
     this.menu.enable(true);
-    this.currentPatient = this.patientService.getCurrentPatient();
-    this.albums = this.sortAlbumArrayByOwnerAndTitle(
-      this.albumService.getAlbums(this.currentPatient.patient_id)
-    );
+    this.patientService.patientExists().subscribe(bool => {
+      if (bool && this.patientService.patientExistsSync()) {
+        this.currentPatient = this.patientService.getCurrentPatient();
+        this.albums = this.sortAlbumArrayByOwnerAndTitle(
+          this.albumService.getAlbums(this.currentPatient.patient_id)
+        );
+      }
+    });
   }
 
   sortAlbumArrayByOwnerAndTitle(

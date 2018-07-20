@@ -38,6 +38,7 @@ import {UserService} from '../../core/user.service';
   `
 })
 export class StoryListOptionsComponent {
+  navCtrl: NavController = null;
   constructor(
     private navParams: NavParams,
     private viewCtrl: ViewController,
@@ -45,9 +46,10 @@ export class StoryListOptionsComponent {
     private patientService: PatientService,
     private alertCtrl: AlertController,
     private authService: AuthenticationService,
-    private navCtrl: NavController,
     private userService: UserService
-  ) {}
+  ) {
+    this.navCtrl = this.navParams.get('navCtrl');
+  }
 
   actionSheet() {
     this.navParams.get('actionSheet')();
@@ -86,6 +88,7 @@ export class StoryListOptionsComponent {
           text: 'Meld je aan',
           handler: () => {
             this.authService.logout();
+            this.viewCtrl.dismiss();
             this.navCtrl.setRoot(RootComponent, {isLogging: true});
           }
         }
