@@ -58,6 +58,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 var CreateOrUpdateStoryComponent = /** @class */ (function () {
     function CreateOrUpdateStoryComponent(constant, navParams, sanitizer, storyService, mixpanel, patientService, userService, navCtrl, viewCtrl, transfer, loadingCtrl, toastCtrl, changeDetect) {
+        var _a;
         var _this = this;
         this.constant = constant;
         this.navParams = navParams;
@@ -164,7 +165,6 @@ var CreateOrUpdateStoryComponent = /** @class */ (function () {
                 }
             },
             _a);
-        var _a;
     }
     CreateOrUpdateStoryComponent.prototype.ngOnInit = function () {
         this.method = this.navParams.get('method');
@@ -521,6 +521,7 @@ var StoryDetailsComponent = /** @class */ (function () {
             ev: event
         });
     };
+    var StoryDetailsComponent_1;
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_13" /* ViewChild */])('content'),
         __metadata("design:type", Object)
@@ -542,7 +543,6 @@ var StoryDetailsComponent = /** @class */ (function () {
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["o" /* ToastController */]])
     ], StoryDetailsComponent);
     return StoryDetailsComponent;
-    var StoryDetailsComponent_1;
 }());
 
 //# sourceMappingURL=storyDetail.component.js.map
@@ -868,24 +868,36 @@ var StoryListOptionsComponent = /** @class */ (function () {
     };
     StoryListOptionsComponent.prototype.confirmDeletion = function () {
         var _this = this;
-        this.alertCtrl.create({
+        this.alertCtrl
+            .create({
             title: 'Album verwijderen',
             subTitle: "Ben je zeker dat je het album '" + this.navParams.get('album').title + "' wilt verwijderen?",
-            buttons: [{
+            buttons: [
+                {
                     text: 'Ja',
-                    handler: function (data) { _this.deleteAlbum(); }
-                }, 'Annuleer']
-        }).present();
+                    handler: function (data) {
+                        _this.deleteAlbum();
+                    }
+                },
+                'Annuleer'
+            ]
+        })
+            .present();
     };
     StoryListOptionsComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'prisma-story-list-options',
-            template: "\n    <ion-list class=\"list\">\n      <ion-item padding\n      (click)=\"this.userService.registrationGuard(this.actionSheet.bind(this),\n      this.showRegisterPrompt.bind(this, 'een verhaal toe te voegen'))\">\n        <ion-icon class=\"bar-icon\" name=\"md-add\"></ion-icon>\n        <p class=\"contenu\">Voeg verhaal toe</p>\n      </ion-item>\n      <ion-item padding\n        (click)=\"this.userService.registrationGuard(this.confirmDeletion.bind(this),\n        this.showRegisterPrompt.bind(this, 'een album te verwijderen'))\">\n        <ion-icon class=\"trash-icon\" name=\"md-trash\"></ion-icon>\n        <p class=\"contenu\">Verwijder album</p>\n      </ion-item>\n      <ion-item padding *prismaIfPlatform='\"notCordova\"' prismaToggleFullscreen (click)=\"dismiss()\">\n        <ion-icon *prismaIfFullscreen=\"false\" class=\"trash-icon\" name=\"md-expand\"></ion-icon>\n        <ion-icon *prismaIfFullscreen=\"true\" class=\"trash-icon\" name=\"md-contract\"></ion-icon>\n        <p *prismaIfFullscreen=\"false\" class=\"contenu\">Volledig scherm</p>\n        <p *prismaIfFullscreen=\"true\" class=\"contenu\">Terug klein scherm</p>\n      </ion-item>\n    </ion-list>\n  "
+            template: "\n    <ion-list class=\"list\">\n      <ion-item\n        padding\n        (click)=\"this.userService.registrationGuard(this.actionSheet.bind(this),\n      this.showRegisterPrompt.bind(this, 'een verhaal toe te voegen'))\"\n      >\n        <ion-icon class=\"bar-icon\" name=\"md-add\"></ion-icon>\n        <p class=\"contenu\">Voeg verhaal toe</p>\n      </ion-item>\n      <ion-item\n        padding\n        (click)=\"this.userService.registrationGuard(this.confirmDeletion.bind(this),\n        this.showRegisterPrompt.bind(this, 'een album te verwijderen'))\"\n      >\n        <ion-icon class=\"trash-icon\" name=\"md-trash\"></ion-icon>\n        <p class=\"contenu\">Verwijder album</p>\n      </ion-item>\n      <ion-item\n        padding\n        *prismaIfPlatform=\"'notCordova'\"\n        prismaToggleFullscreen\n        (click)=\"dismiss()\"\n      >\n        <ion-icon\n          *prismaIfFullscreen=\"false\"\n          class=\"trash-icon\"\n          name=\"md-expand\"\n        ></ion-icon>\n        <ion-icon\n          *prismaIfFullscreen=\"true\"\n          class=\"trash-icon\"\n          name=\"md-contract\"\n        ></ion-icon>\n        <p *prismaIfFullscreen=\"false\" class=\"contenu\">Volledig scherm</p>\n        <p *prismaIfFullscreen=\"true\" class=\"contenu\">Terug klein scherm</p>\n      </ion-item>\n    </ion-list>\n  "
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular_navigation_nav_params__["a" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular_navigation_nav_params__["a" /* NavParams */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2_ionic_angular_navigation_view_controller__["a" /* ViewController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ionic_angular_navigation_view_controller__["a" /* ViewController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__core_album_service__["a" /* AlbumService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__core_album_service__["a" /* AlbumService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__core_patient_service__["a" /* PatientService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__core_patient_service__["a" /* PatientService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_alert_alert_controller__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_alert_alert_controller__["a" /* AlertController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_6__core_authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__core_authentication_service__["a" /* AuthenticationService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_8__core_user_service__["a" /* UserService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__core_user_service__["a" /* UserService */]) === "function" && _g || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular_navigation_nav_params__["a" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_2_ionic_angular_navigation_view_controller__["a" /* ViewController */],
+            __WEBPACK_IMPORTED_MODULE_3__core_album_service__["a" /* AlbumService */],
+            __WEBPACK_IMPORTED_MODULE_4__core_patient_service__["a" /* PatientService */],
+            __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_alert_alert_controller__["a" /* AlertController */],
+            __WEBPACK_IMPORTED_MODULE_6__core_authentication_service__["a" /* AuthenticationService */],
+            __WEBPACK_IMPORTED_MODULE_8__core_user_service__["a" /* UserService */]])
     ], StoryListOptionsComponent);
     return StoryListOptionsComponent;
-    var _a, _b, _c, _d, _e, _f, _g;
 }());
 
 //# sourceMappingURL=storyListOptions.component.js.map
@@ -1869,24 +1881,36 @@ var StoryOptionsComponent = /** @class */ (function () {
     };
     StoryOptionsComponent.prototype.confirmDeletion = function () {
         var _this = this;
-        this.alertCtrl.create({
+        this.alertCtrl
+            .create({
             title: 'Verhaal verwijderen',
             subTitle: "Ben je zeker dat je dit verhaal wilt verwijderen?",
-            buttons: [{
+            buttons: [
+                {
                     text: 'Ja',
-                    handler: function (data) { _this.deleteStory(); }
-                }, 'Annuleer']
-        }).present();
+                    handler: function (data) {
+                        _this.deleteStory();
+                    }
+                },
+                'Annuleer'
+            ]
+        })
+            .present();
     };
     StoryOptionsComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["n" /* Component */])({
             selector: 'prisma-story-options',
-            template: "\n    <ion-list class=\"list\">\n      <ion-item (click)=\"this.userService.registrationGuard(this.confirmDeletion.bind(this),\n        this.showRegisterPrompt.bind(this, 'een verhaal te verwijderen'))\">\n        <ion-icon class=\"trash-icon\" name=\"md-trash\"></ion-icon>\n        <p class=\"contenu\">Verwijder dit verhaal</p>\n      </ion-item>\n    </ion-list>\n  "
+            template: "\n    <ion-list class=\"list\">\n      <ion-item\n        (click)=\"this.userService.registrationGuard(this.confirmDeletion.bind(this),\n        this.showRegisterPrompt.bind(this, 'een verhaal te verwijderen'))\"\n      >\n        <ion-icon class=\"trash-icon\" name=\"md-trash\"></ion-icon>\n        <p class=\"contenu\">Verwijder dit verhaal</p>\n      </ion-item>\n    </ion-list>\n  "
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["p" /* ViewController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["p" /* ViewController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__core_story_service__["a" /* StoryService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__core_story_service__["a" /* StoryService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["k" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["k" /* NavParams */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__core_patient_service__["a" /* PatientService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__core_patient_service__["a" /* PatientService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_6__core_authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__core_authentication_service__["a" /* AuthenticationService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__core_user_service__["a" /* UserService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__core_user_service__["a" /* UserService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_alert_alert_controller__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_alert_alert_controller__["a" /* AlertController */]) === "function" && _g || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0_ionic_angular__["p" /* ViewController */],
+            __WEBPACK_IMPORTED_MODULE_2__core_story_service__["a" /* StoryService */],
+            __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["k" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_3__core_patient_service__["a" /* PatientService */],
+            __WEBPACK_IMPORTED_MODULE_6__core_authentication_service__["a" /* AuthenticationService */],
+            __WEBPACK_IMPORTED_MODULE_4__core_user_service__["a" /* UserService */],
+            __WEBPACK_IMPORTED_MODULE_5_ionic_angular_components_alert_alert_controller__["a" /* AlertController */]])
     ], StoryOptionsComponent);
     return StoryOptionsComponent;
-    var _a, _b, _c, _d, _e, _f, _g;
 }());
 
 //# sourceMappingURL=storyOptions.component.js.map
@@ -2130,6 +2154,7 @@ var PrintListComponent = /** @class */ (function () {
             ev: event
         });
     };
+    var PrintListComponent_1;
     PrintListComponent = PrintListComponent_1 = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'prisma-print-list',
@@ -2152,7 +2177,6 @@ var PrintListComponent = /** @class */ (function () {
             __WEBPACK_IMPORTED_MODULE_15_ionic_angular_platform_platform__["a" /* Platform */]])
     ], PrintListComponent);
     return PrintListComponent;
-    var PrintListComponent_1;
 }());
 
 //# sourceMappingURL=printList.component.js.map
