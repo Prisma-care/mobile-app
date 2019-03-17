@@ -16,21 +16,38 @@ import {UserService} from '../../core/user.service';
   selector: 'prisma-story-list-options',
   template: `
     <ion-list class="list">
-      <ion-item padding
-      (click)="this.userService.registrationGuard(this.actionSheet.bind(this),
-      this.showRegisterPrompt.bind(this, 'een verhaal toe te voegen'))">
+      <ion-item
+        padding
+        (click)="this.userService.registrationGuard(this.actionSheet.bind(this),
+      this.showRegisterPrompt.bind(this, 'een verhaal toe te voegen'))"
+      >
         <ion-icon class="bar-icon" name="md-add"></ion-icon>
         <p class="contenu">Voeg verhaal toe</p>
       </ion-item>
-      <ion-item padding
-        (click)="this.userService.registrationGuard(this.deleteAlbum.bind(this),
-        this.showRegisterPrompt.bind(this, 'een album te verwijderen'))">
+      <ion-item
+        padding
+        (click)="this.userService.registrationGuard(this.confirmDeletion.bind(this),
+        this.showRegisterPrompt.bind(this, 'een album te verwijderen'))"
+      >
         <ion-icon class="trash-icon" name="md-trash"></ion-icon>
         <p class="contenu">Verwijder album</p>
       </ion-item>
-      <ion-item padding *prismaIfPlatform='"notCordova"' prismaToggleFullscreen (click)="dismiss()">
-        <ion-icon *prismaIfFullscreen="false" class="trash-icon" name="md-expand"></ion-icon>
-        <ion-icon *prismaIfFullscreen="true" class="trash-icon" name="md-contract"></ion-icon>
+      <ion-item
+        padding
+        *prismaIfPlatform="'notCordova'"
+        prismaToggleFullscreen
+        (click)="dismiss()"
+      >
+        <ion-icon
+          *prismaIfFullscreen="false"
+          class="trash-icon"
+          name="md-expand"
+        ></ion-icon>
+        <ion-icon
+          *prismaIfFullscreen="true"
+          class="trash-icon"
+          name="md-contract"
+        ></ion-icon>
         <p *prismaIfFullscreen="false" class="contenu">Volledig scherm</p>
         <p *prismaIfFullscreen="true" class="contenu">Terug klein scherm</p>
       </ion-item>
@@ -95,5 +112,25 @@ export class StoryListOptionsComponent {
       ]
     });
     alert.present();
+  }
+
+  confirmDeletion(): void {
+    this.alertCtrl
+      .create({
+        title: 'Album verwijderen',
+        subTitle: `Ben je zeker dat je het album '${
+          this.navParams.get('album').title
+        }' wilt verwijderen?`,
+        buttons: [
+          {
+            text: 'Ja',
+            handler: data => {
+              this.deleteAlbum();
+            }
+          },
+          'Annuleer'
+        ]
+      })
+      .present();
   }
 }
