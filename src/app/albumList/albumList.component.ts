@@ -21,11 +21,11 @@ import {RootComponent} from '../root.component';
   selector: 'prisma-album-list',
   template: `
     <ion-header>
-     <ion-navbar>
+      <ion-navbar>
         <ion-title>Waarover babbelen we?</ion-title>
         <ion-buttons left>
           <button ion-button menuToggle class="albums-menu">
-            <ion-icon color="black" name='menu'></ion-icon>
+            <ion-icon color="black" name="menu"></ion-icon>
           </button>
         </ion-buttons>
         <ion-buttons right>
@@ -36,21 +36,29 @@ import {RootComponent} from '../root.component';
     <ion-content>
       <ion-grid *ngIf="albums">
         <ion-row>
-          <ion-col col-6 col-md-4 col-lg-3 *ngFor="let album of albums | async">
+          <ion-col
+            col-6
+            col-md-4
+            col-lg-3
+            *ngFor="let album of (albums | async)"
+          >
             <prisma-album-story
               [getBackground]="getBackground"
               [album]="album"
-              [story]="album.stories[album.stories.length-1]"
+              [story]="album.stories[album.stories.length - 1]"
               [showDetails]="showDetails"
               [emptyAlbum]="constant.emptyAlbum"
-              [isAlbum]="true">
+              [isAlbum]="true"
+            >
             </prisma-album-story>
           </ion-col>
         </ion-row>
       </ion-grid>
-      <div class="add-new-container"
+      <div
+        class="add-new-container"
         (click)="this.userService.registrationGuard(this.addAlbum.bind(this),
-          this.showRegisterPrompt.bind(this, 'een album toe te voegen'))">
+          this.showRegisterPrompt.bind(this, 'een album toe te voegen'))"
+      >
         <div class="add-new">
           <ion-icon class="add-icon" name="md-add"></ion-icon>
           <span>Voeg album toe</span>
@@ -62,6 +70,7 @@ import {RootComponent} from '../root.component';
 export class AlbumListComponent {
   albums: Observable<Album[]>;
   currentPatient: Patient;
+  enteredFirstTime = false;
 
   constructor(
     @Inject(ConstantToken) private constant: Constant,
@@ -79,6 +88,19 @@ export class AlbumListComponent {
     this.showDetails = this.showDetails.bind(this);
   }
 
+  getJsonFromUrl(url): any {
+    if (!url) {
+      url = location.search;
+    }
+    const query = url.substr(1);
+    const result = {};
+    query.split('&').forEach(function(part) {
+      const item = part.split('=');
+      result[item[0]] = decodeURIComponent(item[1]);
+    });
+    return result;
+  }
+
   ionViewWillEnter(): void {
     this.menu.enable(true);
     this.patientService.patientExists().subscribe(bool => {
@@ -87,6 +109,19 @@ export class AlbumListComponent {
         this.albums = this.sortAlbumArrayByOwnerAndTitle(
           this.albumService.getAlbums(this.currentPatient.patient_id)
         );
+
+        // hack: redirect to specific album if necessary
+        const params = this.getJsonFromUrl(window.location.search);
+        if (!!params.album && !this.enteredFirstTime) {
+          this.albums.subscribe(albums => {
+            // the compiler is wrong, album id's are numbers. == for compatibility
+            const album = albums.find(a => a.title === params.album);
+            if (album) {
+              this.navCtrl.push(StoryListComponent, {album});
+            }
+            this.enteredFirstTime = true;
+          });
+        }
       }
     });
   }
