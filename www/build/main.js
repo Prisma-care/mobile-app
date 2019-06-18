@@ -1377,14 +1377,15 @@ var UserService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_network__ = __webpack_require__(124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__auth_components_intro_intro_component__ = __webpack_require__(417);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__di__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_rxjs_Rx__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_rxjs_Rx__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_rxjs_operators__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_rxjs_operators__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__core_user_service__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__core_fullstory_service__ = __webpack_require__(203);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_ionic_angular_navigation_nav_controller__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_ionic_angular_navigation_nav_params__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shared_types__ = __webpack_require__(393);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_rxjs_Rx__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_rxjs_Rx__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_rxjs_operators__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_rxjs_operators__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__core_user_service__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__core_fullstory_service__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_ionic_angular_navigation_nav_controller__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_ionic_angular_navigation_nav_params__ = __webpack_require__(18);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1397,6 +1398,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+
 
 
 
@@ -1443,7 +1445,7 @@ var RootComponent = /** @class */ (function () {
                 _this.patientService._patientExists.getValue()) {
                 _this.albumService.getAlbums(_this.patientService.getCurrentPatient().patient_id);
                 if (_this.patientService.getCurrentPatient()) {
-                    _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_7__albumList_albumList_component__["a" /* AlbumListComponent */]);
+                    // this.navCtrl.setRoot(AlbumListComponent);
                 }
                 // : this.navCtrl.setRoot(NewLovedoneComponent); // logged in, but no Loved One yet? then above would fail...
             }
@@ -1451,16 +1453,16 @@ var RootComponent = /** @class */ (function () {
                 // not authenticated, use default account
                 var subAuth_1 = _this.authService
                     .login(_this.constants.defaultUsername, _this.constants.defaultPassword)
-                    .pipe(Object(__WEBPACK_IMPORTED_MODULE_12_rxjs_operators__["switchMap"])(function (res) {
+                    .pipe(Object(__WEBPACK_IMPORTED_MODULE_13_rxjs_operators__["switchMap"])(function (res) {
                     if (res instanceof Error) {
                         _this.mixpanel.track('LoginComponent::Login error', _this.constants.defaultUsername);
                         // this.showError(res.message);
-                        return __WEBPACK_IMPORTED_MODULE_11_rxjs_Rx__["Observable"].empty();
+                        return __WEBPACK_IMPORTED_MODULE_12_rxjs_Rx__["Observable"].empty();
                     }
-                    return __WEBPACK_IMPORTED_MODULE_11_rxjs_Rx__["Observable"].of(res);
+                    return __WEBPACK_IMPORTED_MODULE_12_rxjs_Rx__["Observable"].of(res);
                 }), 
                 // timeout(10000),
-                Object(__WEBPACK_IMPORTED_MODULE_12_rxjs_operators__["tap"])(function () {
+                Object(__WEBPACK_IMPORTED_MODULE_13_rxjs_operators__["tap"])(function () {
                     _this.mixpanel.identify(_this.userService.getCurrentUser());
                     _this.fullstory.identify(_this.userService.getCurrentUser());
                     _this.mixpanel.track('LoginComponent::Login success', _this.userService.getCurrentUser().email);
@@ -1483,23 +1485,14 @@ var RootComponent = /** @class */ (function () {
     RootComponent.prototype.ionViewWillLeave = function () {
         this.authSub.unsubscribe();
     };
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
     RootComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'prisma-root',
             template: ""
         }),
         __param(11, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Inject */])(__WEBPACK_IMPORTED_MODULE_10__di__["b" /* ConstantToken */])),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* Platform */],
-            __WEBPACK_IMPORTED_MODULE_2__ionic_native_splash_screen__["a" /* SplashScreen */],
-            __WEBPACK_IMPORTED_MODULE_5__core_patient_service__["a" /* PatientService */],
-            __WEBPACK_IMPORTED_MODULE_13__core_user_service__["a" /* UserService */],
-            __WEBPACK_IMPORTED_MODULE_4__core_authentication_service__["a" /* AuthenticationService */],
-            __WEBPACK_IMPORTED_MODULE_6__core_album_service__["a" /* AlbumService */],
-            __WEBPACK_IMPORTED_MODULE_3__core_mixpanel_service__["a" /* MixpanelService */],
-            __WEBPACK_IMPORTED_MODULE_14__core_fullstory_service__["a" /* FullstoryService */],
-            __WEBPACK_IMPORTED_MODULE_8__ionic_native_network__["a" /* Network */],
-            __WEBPACK_IMPORTED_MODULE_15_ionic_angular_navigation_nav_controller__["a" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_16_ionic_angular_navigation_nav_params__["a" /* NavParams */], Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* Platform */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* Platform */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_splash_screen__["a" /* SplashScreen */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_splash_screen__["a" /* SplashScreen */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__core_patient_service__["a" /* PatientService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__core_patient_service__["a" /* PatientService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_14__core_user_service__["a" /* UserService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_14__core_user_service__["a" /* UserService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__core_authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__core_authentication_service__["a" /* AuthenticationService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_6__core_album_service__["a" /* AlbumService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__core_album_service__["a" /* AlbumService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_3__core_mixpanel_service__["a" /* MixpanelService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__core_mixpanel_service__["a" /* MixpanelService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_15__core_fullstory_service__["a" /* FullstoryService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_15__core_fullstory_service__["a" /* FullstoryService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_8__ionic_native_network__["a" /* Network */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__ionic_native_network__["a" /* Network */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_16_ionic_angular_navigation_nav_controller__["a" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_16_ionic_angular_navigation_nav_controller__["a" /* NavController */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_17_ionic_angular_navigation_nav_params__["a" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_17_ionic_angular_navigation_nav_params__["a" /* NavParams */]) === "function" && _l || Object, typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_11__shared_types__["Constant"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_11__shared_types__["Constant"]) === "function" && _m || Object])
     ], RootComponent);
     return RootComponent;
 }());
@@ -3414,7 +3407,6 @@ var AlbumListComponent = /** @class */ (function () {
         if (!url) {
             url = location.search;
         }
-        ;
         var query = url.substr(1);
         var result = {};
         query.split('&').forEach(function (part) {
@@ -3430,20 +3422,23 @@ var AlbumListComponent = /** @class */ (function () {
             if (bool && _this.patientService.patientExistsSync()) {
                 _this.currentPatient = _this.patientService.getCurrentPatient();
                 _this.albums = _this.sortAlbumArrayByOwnerAndTitle(_this.albumService.getAlbums(_this.currentPatient.patient_id));
-                // hack: redirect to specific album if necessary
-                var params_1 = _this.getJsonFromUrl(window.location.search);
-                if (!!params_1.album && !_this.enteredFirstTime) {
-                    _this.albums.subscribe(function (albums) {
-                        // the compiler is wrong, album id's are numbers. == for compatibility
-                        var album = albums.find(function (a) { return a.title === params_1.album; });
-                        if (album) {
-                            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_6__storyList_storyList_component__["a" /* StoryListComponent */], { album: album });
-                        }
-                        _this.enteredFirstTime = true;
-                    });
-                }
             }
         });
+    };
+    AlbumListComponent.prototype.ionViewDidEnter = function () {
+        var _this = this;
+        // hack: redirect to specific album if necessary
+        var params = this.getJsonFromUrl(window.location.search);
+        if (!!params.album && !this.enteredFirstTime) {
+            this.albums.first().subscribe(function (albums) {
+                // the compiler is wrong, album id's are numbers. == for compatibility
+                var album = albums.find(function (a) { return a.title === params.album; });
+                if (album && !_this.enteredFirstTime) {
+                    _this.enteredFirstTime = true;
+                    _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_6__storyList_storyList_component__["a" /* StoryListComponent */], { album: album });
+                }
+            });
+        }
     };
     AlbumListComponent.prototype.sortAlbumArrayByOwnerAndTitle = function (albums) {
         return albums.map(function (albumArray) {
@@ -3536,7 +3531,7 @@ var AlbumListComponent = /** @class */ (function () {
     AlbumListComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'prisma-album-list',
-            template: "\n    <ion-header>\n     <ion-navbar>\n        <ion-title>Waarover babbelen we?</ion-title>\n        <ion-buttons left>\n          <button ion-button menuToggle class=\"albums-menu\">\n            <ion-icon color=\"black\" name='menu'></ion-icon>\n          </button>\n        </ion-buttons>\n        <ion-buttons right>\n          <prisma-fullscreen-button></prisma-fullscreen-button>\n        </ion-buttons>\n      </ion-navbar>\n    </ion-header>\n    <ion-content>\n      <ion-grid *ngIf=\"albums\">\n        <ion-row>\n          <ion-col col-6 col-md-4 col-lg-3 *ngFor=\"let album of albums | async\">\n            <prisma-album-story\n              [getBackground]=\"getBackground\"\n              [album]=\"album\"\n              [story]=\"album.stories[album.stories.length-1]\"\n              [showDetails]=\"showDetails\"\n              [emptyAlbum]=\"constant.emptyAlbum\"\n              [isAlbum]=\"true\">\n            </prisma-album-story>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n      <div class=\"add-new-container\"\n        (click)=\"this.userService.registrationGuard(this.addAlbum.bind(this),\n          this.showRegisterPrompt.bind(this, 'een album toe te voegen'))\">\n        <div class=\"add-new\">\n          <ion-icon class=\"add-icon\" name=\"md-add\"></ion-icon>\n          <span>Voeg album toe</span>\n        </div>\n      </div>\n    </ion-content>\n  "
+            template: "\n    <ion-header>\n      <ion-navbar>\n        <ion-title>Waarover babbelen we?</ion-title>\n        <ion-buttons left>\n          <button ion-button menuToggle class=\"albums-menu\">\n            <ion-icon color=\"black\" name=\"menu\"></ion-icon>\n          </button>\n        </ion-buttons>\n        <ion-buttons right>\n          <prisma-fullscreen-button></prisma-fullscreen-button>\n        </ion-buttons>\n      </ion-navbar>\n    </ion-header>\n    <ion-content>\n      <ion-grid *ngIf=\"albums\">\n        <ion-row>\n          <ion-col\n            col-6\n            col-md-4\n            col-lg-3\n            *ngFor=\"let album of (albums | async)\"\n          >\n            <prisma-album-story\n              [getBackground]=\"getBackground\"\n              [album]=\"album\"\n              [story]=\"album.stories[album.stories.length - 1]\"\n              [showDetails]=\"showDetails\"\n              [emptyAlbum]=\"constant.emptyAlbum\"\n              [isAlbum]=\"true\"\n            >\n            </prisma-album-story>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n      <div\n        class=\"add-new-container\"\n        (click)=\"this.userService.registrationGuard(this.addAlbum.bind(this),\n          this.showRegisterPrompt.bind(this, 'een album toe te voegen'))\"\n      >\n        <div class=\"add-new\">\n          <ion-icon class=\"add-icon\" name=\"md-add\"></ion-icon>\n          <span>Voeg album toe</span>\n        </div>\n      </div>\n    </ion-content>\n  "
         }),
         __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Inject */])(__WEBPACK_IMPORTED_MODULE_8__di__["b" /* ConstantToken */])),
         __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__shared_types__["Constant"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_types__["Constant"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__core_patient_service__["a" /* PatientService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__core_patient_service__["a" /* PatientService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_12__core_authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__core_authentication_service__["a" /* AuthenticationService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["i" /* MenuController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["i" /* MenuController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__core_album_service__["a" /* AlbumService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__core_album_service__["a" /* AlbumService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_5__core_mixpanel_service__["a" /* MixpanelService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__core_mixpanel_service__["a" /* MixpanelService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_7_ionic_angular_navigation_nav_controller__["a" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7_ionic_angular_navigation_nav_controller__["a" /* NavController */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_10__shared_provider_util_service__["a" /* UtilService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_10__shared_provider_util_service__["a" /* UtilService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_11__core_user_service__["a" /* UserService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_11__core_user_service__["a" /* UserService */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* AlertController */]) === "function" && _k || Object])

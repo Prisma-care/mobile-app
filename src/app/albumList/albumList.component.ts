@@ -109,21 +109,23 @@ export class AlbumListComponent {
         this.albums = this.sortAlbumArrayByOwnerAndTitle(
           this.albumService.getAlbums(this.currentPatient.patient_id)
         );
-
-        // hack: redirect to specific album if necessary
-        const params = this.getJsonFromUrl(window.location.search);
-        if (!!params.album && !this.enteredFirstTime) {
-          this.albums.subscribe(albums => {
-            // the compiler is wrong, album id's are numbers. == for compatibility
-            const album = albums.find(a => a.title === params.album);
-            if (album) {
-              this.navCtrl.push(StoryListComponent, {album});
-            }
-            this.enteredFirstTime = true;
-          });
-        }
       }
     });
+  }
+
+  ionViewDidEnter(): void {
+    // hack: redirect to specific album if necessary
+    const params = this.getJsonFromUrl(window.location.search);
+    if (!!params.album && !this.enteredFirstTime) {
+      this.albums.first().subscribe(albums => {
+        // the compiler is wrong, album id's are numbers. == for compatibility
+        const album = albums.find(a => a.title === params.album);
+        if (album && !this.enteredFirstTime) {
+          this.enteredFirstTime = true;
+          this.navCtrl.push(StoryListComponent, {album});
+        }
+      });
+    }
   }
 
   sortAlbumArrayByOwnerAndTitle(

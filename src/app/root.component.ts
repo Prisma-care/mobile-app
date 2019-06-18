@@ -61,7 +61,7 @@ export class RootComponent {
           this.patientService.getCurrentPatient().patient_id
         );
         if (this.patientService.getCurrentPatient()) {
-          this.navCtrl.setRoot(AlbumListComponent);
+          // this.navCtrl.setRoot(AlbumListComponent);
         }
         // : this.navCtrl.setRoot(NewLovedoneComponent); // logged in, but no Loved One yet? then above would fail...
       } else if (!this.navParams.get('isLogging')) {
