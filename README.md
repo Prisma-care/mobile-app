@@ -15,7 +15,7 @@ First, peruse the [Prisma wiki](https://github.com/Prisma/documentation/wiki) to
 ## History
 
 Project Prisma was part of [Open Knowledge Belgium](https://www.openknowledge.be/)'s [open Summer of Code 2017](http://2017.summerofcode.be/). A student team coached by Frederik Vincx [(@fritsbits)](https://github.com/fritsbits) worked on it in July 2017:
-- Michiel Leyman [(@MichielLeyman)](https://github.com/MichielLeyman) - backend & project management
+- Michiel - backend & project management
 - Simon Westerlinck [(@siimonco)](https://github.com/siimonco) - backend & database modelling
 - Jean-Pacifique Mboynincungu [(@oxnoctisxo)](https://github.com/oxnoctisxo) - frontend system analysis
 - Thor Galle [(@th0rgall)](https://github.com/th0rgall) - frontend & product owner
